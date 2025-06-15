@@ -1,0 +1,14 @@
+services:
+  oxymore-app:
+    build:
+      context: .
+      dockerfile: apps/oxymore-app/Dockerfile
+    ports:
+      - "8080:80"
+
+  oxymore-site:
+    build:
+      context: .
+      dockerfile: apps/oxymore-site/Dockerfile
+    ports:
+      - "8081:80"
