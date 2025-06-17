@@ -1,0 +1,113 @@
+@import "../../styles/global.scss";
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2.2rem 6%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 30;
+  background: transparent;
+  border-bottom: 1.5px solid transparent;
+  min-height: 84px;
+  transition: background 0.3s, border-bottom 0.3s;
+
+  &.scrolled {
+    background: rgba(18, 18, 18, 0.65);
+    box-shadow: 0 4px 32px 0 rgba(0,0,0,0.18);
+    backdrop-filter: blur(18px);
+    border-bottom: 1.5px solid rgba($color-white, 0.08);
+  }
+
+  &__logo img {
+    height: 68px;
+    filter: drop-shadow(0 2px 8px rgba($color-purple, 0.10));
+    transition: filter 0.2s;
+  }
+
+  &__nav {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &-links {
+      display: flex;
+      gap: 3.6rem;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+
+      li a {
+        color: $color-white;
+        font-weight: 400;
+        font-size: 1.7rem;
+        letter-spacing: 0.04em;
+        position: relative;
+        text-decoration: none;
+        padding: 0.2em 0.4em;
+        transition: color 0.2s;
+
+        &::after {
+          content: '';
+          position: absolute;
+          left: 0;
+          bottom: -4px;
+          width: 0;
+          height: 2px;
+          background: linear-gradient(90deg, $color-blue 0%, $color-blue 100%);
+          border-radius: 2px;
+          transition: width 0.3s cubic-bezier(0.4,0,0.2,1);
+        }
+
+        &:hover::after {
+          width: 100%;
+        }
+      }
+    }
+  }
+
+  &__auth {
+    display: flex;
+    align-items: center;
+    gap: 2.2rem;
+
+    a {
+      color: $color-white;
+      font-weight: 500;
+      font-size: 1.6rem;
+      border: 1.5px solid rgba($color-white, 0.18);
+      border-radius: 2rem;
+      padding: 0.7rem 1.8rem;
+      background: transparent;
+      transition: all 0.2s;
+      position: relative;
+      text-decoration: none;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+
+      &:hover {
+        background: rgba($color-blue, 0.10);
+        opacity: 0.8;
+        border-color: $color-blue;
+      }
+      &.create-account {
+        background: linear-gradient(90deg, $color-purple 0%, $color-blue 100%);
+        color: $color-white;
+        font-weight: 700;
+        border: none;
+        box-shadow: 0 4px 18px 0 rgba($color-purple, 0.18);
+        padding: 0.9rem 2.6rem;
+        letter-spacing: 0.04em;
+        transition: background 0.2s, box-shadow 0.2s, color 0.2s;
+        &:hover {
+          background: linear-gradient(90deg, lighten($color-purple, 8%) 0%, lighten($color-blue, 8%) 100%);
+          color: $color-white;
+          box-shadow: 0 6px 24px 0 rgba($color-blue, 0.22);
+        }
+      }
+    }
+  }
+}

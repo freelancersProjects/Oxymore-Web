@@ -1,18 +1,29 @@
 {
   "name": "@oxymore/ui",
   "version": "1.0.0",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup"
+  },
   "peerDependencies": {
-    "react": "^18",
-    "react-dom": "^18"
+    "react": "^18 || ^19",
+    "react-dom": "^18 || ^19"
   },
   "devDependencies": {
-    "react": "^18",
-    "react-dom": "^18",
+    "tsup": "^7.2.0",
+    "cpx": "^1.5.0",
     "typescript": "^5.0.0"
-  },
-  "scripts": {
-    "build": "tsc"
   }
 }

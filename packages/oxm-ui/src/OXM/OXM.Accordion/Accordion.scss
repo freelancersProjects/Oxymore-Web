@@ -1,0 +1,53 @@
+@import "../../styles/global.scss";
+
+.oxm-accordion {
+    width: 100%;
+    border: 0.5px solid rgba($color-white, 0.2);
+    border-radius: rem-calc(30);
+    background: rgba($color-white, 0.05);
+    backdrop-filter: blur(rem-calc(67));
+    padding: rem-calc(30) rem-calc(25);
+    margin-bottom: rem-calc(20);
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: rem-calc(20);
+            font-weight: 600;
+            color: $color-white;
+            margin: 0;
+        }
+
+        .oxm-accordion__icon {
+            width: rem-calc(20);
+            height: rem-calc(20);
+            transition: transform 0.3s ease;
+        }
+    }
+
+    &__body {
+        margin-top: rem-calc(20);
+
+        p {
+            font-family: 'Outfit', sans-serif;
+            font-size: rem-calc(18);
+            color: $color-white;
+            font-weight: 400;
+            text-align: left;
+            max-width: rem-calc(800);
+            margin: 0;
+        }
+    }
+
+    &.open {
+        .oxm-accordion__icon {
+            transform: rotate(45deg);
+        }
+    }
+}

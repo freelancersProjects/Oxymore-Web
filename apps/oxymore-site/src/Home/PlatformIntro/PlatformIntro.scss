@@ -1,0 +1,24 @@
+@import "../../styles/global.scss";
+
+.platform-intro {
+    text-align: center;
+    margin: rem-calc(80) auto rem-calc(40) auto;
+    max-width: rem-calc(1266);
+    padding: 0 rem-calc(20);
+
+    .categorie {
+        margin-bottom: rem-calc(30);
+    }
+
+    h2 {
+        font-family: "Orbitron", sans-serif;
+        font-size: rem-calc(35);
+        font-weight: 600;
+        color: $color-white;
+        line-height: rem-calc(55);
+
+        span {
+            opacity: 0.5;
+        }
+    }
+}

@@ -1,0 +1,250 @@
+@import "../../styles/global.scss";
+
+.hero-banner {
+    position: relative;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+
+    &__video {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+
+    }
+
+    &__overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, rgba(18, 18, 18, 0.00) 0%, $color-background 100%),
+            linear-gradient(180deg, rgba(18, 18, 18, 0.00) -218.81%, rgba(18, 18, 18, 0.40) 100%);
+    }
+
+    &__content {
+        position: relative;
+        z-index: 2;
+        width: 100%;
+        padding: 0 5%;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        height: 100%;
+    }
+
+    &__left {
+        align-self: flex-end;
+        margin-bottom: 100px;
+        text-align: left;
+
+        .tag {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: 60px;
+            border: 0.5px solid rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(67px);
+            font-size: 14px;
+            color: #fff;
+            transition: background 0.3s ease;
+
+            &::after {
+                content: "";
+                display: inline-block;
+                width: 6px;
+                height: 6px;
+                background: #fff;
+                border-radius: 50%;
+            }
+
+            &:hover {
+                background: rgba(255, 255, 255, 0.1);
+                border-color: rgba(255, 255, 255, 0.7);
+                transition: all 0.3s ease;
+            }
+        }
+
+        h1 {
+            margin: 20px 0;
+            font-family: "Orbitron", sans-serif;
+            font-size: 42px;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .oxm-button {
+            margin-top: 20px;
+        }
+
+        .author {
+            margin-top: 25px;
+            font-family: "Outfit", sans-serif;
+            font-size: 18px;
+            font-weight: 400;
+            color: #fff;
+            text-align-last: left;
+        }
+    }
+
+    .hero-banner__right {
+        width: 295px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        margin-bottom: 100px;
+
+        .thumb {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            padding: 10px 10px 10px 10px;
+            border-radius: 20px;
+            border: 0.5px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(77px);
+            text-align: left;
+            margin-bottom: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+
+            &:hover {
+                transform: translateY(-5px);
+                border-color: rgba(255, 255, 255, 0.4);
+                background: rgba(255, 255, 255, 0.1);
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+
+                .player-icon {
+                    background: rgba(255, 255, 255, 0.25);
+                    border-color: rgba(255, 255, 255, 0.8);
+                    transform: translate(-50%, -50%) scale(1.1);
+                }
+
+                h4 {
+                    color: #fff;
+                    text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+                }
+            }
+
+            &.active {
+                transform: scale(1.05);
+                border-color: rgba(255, 255, 255, 0.5);
+                background: rgba(255, 255, 255, 0.1);
+                box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+
+                .player-icon {
+                    background: rgba(255, 255, 255, 0.25);
+                    border-color: rgba(255, 255, 255, 0.8);
+                    transform: translate(-50%, -50%) scale(1.1);
+                }
+
+                h4 {
+                    color: #fff;
+                    text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+                }
+            }
+
+            &.hovered {
+                transform: translateY(-5px);
+                border-color: rgba(255, 255, 255, 0.4);
+                background: rgba(255, 255, 255, 0.1);
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            }
+
+            img {
+                width: 100%;
+                border-radius: 15px;
+                transition: transform 0.3s ease;
+            }
+
+            .player-icon {
+                position: absolute;
+                top: 40%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                width: 60px;
+                height: 60px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border-radius: 50%;
+                background: rgba(255, 255, 255, 0.15);
+                border: 1px solid rgba(255, 255, 255, 0.5);
+                transition: all 0.3s ease;
+
+                svg {
+                    width: 20px;
+                    height: 20px;
+                }
+            }
+
+            h4 {
+                margin-top: 10px;
+                font-family: "Orbitron", sans-serif;
+                font-size: 20px;
+                font-weight: 600;
+                color: #fff;
+                transition: all 0.3s ease;
+            }
+
+            p {
+                font-family: "Outfit", sans-serif;
+                font-size: 16px;
+                font-weight: 500;
+                color: #fff;
+                margin-top: 5px;
+                transition: all 0.3s ease;
+            }
+        }
+
+        .carousel-control {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            font-family: "Orbitron", sans-serif;
+            color: #fff;
+
+            span {
+                font-size: 22px;
+                font-weight: 600;
+
+                .total {
+                    font-size: 16px;
+                    font-weight: 600;
+                    opacity: 0.4;
+                    margin-left: 5px;
+                }
+            }
+
+            button {
+                background: none;
+                border: none;
+                color: #fff;
+                font-weight: 600;
+                cursor: pointer;
+            }
+        }
+
+        .carousel-bar {
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 31px;
+            overflow: hidden;
+            margin-top: 10px;
+
+            &__progress {
+                height: 100%;
+                background: #fff;
+                border-radius: 31px;
+                transition: width 0.3s ease;
+            }
+        }
+    }
+}

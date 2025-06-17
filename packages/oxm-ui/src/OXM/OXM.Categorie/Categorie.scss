@@ -1,0 +1,23 @@
+@import "../../styles/global.scss";
+
+.categorie {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: rem-calc(5);
+    padding: rem-calc(10) rem-calc(20);
+    border-radius: rem-calc(60);
+    border: 0.5px solid $color-blue;
+    background: rgba($color-blue, 0.05);
+    color: $color-white;
+    font-family: "Orbitron", sans-serif;
+    font-size: rem-calc(14);
+
+    .dot {
+        display: inline-block;
+        width: rem-calc(6);
+        height: rem-calc(6);
+        border-radius: 50%;
+        background: $color-white;
+    }
+}

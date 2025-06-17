@@ -1,0 +1,82 @@
+@import "../../styles/global.scss";
+
+.tournaments {
+    text-align: center;
+    margin: rem-calc(120) auto rem-calc(40) auto;
+
+    h1 {
+        color: $color-white;
+        margin: rem-calc(20) 0 rem-calc(50);
+    }
+
+    &__list {
+        display: flex;
+        justify-content: center;
+        gap: rem-calc(30);
+        flex-wrap: wrap;
+        width: 70%;
+        margin: 0 auto;
+    }
+}
+
+.tournament-card {
+    flex: 1 1 48%;
+    max-width: rem-calc(700);
+    padding: rem-calc(30);
+    border-radius: rem-calc(30);
+    border: 0.5px solid rgba($color-white, 0.2);
+    background: rgba($color-white, 0.05);
+    backdrop-filter: blur(rem-calc(77));
+    text-align: left;
+
+    img {
+        width: rem-calc(100);
+        height: rem-calc(100);
+        border-radius: rem-calc(20);
+        object-fit: cover;
+        margin-bottom: rem-calc(20);
+    }
+
+    &__content {
+        h3 {
+            font-size: rem-calc(20);
+            font-weight: 600;
+            color: $color-white;
+        }
+
+        .tournament-card__info {
+            display: flex;
+            justify-content: space-between;
+            margin: rem-calc(18) 0;
+
+            span {
+                font-size: rem-calc(14);
+                color: $color-white;
+                font-weight: 300;
+            }
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid rgba($color-white, 0.2);
+            margin: rem-calc(10) 0;
+        }
+
+        .tournament-card__prize {
+            font-size: rem-calc(22);
+            font-weight: 600;
+            color: $color-white;
+            margin: rem-calc(15) 0;
+        }
+
+        .tournament-card__button {
+            width: 100%;
+            padding: rem-calc(15);
+            border: 0.5px solid $color-white;
+            border-radius: rem-calc(13);
+            background: rgba($color-white, 0.05);
+            color: $color-white;
+            cursor: pointer;
+        }
+    }
+}
