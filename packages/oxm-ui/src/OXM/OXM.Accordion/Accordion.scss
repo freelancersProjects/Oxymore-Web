@@ -2,14 +2,15 @@
 
 .oxm-accordion {
     width: 100%;
-    border: 0.5px solid rgba($color-white, 0.2);
-    border-radius: rem-calc(30);
-    background: rgba($color-white, 0.05);
-    backdrop-filter: blur(rem-calc(67));
-    padding: rem-calc(30) rem-calc(25);
-    margin-bottom: rem-calc(20);
+    max-width: 100%;
+    border: 0.5px solid rgba($color-white, 0.13);
+    border-radius: rem-calc(16);
+    background: rgba($color-white, 0.04);
+    backdrop-filter: blur(rem-calc(24));
+    padding: rem-calc(14) rem-calc(18);
+    margin-bottom: rem-calc(16);
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.22s cubic-bezier(.4,0,.2,1);
 
     &__header {
         display: flex;
@@ -18,29 +19,29 @@
 
         h3 {
             font-family: 'Orbitron', sans-serif;
-            font-size: rem-calc(20);
+            font-size: rem-calc(16);
             font-weight: 600;
             color: $color-white;
             margin: 0;
         }
 
         .oxm-accordion__icon {
-            width: rem-calc(20);
-            height: rem-calc(20);
-            transition: transform 0.3s ease;
+            width: rem-calc(18);
+            height: rem-calc(18);
+            transition: transform 0.22s cubic-bezier(.4,0,.2,1);
         }
     }
 
     &__body {
-        margin-top: rem-calc(20);
+        margin-top: rem-calc(12);
 
         p {
             font-family: 'Outfit', sans-serif;
-            font-size: rem-calc(18);
+            font-size: rem-calc(15);
             color: $color-white;
             font-weight: 400;
             text-align: left;
-            max-width: rem-calc(800);
+            max-width: 100%;
             margin: 0;
         }
     }
