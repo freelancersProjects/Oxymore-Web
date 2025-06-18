@@ -1,0 +1,55 @@
+$color-purple: #500CAD;
+$color-white: #ffffff;
+$color-background: #121212;
+$color-blue: #1593CE;
+
+body {
+  margin: 0;
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+  background: $color-background;
+  color: $color-white;
+}
+
+.doc-layout {
+  display: flex;
+  min-height: 100vh;
+  background: $color-background;
+}
+
+.doc-content {
+  flex: 1;
+  padding: 3.5rem 2rem 2rem 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+@media (max-width: 900px) {
+  .doc-content {
+    padding: 2rem 0.5rem;
+  }
+}
+
+@media (max-width: 800px) {
+  .doc-layout {
+    flex-direction: column;
+  }
+  .sidebar {
+    width: 100%;
+    min-height: auto;
+    flex-direction: row;
+    h2 {
+      display: none;
+    }
+    nav ul {
+      display: flex;
+      flex-direction: row;
+      li {
+        margin-right: 1rem;
+        margin-bottom: 0;
+      }
+    }
+  }
+}
