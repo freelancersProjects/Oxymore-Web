@@ -1,14 +1,25 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Sidebar from "./Sidebar";
-import "../styles/layout.scss";
 
-export default function DocLayout({ children }: { children: React.ReactNode }) {
-  const [current, setCurrent] = useState("/accordion");
+import AccordionDoc from "../docs/AccordionDoc";
+import ButtonDoc from "../docs/ButtonDoc";
+import CategorieDoc from "../docs/CategorieDoc";
+import ToastDoc from "../docs/ToastDoc";
+
+const componentsMap: Record<string, React.ReactNode> = {
+  "/accordion": <AccordionDoc />,
+  "/button": <ButtonDoc />,
+  "/categorie": <CategorieDoc />,
+  "/toast": <ToastDoc />,
+};
+
+export default function DocLayout() {
+  const [current, setCurrent] = useState("/button");
 
   return (
     <div className="doc-layout">
       <Sidebar current={current} onSelect={setCurrent} />
-      <main className="doc-content">{children(current)}</main>
+      <main className="doc-content">{componentsMap[current]}</main>
     </div>
   );
 }

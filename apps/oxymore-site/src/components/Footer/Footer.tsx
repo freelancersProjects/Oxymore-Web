@@ -75,7 +75,7 @@ const Footer = () => (
     </div>
     <hr className="footer__divider" />
     <div className="footer__copyright">
-      © 2024 Oxymore. All rights reserved. Crafted for gamers, by gamers.
+      © 2025 Oxymore. All rights reserved. Crafted for gamers, by gamers.
     </div>
   </footer>
 );

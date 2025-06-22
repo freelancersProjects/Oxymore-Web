@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { OXMCategorie } from "@oxymore/ui"; // ton composant catégorie
 import "./Leagues.scss";
 
-import first from "../../assets/images/first.png";
-import second from "../../assets/images/second.png";
-import third from "../../assets/images/third.png";
+import first from "../../../assets/images/first.png";
+import second from "../../../assets/images/second.png";
+import third from "../../../assets/images/third.png";
 
 const teams = [
   {

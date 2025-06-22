@@ -1,0 +1,160 @@
+import React, { useState } from "react";
+import { OXMButton } from "@oxymore/ui";
+import "./HeroBanner.scss";
+
+const videos = [
+  {
+    id: 1,
+    title: "Final Kill – CS2",
+    subtitle: "Clutch 1v3 Victory",
+    thumb: "/assets/thumb1.jpg",
+  },
+  {
+    id: 2,
+    title: "Perfect Nade – CS2",
+    subtitle: "Double Knockout in Semi-Final",
+    thumb: "/assets/thumb2.jpg",
+  },
+  {
+    id: 3,
+    title: "Ace Round – CS2",
+    subtitle: "Perfect Team Coordination",
+    thumb: "/assets/thumb3.jpg",
+  },
+  {
+    id: 4,
+    title: "Sniper Master – CS2",
+    subtitle: "Incredible Long Range Shots",
+    thumb: "/assets/thumb4.jpg",
+  },
+  {
+    id: 5,
+    title: "Tactical Play – CS2",
+    subtitle: "Strategic Team Movement",
+    thumb: "/assets/thumb5.jpg",
+  },
+];
+
+const HeroBanner = () => {
+  const [current, setCurrent] = useState(0);
+  const [selected, setSelected] = useState(0); // 0 = haut, 1 = bas
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
+  const nextIdx = (current + 1) % videos.length;
+
+  const next = () => {
+    setCurrent((prev) => (prev + 1) % videos.length);
+    setSelected(0);
+  };
+
+  const handleVideoClick = (index: number) => {
+    if (index === current) {
+      setSelected(0);
+    } else if (index === nextIdx) {
+      setSelected(1);
+    }
+  };
+
+  return (
+    <section className="hero-banner">
+      <video
+        className="hero-banner__video"
+        src="https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/720/Big_Buck_Bunny_720_10s_1MB.mp4"
+        autoPlay
+        loop
+        muted
+        playsInline
+      />
+      <div className="hero-banner__overlay" />
+
+      <div className="hero-banner__content">
+        <div className="hero-banner__left">
+          <span className="tag orbitron">CS2</span>
+          <h1>Ace on Bind – Semi Finals</h1>
+          <OXMButton>View Full Highlight</OXMButton>
+          <p className="author">By: @ShadowSlayer</p>
+        </div>
+
+        <div className="hero-banner__right">
+          {/* Carte du haut */}
+          <div
+            className={`thumb ${selected === 0 ? "active" : ""} ${hoveredIndex === 0 ? "hovered" : ""}`}
+            onClick={() => handleVideoClick(current)}
+            onMouseEnter={() => setHoveredIndex(0)}
+            onMouseLeave={() => setHoveredIndex(null)}
+            style={{ zIndex: 2 }}
+          >
+            <div className="player-icon">
+              <svg
+                width="14"
+                height="16"
+                viewBox="0 0 14 16"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M13.9286 7.99998L0.535731 15.7324L0.535731 0.267612L13.9286 7.99998Z"
+                  fill="white"
+                />
+              </svg>
+            </div>
+            <img
+              src={`https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80`}
+              alt={videos[current].title}
+            />
+            <h4>{videos[current].title}</h4>
+            <p>{videos[current].subtitle}</p>
+          </div>
+          {/* Carte du bas */}
+          <div
+            className={`thumb ${selected === 1 ? "active" : ""} ${hoveredIndex === 1 ? "hovered" : ""}`}
+            onClick={() => handleVideoClick(nextIdx)}
+            onMouseEnter={() => setHoveredIndex(1)}
+            onMouseLeave={() => setHoveredIndex(null)}
+            style={{ zIndex: 1 }}
+          >
+            <div className="player-icon">
+              <svg
+                width="14"
+                height="16"
+                viewBox="0 0 14 16"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M13.9286 7.99998L0.535731 15.7324L0.535731 0.267612L13.9286 7.99998Z"
+                  fill="white"
+                />
+              </svg>
+            </div>
+            <img
+              src={`https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80`}
+              alt={videos[nextIdx].title}
+            />
+            <h4>{videos[nextIdx].title}</h4>
+            <p>{videos[nextIdx].subtitle}</p>
+          </div>
+
+          <div className="carousel-control">
+            <span>
+              {String(((current + selected) % videos.length) + 1).padStart(2, "0")}
+              <span className="total">
+                / {String(videos.length).padStart(2, "0")}
+              </span>
+            </span>
+            <button onClick={next}>Next</button>
+          </div>
+
+          <div className="carousel-bar">
+            <div
+              className="carousel-bar__progress"
+              style={{ width: `${((current + selected + 1) / videos.length) * 100}%` }}
+            ></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default HeroBanner;

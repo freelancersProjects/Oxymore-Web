@@ -7,12 +7,22 @@ export default function ButtonDoc() {
     <section className="doc-section">
       <h1>OXM.Button</h1>
       <p>Bouton personnalisable.</p>
-      <h2>Exemple</h2>
-      <Button>Mon bouton</Button>
+
+      <h2>Exemples</h2>
+      <div style={{ display: "flex", gap: "20px", alignItems: "center" }}>
+        <Button variant="primary">Bouton Primaire</Button>
+        <Button variant="secondary">Bouton Secondaire</Button>
+      </div>
+
       <h2>Props</h2>
       <ul>
-        <li><b>children</b> : ReactNode — Contenu du bouton</li>
-        {/* Ajouter d'autres props ici */}
+        <li>
+          <b>children</b> : ReactNode — Contenu du bouton
+        </li>
+        <li>
+          <b>variant</b> : "primary" | "secondary" — Variante de style
+        </li>
+        {/* Ajoute ici d'autres props si besoin */}
       </ul>
     </section>
   );

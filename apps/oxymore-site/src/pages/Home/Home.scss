@@ -1,0 +1,6 @@
+@import "../../styles/global.scss";
+
+.home-container {
+    position: relative;
+    overflow-x: hidden; // Prevents horizontal overflow caused by the orbs
+}

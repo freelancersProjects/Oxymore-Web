@@ -1,13 +1,19 @@
 import React from "react";
 import "../styles/sidebar.scss";
 
+type SidebarProps = {
+  current: string;
+  onSelect: (path: string) => void;
+};
+
 const components = [
   { name: "Accordion", path: "/accordion" },
   { name: "Button", path: "/button" },
   { name: "Categorie", path: "/categorie" },
+  { name: "Toast", path: "/toast" },
 ];
 
-export default function Sidebar({ current, onSelect }: { current: string; onSelect: (path: string) => void }) {
+export default function Sidebar({ current, onSelect }: SidebarProps) {
   return (
     <aside className="sidebar">
       <h2>OXM UI Docs</h2>

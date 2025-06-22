@@ -1,0 +1,166 @@
+@import "../../styles/global.scss";
+
+.contact-page {
+    max-width: 1800px;
+    margin: rem-calc(140) auto rem-calc(80);
+    padding: 0 rem-calc(40);
+    text-align: center;
+
+    h1 {
+        font-family: "Orbitron", sans-serif;
+        font-size: rem-calc(60);
+        font-weight: 600;
+        color: $color-white;
+        margin-bottom: rem-calc(10);
+    }
+
+    p {
+        font-family: "Outfit", sans-serif;
+        font-size: rem-calc(18);
+        color: rgba($color-white, 0.7);
+        margin-bottom: rem-calc(70);
+    }
+
+    .contact__content {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: rem-calc(40);
+        align-items: flex-start;
+
+        @media (max-width: 1000px) {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .contact__form,
+    .contact__info {
+        width: 100%;
+    }
+
+    .contact__form {
+        display: flex;
+        flex-direction: column;
+        gap: rem-calc(25);
+        padding: rem-calc(40) rem-calc(30);
+        background: rgba(255, 255, 255, 0.05);
+        border: 0.5px solid rgba(255, 255, 255, 0.5);
+        border-radius: rem-calc(30);
+        backdrop-filter: blur(77px);
+        text-align: left;
+
+        h3 {
+            font-family: "Orbitron", sans-serif;
+            font-size: rem-calc(30);
+            font-weight: 600;
+            color: $color-white;
+            margin-bottom: rem-calc(10);
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: rem-calc(20);
+
+            label {
+                font-family: "Outfit", sans-serif;
+                font-size: rem-calc(18);
+                font-weight: 400;
+                color: $color-white;
+            }
+
+            input,
+            textarea {
+                display: flex;
+                padding: rem-calc(20);
+                border-radius: rem-calc(13);
+                border: 0.5px solid rgba(255, 255, 255, 0.5);
+                background: transparent;
+                color: $color-white;
+                font-family: "Outfit", sans-serif;
+                font-size: rem-calc(16);
+
+                &::placeholder {
+                    color: $color-white;
+                    opacity: 0.7;
+                    text-align: left;
+                }
+            }
+
+            textarea {
+                min-height: rem-calc(150);
+                resize: vertical;
+            }
+
+            .oxm-button {
+                margin-top: rem-calc(10);
+                width: fit-content; // bouton auto, pas 100%
+            }
+        }
+    }
+
+    .contact__info {
+        display: flex;
+        flex-direction: column;
+        gap: rem-calc(30);
+
+        .contact__box {
+            flex: 1;
+            padding: rem-calc(40) rem-calc(30);
+            background: rgba(255, 255, 255, 0.05);
+            border: 0.5px solid rgba(255, 255, 255, 0.5);
+            border-radius: rem-calc(30);
+            backdrop-filter: blur(77px);
+            text-align: left;
+
+            h3 {
+                font-family: "Orbitron", sans-serif;
+                font-size: rem-calc(30);
+                font-weight: 600;
+                color: $color-white;
+                margin-bottom: rem-calc(20);
+            }
+
+            p {
+                font-family: "Outfit", sans-serif;
+                font-size: rem-calc(18);
+                color: $color-white;
+                margin: rem-calc(6) 0;
+
+                a {
+                    color: $color-blue;
+                    text-decoration: underline;
+                    margin-left: 5px;
+                }
+            }
+
+            .socials {
+                display: flex;
+                gap: rem-calc(15);
+                margin-top: rem-calc(15);
+
+                a {
+                    display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        width: rem-calc(54);
+                        height: rem-calc(54);
+                        border-radius: 50%;
+                        border: 0.2px solid rgba(255, 255, 255, 0.50);
+                        background: lighten($color-background, 5%);
+                        color: $color-white;
+                        font-size: rem-calc(22);
+                        transition: background 0.2s, color 0.2s;
+                        box-shadow: 0 rem-calc(2) rem-calc(8) rgba(0, 0, 0, 0.10);
+
+                        &:hover {
+                                background: $color-blue;
+                                color: $color-white;
+                            }
+
+                            svg {
+                                font-size: rem-calc(28);                     }
+                }
+            }
+        }
+    }
+}
