@@ -1,0 +1,54 @@
+.oxm-header {
+  position: fixed;
+  top: 0;
+  left: 270px; 
+  right: 0;
+  height: 8dvh0px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+  z-index: 1000;
+
+  &__search {
+    flex: 0 0 auto;
+
+    input {
+      width: 300px;
+      padding: 12px 20px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.05);
+      color: #fff;
+      font-family: "Outfit", sans-serif;
+
+      &::placeholder {
+        color: rgba(255, 255, 255, 0.5);
+      }
+    }
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    .icon-bell {
+      font-size: 22px;
+      color: #fff;
+      cursor: pointer;
+
+      &:hover {
+        color: #a855f7;
+      }
+    }
+
+    .avatar {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      border: 2px solid #a855f7;
+      object-fit: cover;
+    }
+  }
+}

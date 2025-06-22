@@ -1,0 +1,129 @@
+.api-keys-page {
+  padding: 40px;
+  color: #fff;
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+
+    h1 {
+      font-size: 28px;
+    }
+
+    button {
+      background: #6a0dad;
+      border: none;
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+
+      &:hover {
+        background: #8e2de2;
+      }
+    }
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #1c1c1c;
+    border-radius: 12px;
+    overflow: hidden;
+
+    th, td {
+      padding: 16px;
+      text-align: left;
+      border-bottom: 1px solid #333;
+    }
+
+    th {
+      background: #222;
+    }
+
+    .secret {
+      font-family: monospace;
+    }
+
+    button {
+      margin-right: 8px;
+      background: transparent;
+      border: 1px solid #444;
+      color: #ccc;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+
+      &:hover {
+        border-color: #6a0dad;
+        color: #fff;
+      }
+    }
+  }
+
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .modal {
+      background: #1c1c1c;
+      padding: 40px;
+      border-radius: 12px;
+      max-width: 500px;
+      text-align: center;
+
+      h2 {
+        margin-bottom: 20px;
+      }
+
+      .new-key {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #111;
+        padding: 15px 20px;
+        border-radius: 8px;
+        margin: 20px 0;
+
+        code {
+          font-family: monospace;
+          font-size: 16px;
+          word-break: break-all;
+        }
+
+        button {
+          background: #6a0dad;
+          border: none;
+          color: #fff;
+          padding: 8px 12px;
+          border-radius: 6px;
+          cursor: pointer;
+
+          &:hover {
+            background: #8e2de2;
+          }
+        }
+      }
+
+      button {
+        background: transparent;
+        border: 1px solid #444;
+        color: #ccc;
+        padding: 10px 20px;
+        border-radius: 8px;
+        cursor: pointer;
+
+        &:hover {
+          border-color: #6a0dad;
+          color: #fff;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,32 @@
+$color-purple: #500CAD;
+$color-white: #ffffff;
+$color-background: #121212;
+$color-gray: #B0B0B0;
+$color-gray-light: #E0E0E0;
+$color-gray-dark: #333333;
+$color-gray-darker: #1A1A1A;
+$color-gray-medium: #888888;
+$color-gray-darkest: #0A0A1E;
+$color-black: #000000;
+$color-blue: #1593CE;
+
+$base-font-size: 10;
+
+@function rem-calc($px) {
+    @return ($px / $base-font-size) * 1rem;
+}
+
+h1 {
+    font-family: "Orbitron", sans-serif;
+    font-size: 42px;
+    font-weight: 600;
+    color: #fff;
+}
+
+.orbitron {
+    font-family: "Orbitron", sans-serif;
+}
+
+.outfit {
+    font-family: "Outfit", sans-serif;
+}
