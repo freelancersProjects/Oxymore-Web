@@ -4,6 +4,8 @@ import {
   getChannelById,
   getChannelsByUserId,
   createChannel,
+  updateChannelName,
+  deleteChannel,
 } from "../controllers/channelController";
 
 const router = Router();
@@ -14,31 +16,18 @@ const router = Router();
  *   get:
  *     tags:
  *       - Channels
- *     summary: Récupère tous les channels
- *     responses:
- *       200:
- *         description: Liste des channels
- */
-router.get("/", getAllChannels);
-
-/**
- * @openapi
- * /api/channels/user/{user_id}:
- *   get:
- *     tags:
- *       - Channels
- *     summary: Récupère tous les channels d'un utilisateur
+ *     summary: Récupère les channels d'un utilisateur
  *     parameters:
- *       - in: path
+ *       - in: query
  *         name: user_id
  *         required: true
  *         schema:
  *           type: string
  *     responses:
  *       200:
- *         description: Liste des channels de l'utilisateur
+ *         description: Liste des channels
  */
-router.get("/user/:user_id", getChannelsByUserId);
+router.get("/", getChannelsByUserId);
 
 /**
  * @openapi
@@ -73,11 +62,66 @@ router.get("/:id", getChannelById);
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Channel'
+ *             type: object
+ *             required:
+ *               - name
+ *               - user_id
+ *             properties:
+ *               name:
+ *                 type: string
+ *               user_id:
+ *                 type: string
  *     responses:
  *       201:
  *         description: Channel créé
  */
 router.post("/", createChannel);
 
-export default router; 
+/**
+ * @openapi
+ * /api/channels/{id}:
+ *   patch:
+ *     tags:
+ *       - Channels
+ *     summary: Met à jour le nom d'un channel
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Channel mis à jour
+ */
+router.patch("/:id", updateChannelName);
+
+/**
+ * @openapi
+ * /api/channels/{id}:
+ *   delete:
+ *     tags:
+ *       - Channels
+ *     summary: Supprime un channel par son id
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Channel supprimé
+ */
+router.delete("/:id", deleteChannel);
+
+export default router;

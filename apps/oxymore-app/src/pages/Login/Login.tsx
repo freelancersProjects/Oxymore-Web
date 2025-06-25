@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { useAuth } from '../../context/AuthContext';
 import './Login.scss';
 
 const Login: React.FC = () => {
+  const navigate = useNavigate();
+  const { login } = useAuth();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -11,7 +16,10 @@ const Login: React.FC = () => {
   const [errors, setErrors] = useState<{
     email?: string;
     password?: string;
+    form?: string;
   }>({});
+  
+  const [passwordVisible, setPasswordVisible] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
@@ -21,10 +29,11 @@ const Login: React.FC = () => {
     }));
 
     // Clear error when user starts typing
-    if (errors[name as keyof typeof errors]) {
+    if (errors[name as keyof typeof errors] || errors.form) {
       setErrors(prev => ({
         ...prev,
-        [name]: undefined
+        [name]: undefined,
+        form: undefined
       }));
     }
   };
@@ -48,12 +57,33 @@ const Login: React.FC = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (validateForm()) {
-      // Handle login logic here
-      console.log('Login attempt:', formData);
+      try {
+        const response = await fetch('http://localhost:3000/api/auth/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: formData.email,
+            password: formData.password,
+          }),
+        });
+
+        if (response.ok) {
+          const { user, token } = await response.json();
+          login({ user, token });
+          navigate('/');
+        } else {
+          const errorData = await response.json();
+          setErrors({ form: errorData.message || 'Login failed.' });
+        }
+      } catch {
+        setErrors({ form: 'Could not connect to the server.' });
+      }
     }
   };
 
@@ -91,17 +121,28 @@ const Login: React.FC = () => {
 
           <div className="form-group">
             <label htmlFor="password">Password</label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              value={formData.password}
-              onChange={handleInputChange}
-              className={errors.password ? 'error' : ''}
-              placeholder="Enter your password"
-            />
+            <div className="password-input-wrapper">
+              <input
+                type={passwordVisible ? 'text' : 'password'}
+                id="password"
+                name="password"
+                value={formData.password}
+                onChange={handleInputChange}
+                className={errors.password ? 'error' : ''}
+                placeholder="Enter your password"
+              />
+              <button
+                type="button"
+                className="password-toggle-btn"
+                onClick={() => setPasswordVisible(!passwordVisible)}
+              >
+                {passwordVisible ? <FaEyeSlash /> : <FaEye />}
+              </button>
+            </div>
             {errors.password && <span className="error-message">{errors.password}</span>}
           </div>
+
+          {errors.form && <span className="error-message form-error">{errors.form}</span>}
 
           <div className="form-options">
             <label className="checkbox-container">
@@ -119,12 +160,11 @@ const Login: React.FC = () => {
 
           <button type="submit" className="login-button">
             <span>Sign In</span>
-            <div className="button-glow"></div>
           </button>
         </form>
 
         <div className="login-footer">
-          <p>Don't have an account? <a href="#" className="signup-link">Sign up</a></p>
+          <p>Don't have an account? <Link to="/register" className="signup-link">Sign up</Link></p>
         </div>
       </div>
     </div>

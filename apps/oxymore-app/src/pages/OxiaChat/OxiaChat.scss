@@ -5,6 +5,15 @@
   height: 100vh;
   background: linear-gradient(120deg, $color-gray-darkest 0%, $color-background 100%);
   color: $color-white;
+
+  input{
+  }
+
+  small{
+    color: $color-gray-light;
+    font-size: rem-calc(14);
+    text-align: right;
+  }
 }
 
 .oxia-chat-sidebar {
@@ -60,6 +69,9 @@
 .oxia-chat-channels {
   width: 100%;
   padding: 0 rem-calc(24);
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
 }
 
 .oxia-chat-channels-title {
@@ -265,6 +277,7 @@
   font-size: rem-calc(16);
   outline: none;
   transition: background 0.2s;
+  margin: 0 !important;
 
   &::placeholder {
     color: $color-gray;
@@ -279,6 +292,7 @@
   padding: rem-calc(12) rem-calc(22);
   font-size: rem-calc(16);
   font-weight: 600;
+  margin-right: rem-calc(10);
   cursor: pointer;
   transition: background 0.2s;
   box-shadow: 0 rem-calc(2) rem-calc(8) rgba(80,12,173,0.10);
@@ -394,4 +408,31 @@
   border-radius: 50%;
   object-fit: cover;
   margin-left: rem-calc(4);
+}
+
+.oxia-chat-loader-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  min-height: 400px;
+}
+.oxia-chat-loader {
+  width: 64px;
+  height: 64px;
+  animation: oxia-spin 1.2s linear infinite;
+  margin-bottom: 18px;
+}
+.oxia-chat-loader-text {
+  color: $color-gray-light;
+  font-size: 1.2rem;
+  font-weight: 500;
+  letter-spacing: 1px;
+}
+
+@keyframes oxia-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
