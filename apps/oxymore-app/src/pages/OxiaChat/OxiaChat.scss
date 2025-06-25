@@ -27,6 +27,13 @@
   font-size: rem-calc(22);
   font-weight: 700;
   margin-bottom: rem-calc(12);
+
+  img {
+    width: rem-calc(40);
+    height: rem-calc(40);
+    border-radius: 50%;
+    object-fit: cover;
+  }
 }
 
 .oxia-chat-title {
@@ -184,8 +191,11 @@
   height: rem-calc(32);
   border-radius: 50%;
   object-fit: cover;
-  background: $color-gray-dark;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   margin-right: rem-calc(6);
+  margin-bottom: rem-calc(10);
 }
 
 .oxia-message-content {

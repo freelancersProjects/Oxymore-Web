@@ -43,6 +43,14 @@ td {
     font-family: "Outfit", sans-serif;
 }
 
+.purple {
+    color: $color-purple;
+}
+
+.blue {
+    color: $color-blue;
+}
+
 // Global custom scrollbar
 ::-webkit-scrollbar {
   width: 10px;
