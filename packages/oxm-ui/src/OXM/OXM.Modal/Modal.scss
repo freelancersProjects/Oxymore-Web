@@ -1,0 +1,46 @@
+@import "../../styles/global.scss";
+
+.oxm-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 10, 20, 0.8);
+  backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: oxm-modal-fadeIn 0.3s ease;
+  z-index: 1000;
+}
+
+.oxm-modal {
+  background: linear-gradient(145deg, rgba(30, 30, 50, 0.9), rgba(20, 20, 40, 0.9));
+  border: 1px solid rgba($color-purple, 0.5);
+  padding: rem-calc(40);
+  border-radius: rem-calc(20);
+  width: 100%;
+  max-width: rem-calc(550);
+  box-shadow: 0 rem-calc(20) rem-calc(60) rgba(0,0,0,0.5), 0 0 rem-calc(40) rgba($color-purple, 0.2);
+  animation: oxm-modal-slideInUp 0.4s ease-out;
+
+  h2 {
+    margin-bottom: rem-calc(15);
+    font-family: "Orbitron", sans-serif;
+    font-size: rem-calc(28);
+  }
+
+  p {
+    color: rgba($color-white, 0.7);
+    margin-bottom: rem-calc(30);
+    font-size: rem-calc(16);
+  }
+}
+
+@keyframes oxm-modal-fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes oxm-modal-slideInUp {
+  from { transform: translateY(30px) scale(0.98); opacity: 0; }
+  to { transform: translateY(0) scale(1); opacity: 1; }
+}

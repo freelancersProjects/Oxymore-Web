@@ -1,0 +1,105 @@
+// Styles pour les layouts sans sidebar, header ou footer
+
+// Layout plein écran (sans sidebar, header, footer)
+body.fullscreen-layout {
+  .sidebar,
+  .header,
+  .footer {
+    display: none !important;
+  }
+
+  .main-content {
+    margin-left: 0 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    min-height: 100vh !important;
+  }
+
+  // S'assurer que le contenu principal prend toute la largeur
+  .oxm-main {
+    margin-left: 0 !important;
+    width: 100% !important;
+  }
+
+  .oxm-main main {
+    margin: 0 !important;
+    padding: 0 !important;
+    min-height: 100vh !important;
+  }
+}
+
+// Layout sans sidebar
+body.no-sidebar {
+  .sidebar {
+    display: none !important;
+  }
+
+  .main-content {
+    margin-left: 0 !important;
+  }
+
+  // Ajuster le header quand la sidebar est masquée
+  .oxm-header {
+    left: 20px !important;
+    width: calc(100% - 40px) !important;
+  }
+
+  .oxm-main {
+    margin-left: 0 !important;
+  }
+}
+
+// Layout sans header
+body.no-header {
+  .header {
+    display: none !important;
+  }
+
+  .main-content {
+    padding-top: 0 !important;
+  }
+
+  .oxm-main main {
+    margin-top: 0 !important;
+  }
+}
+
+// Layout sans footer
+body.no-footer {
+  .footer {
+    display: none !important;
+  }
+
+  .main-content {
+    padding-bottom: 0 !important;
+  }
+}
+
+// Transitions pour les changements de layout
+.sidebar,
+.header,
+.footer,
+.main-content,
+.oxm-main {
+  transition: all 0.3s ease-in-out;
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  body.fullscreen-layout,
+  body.no-sidebar {
+    .main-content {
+      margin-left: 0 !important;
+    }
+
+    .oxm-main {
+      margin-left: 0 !important;
+    }
+  }
+
+  body.no-sidebar .oxm-header,
+  body.fullscreen-layout .oxm-header {
+    left: 10px !important;
+    width: calc(100% - 20px) !important;
+  }
+}

@@ -1,14 +1,26 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { Home, Trophy, Layers, Play, Users, UserPlus, Code, LogOut } from "lucide-react";
-import Logo from "./../../../assets/logo.png";
+import { Home, Trophy, Layers, Play, Users, UserPlus, Code, LogOut, ChevronLeft, ChevronRight, Bot } from "lucide-react";
+import Logo from "./../../assets/logo.png";
 import "./Sidebar.scss";
 
-export const Sidebar = () => {
+interface SidebarProps {
+  isCollapsed?: boolean;
+  onToggle?: () => void;
+}
+
+export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false, onToggle }) => {
   return (
-    <aside className="oxm-sidebar">
-      <div className="oxm-sidebar__logo">
-        <img src={Logo} alt="Oxymore Logo" />
+    <aside className={`oxm-sidebar ${isCollapsed ? 'collapsed' : ''}`}>
+      <div className="oxm-sidebar__header">
+        <div className="oxm-sidebar__logo">
+          <img src={Logo} alt="Oxymore Logo" />
+        </div>
+        {onToggle && (
+          <button className="oxm-sidebar__toggle" onClick={onToggle}>
+            {isCollapsed ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
+          </button>
+        )}
       </div>
 
       <nav className="oxm-sidebar__nav">
@@ -46,6 +58,12 @@ export const Sidebar = () => {
           <li>
             <NavLink to="/api-keys">
               <Code size={20} /> <span>API</span>
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/oxia">
+              <Bot size={20} /> <span>Oxia</span>
+              <span className="sidebar-beta-chip">Bêta</span>
             </NavLink>
           </li>
         </ul>

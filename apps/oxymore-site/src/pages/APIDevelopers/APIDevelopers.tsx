@@ -1,15 +1,14 @@
 import React from "react";
 import { OXMButton, OXMCategorie } from "@oxymore/ui";
-import Herobannerimage from "../../assets/images/dropdown-image.webp";
-// import APIKeyImage from "../../assets/images/api-key.png";
-// import BudgetImage from "../../assets/images/budget.png";
+import Herobannerimage from "../../assets/images/APIKeys.webp";
+import APIkey from "../../assets/images/modal-generate-key.webp";
 
-// MUI Icons
 import CampaignIcon from "@mui/icons-material/Campaign";
 import SportsEsportsIcon from "@mui/icons-material/SportsEsports";
 import SchoolIcon from "@mui/icons-material/School";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import MovieCreationIcon from "@mui/icons-material/MovieCreation";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import CloudIcon from "@mui/icons-material/Cloud";
 
 import "./APIDevelopers.scss";
@@ -50,7 +49,6 @@ const useCases = [
 const APIDevelopers = () => {
   return (
     <main className="api-dev">
-      {/* === HERO SECTION === */}
       <section className="api-dev__hero">
         <div className="api-dev__hero-content">
           <OXMCategorie label="Oxymore API" />
@@ -72,10 +70,11 @@ const APIDevelopers = () => {
         </div>
       </section>
 
-      {/* === FEATURES SECTION (alternating) === */}
       <section className="api-dev__section">
         <div className="api-dev__section-visual">
-          <div className="visual-placeholder"></div>
+          <div className="visual-placeholder">
+            <img src={APIkey} alt="API Key Generation" />
+          </div>
         </div>
         <div className="api-dev__section-content">
           <OXMCategorie label="Quick & Easy" />
@@ -85,7 +84,7 @@ const APIDevelopers = () => {
             integration. Securely manage your API keys, monitor usage, and keep
             your data safe.
           </p>
-          <OXMButton variant="secondary">Our API Documentation &rarr;</OXMButton>
+          <OXMButton variant="secondary">Our API Documentation <ArrowForwardIcon /></OXMButton>
         </div>
       </section>
 
@@ -104,7 +103,6 @@ const APIDevelopers = () => {
         </div>
       </section>
 
-      {/* === USE CASES SECTION === */}
       <section className="api-dev__use-cases">
         <OXMCategorie label="Use cases" />
         <h2 className="orbitron">An API tailored to your needs</h2>

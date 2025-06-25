@@ -1,0 +1,387 @@
+@import '../../styles/global.scss';
+
+.oxia-chat-layout {
+  display: flex;
+  height: 100vh;
+  background: linear-gradient(120deg, $color-gray-darkest 0%, $color-background 100%);
+  color: $color-white;
+}
+
+.oxia-chat-sidebar {
+  width: rem-calc(270);
+  background: rgba(255,255,255,0.03);
+  border-right: 1px solid rgba(255,255,255,0.07);
+  display: flex;
+  flex-direction: column;
+  padding: rem-calc(32) 0 0 0;
+  align-items: center;
+  gap: rem-calc(32);
+  position: relative;
+  z-index: 2;
+}
+
+.oxia-chat-sidebar__header {
+  display: flex;
+  align-items: center;
+  gap: rem-calc(12);
+  font-size: rem-calc(22);
+  font-weight: 700;
+  margin-bottom: rem-calc(12);
+}
+
+.oxia-chat-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: rem-calc(22);
+  background: linear-gradient(90deg, $color-purple 0%, $color-blue 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.oxia-beta-chip {
+  background: $color-purple;
+  color: $color-white;
+  font-size: rem-calc(12);
+  font-weight: 600;
+  border-radius: rem-calc(8);
+  padding: rem-calc(2) rem-calc(10);
+  margin-left: rem-calc(4);
+  letter-spacing: rem-calc(1);
+  box-shadow: 0 rem-calc(2) rem-calc(8) rgba(80,12,173,0.15);
+}
+
+.oxia-chat-channels {
+  width: 100%;
+  padding: 0 rem-calc(24);
+}
+
+.oxia-chat-channels-title {
+  color: $color-gray;
+  font-size: rem-calc(13);
+  font-weight: 600;
+  margin-bottom: rem-calc(10);
+  letter-spacing: rem-calc(1);
+}
+
+.oxia-chat-channels ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: rem-calc(8);
+}
+
+.oxia-chat-channels li {
+  display: flex;
+  align-items: center;
+  gap: rem-calc(10);
+  padding: rem-calc(8) rem-calc(12);
+  border-radius: rem-calc(8);
+  color: $color-white;
+  font-size: rem-calc(16);
+  cursor: pointer;
+  transition: background 0.2s;
+
+  &.active, &:hover {
+    background: rgba(80,12,173,0.13);
+    color: $color-purple;
+  }
+}
+
+.oxia-chat-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  position: relative;
+  background: none;
+}
+
+.oxia-chat-header {
+  height: rem-calc(70);
+  display: flex;
+  align-items: center;
+  padding: 0 rem-calc(40);
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  font-size: rem-calc(20);
+  font-weight: 600;
+  background: rgba(0,0,0,0.10);
+}
+
+.oxia-chat-header-title {
+  display: flex;
+  align-items: center;
+  gap: rem-calc(10);
+  font-family: 'Orbitron', sans-serif;
+}
+
+.oxia-chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: rem-calc(40) 0 rem-calc(20) 0;
+  display: flex;
+  flex-direction: column;
+  gap: rem-calc(18);
+  background: none;
+  width: 100%;
+  align-items: flex-start;
+}
+
+.oxia-message-bubble {
+  display: flex;
+  padding: rem-calc(15);
+  flex-direction: row;
+  align-items: flex-end;
+  gap: rem-calc(10);
+  border-radius: rem-calc(13);
+  max-width: 100%;
+  min-width: 0;
+  font-size: rem-calc(16);
+  line-height: 1.4;
+  box-shadow: 0 rem-calc(2) rem-calc(12) rgba(0, 0, 0, 0.08);
+  position: relative;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  animation: fadeIn 0.3s;
+  width: auto;
+}
+
+.oxia-message-left {
+  background: rgba(255,255,255,0.05);
+  border-radius: 0px rem-calc(13) rem-calc(13) rem-calc(13);
+  margin-left: rem-calc(30);
+  align-self: flex-start;
+  max-width: rem-calc(800);
+  width: 100%;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  padding: rem-calc(18) rem-calc(22);
+  font-size: rem-calc(16);
+  line-height: 1.6;
+}
+
+.oxia-message-right {
+  background: $color-purple;
+  border-radius: rem-calc(13) 0px rem-calc(13) rem-calc(13);
+  color: $color-white;
+  margin-right: rem-calc(30);
+  align-self: flex-end;
+  max-width: rem-calc(800);
+  width: auto;
+  padding: rem-calc(18) rem-calc(22);
+  font-size: rem-calc(16);
+  line-height: 1.6;
+  width: 100%;
+  word-break: break-word;
+  margin-left: auto;
+  margin-right: rem-calc(30);
+  align-self: flex-end;
+}
+
+.oxia-avatar {
+  width: rem-calc(32);
+  height: rem-calc(32);
+  border-radius: 50%;
+  object-fit: cover;
+  background: $color-gray-dark;
+  margin-right: rem-calc(6);
+}
+
+.oxia-message-content {
+  display: flex;
+  flex-direction: column;
+  gap: rem-calc(4);
+}
+
+.oxia-message-text {
+  font-size: rem-calc(16);
+  color: inherit;
+}
+
+.oxia-message-meta {
+  display: flex;
+  gap: rem-calc(8);
+  font-size: rem-calc(12);
+  color: $color-gray;
+  margin-top: rem-calc(2);
+}
+
+.oxia-message-author {
+  font-weight: 600;
+  color: $color-gray-light;
+}
+
+.oxia-message-time {
+  color: $color-gray;
+}
+
+.oxia-message-text strong {
+  font-weight: 700;
+  color: $color-purple-light;
+}
+
+.oxia-message-text ol {
+  margin: rem-calc(10) 0 rem-calc(10) rem-calc(20);
+  padding-left: rem-calc(18);
+}
+
+.oxia-message-text li {
+  margin-bottom: rem-calc(4);
+  line-height: 1.5;
+}
+
+.oxia-message-text br {
+  display: block;
+  margin-bottom: rem-calc(6);
+}
+
+.oxia-chat-input-row {
+  display: flex;
+  align-items: center;
+  gap: rem-calc(12);
+  padding: rem-calc(18) rem-calc(40) rem-calc(18) rem-calc(40);
+  border-top: 1px solid rgba(255,255,255,0.07);
+  background: rgba(0,0,0,0.10);
+}
+
+.oxia-chat-input {
+  flex: 1;
+  padding: rem-calc(14) rem-calc(18);
+  border-radius: rem-calc(10);
+  border: none;
+  background: rgba(255,255,255,0.08);
+  color: $color-white;
+  font-size: rem-calc(16);
+  outline: none;
+  transition: background 0.2s;
+
+  &::placeholder {
+    color: $color-gray;
+  }
+}
+
+.oxia-chat-send-btn {
+  background: $color-purple;
+  color: $color-white;
+  border: none;
+  border-radius: rem-calc(10);
+  padding: rem-calc(12) rem-calc(22);
+  font-size: rem-calc(16);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  box-shadow: 0 rem-calc(2) rem-calc(8) rgba(80,12,173,0.10);
+
+  &:hover {
+    background: lighten($color-purple, 10%);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.oxia-chat-messages::-webkit-scrollbar {
+  width: rem-calc(8);
+  background: $color-black;
+}
+.oxia-chat-messages::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, $color-purple 0%, $color-blue 100%);
+  border-radius: rem-calc(8);
+}
+.oxia-chat-messages::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, lighten($color-purple, 10%) 0%, lighten($color-blue, 10%) 100%);
+}
+.oxia-chat-messages::-webkit-scrollbar-corner {
+  background: #18182a;
+}
+
+@media (max-width: 900px) {
+  .oxia-chat-layout {
+    flex-direction: column;
+  }
+  .oxia-chat-sidebar {
+    width: 100%;
+    flex-direction: row;
+    padding: rem-calc(16) 0;
+    gap: rem-calc(16);
+    border-right: none;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+  .oxia-chat-main {
+    height: calc(100vh - rem-calc(80));
+  }
+}
+
+@media (max-width: 700px) {
+  .oxia-message-bubble.oxia-message-left {
+    max-width: 90vw;
+    min-width: rem-calc(60);
+    padding: rem-calc(14) rem-calc(10);
+    font-size: rem-calc(15);
+  }
+}
+
+.oxia-message-bubble.oxia-message-left {
+  display: inline-block;
+  max-width: rem-calc(600);
+  min-width: rem-calc(80);
+  width: auto;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  padding: rem-calc(18) rem-calc(22);
+  font-size: rem-calc(16);
+  line-height: 1.6;
+  background: rgba($color-white, 0.05);
+  color: $color-white;
+}
+
+.oxia-message-bubble.oxia-message-right {
+  display: inline-block;
+  max-width: rem-calc(600);
+  min-width: rem-calc(80);
+  width: auto;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  padding: rem-calc(18) rem-calc(22);
+  font-size: rem-calc(16);
+  line-height: 1.6;
+  background: $color-purple;
+  color: $color-white;
+}
+
+.oxia-message-text strong {
+  font-weight: 700;
+  color: $color-purple-light;
+}
+
+.oxia-message-text ol {
+  margin: rem-calc(10) 0 rem-calc(10) rem-calc(20);
+  padding-left: rem-calc(18);
+}
+
+.oxia-message-text li {
+  margin-bottom: rem-calc(4);
+  line-height: 1.5;
+}
+
+.oxia-message-text br {
+  display: block;
+  margin-bottom: rem-calc(6);
+}
+
+.oxia-message-author {
+  display: flex;
+  align-items: center;
+  gap: rem-calc(8);
+}
+
+.oxia-avatar-inline {
+  width: rem-calc(22);
+  height: rem-calc(22);
+  border-radius: 50%;
+  object-fit: cover;
+  margin-left: rem-calc(4);
+}

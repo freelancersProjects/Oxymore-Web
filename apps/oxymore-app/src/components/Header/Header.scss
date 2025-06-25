@@ -1,9 +1,11 @@
+@import '../../styles/global.scss';
+
 .oxm-header {
   position: fixed;
   top: 0;
-  left: 270px; 
+  left: 270px;
   right: 0;
-  height: 8dvh0px;
+  height: 80px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -19,8 +21,10 @@
       border-radius: 12px;
       border: 1px solid rgba(255, 255, 255, 0.2);
       background: rgba(255, 255, 255, 0.05);
-      color: #fff;
+      color: $color-white;
+      font-size: rem-calc(16);
       font-family: "Outfit", sans-serif;
+      outline: none;
 
       &::placeholder {
         color: rgba(255, 255, 255, 0.5);
@@ -33,13 +37,20 @@
     align-items: center;
     gap: 20px;
 
-    .icon-bell {
-      font-size: 22px;
-      color: #fff;
+    .icon-bell-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
       cursor: pointer;
+      margin-right: 18px;
 
-      &:hover {
-        color: #a855f7;
+      .icon-bell {
+        font-size: 24px;
+        color: $color-white;
+        transition: color 0.2s;
+      }
+      &:hover .icon-bell {
+        color: $color-purple-light;
       }
     }
 
@@ -47,8 +58,37 @@
       width: 45px;
       height: 45px;
       border-radius: 50%;
-      border: 2px solid #a855f7;
+      border: 2px solid $color-purple;
       object-fit: cover;
     }
   }
+}
+
+.notif-badge-header {
+  position: absolute;
+  top: -6px;
+  right: -8px;
+  background: linear-gradient(90deg, $color-purple 0%, $color-purple 100%);
+  color: $color-white;
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 15px;
+  padding: 2px 7px;
+  box-shadow: 0 2px 8px rgba(80,12,173,0.10);
+  letter-spacing: 1px;
+  z-index: 2;
+  display: inline-block;
+}
+
+.oxia-message-author {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.oxia-avatar-inline {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-left: 4px;
 }

@@ -1,0 +1,214 @@
+@import '../../styles/global.scss';
+
+.oxm-sidebar {
+  position: fixed;
+  top: 30px;
+  left: 30px;
+  width: 270px;
+  min-height: calc(100vh - 60px);
+  padding: 30px 20px;
+  border-radius: 30px;
+  border: 0.5px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(58.5px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: all 0.3s ease-in-out;
+
+  &.collapsed {
+    width: 100px;
+    padding: 30px 15px;
+
+    .oxm-sidebar__header {
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .oxm-sidebar__logo {
+      margin-bottom: 0;
+
+      img {
+        max-width: 40px;
+      }
+    }
+
+    .oxm-sidebar__nav {
+      ul {
+        li {
+          a {
+            justify-content: center;
+            padding: 12px;
+
+            span {
+              display: none;
+            }
+          }
+        }
+      }
+    }
+
+    .oxm-sidebar__logout {
+      button {
+        justify-content: center;
+        padding: 12px;
+
+        span {
+          display: none;
+        }
+      }
+    }
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 40px;
+  }
+
+  &__logo {
+    text-align: center;
+    transition: all 0.3s ease-in-out;
+
+    img {
+      max-width: 50px;
+      transition: all 0.3s ease-in-out;
+    }
+  }
+
+  &__toggle {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    padding: 8px;
+    color: $color-white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+  }
+
+  &__nav {
+    flex: 1;
+
+    ul {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+
+      li {
+        a {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          color: $color-white;
+          font-family: 'Outfit', sans-serif;
+          font-size: 18px;
+          font-weight: 400;
+          padding: 10px 15px;
+          border-radius: 10px;
+          transition: all 0.3s;
+          text-decoration: none;
+          position: relative;
+
+          span {
+            transition: opacity 0.3s ease-in-out;
+          }
+
+          &.active {
+            background: linear-gradient(135deg, #500cad 0%, #7b36d9 100%);
+
+            &:hover {
+              background: linear-gradient(135deg, #500cad 0%, #7b36d9 100%);
+            }
+          }
+
+          &:hover {
+            color: $color-white;
+            background: rgba(123, 54, 217, 0.15);
+          }
+
+          .sidebar-beta-chip {
+            background: $color-purple;
+            color: $color-white;
+            font-size: 11px;
+            font-weight: 600;
+            border-radius: 8px;
+            padding: 2px 8px;
+            margin-left: 8px;
+            letter-spacing: 1px;
+            box-shadow: 0 2px 8px rgba(80,12,173,0.10);
+            vertical-align: middle;
+            display: inline-block;
+            transition: background 0.2s;
+          }
+        }
+      }
+    }
+  }
+
+  &__logout {
+    margin-top: 40px;
+
+    button {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: transparent;
+      color: #fff;
+      font-family: 'Outfit', sans-serif;
+      font-size: 18px;
+      font-weight: 400;
+      padding: 10px 15px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s;
+      width: 100%;
+
+      span {
+        transition: opacity 0.3s ease-in-out;
+      }
+
+      &:hover {
+        background: rgba(123, 54, 217, 0.15);
+      }
+    }
+  }
+}
+
+body.highlights-page .oxm-sidebar {
+  display: none !important;
+}
+
+.oxm-layout.oxia-mode{
+  background: linear-gradient(120deg, #18182a 0%, #1a1333 100%);
+}
+
+.oxm-layout.oxia-mode .oxm-sidebar {
+  background: linear-gradient(120deg, #18182a 0%, #1a1333 100%);
+  border-radius: 18px;
+  border: 1px solid rgba(80,12,173,0.18);
+  box-shadow: none;
+  backdrop-filter: none;
+  transition: background 0.3s, border-radius 0.3s;
+}
+
+.oxm-layout.oxia-mode .oxm-sidebar__nav ul li a {
+  background: none !important;
+}
+
+.oxm-layout.oxia-mode .sidebar-beta-chip {
+  background: linear-gradient(90deg, #500cad 0%, #7b36d9 100%);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(80,12,173,0.10);
+}

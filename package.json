@@ -7,7 +7,8 @@
   ],
   "scripts": {
     "dev:site": "npm run dev --workspace=oxymore-site",
-    "dev:app": "npm run dev --workspace=oxymore-app"
+    "dev:app": "npm run dev --workspace=oxymore-app",
+    "build": "npm run build --workspace=@oxymore/ui"
   },
   "devDependencies": {
     "@types/express": "^5.0.3",

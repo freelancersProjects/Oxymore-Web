@@ -1,7 +1,5 @@
 .oxm-toast {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
+    position: relative;
     min-width: 250px;
     background: #111;
     color: white;
@@ -9,20 +7,21 @@
     border-radius: 8px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
     font-family: "Outfit", sans-serif;
+    font-size: rem-calc(16);
     display: flex;
     justify-content: space-between;
     align-items: center;
 
     &--success {
-        border-left: 5px solid #10b981; // green
+        border-left: 5px solid #10b981;
     }
 
     &--error {
-        border-left: 5px solid #ef4444; // red
+        border-left: 5px solid #ef4444;
     }
 
     &--info {
-        border-left: 5px solid #3b82f6; // blue
+        border-left: 5px solid #3b82f6;
     }
 
     button {

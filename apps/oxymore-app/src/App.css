@@ -1,6 +1,5 @@
 #root {
   margin: 0 auto;
-  text-align: center;
 }
 
 main {
@@ -8,8 +7,20 @@ main {
   padding: 30px;
 }
 
+body {
+  background-color: #111119;
+  color: #fff;
+  font-family: "Outfit", sans-serif;
+}
+
+:root {
+  --sidebar-width-expanded: 290px;
+  --sidebar-width-collapsed: 120px;
+}
+
 .oxm-layout {
   display: flex;
+  transition: margin-left 0.3s ease;
 }
 
 .oxm-sidebar {
@@ -28,8 +39,13 @@ main {
 }
 
 .oxm-main {
-  margin-left: 250px;
-  width: calc(100% - 250px);
+  flex-grow: 1;
+  margin-left: var(--sidebar-width-expanded);
+  transition: margin-left 0.3s ease;
+}
+
+.oxm-layout.sidebar-collapsed .oxm-main {
+  margin-left: var(--sidebar-width-collapsed);
 }
 
 .oxm-header {
@@ -43,7 +59,7 @@ main {
 
 .oxm-main main {
   margin-top: 70px;
-  padding: 30px;
+  padding: 0px;
 }
 
 .logo {
