@@ -4,6 +4,8 @@ import {
   getChannelById,
   getChannelsByUserId,
   createChannel,
+  updateChannelName,
+  deleteChannel,
 } from "../controllers/channelController";
 
 const router = Router();
@@ -14,31 +16,18 @@ const router = Router();
  *   get:
  *     tags:
  *       - Channels
- *     summary: Récupère tous les channels
- *     responses:
- *       200:
- *         description: Liste des channels
- */
-router.get("/", getAllChannels);
-
-/**
- * @openapi
- * /api/channels/user/{user_id}:
- *   get:
- *     tags:
- *       - Channels
- *     summary: Récupère tous les channels d'un utilisateur
+ *     summary: Récupère les channels d'un utilisateur
  *     parameters:
- *       - in: path
+ *       - in: query
  *         name: user_id
  *         required: true
  *         schema:
  *           type: string
  *     responses:
  *       200:
- *         description: Liste des channels de l'utilisateur
+ *         description: Liste des channels
  */
-router.get("/user/:user_id", getChannelsByUserId);
+router.get("/", getChannelsByUserId);
 
 /**
  * @openapi
@@ -73,7 +62,15 @@ router.get("/:id", getChannelById);
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Channel'
+ *             type: object
+ *             required:
+ *               - name
+ *               - user_id
+ *             properties:
+ *               name:
+ *                 type: string
+ *               user_id:
+ *                 type: string
  *     responses:
  *       201:
  *         description: Channel créé
@@ -106,7 +103,7 @@ router.post("/", createChannel);
  *       200:
  *         description: Channel mis à jour
  */
-router.patch('/:id', require('../controllers/channelController').updateChannelName);
+router.patch("/:id", updateChannelName);
 
 /**
  * @openapi
@@ -125,6 +122,6 @@ router.patch('/:id', require('../controllers/channelController').updateChannelNa
  *       200:
  *         description: Channel supprimé
  */
-router.delete('/:id', require('../controllers/channelController').deleteChannel);
+router.delete("/:id", deleteChannel);
 
 export default router;

@@ -14,7 +14,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false, onToggle 
     <aside className={`oxm-sidebar ${isCollapsed ? 'collapsed' : ''}`}>
       <div className="oxm-sidebar__header">
         <div className="oxm-sidebar__logo">
-          <img src={Logo} alt="Oxymore Logo" />
+          <NavLink to="/">
+            <img src={Logo} alt="Oxymore Logo" />
+          </NavLink>
         </div>
         {onToggle && (
           <button className="oxm-sidebar__toggle" onClick={onToggle}>

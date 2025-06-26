@@ -1,10 +1,12 @@
+@import 'styles/global.scss';
+
 #root {
   margin: 0 auto;
 }
 
 main {
   margin-top: 70px;
-  padding: 30px;
+  padding: 3rem 2.5rem;
 }
 
 body {
@@ -23,21 +25,6 @@ body {
   transition: margin-left 0.3s ease;
 }
 
-.oxm-sidebar {
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  bottom: 20px;
-  width: 270px;
-  background: #121212;
-  border-radius: 30px;
-  padding: 30px 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-}
-
 .oxm-main {
   flex-grow: 1;
   margin-left: var(--sidebar-width-expanded);
@@ -48,18 +35,8 @@ body {
   margin-left: var(--sidebar-width-collapsed);
 }
 
-.oxm-header {
-  position: fixed;
-  top: 0;
-  left: 270px;
-  width: calc(100% - 250px);
-  height: 70px;
-  z-index: 10;
-}
-
 .oxm-main main {
   margin-top: 70px;
-  padding: 0px;
 }
 
 .logo {
@@ -68,9 +45,11 @@ body {
   will-change: filter;
   transition: filter 300ms;
 }
+
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
 }
+
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
@@ -79,6 +58,7 @@ body {
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }

@@ -27,7 +27,12 @@ export const getChannelById = async (req: Request, res: Response) => {
 
 export const getChannelsByUserId = async (req: Request, res: Response) => {
   try {
-    const channels = await ChannelService.getChannelsByUserId(req.params.user_id);
+    const user_id = req.query.user_id as string;
+    if (!user_id) {
+      res.status(400).json({ message: "Missing user_id" });
+      return;
+    }
+    const channels = await ChannelService.getChannelsByUserId(user_id);
     res.json(channels);
   } catch (err) {
     console.error(err);

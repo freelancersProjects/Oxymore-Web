@@ -1,16 +1,15 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./OxiaChat.scss";
 import LogoOxia from "../../assets/images/Oxia.png";
-import { Bot, Plus, MoreHorizontal } from "lucide-react";
-import { OXMModal } from "@oxymore/ui";
+import { Bot } from "lucide-react";
 import apiService from "../../api/apiService";
 import OxiaChatSidebar from "./OxiaComponent/OxiaChatSidebar";
 import OxiaChatMessages from "./OxiaComponent/OxiaChatMessages";
 import OxiaChatInput from "./OxiaComponent/OxiaChatInput";
 import OxiaChatModals from "./OxiaComponent/OxiaChatModals";
 import { OXMToast } from "@oxymore/ui";
-
-const OXIA_PSEUDO = "Asukyy";
+import { useAuth } from "../../context/AuthContext";
+import { type Message } from "@oxymore/types";
 
 interface Channel {
   id_channel: string;
@@ -18,18 +17,6 @@ interface Channel {
   user_id: string;
   created_at: string;
   icon?: string;
-}
-
-interface Message {
-  id: number;
-  author: string;
-  text: string;
-  time: string;
-  side: "left" | "right";
-  avatar: string;
-  channel_id?: string;
-  user_id?: string;
-  is_from_ai?: boolean;
 }
 
 const initialMessages: Message[] = [
@@ -73,6 +60,7 @@ function parseMarkdown(text: string): string {
 }
 
 const OxiaChat: React.FC = () => {
+  const { user } = useAuth();
   const [channels, setChannels] = useState<Array<Channel>>([]);
   const [selectedChannel, setSelectedChannel] = useState<Channel | null>(null);
   const [messages, setMessages] = useState<Array<Message>>(initialMessages);
@@ -81,13 +69,8 @@ const OxiaChat: React.FC = () => {
   const [thinkingDots, setThinkingDots] = useState(".");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newChannelName, setNewChannelName] = useState("");
-  const chatEndRef = useRef<HTMLDivElement>(
-    null!
-  ) as React.RefObject<HTMLDivElement>;
-  const inputRef = useRef<HTMLInputElement>(
-    null!
-  ) as React.RefObject<HTMLInputElement>;
-  const [channelMenuOpen, setChannelMenuOpen] = useState<string | null>(null);
+  const chatEndRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   const [editChannelId, setEditChannelId] = useState<string | null>(null);
   const [editChannelName, setEditChannelName] = useState("");
   const [showRenameModal, setShowRenameModal] = useState(false);
@@ -99,42 +82,58 @@ const OxiaChat: React.FC = () => {
 
   // Fetch channels on mount
   useEffect(() => {
-    apiService.get("/channels").then((data) => {
+    if (!user) return;
+    apiService.get(`/channels?user_id=${user.id_user}`).then((data) => {
       setChannels(data);
       if (data.length > 0) setSelectedChannel(data[0] ?? null);
       else setSelectedChannel(null);
     });
-  }, []);
+  }, [user]);
 
   // Fetch messages when channel changes
   useEffect(() => {
     if (!selectedChannel) return;
     apiService
       .get(`/messages/channel/${selectedChannel.id_channel}`)
-      .then((data) => {
-        if (data.length > 0) {
-          setMessages(
-            data.map((msg: any, idx: number) => ({
-              id: msg.id || idx + 1,
-              author: msg.is_from_ai ? "Oxia" : "You",
-              text: msg.content || msg.text || "",
-              time:
-                msg.time || msg.created_at
-                  ? new Date(msg.created_at).toLocaleTimeString([], {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })
-                  : "",
+      .then(
+        (
+          data: {
+            id_message: number;
+            content: string;
+            created_at: string;
+            is_from_ai: boolean;
+            user_id: string | null;
+            channel_id: string;
+          }[]
+        ) => {
+          if (data.length > 0) {
+            // Trie par created_at (ou id_message si tu veux)
+            const sorted = [...data].sort(
+              (a, b) =>
+                new Date(a.created_at).getTime() -
+                new Date(b.created_at).getTime()
+            );
+            const newMessages: Message[] = sorted.map((msg, idx) => ({
+              id: msg.id_message || idx + 1,
+              author: msg.is_from_ai ? "Oxia" : user?.username || "You",
+              text: msg.content || "",
+              time: msg.created_at
+                ? new Date(msg.created_at).toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })
+                : "",
               side: msg.is_from_ai ? "left" : "right",
               avatar: msg.is_from_ai ? LogoOxia : "",
               channel_id: msg.channel_id,
               user_id: msg.user_id,
               is_from_ai: msg.is_from_ai,
-            }))
-          );
-        } else setMessages(initialMessages);
-      });
-  }, [selectedChannel]);
+            }));
+            setMessages(newMessages);
+          } else setMessages(initialMessages);
+        }
+      );
+  }, [selectedChannel, user]);
 
   useEffect(() => {
     if (!isThinking) return;
@@ -158,7 +157,7 @@ const OxiaChat: React.FC = () => {
 
     const userMsg: Message = {
       id: Date.now(),
-      author: "You",
+      author: user?.username || "You",
       text: input,
       time: new Date().toLocaleTimeString([], {
         hour: "2-digit",
@@ -167,7 +166,7 @@ const OxiaChat: React.FC = () => {
       side: "right",
       avatar: "",
       channel_id: selectedChannel.id_channel,
-      user_id: "3ca6c0c1-9f69-486f-9129-7e235e518229", // à remplacer par l'id réel du user connecté
+      user_id: user?.id_user,
       is_from_ai: false,
     };
     setMessages((prev) => [...prev, userMsg]);
@@ -182,6 +181,11 @@ const OxiaChat: React.FC = () => {
       content: userMsg.text,
       is_from_ai: false,
     };
+    if (!userMsgPayload.user_id) {
+      console.error("User not logged in, cannot send message");
+      setIsThinking(false);
+      return;
+    }
     await apiService.post("/messages", userMsgPayload);
 
     setTimeout(() => {
@@ -190,7 +194,7 @@ const OxiaChat: React.FC = () => {
 
     try {
       const res = await fetch(
-        `http://127.0.0.1:8000/player/${OXIA_PSEUDO}/ask?prompt=${encodeURIComponent(
+        `http://127.0.0.1:8000/player/${user?.username}/ask?prompt=${encodeURIComponent(
           userMsg.text
         )}`
       );
@@ -250,38 +254,15 @@ const OxiaChat: React.FC = () => {
   };
 
   const handleCreateChannel = async () => {
-    if (!newChannelName.trim()) return;
+    if (!newChannelName.trim() || !user) return;
     const newChannel = await apiService.post("/channels", {
       name: newChannelName,
-      user_id: "3ca6c0c1-9f69-486f-9129-7e235e518229",
+      user_id: user.id_user,
     });
     setChannels((prev) => [...prev, newChannel]);
     setSelectedChannel(newChannel);
     setIsModalOpen(false);
-    // Ajoute le message IA de bienvenue dans ce channel
-    const welcomeMsg = {
-      id: Date.now(),
-      author: "Oxia",
-      text:
-        initialMessages.length > 0
-          ? initialMessages[0]?.text ?? "Bienvenue sur ce channel !"
-          : "Bienvenue sur ce channel !",
-      time: new Date().toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit",
-      }),
-      side: "left" as "left",
-      avatar: LogoOxia,
-      channel_id: newChannel.id_channel,
-      is_from_ai: true,
-    };
-    setMessages([welcomeMsg]);
-    await apiService.post("/messages", {
-      channel_id: welcomeMsg.channel_id,
-      content: welcomeMsg.text,
-      is_from_ai: true,
-    });
-    setToast({ message: "Channel créé avec succès", type: "success" });
+    setToast({ message: "Channel créé !", type: "success" });
   };
 
   // Fonction pour supprimer un channel

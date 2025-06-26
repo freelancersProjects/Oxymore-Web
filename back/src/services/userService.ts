@@ -11,6 +11,12 @@ export const getUserById = (id: string): User | undefined => {
   return users.find((u) => u.id_user === id);
 };
 
+export const getUserByEmail = async (email: string): Promise<User | null> => {
+  const [rows] = await db.query("SELECT * FROM user WHERE email = ?", [email]);
+  const users = rows as User[];
+  return users.length > 0 ? users[0] : null;
+};
+
 export const createUser = async (
   data: Omit<User, "id_user" | "created_at">
 ): Promise<User> => {
