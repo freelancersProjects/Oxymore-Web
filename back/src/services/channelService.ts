@@ -25,4 +25,15 @@ export const createChannel = async (data: Omit<Channel, "id_channel" | "created_
     [id_channel, data.name, data.user_id, created_at]
   );
   return { id_channel, ...data, created_at };
-}; 
+};
+
+export const updateChannelName = async (id_channel: string, name: string): Promise<void> => {
+  await db.query(
+    "UPDATE channel SET name = ? WHERE id_channel = ?",
+    [name, id_channel]
+  );
+};
+
+export const deleteChannel = async (id_channel: string): Promise<void> => {
+  await db.query("DELETE FROM channel WHERE id_channel = ?", [id_channel]);
+};

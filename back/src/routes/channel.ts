@@ -80,4 +80,51 @@ router.get("/:id", getChannelById);
  */
 router.post("/", createChannel);
 
-export default router; 
+/**
+ * @openapi
+ * /api/channels/{id}:
+ *   patch:
+ *     tags:
+ *       - Channels
+ *     summary: Met à jour le nom d'un channel
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Channel mis à jour
+ */
+router.patch('/:id', require('../controllers/channelController').updateChannelName);
+
+/**
+ * @openapi
+ * /api/channels/{id}:
+ *   delete:
+ *     tags:
+ *       - Channels
+ *     summary: Supprime un channel par son id
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Channel supprimé
+ */
+router.delete('/:id', require('../controllers/channelController').deleteChannel);
+
+export default router;
