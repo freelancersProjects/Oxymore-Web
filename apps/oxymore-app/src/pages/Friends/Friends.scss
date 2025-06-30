@@ -1,0 +1,519 @@
+@import "../../styles/global.scss";
+
+.friends-container {
+  position: relative;
+  padding: rem-calc(20) 0;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.friends-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: rem-calc(40);
+  gap: rem-calc(30);
+
+  .header-content {
+    .friends-title {
+      font-family: "Orbitron", sans-serif;
+      font-size: rem-calc(48);
+      font-weight: 700;
+      background: linear-gradient(135deg, $color-purple 0%, $color-blue 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: rem-calc(8);
+    }
+
+    .friends-subtitle {
+      font-family: "Outfit", sans-serif;
+      font-size: rem-calc(18);
+      color: rgba($color-white, 0.7);
+      margin: 0;
+    }
+  }
+
+  .header-actions {
+    display: flex;
+    gap: rem-calc(20);
+    align-items: center;
+
+    .search-container {
+      position: relative;
+
+      .search-input {
+        width: rem-calc(280);
+        height: rem-calc(50);
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: rem-calc(12);
+        padding: rem-calc(15) rem-calc(45) rem-calc(15) rem-calc(20);
+        color: $color-white;
+        font-family: "Outfit", sans-serif;
+        font-size: rem-calc(16);
+        transition: all 0.3s ease;
+
+        &::placeholder {
+          color: rgba($color-white, 0.5);
+        }
+
+        &:focus {
+          outline: none;
+          border-color: $color-purple;
+          background: rgba(255, 255, 255, 0.08);
+          box-shadow: 0 0 0 3px rgba($color-purple, 0.1);
+        }
+      }
+
+      .search-icon {
+        position: absolute;
+        right: rem-calc(15);
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: rem-calc(20) !important;
+        color: rgba($color-white, 0.5) !important;
+        pointer-events: none;
+      }
+    }
+  }
+}
+
+.friends-tabs {
+  margin-bottom: rem-calc(30);
+}
+
+.friends-stats {
+  display: flex;
+  gap: rem-calc(20);
+  margin-bottom: rem-calc(40);
+
+  .stat-card {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: rem-calc(16);
+    padding: rem-calc(20);
+    text-align: center;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba($color-purple, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .stat-number {
+      font-family: "Orbitron", sans-serif;
+      font-size: rem-calc(32);
+      font-weight: 700;
+      color: $color-purple;
+      margin-bottom: rem-calc(8);
+    }
+
+    .stat-label {
+      font-family: "Outfit", sans-serif;
+      font-size: rem-calc(14);
+      color: rgba($color-white, 0.7);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+  }
+}
+
+.friends-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(rem-calc(320), 1fr));
+  gap: rem-calc(24);
+  margin-bottom: rem-calc(40);
+}
+
+.friend-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: rem-calc(20);
+  padding: rem-calc(24);
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, $color-purple, $color-blue);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba($color-purple, 0.3);
+    transform: translateY(-4px);
+    box-shadow: 0 rem-calc(20) rem-calc(40) rgba(0, 0, 0, 0.3);
+
+    &::before {
+      opacity: 1;
+    }
+  }
+
+  .friend-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: rem-calc(20);
+    gap: rem-calc(15);
+
+    .friend-avatar {
+      position: relative;
+      width: rem-calc(60);
+      height: rem-calc(60);
+      background: linear-gradient(135deg, $color-purple, $color-blue);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+
+      .avatar-icon {
+        font-size: rem-calc(28) !important;
+        color: $color-white !important;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+      }
+
+      .status-indicator {
+        position: absolute;
+        bottom: rem-calc(2);
+        right: rem-calc(2);
+        width: rem-calc(16);
+        height: rem-calc(16);
+        border-radius: 50%;
+        border: 2px solid $color-background;
+        box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
+      }
+    }
+
+    .friend-info {
+      flex: 1;
+      min-width: 0;
+
+      .friend-name {
+        font-family: "Orbitron", sans-serif;
+        font-size: rem-calc(18);
+        font-weight: 600;
+        color: $color-white;
+        margin: 0 0 rem-calc(4) 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .friend-level {
+        font-family: "Outfit", sans-serif;
+        font-size: rem-calc(14);
+        color: rgba($color-white, 0.6);
+        font-weight: 500;
+      }
+    }
+
+    .favorite-badge {
+      font-size: rem-calc(24) !important;
+      color: rgba($color-purple, 0.08) !important;
+      animation: pulse 2s infinite;
+    }
+  }
+
+  .friend-details {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: rem-calc(20);
+
+    .league-badge {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid;
+      border-radius: rem-calc(8);
+      padding: rem-calc(6) rem-calc(12);
+
+      .league-name {
+        font-family: "Orbitron", sans-serif;
+        font-size: rem-calc(12);
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+    }
+
+    .status-info {
+      text-align: right;
+
+      .status-text {
+        font-family: "Outfit", sans-serif;
+        font-size: rem-calc(14);
+        font-weight: 600;
+        display: block;
+        margin-bottom: rem-calc(2);
+      }
+
+      .last-seen {
+        font-family: "Outfit", sans-serif;
+        font-size: rem-calc(12);
+        color: rgba($color-white, 0.5);
+      }
+    }
+  }
+
+  .friend-actions {
+    display: flex;
+    gap: rem-calc(12);
+
+    .action-btn {
+      flex: 1;
+      height: rem-calc(40);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: rem-calc(8);
+      color: $color-white;
+      font-family: "Outfit", sans-serif;
+      font-size: rem-calc(14);
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: rem-calc(6);
+
+      svg {
+        font-size: rem-calc(16) !important;
+      }
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba($color-purple, 0.5);
+      }
+
+      &.invite-btn {
+        background: rgba($color-blue, 0.1);
+        border-color: rgba($color-blue, 0.3);
+        color: $color-blue;
+
+        &:hover {
+          background: rgba($color-blue, 0.2);
+          border-color: $color-blue;
+        }
+      }
+    }
+  }
+}
+
+.empty-state {
+  text-align: center;
+  padding: rem-calc(80) rem-calc(20);
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: rem-calc(20);
+  backdrop-filter: blur(10px);
+
+  .empty-icon {
+    font-size: rem-calc(64) !important;
+    color: rgba($color-white, 0.3) !important;
+    margin-bottom: rem-calc(20);
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+  }
+
+  h3 {
+    font-family: "Orbitron", sans-serif;
+    font-size: rem-calc(24);
+    color: $color-white;
+    margin-bottom: rem-calc(12);
+  }
+
+  p {
+    font-family: "Outfit", sans-serif;
+    font-size: rem-calc(16);
+    color: rgba($color-white, 0.7);
+    margin-bottom: rem-calc(30);
+    max-width: rem-calc(400);
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .friends-container {
+    padding: rem-calc(20);
+  }
+
+  .friends-header {
+    flex-direction: column;
+    gap: rem-calc(20);
+
+    .header-actions {
+      width: 100%;
+      flex-direction: column;
+
+      .search-container {
+        width: 100%;
+
+        .search-input {
+          width: 100%;
+        }
+      }
+    }
+  }
+
+  .friends-stats {
+    flex-direction: column;
+    gap: rem-calc(15);
+  }
+
+  .friends-grid {
+    grid-template-columns: 1fr;
+    gap: rem-calc(16);
+  }
+
+  .friend-card {
+    padding: rem-calc(20);
+
+    .friend-header {
+      .friend-avatar {
+        width: rem-calc(50);
+        height: rem-calc(50);
+
+        .avatar-icon {
+          font-size: rem-calc(24) !important;
+        }
+      }
+    }
+  }
+}
+
+.friends-title.white {
+  color: $color-white !important;
+  background: none !important;
+  -webkit-background-clip: unset !important;
+  -webkit-text-fill-color: unset !important;
+  background-clip: unset !important;
+}
+
+.friends-tabs-search {
+  display: flex;
+  align-items: center;
+  gap: rem-calc(16);
+  margin-bottom: rem-calc(30);
+
+  .search-toggle-btn {
+    background: none;
+    border: none;
+    color: $color-white;
+    font-size: rem-calc(24);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: rem-calc(6);
+    border-radius: 50%;
+    transition: background 0.2s;
+    margin-left: rem-calc(8);
+    &:hover {
+      background: rgba($color-purple, 0.08);
+      color: $color-purple;
+    }
+  }
+
+  .search-bar-inline {
+    display: flex;
+    align-items: center;
+    gap: rem-calc(8);
+    width: 100%;
+    .search-input {
+      width: rem-calc(280);
+      height: rem-calc(50);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: rem-calc(12);
+      padding: rem-calc(15) rem-calc(45) rem-calc(15) rem-calc(20);
+      color: $color-white;
+      font-family: "Outfit", sans-serif;
+      font-size: rem-calc(16);
+      transition: all 0.3s ease;
+      &::placeholder {
+        color: rgba($color-white, 0.5);
+      }
+      &:focus {
+        outline: none;
+        border-color: $color-purple;
+        background: rgba(255, 255, 255, 0.08);
+        box-shadow: 0 0 0 3px rgba($color-purple, 0.1);
+      }
+    }
+  }
+}
+
+.favorite-badge.favorite-gradient {
+  font-size: 32px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  /* Dégradé violet/bleu */
+  background: linear-gradient(135deg, #500CAD 0%, #1593CE 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent !important;
+  filter: drop-shadow(0 2px 4px rgba(80, 12, 173, 0.3));
+  transition: transform 0.18s cubic-bezier(0.4,1.4,0.6,1), filter 0.18s;
+}
+.favorite-badge.favorite-gradient.anim {
+  transform: scale(1.25) rotate(-10deg);
+  filter: drop-shadow(0 4px 12px #500CAD99);
+}
+
+.favorite-badge.favorite-gradient-svg {
+  font-size: 32px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.18s cubic-bezier(0.4,1.4,0.6,1), filter 0.18s;
+}
+.favorite-badge.favorite-gradient-svg.anim {
+  transform: scale(1.25) rotate(-10deg);
+  filter: drop-shadow(0 4px 12px #500CAD99);
+}
+
+.custom-search-icon {
+  font-size: 28px !important;
+  transition: transform 0.22s cubic-bezier(0.4,1.4,0.6,1);
+}
+.custom-search-icon.anim {
+  transform: scale(1.25) rotate(15deg);
+}
+
+@media (max-width: 600px) {
+  .stat-tooltip-content {
+    min-width: 140px;
+    max-width: 98vw;
+    font-size: 13px;
+    padding: 10px 6px 8px 10px;
+  }
+  .stat-tooltip-table th, .stat-tooltip-table td {
+    font-size: 12px;
+    padding: 2px 4px;
+  }
+}

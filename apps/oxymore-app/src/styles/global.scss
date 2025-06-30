@@ -1,3 +1,6 @@
+@use "sass:color";
+@use "sass:math";
+
 $color-purple: #500CAD;
 $color-white: #ffffff;
 $color-background: #121212;
@@ -9,16 +12,18 @@ $color-gray-medium: #888888;
 $color-gray-darkest: #0A0A1E;
 $color-black: #000000;
 $color-blue: #1593CE;
-$color-red: #EF4444;
+$color-red: #F00;
 $color-primary: #6D28D9;
 $color-purple-light: #8B5CF6;
 $base-font-size: 10;
 
 @function rem-calc($px) {
-    @return ($px / $base-font-size) * 1rem;
+  @return math.div($px, $base-font-size) * 1rem;
 }
 
-@import './layout.scss';
+@function lighten($color, $amount) {
+    @return color.scale($color, $lightness: $amount);
+}
 
 h1 {
     font-family: "Orbitron", sans-serif;

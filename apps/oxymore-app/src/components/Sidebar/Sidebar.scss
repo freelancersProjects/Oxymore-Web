@@ -204,6 +204,11 @@ body.highlights-page .oxm-sidebar {
 
 .oxm-layout.oxia-mode{
   background: linear-gradient(120deg, #18182a 0%, #1a1333 100%);
+
+  main{
+    margin-top: 0 !important;
+    padding: 0 !important;
+    }
 }
 
 .oxm-layout.oxia-mode .oxm-sidebar {

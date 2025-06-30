@@ -51,17 +51,24 @@
         color: $color-white;
         transition: color 0.2s;
       }
+
       &:hover .icon-bell {
         color: $color-purple-light;
       }
     }
 
     .avatar {
-      width: 45px;
-      height: 45px;
+      width: 54px;
       border-radius: 50%;
-      border: 2px solid $color-purple;
       object-fit: cover;
+      box-shadow: 0 2px 8px rgba(80, 12, 173, 0.1);
+      transition: box-shadow 0.2s ease-in-out;
+
+      &:hover {
+        box-shadow: 0 0 0 3px rgba(80, 12, 173, 0.5);
+        cursor: pointer;
+        transition: box-shadow 0.2s ease-in-out;
+      }
     }
   }
 }
@@ -76,7 +83,7 @@
   font-weight: 700;
   border-radius: 15px;
   padding: 2px 7px;
-  box-shadow: 0 2px 8px rgba(80,12,173,0.10);
+  box-shadow: 0 2px 8px rgba(80, 12, 173, 0.10);
   letter-spacing: 1px;
   z-index: 2;
   display: inline-block;
@@ -87,6 +94,7 @@
   align-items: center;
   gap: 8px;
 }
+
 .oxia-avatar-inline {
   width: 22px;
   height: 22px;
@@ -97,6 +105,7 @@
 
 .oxm-header.collapsed {
   left: 100px;
+  padding-left: 20px;
   width: calc(100% - 100px);
   transition: left 0.3s, width 0.3s;
 }

@@ -185,22 +185,7 @@ export default function ApiKeysPage() {
       )}
       {tab === "premium" && (
         <div className="premium-simulator">
-          <h2>Simulateur Premium</h2>
-          <div className="premium-info">
-            <p>Découvrez les avantages de la version premium : plus de quotas, support prioritaire, accès à des endpoints exclusifs, gestion avancée des crédits…</p>
-            <div className="premium-credits">
-              <span>Crédits restants : <b>1200</b></span>
-              <OXMButton variant="secondary">Acheter des crédits</OXMButton>
-            </div>
-            <div className="premium-key">
-              <span>Votre clé premium :</span>
-              <code>sk-premium-xxxxxxxxxxxxxxx</code>
-              <OXMButton size="small">Copier</OXMButton>
-            </div>
-            <div className="premium-cta">
-              <OXMButton>Passer à Premium</OXMButton>
-            </div>
-          </div>
+
         </div>
       )}
     </div>

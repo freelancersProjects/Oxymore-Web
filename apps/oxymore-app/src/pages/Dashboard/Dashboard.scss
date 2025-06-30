@@ -1,0 +1,12 @@
+@import "../../styles/global.scss";
+
+.container-dashboarda-app
+{
+    min-height: calc(100vh - 70px);
+}
+
+.dashboard-tabs {
+  margin-bottom: rem-calc(30);
+  display: flex;
+  justify-content: center;
+}

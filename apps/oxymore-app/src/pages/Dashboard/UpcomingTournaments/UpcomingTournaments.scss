@@ -1,0 +1,154 @@
+@import "../../../styles/global.scss";
+
+.upcoming-tournaments {
+    margin-top: rem-calc(60);
+    width: 100%;
+
+    .section-title {
+        color: $color-white;
+        font-family: Orbitron;
+        font-size: rem-calc(30);
+        font-style: normal;
+        font-weight: 600;
+        line-height: normal;
+        margin-bottom: rem-calc(24);
+    }
+
+    .cards {
+        display: flex;
+        gap: rem-calc(20);
+        flex-wrap: wrap;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .card {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        gap: rem-calc(15);
+        flex: 1;
+        min-width: rem-calc(280);
+        max-width: 100%;
+        border-radius: rem-calc(20);
+        border: 0.5px solid rgba($color-white, 0.5);
+        background: rgba($color-white, 0.05);
+        padding: rem-calc(15);
+        position: relative;
+        box-sizing: border-box;
+    }
+
+    .card-image-container {
+        position: relative;
+        width: 100%;
+        height: rem-calc(200);
+
+        .card-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: rem-calc(10);
+        }
+
+        .live-badge {
+            position: absolute;
+            top: rem-calc(10);
+            left: rem-calc(10);
+            display: flex;
+            padding: rem-calc(4) rem-calc(10) rem-calc(4) rem-calc(8);
+            justify-content: center;
+            align-items: center;
+            gap: rem-calc(2);
+            background: $color-red;
+            border-radius: rem-calc(5);
+            font-size: rem-calc(10);
+            font-weight: bold;
+            color: $color-white;
+        }
+
+        .views {
+            position: absolute;
+            top: rem-calc(150);
+            right: rem-calc(20);
+
+            display: flex;
+            padding: rem-calc(6) rem-calc(10) rem-calc(6) rem-calc(8);
+            justify-content: center;
+            align-items: center;
+            gap: rem-calc(4);
+            background: rgba($color-white, 0.15);
+            border-radius: rem-calc(5);
+            font-size: rem-calc(10);
+            color: $color-white;
+
+            svg {
+                order: 2;
+            }
+
+            span {
+                order: 1;
+            }
+        }
+    }
+
+    .tag {
+        display: flex;
+        padding: rem-calc(8) rem-calc(10);
+        justify-content: center;
+        align-items: center;
+        gap: rem-calc(5);
+
+        border-radius: rem-calc(9);
+        border: 0.5px solid $color-blue;
+        background: rgba($color-blue, 0.05);
+        font-size: rem-calc(10);
+
+        .dot {
+            width: rem-calc(5);
+            height: rem-calc(5);
+            background: $color-white;
+            border-radius: 50%;
+        }
+    }
+
+    .title {
+        color: $color-white;
+        font-family: Orbitron;
+        font-size: rem-calc(18);
+        font-style: normal;
+        font-weight: 600;
+        line-height: normal;
+    }
+
+    .card-separator {
+        border: none;
+        border-top: 1px solid rgba($color-white, 0.2);
+        width: 100%;
+        margin: 0;
+    }
+
+    .meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        align-self: stretch;
+        font-family: Outfit;
+        font-size: rem-calc(8);
+        color: $color-white;
+        width: 100%;
+    }
+
+    .card-buttons {
+        display: flex;
+        gap: rem-calc(10);
+        width: 100%;
+
+        .oxm-btn {
+            flex: 1 1 0;
+            width: 100%;
+            min-width: 0;
+        }
+    }
+    }
+
