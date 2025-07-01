@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./OxiaChat.scss";
 import LogoOxia from "../../assets/images/Oxia.png";
-import { Bot } from "lucide-react";
+import { Bot, Menu, X } from "lucide-react";
 import apiService from "../../api/apiService";
 import OxiaChatSidebar from "./OxiaComponent/OxiaChatSidebar";
 import OxiaChatMessages from "./OxiaComponent/OxiaChatMessages";
@@ -79,6 +79,7 @@ const OxiaChat: React.FC = () => {
     message: string;
     type: "success" | "error" | "info";
   } | null>(null);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   // Fetch channels on mount
   useEffect(() => {
@@ -113,22 +114,28 @@ const OxiaChat: React.FC = () => {
                 new Date(a.created_at).getTime() -
                 new Date(b.created_at).getTime()
             );
-            const newMessages: Message[] = sorted.map((msg, idx) => ({
-              id: msg.id_message || idx + 1,
-              author: msg.is_from_ai ? "Oxia" : user?.username || "You",
-              text: msg.content || "",
-              time: msg.created_at
-                ? new Date(msg.created_at).toLocaleTimeString([], {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  })
-                : "",
-              side: msg.is_from_ai ? "left" : "right",
-              avatar: msg.is_from_ai ? LogoOxia : "",
-              channel_id: msg.channel_id,
-              user_id: msg.user_id,
-              is_from_ai: msg.is_from_ai,
-            }));
+            const newMessages: Message[] = sorted.map((msg, idx) => {
+              const base = {
+                id: msg.id_message || idx + 1,
+                author: msg.is_from_ai ? "Oxia" : user?.username || "You",
+                text: msg.content || "",
+                time: msg.created_at
+                  ? new Date(msg.created_at).toLocaleTimeString([], {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })
+                  : "",
+                side: msg.is_from_ai ? "left" : "right",
+                avatar: msg.is_from_ai ? LogoOxia : "",
+                channel_id: msg.channel_id,
+                is_from_ai: msg.is_from_ai,
+              };
+              if (typeof msg.user_id === 'string') {
+                return { ...base, user_id: msg.user_id === null ? undefined : msg.user_id };
+              } else {
+                return base;
+              }
+            });
             setMessages(newMessages);
           } else setMessages(initialMessages);
         }
@@ -294,21 +301,44 @@ const OxiaChat: React.FC = () => {
 
   return (
     <div className="oxia-chat-layout">
-      <OxiaChatSidebar
-        channels={channels}
-        selectedChannel={selectedChannel}
-        setSelectedChannel={setSelectedChannel}
-        onOpenModal={handleOpenModal}
-        onRename={(ch) => {
-          setEditChannelId(ch.id_channel);
-          setEditChannelName(ch.name);
-          setShowRenameModal(true);
-        }}
-        onDelete={(ch) => {
-          setEditChannelId(ch.id_channel);
-          setShowDeleteModal(true);
-        }}
-      />
+      {/* Burger menu mobile */}
+      <button
+        className="oxia-chat-burger"
+        onClick={() => setSidebarOpen(true)}
+        style={{ display: sidebarOpen ? 'none' : undefined }}
+      >
+        <Menu size={28} />
+      </button>
+      {/* Overlay + sidebar mobile */}
+      {sidebarOpen && (
+        <>
+          <div className="oxia-chat-sidebar-overlay" onClick={() => setSidebarOpen(false)} />
+          <div className="oxia-chat-sidebar-mobile">
+            <button className="oxia-chat-sidebar-close" onClick={() => setSidebarOpen(false)}>
+              <X size={32} />
+            </button>
+            <OxiaChatSidebar
+              channels={channels}
+              selectedChannel={selectedChannel}
+              setSelectedChannel={(ch) => { setSelectedChannel(ch); setSidebarOpen(false); }}
+              onOpenModal={handleOpenModal}
+              onRename={(ch) => handleEditChannel(ch.id_channel)}
+              onDelete={(ch) => handleDeleteChannel(ch.id_channel)}
+            />
+          </div>
+        </>
+      )}
+      {/* Sidebar desktop/tablette */}
+      <div className="oxia-chat-sidebar-desktop">
+        <OxiaChatSidebar
+          channels={channels}
+          selectedChannel={selectedChannel}
+          setSelectedChannel={setSelectedChannel}
+          onOpenModal={handleOpenModal}
+          onRename={(ch) => handleEditChannel(ch.id_channel)}
+          onDelete={(ch) => handleDeleteChannel(ch.id_channel)}
+        />
+      </div>
       <section className="oxia-chat-main">
         {/* Loader si pas de channel sélectionné */}
         {!selectedChannel ? (

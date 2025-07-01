@@ -1,3 +1,5 @@
+@import "../../../styles/global.scss";
+
 .sidebar-channels-title {
   display: flex;
   align-items: center;
@@ -79,5 +81,94 @@
   box-shadow: 0 2px 8px #ff474733;
   &:hover {
     background: #e03a3a;
+  }
+}
+
+.oxia-chat-home-btn {
+  display: none;
+}
+.oxia-chat-channels-mobile {
+  display: none;
+}
+@media (max-width: 700px) {
+  .oxia-chat-home-btn {
+    display: block;
+    position: absolute;
+    top: rem-calc(16);
+    left: rem-calc(16);
+    z-index: 1205;
+    background: rgba(30,20,50,0.95);
+    border: none;
+    border-radius: rem-calc(8);
+    padding: rem-calc(8);
+    color: $color-white;
+    font-size: rem-calc(24);
+    box-shadow: 0 rem-calc(2) rem-calc(8) rgba(0,0,0,0.18);
+    cursor: pointer;
+    transition: background 0.2s;
+    &:hover { background: rgba(80,12,173,0.18); }
+  }
+  .oxia-chat-channels-desktop {
+    display: none !important;
+  }
+  .oxia-chat-channels-mobile {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+    min-height: rem-calc(54);
+    background: $color-purple;
+    border-top: 1px solid rgba(255,255,255,0.07);
+    z-index: 1206;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 rem-calc(8);
+    box-shadow: 0 -2px 12px rgba(0,0,0,0.12);
+    ul {
+      display: flex;
+      flex-direction: row;
+      gap: rem-calc(4);
+      overflow-x: auto;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      flex: 1 1 auto;
+      justify-content: center;
+      align-items: center;
+      &::-webkit-scrollbar { display: none; }
+      li {
+        flex: 0 1 auto;
+        padding: rem-calc(8) rem-calc(14);
+        border-radius: rem-calc(8);
+        color: $color-white;
+        font-size: rem-calc(15);
+        font-weight: 600;
+        background: none;
+        cursor: pointer;
+        transition: background 0.18s, color 0.18s;
+        &.active {
+          background: $color-purple;
+          color: #fff;
+        }
+        &:hover {
+          background: lighten($color-purple, 10%);
+        }
+      }
+    }
+    .oxia-add-channel-btn-mobile {
+      margin-left: rem-calc(8);
+      background: $color-purple;
+      color: #fff;
+      border: none;
+      border-radius: rem-calc(8);
+      padding: rem-calc(8) rem-calc(10);
+      font-size: rem-calc(18);
+      box-shadow: 0 2px 8px rgba(80,12,173,0.10);
+      cursor: pointer;
+      transition: background 0.2s;
+      align-self: center;
+      &:hover { background: lighten($color-purple, 10%); }
+    }
   }
 }

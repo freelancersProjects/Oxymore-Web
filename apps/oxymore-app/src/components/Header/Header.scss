@@ -3,24 +3,24 @@
 .oxm-header {
   position: fixed;
   top: 0;
-  left: 270px;
+  left: rem-calc(274);
   right: 0;
-  height: 80px;
+  height: rem-calc(80);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 40px;
+  padding: 0 rem-calc(40);
   z-index: 1000;
-  width: calc(100% - 250px);
-  height: 95px;
+  width: calc(100% - rem-calc(250));
+  height: rem-calc(95);
 
   &__search {
     flex: 0 0 auto;
 
     input {
-      width: 300px;
-      padding: 12px 20px;
-      border-radius: 12px;
+      width: rem-calc(300);
+      padding: rem-calc(12) rem-calc(20);
+      border-radius: rem-calc(12);
       border: 1px solid rgba(255, 255, 255, 0.2);
       background: rgba(255, 255, 255, 0.05);
       color: $color-white;
@@ -37,17 +37,17 @@
   &__actions {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: rem-calc(20);
 
     .icon-bell-wrapper {
       position: relative;
       display: flex;
       align-items: center;
       cursor: pointer;
-      margin-right: 18px;
+      margin-right: rem-calc(18);
 
       .icon-bell {
-        font-size: 24px;
+        font-size: rem-calc(24);
         color: $color-white;
         transition: color 0.2s;
       }
@@ -58,14 +58,14 @@
     }
 
     .avatar {
-      width: 54px;
+      width: rem-calc(54);
       border-radius: 50%;
       object-fit: cover;
-      box-shadow: 0 2px 8px rgba(80, 12, 173, 0.1);
+      box-shadow: 0 rem-calc(2) rem-calc(8) rgba(80, 12, 173, 0.1);
       transition: box-shadow 0.2s ease-in-out;
 
       &:hover {
-        box-shadow: 0 0 0 3px rgba(80, 12, 173, 0.5);
+        box-shadow: 0 0 0 rem-calc(3) rgba(80, 12, 173, 0.5);
         cursor: pointer;
         transition: box-shadow 0.2s ease-in-out;
       }
@@ -75,15 +75,15 @@
 
 .notif-badge-header {
   position: absolute;
-  top: -6px;
-  right: -8px;
+  top: rem-calc(-6);
+  right: rem-calc(-8);
   background: linear-gradient(90deg, $color-purple 0%, $color-purple 100%);
   color: $color-white;
-  font-size: 12px;
+  font-size: rem-calc(12);
   font-weight: 700;
-  border-radius: 15px;
-  padding: 2px 7px;
-  box-shadow: 0 2px 8px rgba(80, 12, 173, 0.10);
+  border-radius: rem-calc(15);
+  padding: rem-calc(2) rem-calc(7);
+  box-shadow: 0 rem-calc(2) rem-calc(8) rgba(80, 12, 173, 0.10);
   letter-spacing: 1px;
   z-index: 2;
   display: inline-block;
@@ -92,20 +92,35 @@
 .oxia-message-author {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: rem-calc(8);
 }
 
 .oxia-avatar-inline {
-  width: 22px;
-  height: 22px;
+  width: rem-calc(22);
+  height: rem-calc(22);
   border-radius: 50%;
   object-fit: cover;
-  margin-left: 4px;
+  margin-left: rem-calc(4);
 }
 
 .oxm-header.collapsed {
-  left: 120px;
-  padding-left: 20px;
-  width: calc(100% - 100px);
+  left: rem-calc(120);
+  padding-left: rem-calc(20);
+  width: calc(100% - rem-calc(100));
   transition: left 0.3s, width 0.3s;
+}
+
+@media (max-width: 700px) {
+  .oxm-header {
+    width: 100vw !important;
+    padding: 0 rem-calc(10);
+    height: rem-calc(60);
+    min-width: 0;
+    .oxm-header__search { display: none !important; }
+    .oxm-header__actions {
+      gap: rem-calc(10);
+      .avatar { width: rem-calc(38); }
+      .icon-bell { font-size: rem-calc(22); }
+    }
+  }
 }

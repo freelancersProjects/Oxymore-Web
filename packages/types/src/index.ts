@@ -6,6 +6,6 @@ export interface Message {
   side: "left" | "right";
   avatar: string;
   channel_id?: string;
-  user_id?: string | null;
+  user_id?: string;
   is_from_ai?: boolean;
-} 
+}

@@ -91,3 +91,7 @@ td {
   scrollbar-width: thin;
   scrollbar-color: $color-purple #18182a;
 }
+
+html, body, #root {
+  overflow-x: hidden !important;
+}

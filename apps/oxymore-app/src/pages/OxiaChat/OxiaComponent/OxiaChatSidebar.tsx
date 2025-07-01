@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Plus, MoreHorizontal } from 'lucide-react';
+import { Plus, MoreHorizontal, Home } from 'lucide-react';
 import LogoOxia from '../../../assets/images/Oxia.png';
 import './OxiaChatSidebar.scss';
 
@@ -48,14 +48,22 @@ const OxiaChatSidebar: React.FC<SidebarProps> = ({
     return () => document.removeEventListener('mousedown', handleClick);
   }, [menuOpenId]);
 
+  // Redirection home
+  const goHome = () => { window.location.href = '/'; };
+
   return (
     <aside className="oxia-chat-sidebar">
+      {/* Bouton Home mobile */}
+      <button className="oxia-chat-home-btn" onClick={goHome}>
+        <Home size={24} />
+      </button>
       <div className="oxia-chat-sidebar__header">
         <img src={LogoOxia} alt="Oxia Logo" className="oxia-chat-logo" />
         <span className="oxia-chat-title">Oxia</span>
         <span className="oxia-beta-chip">Bêta</span>
       </div>
-      <div className="oxia-chat-channels">
+      {/* Channels desktop */}
+      <div className="oxia-chat-channels oxia-chat-channels-desktop">
         <div className="oxia-chat-channels-title sidebar-channels-title">
           <span>Channels</span>
           <button className="oxia-add-channel-btn" onClick={onOpenModal} title="Créer un channel">
@@ -110,6 +118,23 @@ const OxiaChatSidebar: React.FC<SidebarProps> = ({
           ))}
         </ul>
       </div>
+      {/* Channels mobile bottom nav */}
+      <nav className="oxia-chat-channels-mobile">
+        <ul>
+          {channels.map((ch) => (
+            <li
+              key={ch.id_channel}
+              className={selectedChannel?.id_channel === ch.id_channel ? "active" : ""}
+              onClick={() => setSelectedChannel(ch)}
+            >
+              <span>{truncate(ch.name, 10)}</span>
+            </li>
+          ))}
+        </ul>
+        <button className="oxia-add-channel-btn-mobile" onClick={onOpenModal} title="Créer un channel">
+          <Plus size={22} color="#fff" />
+        </button>
+      </nav>
     </aside>
   );
 };

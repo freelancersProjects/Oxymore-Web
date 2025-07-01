@@ -42,14 +42,16 @@ export default function App() {
       <AuthProvider>
         <LayoutManager>
           {({ hideSidebar, hideHeader, isOxia }) => {
+            const location = useLocation();
+            const isLoginPage = location.pathname === '/login';
             return (
               <div className={`oxm-layout${isSidebarCollapsed ? " sidebar-collapsed" : ""}${isOxia ? " oxia-mode" : ""}`}>
                 {!hideSidebar && (
                   <Sidebar isCollapsed={isSidebarCollapsed} onToggle={() => setSidebarCollapsed(!isSidebarCollapsed)} />
                 )}
-                <div className="oxm-main">
+                <div className={`oxm-main${isLoginPage ? ' oxm-main--no-margin' : ''}`}>
                   {!hideHeader && <Header isSidebarCollapsed={isSidebarCollapsed} />}
-                  <main>
+                  <main className={isLoginPage ? 'oxm-main--no-margin' : ''}>
                     <ScrollToTop />
                     <Routes>
                       <Route path="/login" element={<Login />} />

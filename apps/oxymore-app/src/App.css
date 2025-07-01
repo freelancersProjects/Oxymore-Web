@@ -29,6 +29,11 @@ body {
   flex-grow: 1;
   margin-left: var(--sidebar-width-expanded);
   transition: margin-left 0.3s ease;
+
+  @media (max-width: 768px) {
+    margin-left: 0;
+  }
+
 }
 
 .oxm-layout.sidebar-collapsed .oxm-main {
@@ -76,4 +81,9 @@ body {
 
 .read-the-docs {
   color: #888;
+}
+
+.oxm-main--no-margin {
+  margin: 0 !important;
+  padding: 0 !important;
 }

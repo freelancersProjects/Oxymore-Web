@@ -11,11 +11,16 @@ export const Header: React.FC<HeaderProps> = ({ isSidebarCollapsed = false }) =>
   const [notifOpen, setNotifOpen] = useState(false);
   const unreadCount = 3;
 
+  // Responsive : détecte si mobile
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 700;
+
   return (
     <header className={`oxm-header${isSidebarCollapsed ? ' collapsed' : ''}`}>
-      <div className="oxm-header__search">
-        <input type="text" placeholder="Search For a Game" />
-      </div>
+      {!isMobile && (
+        <div className="oxm-header__search">
+          <input type="text" placeholder="Search For a Game" />
+        </div>
+      )}
       <div className="oxm-header__actions">
         <div className="icon-bell-wrapper" onClick={() => setNotifOpen(true)}>
           <FaBell className="icon-bell" />

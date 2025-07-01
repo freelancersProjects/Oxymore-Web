@@ -2,6 +2,7 @@ import React from "react";
 import { OXMButton, OXMCategorie } from "@oxymore/ui";
 import Herobannerimage from "../../assets/images/APIKeys.webp";
 import APIkey from "../../assets/images/modal-generate-key.webp";
+import APIKeyPremium from "../../assets/images/APIKeyPremium.webp";
 
 import CampaignIcon from "@mui/icons-material/Campaign";
 import SportsEsportsIcon from "@mui/icons-material/SportsEsports";
@@ -99,7 +100,9 @@ const APIDevelopers = () => {
           <OXMButton>Build my First API Key</OXMButton>
         </div>
         <div className="api-dev__section-visual">
-          <div className="visual-placeholder"></div>
+          <div className="visual-placeholder">
+            <img src={APIKeyPremium} alt="API Key Premium" />
+          </div>
         </div>
       </section>
 

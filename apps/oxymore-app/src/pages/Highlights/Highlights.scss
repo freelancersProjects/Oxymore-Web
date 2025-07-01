@@ -1,1126 +1,188 @@
-@import "../../styles/global.scss";
-
-$oxy-blue: #1593CE;
-
 .highlights-container {
-  position: relative;
-  width: 100vw;
+  background: #0b0f24;
   height: 100vh;
-  background: linear-gradient(135deg, $color-purple 0%, $color-blue 100%);
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+  overflow-y: scroll;
+  padding-left: 300px;
 
-.highlights-viewport {
-  width: 100vw;
-  height: 100vh;
-  position: relative;
-  cursor: grab;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  &:active {
-    cursor: grabbing;
-  }
-}
+  .top-bar {
+    position: sticky;
+    top: 0;
+    background: #0b0f24;
+    z-index: 10;
+    padding: 20px;
 
-.highlights-track {
-  width: 100vw;
-  height: 100vh;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.highlight-card {
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-}
-
-.highlight-video-wrapper {
-  position: relative;
-  width: 100%;
-  max-width: 420px;
-  height: 80vh;
-  margin: 0 auto;
-  border-radius: 32px;
-  overflow: hidden;
-  box-shadow: 0 8px 40px 0 rgba($color-blue, 0.18), 0 2px 16px 0 rgba($color-purple, 0.12);
-  background: #000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.highlight-video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  cursor: pointer;
-  transition: transform 0.3s ease;
-  background: #000;
-  &:hover {
-    transform: scale(1.02);
-  }
-}
-
-// Video Controls
-.video-controls {
-  position: absolute;
-  top: rem-calc(20);
-  right: rem-calc(20);
-  display: flex;
-  flex-direction: column;
-  gap: rem-calc(15);
-  z-index: 10;
-
-  .control-btn {
-    width: rem-calc(50);
-    height: rem-calc(50);
-    border-radius: 50%;
-    background: rgba($color-background, 0.8);
-    border: 1px solid rgba($color-white, 0.2);
-    color: $color-white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    backdrop-filter: blur(10px);
-
-    &:hover {
-      background: rgba($color-blue, 0.3);
-      border-color: $color-blue;
-      transform: scale(1.1);
+    input {
+      width: 100%;
+      padding: 12px 20px;
+      border-radius: 20px;
+      background: #151a33;
+      color: white;
+      border: none;
+      margin-bottom: 10px;
     }
 
-    &:active {
-      transform: scale(0.95);
+    .tags {
+      display: flex;
+      gap: 10px;
+
+      span {
+        padding: 6px 14px;
+        background: #1f1f36;
+        border-radius: 20px;
+        color: #a09fe6;
+        font-weight: bold;
+        cursor: pointer;
+      }
     }
   }
-}
 
-// Action Sidebar
-.action-sidebar {
-  position: absolute;
-  right: rem-calc(20);
-  top: 50%;
-  transform: translateY(-50%);
-  display: flex;
-  flex-direction: column;
-  gap: rem-calc(25);
-  z-index: 10;
-
-  .action-item {
+  .videos {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: rem-calc(8);
-
-    .action-btn {
-      width: rem-calc(60);
-      height: rem-calc(60);
-      border-radius: 50%;
-      background: rgba($color-background, 0.8);
-      border: 1px solid rgba($color-white, 0.2);
-      color: $color-white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      backdrop-filter: blur(10px);
-
-      &:hover {
-        background: rgba($color-blue, 0.1);
-        border-color: $color-blue;
-        transform: scale(1.1);
-      }
-
-      &:active {
-        transform: scale(0.95);
-      }
-
-      &.liked {
-        background: rgba($color-blue, 0.2);
-        border-color: $color-blue;
-        color: $color-blue;
-        animation: heartBeat 0.6s ease-in-out;
-
-        &:hover {
-          background: rgba($color-blue, 0.3);
-        }
-      }
-    }
-
-    .action-count {
-      font-size: rem-calc(14);
-      font-weight: 600;
-      color: $color-white;
-      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-    }
+    gap: 80px;
+    padding-bottom: 100px;
   }
-}
 
-// Content Overlay
-.content-overlay {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: rem-calc(100);
-  padding: rem-calc(30);
-  background: linear-gradient(
-    to top,
-    rgba($color-background, 0.9) 0%,
-    rgba($color-background, 0.7) 50%,
-    transparent 100%
-  );
-  z-index: 5;
+  .video-card {
+    position: relative;
+    width: 100%;
+    max-height: 80vh;
 
-  .highlight-info {
-    .author-section {
+    video {
+      width: 100%;
+      height: 80vh;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+
+    .video-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
       display: flex;
-      align-items: center;
-      gap: rem-calc(15);
-      margin-bottom: rem-calc(20);
+      justify-content: space-between;
+      align-items: flex-end;
+      padding: 20px;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent 50%);
 
-      .author-avatar {
-        width: rem-calc(50);
-        height: rem-calc(50);
-        border-radius: 50%;
-        overflow: hidden;
-        border: 2px solid $color-blue;
+      .info {
+        color: white;
 
-        img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
+        .user {
+          color: #7b36d9;
+          font-weight: bold;
+          font-size: 16px;
+        }
+
+        .caption {
+          margin: 6px 0;
+        }
+
+        .tags span {
+          color: #a09fe6;
+          font-size: 14px;
+          margin-right: 10px;
         }
       }
 
-      .author-info {
-        .author-name {
-          font-size: rem-calc(18);
-          font-weight: 600;
-          color: $color-white;
-          margin: 0 0 rem-calc(5) 0;
-        }
+      .actions {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
 
-        .follow-btn {
-          padding: rem-calc(8) rem-calc(16);
-          border-radius: rem-calc(20);
-          border: 1px solid $color-blue;
-          background: transparent;
-          color: $color-blue;
-          font-size: rem-calc(14);
-          font-weight: 600;
+        button {
+          background: none;
+          border: none;
+          color: white;
+          font-size: 24px;
           cursor: pointer;
-          transition: all 0.3s ease;
+          transition: transform 0.2s;
 
           &:hover {
-            background: $color-blue;
-            color: $color-white;
-            transform: translateY(-2px);
+            transform: scale(1.2);
           }
 
-          &.following {
-            background: rgba($color-blue, 0.2);
-            border-color: rgba($color-blue, 0.5);
+          &.liked {
+            color: #e14b84;
+            animation: pop 0.3s ease;
           }
         }
       }
     }
+  }
 
-    .highlight-description {
-      p {
-        font-size: rem-calc(16);
-        color: rgba($color-white, 0.9);
-        line-height: 1.5;
-        margin: 0;
-        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-      }
+  @keyframes pop {
+    0% {
+      transform: scale(1);
+    }
+
+    50% {
+      transform: scale(1.5);
+    }
+
+    100% {
+      transform: scale(1);
     }
   }
-}
 
-// Progress Indicator
-.progress-indicator {
-  position: absolute;
-  right: rem-calc(20);
-  top: 50%;
-  transform: translateY(-50%);
-  display: flex;
-  flex-direction: column;
-  gap: rem-calc(8);
-  z-index: 10;
+  .comments-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 400px;
+    height: 100vh;
+    background: #151a33;
+    color: white;
+    padding: 20px;
+    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.5);
+    z-index: 999;
 
-  .progress-dot {
-    width: rem-calc(8);
-    height: rem-calc(8);
-    border-radius: 50%;
-    background: rgba($color-white, 0.3);
-    cursor: pointer;
-    transition: all 0.3s ease;
-
-    &:hover {
-      background: rgba($color-white, 0.6);
-      transform: scale(1.2);
+    .close {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 20px;
+      position: absolute;
+      top: 20px;
+      right: 20px;
     }
-
-    &.active {
-      background: $color-blue;
-      transform: scale(1.3);
-      box-shadow: 0 0 10px rgba($color-blue, 0.5);
-    }
-  }
-}
-
-// Comments Sidebar
-.comments-sidebar {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: rem-calc(400);
-  height: 100vh;
-  background: rgba($color-background, 0.95);
-  backdrop-filter: blur(20px);
-  border-left: 1px solid rgba($color-white, 0.1);
-  display: flex;
-  flex-direction: column;
-  z-index: 10002;
-  animation: slideInRight 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-
-  .comments-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: rem-calc(20);
-    border-bottom: 1px solid rgba($color-white, 0.1);
 
     h3 {
-      font-size: rem-calc(18);
-      font-weight: 600;
-      color: $color-white;
-      margin: 0;
+      margin-top: 40px;
     }
 
-    .close-btn {
-      width: rem-calc(32);
-      height: rem-calc(32);
-      border-radius: 50%;
-      background: rgba($color-white, 0.1);
-      border: none;
-      color: $color-white;
-      font-size: rem-calc(20);
-      cursor: pointer;
-      transition: all 0.3s ease;
-
-      &:hover {
-        background: rgba($color-red, 0.3);
-        color: $color-red;
-      }
+    p span {
+      color: #7b36d9;
+      font-weight: bold;
+      margin-right: 6px;
     }
-  }
 
-  .comments-list {
-    flex: 1;
-    overflow-y: auto;
-    padding: rem-calc(20);
-
-    .comment-item {
+    .comment-input {
+      position: absolute;
+      bottom: 20px;
+      width: 90%;
       display: flex;
-      gap: rem-calc(12);
-      margin-bottom: rem-calc(20);
-      animation: fadeInUp 0.3s ease;
+      gap: 10px;
 
-      .comment-avatar {
-        width: rem-calc(40);
-        height: rem-calc(40);
-        border-radius: 50%;
-        overflow: hidden;
-        flex-shrink: 0;
-
-        img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-        }
-      }
-
-      .comment-content {
+      input {
         flex: 1;
-
-        .comment-header {
-          display: flex;
-          align-items: center;
-          gap: rem-calc(8);
-          margin-bottom: rem-calc(4);
-
-          .comment-author {
-            font-size: rem-calc(14);
-            font-weight: 600;
-            color: $color-white;
-          }
-
-          .comment-time {
-            font-size: rem-calc(12);
-            color: rgba($color-white, 0.5);
-          }
-        }
-
-        .comment-text {
-          font-size: rem-calc(14);
-          color: rgba($color-white, 0.8);
-          line-height: 1.4;
-          margin: 0;
-        }
-      }
-    }
-  }
-
-  .comment-input {
-    display: flex;
-    align-items: center;
-    gap: rem-calc(10);
-    padding: rem-calc(20);
-    border-top: 1px solid rgba($color-white, 0.1);
-
-    .comment-field {
-      flex: 1;
-      padding: rem-calc(12) rem-calc(16);
-      border-radius: rem-calc(20);
-      border: 1px solid rgba($color-white, 0.2);
-      background: rgba($color-white, 0.05);
-      color: $color-white;
-      font-size: rem-calc(14);
-      transition: all 0.3s ease;
-
-      &::placeholder {
-        color: rgba($color-white, 0.5);
+        padding: 10px;
+        border-radius: 20px;
+        border: none;
+        background: #0b0f24;
+        color: white;
       }
 
-      &:focus {
-        outline: none;
-        border-color: $color-blue;
-        background: rgba($color-white, 0.1);
+      button {
+        background: #7b36d9;
+        color: white;
+        padding: 10px 16px;
+        border-radius: 20px;
+        border: none;
+        cursor: pointer;
       }
     }
-
-    .send-btn {
-      width: rem-calc(40);
-      height: rem-calc(40);
-      border-radius: 50%;
-      background: $color-blue;
-      border: none;
-      color: $color-white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: all 0.3s ease;
-
-      &:hover {
-        background: lighten($color-blue, 10%);
-        transform: scale(1.1);
-      }
-
-      &:active {
-        transform: scale(0.95);
-      }
-    }
-  }
-}
-
-// Animations
-@keyframes heartBeat {
-  0% {
-    transform: scale(1);
-  }
-  14% {
-    transform: scale(1.3);
-  }
-  28% {
-    transform: scale(1);
-  }
-  42% {
-    transform: scale(1.3);
-  }
-  70% {
-    transform: scale(1);
-  }
-}
-
-@keyframes slideInRight {
-  from {
-    transform: translateX(100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-// Responsive Design
-@media (max-width: 768px) {
-  .comments-sidebar {
-    width: 100vw;
-  }
-
-  .content-overlay {
-    right: rem-calc(80);
-    padding: rem-calc(20);
-  }
-
-  .action-sidebar {
-    right: rem-calc(15);
-    bottom: rem-calc(100);
-
-    .action-item .action-btn {
-      width: rem-calc(50);
-      height: rem-calc(50);
-    }
-  }
-
-  .video-controls {
-    right: rem-calc(15);
-    top: rem-calc(15);
-
-    .control-btn {
-      width: rem-calc(40);
-      height: rem-calc(40);
-    }
-  }
-}
-
-.highlights-fullscreen {
-  position: fixed;
-  top: 0; left: 0; width: 100vw; height: 100vh;
-  z-index: 9999;
-  background: linear-gradient(135deg, $color-purple 0%, $color-blue 100%);
-  overflow: hidden;
-}
-
-.highlight-video-full {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100vw;
-  height: 100vh;
-  object-fit: cover;
-  z-index: 1;
-  background: #000;
-}
-
-.highlights-back-btn {
-  position: fixed;
-  top: 24px;
-  left: 24px;
-  z-index: 10002;
-  background: rgba($color-background, 0.85);
-  border: 1px solid rgba($color-white, 0.15);
-  border-radius: 50%;
-  width: 48px;
-  height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: $color-white;
-  font-size: 24px;
-  cursor: pointer;
-  transition: background 0.2s, border 0.2s;
-  &:hover {
-    background: $color-blue;
-    border-color: $color-blue;
-    color: $color-white;
-  }
-}
-
-.video-controls-full {
-  position: fixed;
-  top: 32px;
-  right: 32px;
-  z-index: 10001;
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-  .control-btn {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    background: rgba($color-background, 0.8);
-    border: 1px solid rgba($color-white, 0.2);
-    color: $color-white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.3s;
-    &:hover {
-      background: $color-blue;
-      border-color: $color-blue;
-    }
-  }
-}
-
-.action-sidebar-full {
-  position: fixed;
-  right: 32px;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 10001;
-  display: flex;
-  flex-direction: column;
-  gap: 28px;
-  .action-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    .action-btn {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      background: rgba($color-background, 0.8);
-      border: 1.5px solid rgba($color-white, 0.2);
-      color: $color-white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: all 0.3s;
-      &:hover {
-        background: rgba($color-blue, 0.2);
-        border-color: $color-blue;
-        color: $color-blue;
-      }
-      &.liked {
-        background: rgba($color-blue, 0.2);
-        border-color: $color-blue;
-        color: $color-blue;
-        animation: heartBeat 0.6s;
-      }
-    }
-    .action-count {
-      font-size: 15px;
-      font-weight: 600;
-      color: $color-white;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-    }
-  }
-}
-
-.content-overlay-full {
-  position: fixed;
-  left: 0; right: 0; bottom: 0;
-  z-index: 10001;
-  padding: 32px 32px 24px 32px;
-  background: linear-gradient(to top, rgba($color-background, 0.92) 0%, rgba($color-background, 0.7) 60%, transparent 100%);
-  .highlight-info {
-    .author-section {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      margin-bottom: 18px;
-      .author-avatar {
-        width: 48px;
-        height: 48px;
-        border-radius: 50%;
-        overflow: hidden;
-        border: 2px solid $color-blue;
-        img {
-          width: 100%; height: 100%; object-fit: cover;
-        }
-      }
-      .author-info {
-        .author-name {
-          font-size: 18px;
-          font-weight: 600;
-          color: $color-white;
-          margin: 0 0 4px 0;
-        }
-        .follow-btn {
-          padding: 7px 18px;
-          border-radius: 20px;
-          border: 1px solid $color-blue;
-          background: transparent;
-          color: $color-blue;
-          font-size: 14px;
-          font-weight: 600;
-          cursor: pointer;
-          transition: all 0.3s;
-          &:hover {
-            background: $color-blue;
-            color: $color-white;
-          }
-          &.following {
-            background: rgba($color-blue, 0.2);
-            border-color: rgba($color-blue, 0.5);
-          }
-        }
-      }
-    }
-    .highlight-description {
-      p {
-        font-size: 16px;
-        color: rgba($color-white, 0.9);
-        line-height: 1.5;
-        margin: 0;
-        text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-      }
-    }
-  }
-}
-
-.progress-indicator-full {
-  position: fixed;
-  right: 16px;
-  bottom: 24px;
-  z-index: 10001;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  .progress-dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: rgba($color-white, 0.3);
-    cursor: pointer;
-    transition: all 0.3s;
-    &:hover {
-      background: rgba($color-white, 0.6);
-      transform: scale(1.2);
-    }
-    &.active {
-      background: $color-blue;
-      transform: scale(1.3);
-      box-shadow: 0 0 10px rgba($color-blue, 0.5);
-    }
-  }
-}
-
-@media (max-width: 600px) {
-  .highlights-back-btn {
-    top: 12px;
-    left: 12px;
-    width: 40px;
-    height: 40px;
-    font-size: 18px;
-  }
-  .video-controls-full {
-    top: 12px;
-    right: 12px;
-    .control-btn {
-      width: 36px;
-      height: 36px;
-    }
-  }
-  .action-sidebar-full {
-    right: 8px;
-    .action-btn {
-      width: 44px;
-      height: 44px;
-    }
-  }
-  .content-overlay-full {
-    padding: 18px 10px 12px 10px;
-  }
-  .progress-indicator-full {
-    right: 6px;
-    bottom: 10px;
-    .progress-dot {
-      width: 8px;
-      height: 8px;
-    }
-  }
-}
-
-.highlights-tt-layout {
-  position: fixed;
-  inset: 0;
-  width: 100vw;
-  height: 100vh;
-  background: linear-gradient(120deg, $color-gray-darkest 0%, $color-background 100%);
-  overflow: hidden;
-  z-index: 100;
-}
-
-.highlights-back {
-  position: absolute;
-  top: 32px;
-  left: 32px;
-  z-index: 10;
-  background: rgba(10,10,30,0.7);
-  border: none;
-  border-radius: 50%;
-  color: $color-white;
-  padding: 8px;
-  box-shadow: 0 2px 12px rgba(80,12,173,0.10);
-  cursor: pointer;
-  transition: background 0.2s;
-  &:hover {
-    background: $color-purple;
-    color: #fff;
-  }
-}
-
-.highlight-slide {
-  position: absolute;
-  inset: 0;
-  width: 100vw;
-  height: 100vh;
-  transition: transform 0.5s cubic-bezier(0.4,0,0.2,1);
-  opacity: 0;
-  pointer-events: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: transparent;
-}
-.highlight-slide.active {
-  opacity: 1;
-  pointer-events: auto;
-  z-index: 2;
-}
-
-.highlight-video {
-  position: absolute;
-  inset: 0;
-  width: 100vw;
-  height: 100vh;
-  object-fit: cover;
-  z-index: 1;
-  background: #000;
-}
-
-.highlight-overlay {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: flex-start;
-  padding: 0 0 40px 40px;
-  pointer-events: none;
-}
-
-.highlight-desc {
-  margin-bottom: 24px;
-  background: rgba(10,10,30,0.55);
-  border-radius: 13px;
-  padding: 16px 22px;
-  color: $color-white;
-  font-size: 18px;
-  font-family: 'Outfit', sans-serif;
-  box-shadow: 0 2px 12px rgba(80,12,173,0.10);
-  pointer-events: auto;
-  .highlight-user {
-    font-weight: 700;
-    color: $oxy-blue;
-    margin-right: 8px;
-  }
-  .highlight-text {
-    color: $color-white;
-  }
-}
-
-.highlight-actions {
-  position: absolute;
-  right: 40px;
-  bottom: 120px;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  z-index: 3;
-  pointer-events: auto;
-
-  button {
-    background: rgba(10,10,30,0.7);
-    border: none;
-    border-radius: 16px;
-    color: $color-white;
-    padding: 12px 18px;
-    font-size: 18px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    cursor: pointer;
-    box-shadow: 0 2px 12px rgba(80,12,173,0.10);
-    transition: background 0.2s, color 0.2s, transform 0.2s, box-shadow 0.2s;
-    &:hover {
-      background: $color-purple;
-      color: #fff;
-      transform: scale(1.08);
-      box-shadow: 0 4px 16px rgba(80,12,173,0.18);
-    }
-    span {
-      font-size: 16px;
-      font-weight: 600;
-    }
-    &.like-anim {
-      animation: likePulse 0.5s;
-    }
-    &.share-anim {
-      animation: sharePop 0.4s;
-    }
-  }
-}
-
-@keyframes likePulse {
-  0% { transform: scale(1); }
-  30% { transform: scale(1.25); box-shadow: 0 0 16px $color-purple; }
-  60% { transform: scale(0.95); }
-  100% { transform: scale(1); }
-}
-@keyframes sharePop {
-  0% { transform: scale(1); }
-  40% { transform: scale(1.18); }
-  100% { transform: scale(1); }
-}
-
-.highlight-share-overlay {
-  position: absolute;
-  right: 70px;
-  bottom: 0;
-  width: 320px;
-  background: rgba(10,10,30,0.98);
-  border-radius: 18px;
-  box-shadow: 0 4px 32px rgba(80,12,173,0.18);
-  padding: 24px 20px 18px 20px;
-  z-index: 10;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  animation: fadeIn 0.3s;
-  .share-title {
-    color: $color-purple;
-    font-size: 18px;
-    font-weight: 700;
-    margin-bottom: 8px;
-  }
-  .share-link-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 8px;
-    .share-link-input {
-      flex: 1;
-      background: rgba(255,255,255,0.08);
-      border: none;
-      border-radius: 8px;
-      color: $color-white;
-      font-size: 15px;
-      padding: 8px 12px;
-      outline: none;
-    }
-    .copy-btn {
-      background: $color-purple;
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-      padding: 6px 10px;
-      cursor: pointer;
-      transition: background 0.2s;
-      &:hover {
-        background: lighten($color-purple, 10%);
-      }
-    }
-  }
-  .share-socials {
-    display: flex;
-    gap: 10px;
-    .share-social {
-      background: $oxy-blue;
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-      padding: 7px 16px;
-      font-size: 15px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.2s;
-      &:hover {
-        background: lighten($oxy-blue, 10%);
-      }
-    }
-  }
-  .close-share {
-    background: none;
-    color: $color-gray-light;
-    border: none;
-    font-size: 15px;
-    margin-top: 8px;
-    cursor: pointer;
-    align-self: flex-end;
-    &:hover {
-      color: $color-purple;
-    }
-  }
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.highlight-comments {
-  position: absolute;
-  right: 0;
-  top: 0;
-  width: 340px;
-  height: 100vh;
-  background: rgba(10,10,30,0.82);
-  border-left: 1.5px solid rgba(139,92,246,0.10);
-  box-shadow: -2px 0 16px rgba(80,12,173,0.08);
-  padding: 90px 24px 24px 24px;
-  display: flex;
-  flex-direction: column;
-  z-index: 4;
-  pointer-events: auto;
-  transition: right 0.3s;
-}
-.highlight-comments-title {
-  color: $color-purple;
-  font-size: 18px;
-  font-weight: 700;
-  margin-bottom: 18px;
-}
-.highlight-comments-list {
-  flex: 1;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-.highlight-comment {
-  color: $color-white;
-  font-size: 15px;
-  background: rgba(255,255,255,0.04);
-  border-radius: 8px;
-  padding: 8px 12px;
-  font-family: 'Outfit', sans-serif;
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  b {
-    color: $oxy-blue;
-    margin-right: 4px;
-  }
-}
-
-.highlight-comment-form {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: 18px;
-  input {
-    flex: 1;
-    background: rgba(255,255,255,0.08);
-    border: none;
-    border-radius: 8px;
-    color: $color-white;
-    font-size: 15px;
-    padding: 10px 14px;
-    outline: none;
-    transition: background 0.2s;
-    &:focus {
-      background: rgba(139,92,246,0.13);
-    }
-  }
-  .send-btn {
-    background: $oxy-blue;
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    padding: 7px 12px;
-    cursor: pointer;
-    transition: background 0.2s;
-    &:hover {
-      background: lighten($oxy-blue, 10%);
-    }
-  }
-}
-
-.hide-comments-btn, .show-comments-btn {
-  background: none;
-  color: $oxy-blue;
-  border: none;
-  font-size: 15px;
-  margin-top: 12px;
-  cursor: pointer;
-  align-self: flex-end;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  &:hover {
-    color: $color-purple;
-  }
-}
-
-.show-comments-btn {
-  position: absolute;
-  right: 24px;
-  bottom: 32px;
-  z-index: 10;
-  background: rgba(10,10,30,0.7);
-  border-radius: 10px;
-  padding: 8px 16px;
-  font-weight: 600;
-  box-shadow: 0 2px 12px rgba(80,12,173,0.10);
-}
-
-@media (max-width: 900px) {
-  .highlight-comments {
-    display: none;
-  }
-  .highlight-overlay {
-    padding: 0 0 24px 16px;
-  }
-  .highlight-actions {
-    right: 16px;
-    bottom: 80px;
-  }
-  .highlights-back {
-    top: 16px;
-    left: 16px;
-  }
-  .show-comments-btn {
-    right: 12px;
-    bottom: 16px;
-    padding: 7px 10px;
-  }
-}
-
-@media (max-width: 600px) {
-  .highlight-desc {
-    font-size: 15px;
-    padding: 10px 12px;
-  }
-  .highlight-actions button {
-    padding: 10px 12px;
-    font-size: 16px;
-  }
-  .highlight-share-overlay {
-    right: 10px;
-    width: 95vw;
-    padding: 16px 6px 10px 6px;
   }
 }

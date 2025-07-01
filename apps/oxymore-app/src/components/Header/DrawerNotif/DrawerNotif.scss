@@ -3,23 +3,23 @@
 .drawer-notif-header {
   display: flex;
   align-items: center;
-  gap: 12px;
-  font-size: 20px;
+  gap: rem-calc(12);
+  font-size: rem-calc(20);
   font-weight: 700;
-  margin-bottom: 24px;
+  margin-bottom: rem-calc(24);
   color: $color-white;
   position: relative;
 
   .notif-badge {
-    background: linear-gradient(90deg, $color-purple 0%, $color-blue 100%);
+    background: $color-purple;
     color: #fff;
-    font-size: 13px;
+    font-size: rem-calc(13);
     font-weight: 700;
-    border-radius: 8px;
-    padding: 2px 10px;
+    border-radius: rem-calc(8);
+    padding: rem-calc(2) rem-calc(10);
     margin-left: auto;
-    box-shadow: 0 2px 8px rgba(80,12,173,0.10);
-    letter-spacing: 1px;
+    box-shadow: 0 rem-calc(2) rem-calc(8) rgba(80,12,173,0.10);
+    letter-spacing: rem-calc(1);
     display: inline-block;
   }
 }
@@ -27,88 +27,89 @@
 .drawer-notif-list {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: rem-calc(18);
 }
 
 .drawer-notif-item {
   display: flex;
   align-items: flex-start;
-  gap: 14px;
+  gap: rem-calc(14);
   background: rgba(255,255,255,0.04);
-  border-radius: 13px;
-  padding: 16px 14px;
-  box-shadow: 0 2px 12px rgba(80,12,173,0.06);
+  border-radius: rem-calc(13);
+  padding: rem-calc(16) rem-calc(14);
+  box-shadow: 0 rem-calc(2) rem-calc(12) rgba(80,12,173,0.06);
   transition: background 0.2s, box-shadow 0.2s;
   cursor: pointer;
-  border-left: 4px solid transparent;
+  border-left: rem-calc(4) solid transparent;
 
   &.unread {
     background: rgba(139,92,246,0.13);
-    border-left: 4px solid $color-purple;
+    border-left: rem-calc(4) solid $color-purple;
   }
   &.notif-success {
-    border-left: 4px solid $color-blue;
+    border-left: rem-calc(4) solid $color-blue;
   }
   &.notif-alert {
-    border-left: 4px solid $color-red;
+    border-left: rem-calc(4) solid $color-red;
   }
   &:hover {
     background: rgba(139,92,246,0.18);
-    box-shadow: 0 4px 16px rgba(80,12,173,0.13);
+    box-shadow: 0 rem-calc(4) rem-calc(16) rgba(80,12,173,0.13);
   }
 }
 
 .drawer-notif-icon {
   flex-shrink: 0;
-  width: 32px;
-  height: 32px;
+  width: rem-calc(32);
+  height: rem-calc(32);
   display: flex;
   align-items: center;
   justify-content: center;
   color: $color-purple;
   background: rgba(139,92,246,0.08);
   border-radius: 50%;
-  font-size: 18px;
+  font-size: rem-calc(18);
 }
 
 .drawer-notif-content {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: rem-calc(2);
 }
 
 .drawer-notif-title {
-  font-size: 16px;
+  font-size: rem-calc(16);
   font-weight: 700;
   color: $color-white;
 }
 
 .drawer-notif-text {
-  font-size: 15px;
+  font-size: rem-calc(15);
   color: $color-gray-light;
 }
 
 .drawer-notif-time {
-  font-size: 12px;
+  font-size: rem-calc(12);
   color: $color-gray;
-  margin-top: 4px;
+  margin-top: rem-calc(4);
 }
 
 .drawer-notif-empty {
   text-align: center;
   color: $color-gray;
-  font-size: 15px;
-  margin-top: 40px;
+  font-size: rem-calc(15);
+  margin-top: rem-calc(40);
 }
 
 @media (max-width: 600px) {
   .drawer-notif-header {
-    font-size: 18px;
-    margin-bottom: 16px;
+    font-size: rem-calc(18);
+    margin-bottom: rem-calc(16);
+    margin-top: rem-calc(30);
   }
   .drawer-notif-item {
-    padding: 12px 8px;
-    font-size: 15px;
+    padding: rem-calc(12) rem-calc(8);
+    font-size: rem-calc(15);
   }
 }

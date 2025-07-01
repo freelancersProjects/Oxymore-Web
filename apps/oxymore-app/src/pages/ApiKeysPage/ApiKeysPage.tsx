@@ -1,5 +1,11 @@
 import React, { useState } from "react";
 import { OXMButton, OXMToast, OXMModal, OXMTabSwitcher } from "@oxymore/ui";
+import {
+  FiZap,
+  FiTrendingUp,
+  FiTool,
+  FiMessageCircle,
+} from "react-icons/fi";
 import "./ApiKeysPage.scss";
 
 interface ApiKey {
@@ -183,11 +189,84 @@ export default function ApiKeysPage() {
           </OXMModal>
         </>
       )}
-      {tab === "premium" && (
-        <div className="premium-simulator">
+{tab === "premium" && (
+  <div className="premium-dashboard">
+    <div className="credit-summary">
+      <h2>Vos crédits API</h2>
+      <p>Voici votre consommation actuelle de crédits sur le mois.</p>
 
-        </div>
-      )}
+      <div className="credit-bar">
+        <div className="credit-bar__fill" style={{ width: "65%" }} />
+      </div>
+      <div className="credit-stats">
+        <span>650 / 1000 crédits utilisés</span>
+        <OXMButton variant="secondary" onClick={() => addToast("Fonction de recharge à venir !")}>
+          Recharger
+        </OXMButton>
+      </div>
+    </div>
+
+<div className="premium-features">
+  <h2>Avantages Premium</h2>
+  <div className="features-grid">
+    <div className="feature-card">
+      <FiZap className="icon" />
+      <span className="title">1000 crédits/mois</span>
+      <span className="desc">Recharges mensuelles automatiques pour vos projets.</span>
+    </div>
+    <div className="feature-card">
+      <FiTrendingUp className="icon" />
+      <span className="title">Accès prioritaire</span>
+      <span className="desc">Soyez les premiers à tester nos nouvelles features.</span>
+    </div>
+    <div className="feature-card">
+      <FiTool className="icon" />
+      <span className="title">Monitoring en temps réel</span>
+      <span className="desc">Gardez le contrôle sur l’usage de vos clés.</span>
+    </div>
+    <div className="feature-card">
+      <FiMessageCircle className="icon" />
+      <span className="title">Support 24/7</span>
+      <span className="desc">Une équipe dispo en cas de pépin, jour et nuit.</span>
+    </div>
+  </div>
+</div>
+
+
+
+<div className="usage-history">
+  <h2>Historique d’utilisation</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Clé</th>
+        <th>Crédits utilisés</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>2025-06-30</td>
+        <td>Primary Key</td>
+        <td className="credits high">240</td>
+      </tr>
+      <tr>
+        <td>2025-06-27</td>
+        <td>DevApp Key</td>
+        <td className="credits medium">135</td>
+      </tr>
+      <tr>
+        <td>2025-06-21</td>
+        <td>Preview Key</td>
+        <td className="credits low">980</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+  </div>
+)}
+
     </div>
   );
 }

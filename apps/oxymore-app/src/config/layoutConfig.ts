@@ -3,7 +3,6 @@ export const LAYOUT_CONFIG = {
   // Pages qui doivent être en plein écran (sans sidebar, header, footer)
   fullscreenPages: [
     '/login',
-    '/highlights',
     '/register',
     '/forgot-password',
     '/reset-password',
@@ -19,6 +18,7 @@ export const LAYOUT_CONFIG = {
   // Pages qui doivent masquer seulement le header
   noHeaderPages: [
     '/oxia',
+    '/highlights',
   ],
 
   // Pages qui doivent masquer seulement le footer

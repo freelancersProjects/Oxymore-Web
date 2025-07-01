@@ -3,6 +3,7 @@ import Logo from "../../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import { OXMButton } from "@oxymore/ui";
 import "./Header.scss";
+import firstImage from "../../assets/images/first.png";
 
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -84,8 +85,17 @@ const Header = () => {
 
       <div className="header__auth">
         <a onClick={() => navigate("/signin")}>Sign In</a>
-        <OXMButton onClick={() => navigate("/signup")}>
-          Create Account
+        <OXMButton
+          onClick={() => {
+            const link = document.createElement('a');
+            link.href = firstImage;
+            link.download = 'Oxymore-Image.png';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+          }}
+        >
+          Download
         </OXMButton>
       </div>
 
