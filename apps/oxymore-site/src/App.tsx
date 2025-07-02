@@ -10,6 +10,7 @@ import APIDevelopers from "./pages/APIDevelopers/APIDevelopers";
 import About from "./pages/About/About";
 import IntegrateDiscordBot from "./pages/IntegrateDiscordBot/IntegrateDiscordBot";
 import CreateTournament from "./pages/CreateTournament/CreateTournament";
+import Tournaments from "./pages/Home/Tournaments/Tournaments";
 import Resources from "./pages/Resources/Resources";
 
 // components common
@@ -34,6 +35,7 @@ export default function App() {
             path="/learn/create-tournament"
             element={<CreateTournament />}
           />
+          <Route path="/tournaments" element={<Tournaments />} />
           <Route path="/learn/resources" element={<Resources />} />
           <Route path="*" element={<Home />} />
         </Routes>

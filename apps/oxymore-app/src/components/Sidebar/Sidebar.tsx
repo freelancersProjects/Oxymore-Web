@@ -12,19 +12,39 @@ interface SidebarProps {
 export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false, onToggle }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  // Ferme la sidebar mobile au clic sur un lien
   const handleNavClick = () => setMobileOpen(false);
+
+  // Logout handler
+  const handleLogout = () => {
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
+    window.location.href = '/login';
+  };
 
   return (
     <>
-      {/* Burger menu visible sur mobile */}
       <button className="oxm-sidebar-burger" onClick={() => setMobileOpen(true)}>
         <Menu size={28} />
       </button>
-      {/* Overlay mobile */}
       <div className={`oxm-sidebar-overlay${mobileOpen ? ' open' : ''}`} onClick={() => setMobileOpen(false)} />
-      <aside className={`oxm-sidebar${isCollapsed ? ' collapsed' : ''}${mobileOpen ? ' open' : ''}`}>
-        {/* Croix de fermeture mobile */}
+      {/* Zone cliquable pour réouvrir la sidebar quand collapsed */}
+      {isCollapsed && !mobileOpen && (
+        <div
+          className="oxm-sidebar-collapsed-zone"
+          onClick={onToggle}
+          style={{ position: 'fixed', top: 0, left: 0, width: 24, height: '100vh', zIndex: 999, cursor: 'pointer', background: 'rgba(80,12,173,0.03)' }}
+        />
+      )}
+      <aside
+        className={`oxm-sidebar${isCollapsed ? ' collapsed' : ''}${mobileOpen ? ' open' : ''}`}
+        onClick={e => {
+          if (isCollapsed) {
+            const target = e.target as HTMLElement;
+            if (target.closest('button') || target.closest('a')) return;
+            if (onToggle) onToggle();
+          }
+        }}
+      >
         {mobileOpen && (
           <button className="oxm-sidebar-close" onClick={() => setMobileOpen(false)}>
             <X size={32} />
@@ -36,9 +56,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false, onToggle 
               <img src={Logo} alt="Oxymore Logo" />
             </NavLink>
           </div>
-          {onToggle && (
+          {onToggle && !isCollapsed && (
             <button className="oxm-sidebar__toggle" onClick={onToggle}>
-              {isCollapsed ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
+              <ChevronLeft size={16} />
             </button>
           )}
         </div>
@@ -90,7 +110,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false, onToggle 
         </nav>
 
         <div className="oxm-sidebar__logout">
-          <button>
+          <button onClick={handleLogout}>
             <LogOut size={20} /> <span>Logout</span>
           </button>
         </div>

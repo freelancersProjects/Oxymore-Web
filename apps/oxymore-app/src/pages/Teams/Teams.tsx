@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from "react";
-import { Users, Search } from "lucide-react";
-import { OXMGlowOrb } from "@oxymore/ui";
 import "./Teams.scss";
+import { Users, Search } from "lucide-react";
+import '../../styles/global.scss';
 
 const TEAMS = [
   { id: 1, name: "Oxia Legends", members: 42, description: "La team la plus active de la plateforme !", color: "#8B5CF6" },
@@ -22,12 +22,9 @@ export const Teams = () => {
 
   return (
     <div className="teams-container">
-      <OXMGlowOrb top="10%" left="5%" size="300px" color="#500CAD" />
-      <OXMGlowOrb top="60%" right="10%" size="250px" color="#1593CE" />
-
       <div className="teams-header">
         <div className="header-content">
-          <h1 className="teams-title white">Teams</h1>
+          <h1 className="teams-title">Teams</h1>
           <p className="teams-subtitle">Trouve et rejoins une équipe pour vivre l'expérience Oxymore à plusieurs !</p>
         </div>
       </div>
@@ -61,7 +58,7 @@ export const Teams = () => {
             <p>Essayez un autre nom ou revenez plus tard !</p>
           </div>
         ) : (
-          filteredTeams.map((team) => (
+          filteredTeams.map((team, idx) => (
             <div
               className="team-card"
               key={team.id}
@@ -73,7 +70,7 @@ export const Teams = () => {
                   <Users size={28} />
                 </div>
                 <div className="team-info">
-                  <h3 className="team-name">{team.name}</h3>
+                  <div className="team-name">{team.name}</div>
                   <div className="team-members">{team.members} membres</div>
                 </div>
               </div>

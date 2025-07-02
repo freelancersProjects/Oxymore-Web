@@ -332,7 +332,6 @@ const OxiaChat: React.FC = () => {
           </div>
         </>
       )}
-      {/* Sidebar desktop/tablette */}
       <div className="oxia-chat-sidebar-desktop">
         <OxiaChatSidebar
           channels={channels}
@@ -348,7 +347,6 @@ const OxiaChat: React.FC = () => {
         />
       </div>
       <section className="oxia-chat-main">
-        {/* Loader si pas de channel sélectionné */}
         {!selectedChannel ? (
           <div className="oxia-chat-loader-container">
             <img
