@@ -1,6 +1,5 @@
 {
   "extends": "./tsconfig.json",
   "include": ["src"],
-  "files": ["src/index.ts"],
   "exclude": ["**/*.test.tsx", "**/*.stories.tsx", "node_modules", "dist"]
 }

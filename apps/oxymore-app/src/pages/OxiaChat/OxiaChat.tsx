@@ -125,7 +125,7 @@ const OxiaChat: React.FC = () => {
                       minute: "2-digit",
                     })
                   : "",
-                side: msg.is_from_ai ? "left" : "right",
+                side: msg.is_from_ai ? ("left" as const) : ("right" as const),
                 avatar: msg.is_from_ai ? LogoOxia : "",
                 channel_id: msg.channel_id,
                 is_from_ai: msg.is_from_ai,
@@ -322,7 +322,11 @@ const OxiaChat: React.FC = () => {
               selectedChannel={selectedChannel}
               setSelectedChannel={(ch) => { setSelectedChannel(ch); setSidebarOpen(false); }}
               onOpenModal={handleOpenModal}
-              onRename={(ch) => handleEditChannel(ch.id_channel)}
+              onRename={(ch) => {
+                setEditChannelId(ch.id_channel);
+                setEditChannelName(ch.name);
+                setShowRenameModal(true);
+              }}
               onDelete={(ch) => handleDeleteChannel(ch.id_channel)}
             />
           </div>
@@ -335,7 +339,11 @@ const OxiaChat: React.FC = () => {
           selectedChannel={selectedChannel}
           setSelectedChannel={setSelectedChannel}
           onOpenModal={handleOpenModal}
-          onRename={(ch) => handleEditChannel(ch.id_channel)}
+          onRename={(ch) => {
+            setEditChannelId(ch.id_channel);
+            setEditChannelName(ch.name);
+            setShowRenameModal(true);
+          }}
           onDelete={(ch) => handleDeleteChannel(ch.id_channel)}
         />
       </div>

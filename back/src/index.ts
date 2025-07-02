@@ -1,5 +1,6 @@
 import express from "express";
 import userRoutes from "./routes/user";
+import notificationRoutes from "./routes/notification";
 import dotenv from "dotenv";
 import swaggerUi from "swagger-ui-express";
 import swaggerJSDoc from "swagger-jsdoc";
@@ -17,6 +18,7 @@ app.use(cors({ origin: "http://localhost:5173" }));
 app.use(express.json());
 
 app.use("/api/users", userRoutes);
+app.use("/api/notifications", notificationRoutes);
 app.use("/api/channels", channelRoutes);
 app.use("/api/messages", messageRoutes);
 app.use("/api/auth", authRoutes);
@@ -41,5 +43,5 @@ const swaggerSpec = swaggerJSDoc(swaggerOptions);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+  console.log(`Server running on http://localhost:${PORT}/api-docs`);
 });
