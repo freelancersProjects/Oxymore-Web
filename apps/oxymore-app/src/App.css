@@ -1,49 +1,47 @@
+@import 'styles/global.scss';
+
 #root {
   margin: 0 auto;
-  text-align: center;
 }
 
 main {
-  margin-top: 70px;
-  padding: 30px;
+  margin-top: 40px;
+  padding: 0.5rem 2.5rem;
+}
+
+body {
+  background-color: #111119;
+  color: #fff;
+  font-family: "Outfit", sans-serif;
+}
+
+:root {
+  --sidebar-width-expanded: 290px;
+  --sidebar-width-collapsed: 120px;
 }
 
 .oxm-layout {
   display: flex;
-}
-
-.oxm-sidebar {
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  bottom: 20px;
-  width: 270px;
-  background: #121212;
-  border-radius: 30px;
-  padding: 30px 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  transition: margin-left 0.3s ease;
 }
 
 .oxm-main {
-  margin-left: 250px;
-  width: calc(100% - 250px);
+  flex-grow: 1;
+  margin-left: var(--sidebar-width-expanded);
+  transition: margin-left 0.3s ease;
+
+  @media (max-width: 768px) {
+    margin-left: 0;
+  }
+
 }
 
-.oxm-header {
-  position: fixed;
-  top: 0;
-  left: 270px;
-  width: calc(100% - 250px);
-  height: 70px;
-  z-index: 10;
+.oxm-layout.sidebar-collapsed .oxm-main {
+  margin-left: var(--sidebar-width-collapsed);
 }
 
 .oxm-main main {
   margin-top: 70px;
-  padding: 30px;
 }
 
 .logo {
@@ -52,9 +50,11 @@ main {
   will-change: filter;
   transition: filter 300ms;
 }
+
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
 }
+
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
@@ -63,6 +63,7 @@ main {
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -80,4 +81,9 @@ main {
 
 .read-the-docs {
   color: #888;
+}
+
+.oxm-main--no-margin {
+  margin: 0 !important;
+  padding: 0 !important;
 }

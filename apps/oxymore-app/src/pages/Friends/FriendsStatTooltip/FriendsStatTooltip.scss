@@ -1,0 +1,134 @@
+@import "../../../styles/global.scss";
+
+.stat-tooltip {
+    position: fixed;
+    transform: translateX(-50%);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    pointer-events: none;
+    animation: tooltip-fade-in 0.25s cubic-bezier(.4, 1.4, .6, 1);
+}
+
+.stat-tooltip-content {
+    background: rgba(30, 20, 50, 0.98);
+    border: 1.5px solid rgba(80, 12, 173, 0.18);
+    border-radius: 14px;
+    box-shadow: 0 8px 32px rgba(80, 12, 173, 0.12), 0 2px 8px rgba(0, 0, 0, 0.18);
+    padding: 18px 22px 14px 22px;
+    min-width: 220px;
+    max-width: 320px;
+    color: $color-white;
+    font-family: "Outfit", sans-serif;
+    font-size: 15px;
+    pointer-events: auto;
+    opacity: 0.98;
+    transform: translateY(-18px) scale(1.03);
+    animation: tooltip-pop-in 0.22s cubic-bezier(.4, 1.4, .6, 1);
+}
+
+.stat-tooltip-title {
+    font-family: "Orbitron", sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: $color-purple;
+    margin-bottom: 10px;
+    letter-spacing: 0.5px;
+}
+
+.stat-tooltip-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 0;
+
+    th,
+    td {
+        padding: 4px 8px;
+        text-align: left;
+        font-size: 14px;
+        border: none;
+        background: none;
+        color: $color-white;
+    }
+
+    th {
+        color: $color-blue;
+        font-weight: 600;
+        font-size: 13px;
+        letter-spacing: 0.5px;
+        border-bottom: 1px solid rgba($color-blue, 0.18);
+    }
+
+    tr:not(:last-child) td {
+        border-bottom: 1px solid rgba($color-white, 0.07);
+    }
+}
+
+.league-badge-mini {
+    display: inline-block;
+    border: 1.5px solid;
+    border-radius: 6px;
+    padding: 2px 7px;
+    font-size: 12px;
+    font-family: "Orbitron", sans-serif;
+    color: $color-white;
+    background: rgba(80, 12, 173, 0.08);
+    margin-right: 2px;
+}
+
+.status-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 5px;
+    vertical-align: middle;
+    box-shadow: 0 0 6px 1px rgba(80, 12, 173, 0.12);
+}
+
+.stat-tooltip-arrow {
+    width: 18px;
+    height: 18px;
+    background: rgba(30, 20, 50, 0.98);
+    border-left: 1.5px solid rgba(80, 12, 173, 0.18);
+    border-bottom: 1.5px solid rgba(80, 12, 173, 0.18);
+    transform: rotate(45deg) translateY(-8px);
+    margin-top: -9px;
+    z-index: 11;
+    animation: arrow-pop-in 0.22s cubic-bezier(.4, 1.4, .6, 1);
+}
+
+@keyframes tooltip-fade-in {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes tooltip-pop-in {
+    from {
+        opacity: 0;
+        transform: translateY(-30px) scale(0.95);
+    }
+
+    to {
+        opacity: 0.98;
+        transform: translateY(-18px) scale(1.03);
+    }
+}
+
+@keyframes arrow-pop-in {
+    from {
+        opacity: 0;
+        transform: rotate(45deg) translateY(-30px) scale(0.7);
+    }
+
+    to {
+        opacity: 1;
+        transform: rotate(45deg) translateY(-8px) scale(1);
+    }
+}

@@ -16,7 +16,8 @@
   ],
   "scripts": {
     "dev": "vite --config playground/vite.config.ts",
-    "build": "tsup",
+    "types": "tsc --emitDeclarationOnly --declaration --project tsconfig.json",
+    "build": "npm run types && tsup",
     "preview": "vite preview --config playground/vite.config.ts"
   },
   "peerDependencies": {

@@ -1,3 +1,6 @@
+@use "sass:color";
+@use "sass:math";
+
 $color-purple: #500CAD;
 $color-white: #ffffff;
 $color-background: #121212;
@@ -9,11 +12,17 @@ $color-gray-medium: #888888;
 $color-gray-darkest: #0A0A1E;
 $color-black: #000000;
 $color-blue: #1593CE;
-
+$color-red: #F00;
+$color-primary: #6D28D9;
+$color-purple-light: #8B5CF6;
 $base-font-size: 10;
 
 @function rem-calc($px) {
-    @return ($px / $base-font-size) * 1rem;
+  @return math.div($px, $base-font-size) * 1rem;
+}
+
+@function lighten($color, $amount) {
+    @return color.scale($color, $lightness: $amount);
 }
 
 h1 {
@@ -23,10 +32,66 @@ h1 {
     color: #fff;
 }
 
+p,
+span,
+label,
+td {
+    font-size: rem-calc(16);
+    color: $color-white;
+}
+
 .orbitron {
     font-family: "Orbitron", sans-serif;
 }
 
 .outfit {
     font-family: "Outfit", sans-serif;
+}
+
+.purple {
+    color: $color-purple;
+}
+
+.blue {
+    color: $color-blue;
+}
+
+.modal-actions{
+  margin-top: rem-calc(20);
+}
+
+.toast-container {
+  position: fixed;
+  top: rem-calc(20);
+  right: rem-calc(20);
+  z-index: 1050;
+  display: flex;
+  flex-direction: column;
+  gap: rem-calc(15);
+}
+
+// Global custom scrollbar
+::-webkit-scrollbar {
+  width: 10px;
+  background: #18182a;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, $color-purple 0%, $color-blue 100%);
+  border-radius: 8px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, lighten($color-purple, 10%) 0%, lighten($color-blue, 10%) 100%);
+}
+::-webkit-scrollbar-corner {
+  background: #18182a;
+}
+
+// For Firefox
+* {
+  scrollbar-width: thin;
+  scrollbar-color: $color-purple #18182a;
+}
+
+html, body, #root {
+  overflow-x: hidden !important;
 }

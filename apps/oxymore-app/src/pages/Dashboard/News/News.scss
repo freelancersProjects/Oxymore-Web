@@ -1,0 +1,121 @@
+@import "../../../styles/global.scss";
+
+.news-layout {
+    display: flex;
+    width: 100%;
+    gap: rem-calc(30);
+    align-items: flex-start;
+    margin-top: rem-calc(20);
+}
+
+.tournament-card {
+    flex: 1;
+    position: relative;
+    height: rem-calc(413);
+    border-radius: rem-calc(30);
+    overflow: visible;
+    display: flex;
+    align-items: flex-end;
+    padding: rem-calc(40);
+    z-index: 1;
+
+    .background-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url("../../../assets/images/imagecsgo.webp") center/cover no-repeat;
+        z-index: 0;
+        border-radius: rem-calc(30);
+
+        &::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, rgba($color-purple, 0.2), rgba($color-purple, 0.2));
+            z-index: 1;
+            border-radius: rem-calc(30);
+        }
+    }
+
+    .overlay-img {
+        position: absolute;
+        bottom: rem-calc(0);
+        right: rem-calc(20);
+        height: rem-calc(500);
+        z-index: 2;
+        object-fit: contain;
+        pointer-events: none;
+    }
+
+    .tournament-content {
+        position: relative;
+        z-index: 3;
+        max-width: rem-calc(450);
+        margin-bottom: rem-calc(20);
+
+        .tournament-title {
+            font-size: rem-calc(42);
+            font-weight: 600;
+            color: $color-white;
+            margin-bottom: rem-calc(15);
+        }
+
+        .tournament-desc {
+            font-size: rem-calc(16);
+            color: $color-white;
+            line-height: rem-calc(24);
+            margin-bottom: rem-calc(30);
+        }
+    }
+}
+
+
+.news-side {
+    width: rem-calc(330);
+    display: flex;
+    flex-direction: column;
+    gap: rem-calc(13);
+
+    .news-side-title {
+        font-size: rem-calc(18);
+        color: $color-white;
+        margin-bottom: rem-calc(5);
+    }
+
+    .news-box {
+        padding: rem-calc(15);
+        border-radius: rem-calc(20);
+        background: rgba(255, 255, 255, 0.05);
+        border: 0.5px solid rgba(255, 255, 255, 0.5);
+
+        h4 {
+            font-size: rem-calc(14);
+            font-weight: 600;
+            color: $color-white;
+            margin-bottom: rem-calc(6);
+        }
+
+        p {
+            font-family: "Outfit", sans-serif;
+            font-size: rem-calc(12);
+            color: rgba(255, 255, 255, 0.8);
+            line-height: rem-calc(18);
+        }
+
+        .read-more {
+            font-size: rem-calc(12);
+            color: $color-gray;
+            margin-top: rem-calc(8);
+            display: inline-block;
+        }
+
+        &.faded {
+            opacity: 0.6;
+        }
+    }
+}

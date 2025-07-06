@@ -645,16 +645,24 @@
 
   // CTA Section
   &__cta {
-    padding: rem-calc(80) 10%;
+    padding: rem-calc(80) rem-calc(20) rem-calc(80) rem-calc(20);
     background: linear-gradient(135deg, rgba($color-purple, 0.1) 0%, rgba($color-blue, 0.1) 100%);
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1.2fr 1fr;
     gap: rem-calc(60);
-    align-items: center;
-    max-width: rem-calc(1200);
-    margin: rem-calc(100) auto;
+    align-items: stretch;
+    width: 100vw;
+    max-width: none;
+    margin: 0;
+    box-sizing: border-box;
 
     .cta-content {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      padding-left: 10vw;
+      padding-right: 0;
       h2 {
         font-size: rem-calc(42);
         margin-bottom: rem-calc(20);
@@ -662,20 +670,19 @@
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
+        text-align: left;
       }
-
       p {
         font-size: rem-calc(18);
         line-height: 1.7;
         color: rgba($color-white, 0.8);
         margin-bottom: rem-calc(30);
+        text-align: left;
       }
-
       .cta-buttons {
         display: flex;
         gap: rem-calc(20);
         align-items: center;
-
         .cta-link {
           color: $color-white;
           text-decoration: none;
@@ -684,7 +691,6 @@
           border: 2px solid rgba($color-white, 0.3);
           border-radius: rem-calc(30);
           transition: all 0.3s ease;
-
           &:hover {
             border-color: $color-white;
             background: rgba($color-white, 0.1);
@@ -693,23 +699,20 @@
         }
       }
     }
-
     .cta-visual {
       display: flex;
-      justify-content: center;
+      justify-content: flex-end;
       align-items: center;
-
+      padding-right: 10vw;
       .cta-graphic {
         position: relative;
         width: rem-calc(300);
         height: rem-calc(300);
-
         .graphic-element {
           position: absolute;
           border-radius: 50%;
           background: linear-gradient(135deg, $color-blue 0%, $color-purple 100%);
           animation: pulse 2s ease-in-out infinite;
-
           &.element-1 {
             width: rem-calc(100);
             height: rem-calc(100);
@@ -717,7 +720,6 @@
             left: 20%;
             animation-delay: 0s;
           }
-
           &.element-2 {
             width: rem-calc(150);
             height: rem-calc(150);
@@ -725,7 +727,6 @@
             right: 10%;
             animation-delay: 0.5s;
           }
-
           &.element-3 {
             width: rem-calc(80);
             height: rem-calc(80);
@@ -816,6 +817,27 @@
     &__values .values-grid,
     &__team .team-grid {
       grid-template-columns: repeat(auto-fit, minmax(rem-calc(250), 1fr));
+    }
+
+    &__cta {
+      grid-template-columns: 1fr;
+      gap: rem-calc(50);
+      .cta-content, .cta-visual {
+        padding-left: 5vw;
+        padding-right: 5vw;
+        align-items: center;
+        text-align: center;
+        justify-content: center;
+      }
+      .cta-content {
+        align-items: center;
+        h2, p {
+          text-align: center;
+        }
+      }
+      .cta-visual {
+        justify-content: center;
+      }
     }
   }
 }

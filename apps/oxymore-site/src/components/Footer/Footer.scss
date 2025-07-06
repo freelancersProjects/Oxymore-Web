@@ -16,6 +16,19 @@
     padding: rem-calc(68) rem-calc(56) rem-calc(45);
     gap: rem-calc(88);
     flex-wrap: wrap;
+
+    @media (max-width: 1200px) {
+      gap: rem-calc(48);
+      padding: rem-calc(50) rem-calc(40) rem-calc(35);
+    }
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: rem-calc(32);
+      padding: rem-calc(40) rem-calc(30) rem-calc(30);
+    }
   }
 
   &__brand {
@@ -25,6 +38,10 @@
     flex-direction: column;
     align-items: flex-start;
     gap: rem-calc(28);
+
+    @media (max-width: 768px) {
+      align-items: center;
+    }
   }
 
   &__logo {
@@ -44,15 +61,29 @@
     margin: 0;
     max-width: rem-calc(340);
     text-align: left;
+
+    @media (max-width: 768px) {
+      text-align: center;
+    }
   }
 
-    .footer__links {
-      display: flex;
-      flex: 2 1 rem-calc(700);
-      justify-content: space-between;
-      gap: rem-calc(64);
-      flex-wrap: nowrap;
+  &__links {
+    display: flex;
+    flex: 2 1 rem-calc(700);
+    justify-content: space-between;
+    gap: rem-calc(64);
+    flex-wrap: nowrap;
+
+    @media (max-width: 1200px) {
+      flex-wrap: wrap;
+      gap: rem-calc(40);
     }
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+      align-items: center;
+    }
+  }
 
   &__col {
     min-width: rem-calc(180);
@@ -91,10 +122,15 @@
         }
       }
     }
+
+    @media (max-width: 768px) {
+      text-align: center;
+    }
   }
 
   &__socials {
     display: flex;
+    flex-wrap: wrap;
     gap: rem-calc(26);
     margin-top: rem-calc(19);
 
@@ -121,6 +157,10 @@
         font-size: rem-calc(28);
       }
     }
+
+    @media (max-width: 768px) {
+      justify-content: center;
+    }
   }
 
   &__divider {
@@ -138,5 +178,11 @@
     opacity: 0.7;
     padding: rem-calc(26) 0 rem-calc(35);
     font-weight: 400;
+
+    @media (max-width: 480px) {
+      font-size: rem-calc(14);
+      max-width: rem-calc(300);
+      margin: auto;
+    }
   }
 }

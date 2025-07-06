@@ -22,7 +22,6 @@ export default function ButtonDoc() {
         <li>
           <b>variant</b> : "primary" | "secondary" — Variante de style
         </li>
-        {/* Ajoute ici d'autres props si besoin */}
       </ul>
     </section>
   );

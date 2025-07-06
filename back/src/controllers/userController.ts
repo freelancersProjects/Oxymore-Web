@@ -20,44 +20,49 @@ export const getUserById = (req: Request, res: Response) => {
   }
 };
 
-export const createUser = (req: Request, res: Response) => {
-  const {
-    first_name,
-    last_name,
-    username,
-    email,
-    password_hash,
-    is_premium,
-    avatar_url,
-    banner_url,
-    bio,
-    elo,
-    xp_total,
-    wallet,
-    country_code,
-    discord_tag,
-    faceit_id,
-    verified,
-  } = req.body;
+export const createUser = async (req: Request, res: Response) => {
+  try {
+    const {
+      first_name,
+      last_name,
+      username,
+      email,
+      password_hash,
+      is_premium,
+      avatar_url,
+      banner_url,
+      bio,
+      elo,
+      xp_total,
+      wallet,
+      country_code,
+      discord_tag,
+      faceit_id,
+      verified,
+    } = req.body;
 
-  const newUser = UserService.createUser({
-    first_name,
-    last_name,
-    username,
-    email,
-    password_hash,
-    is_premium: is_premium ?? false,
-    avatar_url,
-    banner_url,
-    bio,
-    elo: elo ?? 1000,
-    xp_total: xp_total ?? 0,
-    wallet: wallet ?? null,
-    country_code,
-    discord_tag,
-    faceit_id,
-    verified: verified ?? false,
-  });
+    const newUser = await UserService.createUser({
+      first_name,
+      last_name,
+      username,
+      email,
+      password_hash,
+      is_premium: is_premium ?? false,
+      avatar_url,
+      banner_url,
+      bio,
+      elo: elo ?? 1000,
+      xp_total: xp_total ?? 0,
+      wallet: wallet ?? null,
+      country_code,
+      discord_tag,
+      faceit_id,
+      verified: verified ?? false,
+    });
 
-  res.status(201).json(newUser);
+    res.status(201).json(newUser);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
 };

@@ -1,0 +1,140 @@
+@import "../../styles/global.scss";
+
+.create-tournament-page {
+  min-height: 100vh;
+  width: 100%;
+  position: relative;
+  overflow-x: hidden;
+  background: $color-gray-darkest;
+  z-index: 1;
+
+  .bracket-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    opacity: 0.12;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .create-tournament-header {
+    text-align: center;
+    margin-top: rem-calc(80);
+    margin-bottom: rem-calc(40);
+    z-index: 2;
+    position: relative;
+    h1 {
+      font-family: "Orbitron", sans-serif;
+      font-size: rem-calc(54);
+      color: $color-white;
+      margin-bottom: rem-calc(12);
+      font-weight: 700;
+    }
+    p {
+      font-family: "Outfit", sans-serif;
+      font-size: rem-calc(22);
+      color: rgba($color-white, 0.8);
+      margin-bottom: 0;
+    }
+  }
+
+  .bracket-svg-container {
+    position: relative;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    min-height: 320px;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: rem-calc(40);
+
+    .bracket-svg {
+      width: 100%;
+      max-width: 1200px;
+      height: 300px;
+      display: block;
+      z-index: 2;
+    }
+
+    .bracket-img {
+      position: absolute;
+      z-index: 3;
+      width: rem-calc(70);
+      height: rem-calc(70);
+      object-fit: contain;
+      filter: drop-shadow(0 4px 24px rgba($color-blue, 0.18));
+      pointer-events: none;
+      &.bracket-img-1 {
+        left: 0;
+        top: 0;
+        transform: translate(-30%, -40%) scale(1.2);
+      }
+      &.bracket-img-2 {
+        left: 25%;
+        top: 50%;
+        transform: translate(-50%, -50%) scale(1.1);
+      }
+      &.bracket-img-3 {
+        right: 0;
+        bottom: 0;
+        transform: translate(30%, 40%) scale(1.1);
+      }
+    }
+  }
+
+  .tournament-glass {
+    margin: 0 auto;
+    margin-top: rem-calc(-80);
+    max-width: 520px;
+    background: rgba($color-white, 0.08);
+    border: 1.5px solid rgba($color-blue, 0.13);
+    border-radius: rem-calc(28);
+    box-shadow: 0 8px 32px 0 rgba($color-blue, 0.18);
+    backdrop-filter: blur(rem-calc(18));
+    padding: rem-calc(48) rem-calc(36);
+    text-align: center;
+    z-index: 3;
+    position: relative;
+    h2 {
+      font-family: "Orbitron", sans-serif;
+      font-size: rem-calc(28);
+      color: $color-white;
+      margin-bottom: rem-calc(12);
+      font-weight: 700;
+    }
+    p {
+      font-family: "Outfit", sans-serif;
+      font-size: rem-calc(18);
+      color: rgba($color-white, 0.85);
+      margin-bottom: 0;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .bracket-svg-container {
+      min-height: 180px;
+      .bracket-svg {
+        height: 140px;
+      }
+      .bracket-img {
+        width: rem-calc(44);
+        height: rem-calc(44);
+      }
+    }
+    .tournament-glass {
+      max-width: 98vw;
+      padding: rem-calc(28) rem-calc(10);
+    }
+    .create-tournament-header h1 {
+      font-size: rem-calc(32);
+    }
+    .create-tournament-header p {
+      font-size: rem-calc(16);
+    }
+  }
+}

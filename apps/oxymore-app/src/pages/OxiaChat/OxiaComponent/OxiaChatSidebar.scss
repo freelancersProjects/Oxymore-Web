@@ -1,0 +1,174 @@
+@import "../../../styles/global.scss";
+
+.sidebar-channels-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sidebar-channel-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sidebar-channel-name {
+  max-width: 110px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: inline-block;
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.sidebar-channel-menu-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #fff;
+  margin-left: 8px;
+  display: flex;
+  align-items: center;
+  padding: 4px;
+  border-radius: 6px;
+  transition: background 0.2s;
+  &:hover, &.active {
+    background: rgba(108, 71, 255, 0.13);
+  }
+}
+
+.sidebar-channel-menu {
+  position: absolute;
+  right: 0;
+  top: 100%;
+  margin-top: 8px;
+  background: rgba(40,20,80,0.98);
+  border-radius: 12px;
+  box-shadow: 0 4px 24px #6c47ff55;
+  z-index: 20;
+  padding: 12px;
+  min-width: 140px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: stretch;
+  border: 1px solid #6c47ff;
+}
+
+.sidebar-channel-menu-action {
+  font-weight: 600;
+  font-size: 15px;
+  border-radius: 8px;
+  padding: 10px 0;
+  cursor: pointer;
+  border: none;
+  transition: background 0.18s;
+}
+
+.sidebar-channel-menu-rename {
+  background: none;
+  color: #fff;
+  &:hover {
+    background: rgba(108, 71, 255, 0.13);
+  }
+}
+
+.sidebar-channel-menu-delete {
+  background: #ff4747;
+  color: #fff;
+  box-shadow: 0 2px 8px #ff474733;
+  &:hover {
+    background: #e03a3a;
+  }
+}
+
+.oxia-chat-home-btn {
+  display: none;
+}
+.oxia-chat-channels-mobile {
+  display: none;
+}
+@media (max-width: 700px) {
+  .oxia-chat-home-btn {
+    display: block;
+    position: absolute;
+    top: rem-calc(16);
+    left: rem-calc(16);
+    z-index: 1205;
+    background: rgba(30,20,50,0.95);
+    border: none;
+    border-radius: rem-calc(8);
+    padding: rem-calc(8);
+    color: $color-white;
+    font-size: rem-calc(24);
+    box-shadow: 0 rem-calc(2) rem-calc(8) rgba(0,0,0,0.18);
+    cursor: pointer;
+    transition: background 0.2s;
+    &:hover { background: rgba(80,12,173,0.18); }
+  }
+  .oxia-chat-channels-desktop {
+    display: none !important;
+  }
+  .oxia-chat-channels-mobile {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+    min-height: rem-calc(54);
+    background: $color-purple;
+    border-top: 1px solid rgba(255,255,255,0.07);
+    z-index: 1206;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 rem-calc(8);
+    box-shadow: 0 -2px 12px rgba(0,0,0,0.12);
+    ul {
+      display: flex;
+      flex-direction: row;
+      gap: rem-calc(4);
+      overflow-x: auto;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      flex: 1 1 auto;
+      justify-content: center;
+      align-items: center;
+      &::-webkit-scrollbar { display: none; }
+      li {
+        flex: 0 1 auto;
+        padding: rem-calc(8) rem-calc(14);
+        border-radius: rem-calc(8);
+        color: $color-white;
+        font-size: rem-calc(15);
+        font-weight: 600;
+        background: none;
+        cursor: pointer;
+        transition: background 0.18s, color 0.18s;
+        &.active {
+          background: $color-purple;
+          color: #fff;
+        }
+        &:hover {
+          background: lighten($color-purple, 10%);
+        }
+      }
+    }
+    .oxia-add-channel-btn-mobile {
+      margin-left: rem-calc(8);
+      background: $color-purple;
+      color: #fff;
+      border: none;
+      border-radius: rem-calc(8);
+      padding: rem-calc(8) rem-calc(10);
+      font-size: rem-calc(18);
+      box-shadow: 0 2px 8px rgba(80,12,173,0.10);
+      cursor: pointer;
+      transition: background 0.2s;
+      align-self: center;
+      &:hover { background: lighten($color-purple, 10%); }
+    }
+  }
+}

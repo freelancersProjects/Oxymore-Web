@@ -1,3 +1,48 @@
+/**
+ * @openapi
+ * components:
+ *   schemas:
+ *     User:
+ *       type: object
+ *       properties:
+ *         id_user:
+ *           type: string
+ *         first_name:
+ *           type: string
+ *         last_name:
+ *           type: string
+ *         username:
+ *           type: string
+ *         email:
+ *           type: string
+ *         password_hash:
+ *           type: string
+ *         is_premium:
+ *           type: boolean
+ *         avatar_url:
+ *           type: string
+ *         banner_url:
+ *           type: string
+ *         bio:
+ *           type: string
+ *         elo:
+ *           type: integer
+ *         xp_total:
+ *           type: integer
+ *         wallet:
+ *           type: number
+ *         country_code:
+ *           type: string
+ *         discord_tag:
+ *           type: string
+ *         faceit_id:
+ *           type: string
+ *         verified:
+ *           type: boolean
+ *         created_at:
+ *           type: string
+ *           format: date-time
+ */
 export interface User {
   id_user: string;
   first_name: string;

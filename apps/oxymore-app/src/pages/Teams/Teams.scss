@@ -1,0 +1,258 @@
+@import '../../styles/global.scss';
+
+.teams-container {
+  position: relative;
+  padding: rem-calc(20) 0;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.teams-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: rem-calc(40);
+  gap: rem-calc(30);
+
+  .header-content {
+    .teams-title {
+      font-family: "Orbitron", sans-serif;
+      font-size: rem-calc(48);
+      font-weight: 700;
+      background: linear-gradient(135deg, $color-purple 0%, $color-blue 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: rem-calc(8);
+    }
+    .teams-subtitle {
+      font-family: "Outfit", sans-serif;
+      font-size: rem-calc(18);
+      color: rgba($color-white, 0.7);
+      margin: 0;
+    }
+  }
+}
+
+.teams-stats {
+  display: flex;
+  gap: rem-calc(20);
+  margin-bottom: rem-calc(40);
+
+  .stat-card {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: rem-calc(16);
+    padding: rem-calc(20);
+    text-align: center;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    &:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba($color-purple, 0.3);
+      transform: translateY(-2px);
+    }
+    .stat-number {
+      font-family: "Orbitron", sans-serif;
+      font-size: rem-calc(32);
+      font-weight: 700;
+      color: $color-purple;
+      margin-bottom: rem-calc(8);
+    }
+    .stat-label {
+      font-family: "Outfit", sans-serif;
+      font-size: rem-calc(14);
+      color: rgba($color-white, 0.7);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+  }
+}
+
+.teams-search-bar {
+  display: flex;
+  align-items: center;
+  background: rgba($color-purple, 0.10);
+  border-radius: 1.2rem;
+  padding: 0.7rem 1.2rem;
+  margin-bottom: 2.2rem;
+  box-shadow: 0 2px 12px rgba($color-purple, 0.08);
+  input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: $color-white;
+    font-size: 1.15rem;
+    margin-left: 0.7rem;
+    font-weight: 500;
+    &::placeholder {
+      color: $color-gray;
+      opacity: 0.8;
+    }
+  }
+  svg {
+    color: $color-purple;
+    opacity: 0.7;
+  }
+}
+
+.teams-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(rem-calc(320), 1fr));
+  gap: rem-calc(24);
+  margin-bottom: rem-calc(40);
+}
+
+.team-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: rem-calc(20);
+  padding: rem-calc(24);
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+  border-left: 5px solid $color-purple;
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, $color-purple, $color-blue);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  &:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba($color-purple, 0.3);
+    transform: translateY(-4px);
+    box-shadow: 0 rem-calc(20) rem-calc(40) rgba(0, 0, 0, 0.3);
+    &::before {
+      opacity: 1;
+    }
+  }
+  .team-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: rem-calc(20);
+    gap: rem-calc(15);
+    .team-avatar {
+      width: rem-calc(60);
+      height: rem-calc(60);
+      background: linear-gradient(135deg, $color-purple, $color-blue);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      svg {
+        font-size: rem-calc(28) !important;
+        color: $color-white !important;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+      }
+    }
+    .team-info {
+      flex: 1;
+      min-width: 0;
+      .team-name {
+        font-family: "Orbitron", sans-serif;
+        font-size: rem-calc(18);
+        font-weight: 600;
+        color: $color-white;
+        margin: 0 0 rem-calc(4) 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .team-members {
+        font-family: "Outfit", sans-serif;
+        font-size: rem-calc(14);
+        color: rgba($color-white, 0.6);
+        font-weight: 500;
+      }
+    }
+  }
+  .team-desc {
+    color: $color-gray-light;
+    font-size: 1.01rem;
+    margin-bottom: 0.2rem;
+  }
+  .team-join-btn {
+    align-self: flex-end;
+    background: linear-gradient(90deg, $color-purple 0%, $color-blue 100%);
+    color: #fff;
+    font-weight: 700;
+    font-size: 1.01rem;
+    border: none;
+    border-radius: 0.7em;
+    padding: 0.45em 1.3em;
+    margin-top: 0.2em;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba($color-blue, 0.10);
+    transition: background 0.18s, box-shadow 0.18s;
+    &:hover, &:focus {
+      background: linear-gradient(90deg, lighten($color-purple, 8%) 0%, lighten($color-blue, 8%) 100%);
+      box-shadow: 0 4px 18px 0 rgba($color-blue, 0.18);
+      outline: none;
+    }
+  }
+}
+
+.teams-empty {
+  text-align: center;
+  color: $color-gray;
+  margin-top: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.1rem;
+  svg {
+    color: $color-purple;
+    opacity: 0.5;
+  }
+  h3 {
+    color: $color-white;
+    font-size: 1.18rem;
+    font-weight: 700;
+    margin: 0;
+  }
+  p {
+    font-size: 1.01rem;
+    margin: 0;
+    color: $color-gray-light;
+  }
+}
+
+@media (max-width: 768px) {
+  .teams-container {
+    padding: rem-calc(20);
+  }
+  .teams-header {
+    flex-direction: column;
+    gap: rem-calc(20);
+  }
+  .teams-stats {
+    flex-direction: column;
+    gap: rem-calc(15);
+  }
+  .teams-grid {
+    grid-template-columns: 1fr;
+    gap: rem-calc(16);
+  }
+  .team-card {
+    padding: rem-calc(20);
+    .team-header {
+      .team-avatar {
+        width: rem-calc(50);
+        height: rem-calc(50);
+        svg {
+          font-size: rem-calc(24) !important;
+        }
+      }
+    }
+  }
+}

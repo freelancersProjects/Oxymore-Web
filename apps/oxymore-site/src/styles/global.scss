@@ -23,6 +23,11 @@ h1 {
     color: #fff;
 }
 
+a {
+    font-size: rem-calc(16);
+    color: $color-white;
+}
+
 .orbitron {
     font-family: "Orbitron", sans-serif;
 }

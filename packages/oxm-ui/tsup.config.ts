@@ -5,7 +5,6 @@ export default defineConfig({
   outDir: "dist",
   format: ["esm"],
   outExtension: () => ({ js: ".js" }),
-  dts: true,
   clean: true,
   splitting: false,
   sourcemap: false,
