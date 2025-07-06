@@ -1,37 +1,42 @@
 import React, { useState } from "react";
-import { OXMButton } from "@oxymore/ui";
+import { OXMButton, OXMPlayer } from "@oxymore/ui";
 import "./HeroBanner.scss";
 
 const videos = [
   {
     id: 1,
-    title: "Final Kill – CS2",
+    title: "Ace on Bind – Semi Finals",
     subtitle: "Clutch 1v3 Victory",
-    thumb: "/assets/thumb1.jpg",
+    src: "https://res.cloudinary.com/dc94ncztl/video/upload/v1751837927/nkq4utl2MVJU99bLJiIZnw_picedm.mp4",
+    poster: "https://res.cloudinary.com/dc94ncztl/video/upload/v1751837927/nkq4utl2MVJU99bLJiIZnw_picedm.jpg"
   },
   {
     id: 2,
-    title: "Perfect Nade – CS2",
-    subtitle: "Double Knockout in Semi-Final",
-    thumb: "/assets/thumb2.jpg",
+    title: "Clutch 1v3 Victory",
+    subtitle: "Ace on Mirage",
+    src: "https://res.cloudinary.com/dc94ncztl/video/upload/v1751837925/CBT9pT35dI_lAYa0NBexqQ_q71khu.mp4",
+    poster: "https://res.cloudinary.com/dc94ncztl/video/upload/v1751837925/CBT9pT35dI_lAYa0NBexqQ_q71khu.jpg"
   },
   {
     id: 3,
-    title: "Ace Round – CS2",
-    subtitle: "Perfect Team Coordination",
-    thumb: "/assets/thumb3.jpg",
+    title: "Perfect Nade – CS2",
+    subtitle: "Double Knockout in Semi-Final",
+    src: "https://res.cloudinary.com/dc94ncztl/video/upload/v1751837925/27Fk7HvcfJkD9Z1Z5eUU2Q_owiqb5.mp4",
+    poster: "https://res.cloudinary.com/dc94ncztl/video/upload/v1751837925/27Fk7HvcfJkD9Z1Z5eUU2Q_owiqb5.jpg"
   },
   {
     id: 4,
-    title: "Sniper Master – CS2",
-    subtitle: "Incredible Long Range Shots",
-    thumb: "/assets/thumb4.jpg",
+    title: "Insane Flickshot",
+    subtitle: "AWP highlight",
+    src: "https://res.cloudinary.com/dc94ncztl/video/upload/v1751837924/9u-IFqXx4y1RKS9ej5r3jA_jokcbp.mp4",
+    poster: "https://res.cloudinary.com/dc94ncztl/video/upload/v1751837924/9u-IFqXx4y1RKS9ej5r3jA_jokcbp.jpg"
   },
   {
     id: 5,
-    title: "Tactical Play – CS2",
+    title: "Tactical Outplay",
     subtitle: "Strategic Team Movement",
-    thumb: "/assets/thumb5.jpg",
+    src: "https://res.cloudinary.com/dc94ncztl/video/upload/v1751837924/xgKkzfRhiUqLVtBDnjMCKQ_d28nfb.mp4",
+    poster: "https://res.cloudinary.com/dc94ncztl/video/upload/v1751837924/xgKkzfRhiUqLVtBDnjMCKQ_d28nfb.jpg"
   },
 ];
 
@@ -39,6 +44,7 @@ const HeroBanner = () => {
   const [current, setCurrent] = useState(0);
   const [selected, setSelected] = useState(0); // 0 = haut, 1 = bas
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [showVisualizer, setShowVisualizer] = useState(false);
 
   const nextIdx = (current + 1) % videos.length;
 
@@ -59,11 +65,13 @@ const HeroBanner = () => {
     <section className="hero-banner">
       <video
         className="hero-banner__video"
-        src="https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/720/Big_Buck_Bunny_720_10s_1MB.mp4"
+        src={videos[current].src}
+        poster={videos[current].poster}
         autoPlay
-        loop
+        loop={false}
         muted
         playsInline
+        onEnded={() => { setCurrent((current + 1) % videos.length); setSelected(0); }}
       />
       <div className="hero-banner__overlay" />
 
@@ -71,7 +79,7 @@ const HeroBanner = () => {
         <div className="hero-banner__left">
           <span className="tag orbitron">CS2</span>
           <h1>Ace on Bind – Semi Finals</h1>
-          <OXMButton>View Full Highlight</OXMButton>
+          <OXMButton onClick={() => setShowVisualizer(true)}>View Full Highlight</OXMButton>
           <p className="author">By: @ShadowSlayer</p>
         </div>
 
@@ -98,9 +106,14 @@ const HeroBanner = () => {
                 />
               </svg>
             </div>
-            <img
-              src={`https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80`}
-              alt={videos[current].title}
+            <video
+              src={videos[current].src}
+              poster={videos[current].poster}
+              className="thumb-video"
+              muted
+              preload="metadata"
+              style={{ width: "100%", borderRadius: 15, objectFit: "cover", height: '180px' }}
+              onLoadedMetadata={e => (e.currentTarget.currentTime = 0.1)}
             />
             <h4>{videos[current].title}</h4>
             <p>{videos[current].subtitle}</p>
@@ -108,7 +121,7 @@ const HeroBanner = () => {
           {/* Carte du bas */}
           <div
             className={`thumb ${selected === 1 ? "active" : ""} ${hoveredIndex === 1 ? "hovered" : ""}`}
-            onClick={() => handleVideoClick(nextIdx)}
+            onClick={() => { setCurrent(nextIdx); setSelected(0); }}
             onMouseEnter={() => setHoveredIndex(1)}
             onMouseLeave={() => setHoveredIndex(null)}
             style={{ zIndex: 1 }}
@@ -127,9 +140,14 @@ const HeroBanner = () => {
                 />
               </svg>
             </div>
-            <img
-              src={`https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80`}
-              alt={videos[nextIdx].title}
+            <video
+              src={videos[nextIdx].src}
+              poster={videos[nextIdx].poster}
+              className="thumb-video"
+              muted
+              preload="metadata"
+              style={{ width: "100%", borderRadius: 15, objectFit: "cover", height: '180px' }}
+              onLoadedMetadata={e => (e.currentTarget.currentTime = 0.1)}
             />
             <h4>{videos[nextIdx].title}</h4>
             <p>{videos[nextIdx].subtitle}</p>
@@ -153,6 +171,14 @@ const HeroBanner = () => {
           </div>
         </div>
       </div>
+
+      <OXMPlayer
+        open={showVisualizer}
+        onClose={() => setShowVisualizer(false)}
+        videoSrc={videos[current].src}
+        title={videos[current].title}
+        author={videos[current].subtitle}
+      />
     </section>
   );
 };

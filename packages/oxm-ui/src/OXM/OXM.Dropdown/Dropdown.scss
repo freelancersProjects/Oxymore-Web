@@ -1,0 +1,181 @@
+@import "../../styles/global.scss";
+
+.oxm-dropdown {
+  position: relative;
+  min-width: rem-calc(180);
+  font-family: "Outfit", sans-serif;
+  z-index: 10;
+
+  &__toggle {
+    width: 100%;
+    background: rgba($color-white, 0.07);
+    border: 1.5px solid rgba($color-blue, 0.13);
+    border-radius: rem-calc(18);
+    backdrop-filter: blur(rem-calc(10));
+    color: $color-white;
+    font-size: rem-calc(16);
+    font-weight: 600;
+    padding: rem-calc(14) rem-calc(18);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    transition: border 0.2s;
+    outline: none;
+    gap: rem-calc(10);
+    position: relative;
+    box-shadow: none;
+    &:hover, &:focus {
+      border: 1.5px solid $color-blue;
+      box-shadow: none;
+    }
+  }
+
+  &__selected {
+    color: $color-white;
+    font-size: rem-calc(16);
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    text-shadow: 0 1px 4px rgba($color-blue, 0.10);
+  }
+
+  &__icon {
+    display: flex;
+    align-items: center;
+    color: $color-blue;
+    transition: transform 0.25s;
+    svg {
+      display: block;
+    }
+  }
+
+  &.open &__icon {
+    transform: rotate(180deg);
+  }
+
+  &__menu {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    width: 100%;
+    background: rgba($color-white, 0.18);
+    border: 1.5px solid rgba($color-blue, 0.13);
+    border-radius: rem-calc(18);
+    backdrop-filter: blur(rem-calc(14));
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    z-index: 20;
+    animation: dropdown-fade-in 0.22s cubic-bezier(0.4,0,0.2,1);
+    box-shadow: none;
+    overflow: hidden;
+  }
+
+  &__option {
+    font-size: rem-calc(16);
+    color: $color-white;
+    padding: rem-calc(14) rem-calc(22);
+    cursor: pointer;
+    transition: background 0.18s, color 0.18s;
+    border: none;
+    background: none;
+    outline: none;
+    &:hover, &:focus {
+      background: rgba($color-blue, 0.18);
+      color: $color-blue;
+    }
+    &.selected {
+      color: $color-blue;
+      background: rgba($color-blue, 0.22);
+      font-weight: 700;
+    }
+    &:first-child {
+      border-top-left-radius: rem-calc(18);
+      border-top-right-radius: rem-calc(18);
+    }
+    &:last-child {
+      border-bottom-left-radius: rem-calc(18);
+      border-bottom-right-radius: rem-calc(18);
+    }
+  }
+
+  &--purple {
+    .oxm-dropdown__toggle {
+      border: 1.5px solid rgba($color-purple, 0.13);
+      &:hover, &:focus {
+        border: 1.5px solid $color-purple;
+      }
+    }
+    .oxm-dropdown__icon {
+      color: $color-purple;
+    }
+    .oxm-dropdown__menu {
+      border: 1.5px solid rgba($color-purple, 0.13);
+      background: rgba($color-black, 0.18);
+    }
+    .oxm-dropdown__option {
+      color: $color-white;
+      &:hover, &:focus {
+        background: rgba($color-purple, 0.18);
+        color: $color-purple;
+      }
+      &.selected {
+        background: rgba($color-purple, 0.22);
+        color: $color-purple;
+      }
+      &:first-child {
+        border-top-left-radius: rem-calc(18);
+        border-top-right-radius: rem-calc(18);
+      }
+      &:last-child {
+        border-bottom-left-radius: rem-calc(18);
+        border-bottom-right-radius: rem-calc(18);
+      }
+    }
+  }
+  &--blue {
+    .oxm-dropdown__toggle {
+      border: 1.5px solid rgba($color-blue, 0.13);
+      &:hover, &:focus {
+        border: 1.5px solid $color-blue;
+      }
+    }
+    .oxm-dropdown__icon {
+      color: $color-blue;
+    }
+    .oxm-dropdown__menu {
+      border: 1.5px solid rgba($color-blue, 0.13);
+      background: rgba($color-white, 0.18);
+    }
+    .oxm-dropdown__option {
+      color: $color-white;
+      &:hover, &:focus {
+        background: rgba($color-blue, 0.18);
+        color: $color-blue;
+      }
+      &.selected {
+        background: rgba($color-blue, 0.22);
+        color: $color-blue;
+      }
+      &:first-child {
+        border-top-left-radius: rem-calc(18);
+        border-top-right-radius: rem-calc(18);
+      }
+      &:last-child {
+        border-bottom-left-radius: rem-calc(18);
+        border-bottom-right-radius: rem-calc(18);
+      }
+    }
+  }
+}
+
+@keyframes dropdown-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+} 

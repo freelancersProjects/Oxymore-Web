@@ -6,3 +6,5 @@ export { default as OXMToast } from "./OXM/OXM.Toast/Toast";
 export { default as OXMModal } from "./OXM/OXM.Modal/Modal";
 export { default as OXMTabSwitcher } from "./OXM/OXM.TabSwitcher/TabSwitcher";
 export { default as OXMDrawer } from './OXM/OXM.Drawer/Drawer';
+export { default as OXMDropdown } from './OXM/OXM.Dropdown/Dropdown';
+export { default as OXMPlayer } from "./OXM/OXM.Player/OXMPlayer";

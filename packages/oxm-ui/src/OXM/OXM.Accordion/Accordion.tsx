@@ -20,11 +20,9 @@ const Accordion: React.FC<AccordionProps> = ({ question, answer }) => {
                 <h3>{question}</h3>
                 <img src={FAQPlus} alt="Toggle Icon" className="oxm-accordion__icon" />
             </div>
-            {isOpen && (
-                <div className="oxm-accordion__body">
-                    <p>{answer}</p>
-                </div>
-            )}
+            <div className="oxm-accordion__body">
+                <p>{answer}</p>
+            </div>
         </div>
     );
 };
