@@ -28,7 +28,7 @@
 
   .resources-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: rem-calc(36);
     margin: 0 auto;
     max-width: 1200px;
@@ -38,6 +38,9 @@
     }
     @media (max-width: 700px) {
       grid-template-columns: 1fr;
+    }
+    .resource-card:last-child:nth-child(3n + 1) {
+      grid-column: 2 / 3
     }
   }
 

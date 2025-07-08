@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Logo from "../../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import { OXMButton } from "@oxymore/ui";
@@ -8,7 +8,6 @@ import firstImage from "../../assets/images/first.png";
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const headerRef = useRef<HTMLHeadElement>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -22,7 +21,7 @@ const Header = () => {
   return (
     <header className={`header${scrolled ? " scrolled" : ""}`}>
       <div className="header__logo" onClick={() => navigate("/")}>
-        <img src={Logo} alt="Logo" style={{ cursor: "pointer" }} />
+        <img src={Logo} alt="Logo" className="logo" style={{ cursor: "pointer" }} />
       </div>
 
       <button
@@ -55,7 +54,7 @@ const Header = () => {
                 <ul>
                   <li>
                     <a onClick={() => navigate("/learn/create-tournament")}>
-                      Create a Tournament
+                      Join a Tournament
                     </a>
                   </li>
                   <li>
@@ -84,7 +83,7 @@ const Header = () => {
       </nav>
 
       <div className="header__auth">
-        <a onClick={() => navigate("/signin")}>Sign In</a>
+        <a>Access to the app</a>
         <OXMButton
           onClick={() => {
             const link = document.createElement('a');

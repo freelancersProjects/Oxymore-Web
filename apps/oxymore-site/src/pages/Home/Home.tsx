@@ -1,4 +1,3 @@
-import React from "react";
 import HeroBanner from "./HeroBanner/HeroBanner";
 import PlatformIntro from "./PlatformIntro/PlatformIntro";
 import Tournaments from "./Tournaments/Tournaments";

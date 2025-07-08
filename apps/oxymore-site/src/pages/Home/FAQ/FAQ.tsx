@@ -1,4 +1,3 @@
-import React from "react";
 import "./FAQ.scss";
 import { OXMCategorie, OXMAccordion } from "@oxymore/ui";
 

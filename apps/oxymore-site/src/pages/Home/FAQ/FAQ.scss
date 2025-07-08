@@ -3,6 +3,10 @@
 .faq {
     padding: rem-calc(40) 10% rem-calc(0) 15%;
 
+    h1 {
+        margin: rem-calc(20) 0 rem-calc(50);
+    }
+
     &__list {
         display: flex;
         flex-direction: column;

@@ -1,4 +1,3 @@
-import React from "react";
 import { OXMButton, OXMCategorie } from "@oxymore/ui";
 import Herobannerimage from "../../assets/images/APIKeys.webp";
 import APIkey from "../../assets/images/modal-generate-key.webp";
@@ -101,7 +100,7 @@ const APIDevelopers = () => {
         </div>
         <div className="api-dev__section-visual">
           <div className="visual-placeholder">
-            <img src={APIKeyPremium} alt="API Key Premium" />
+            <img src={APIKeyPremium} className="left-placeholder" alt="API Key Premium" />
           </div>
         </div>
       </section>

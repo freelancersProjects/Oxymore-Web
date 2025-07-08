@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
-import { OXMCategorie, OXMButton, OXMGlowOrb } from "@oxymore/ui";
+import { useEffect, useRef, useState } from "react";
+import { OXMCategorie, OXMButton } from "@oxymore/ui";
 import "./About.scss";
 
 const About = () => {
@@ -107,7 +107,7 @@ const About = () => {
   return (
     <div className={`about ${isVisible ? 'visible' : ''}`}>
       {/* Hero Section */}
-      <section className="about__hero" ref={(el) => { sectionRefs.current[0] = el; }}>
+      <section className={`about__hero${activeSection === 0 ? ' active' : ''}`} ref={(el) => { sectionRefs.current[0] = el; }}>
         <div className="about__hero-content">
           <OXMCategorie label="About Oxymore" />
           <h1 className="orbitron">Building the Future of Esports</h1>
@@ -164,7 +164,7 @@ const About = () => {
       </section>
 
       {/* Mission Section */}
-      <section className="about__mission" ref={(el) => { sectionRefs.current[1] = el; }}>
+      <section className={`about__mission${activeSection === 1 ? ' active' : ''}`} ref={(el) => { sectionRefs.current[1] = el; }}>
         <div className="about__mission-content">
           <div className="mission-text">
             <h2 className="orbitron">Our Mission</h2>
@@ -190,7 +190,7 @@ const About = () => {
         </div>
       </section>
 
-      <section className="about__values" ref={(el) => { sectionRefs.current[2] = el; }}>
+      <section className={`about__values${activeSection === 2 ? ' active' : ''}`} ref={(el) => { sectionRefs.current[2] = el; }}>
         <OXMCategorie label="Our Values" />
         <h2 className="orbitron">What Drives Us Forward</h2>
         <div className="values-grid">
@@ -209,7 +209,7 @@ const About = () => {
       </section>
 
       {/* Team Section */}
-      <section className="about__team" ref={(el) => { sectionRefs.current[3] = el; }}>
+      <section className={`about__team${activeSection === 3 ? ' active' : ''}`} ref={(el) => { sectionRefs.current[3] = el; }}>
         <OXMCategorie label="Meet Our Team" />
         <h2 className="orbitron">The Minds Behind Oxymore</h2>
         <p className="team-intro">
@@ -247,7 +247,7 @@ const About = () => {
       </section>
 
       {/* Story Section */}
-      <section className="about__story" ref={(el) => { sectionRefs.current[4] = el; }}>
+      <section className={`about__story${activeSection === 4 ? ' active' : ''}`} ref={(el) => { sectionRefs.current[4] = el; }}>
         <div className="story-content">
           <div className="story-text">
             <OXMCategorie label="Our Story" />
@@ -294,7 +294,7 @@ const About = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="about__cta" ref={(el) => { sectionRefs.current[5] = el; }}>
+      <section className={`about__cta${activeSection === 5 ? ' active' : ''}`} ref={(el) => { sectionRefs.current[5] = el; }}>
         <div className="cta-content">
           <h2 className="orbitron">Ready to Join the Revolution?</h2>
           <p>

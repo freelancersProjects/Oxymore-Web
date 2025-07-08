@@ -99,7 +99,7 @@ const Leagues = () => {
 
 
       <div className="leagues__cards">
-        {podium.map((team, idx) =>
+        {podium.map((team) =>
           team ? (
             <div
               key={team.id}

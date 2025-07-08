@@ -1,4 +1,3 @@
-import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import "./App.css";
@@ -9,7 +8,7 @@ import Contact from "./pages/Contact/Contact";
 import APIDevelopers from "./pages/APIDevelopers/APIDevelopers";
 import About from "./pages/About/About";
 import IntegrateDiscordBot from "./pages/IntegrateDiscordBot/IntegrateDiscordBot";
-import CreateTournament from "./pages/CreateTournament/CreateTournament";
+import JoinTournament from "./pages/JoinTournament/JoinTournament";
 import Tournaments from "./pages/Home/Tournaments/Tournaments";
 import Resources from "./pages/Resources/Resources";
 
@@ -31,10 +30,7 @@ export default function App() {
             path="/learn/integrate-api-discord"
             element={<IntegrateDiscordBot />}
           />
-          <Route
-            path="/learn/create-tournament"
-            element={<CreateTournament />}
-          />
+          <Route path="/learn/create-tournament" element={<JoinTournament />} />
           <Route path="/tournaments" element={<Tournaments />} />
           <Route path="/learn/resources" element={<Resources />} />
           <Route path="*" element={<Home />} />

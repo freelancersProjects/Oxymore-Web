@@ -1,4 +1,3 @@
-import React from "react";
 import { OXMCategorie } from "@oxymore/ui";
 import "./Tournaments.scss";
 
