@@ -4,57 +4,56 @@ import FacebookIcon from "@mui/icons-material/Facebook";
 import YouTubeIcon from "@mui/icons-material/YouTube";
 import SportsEsportsIcon from "@mui/icons-material/SportsEsports";
 import "./Contact.scss";
+import { useLanguage } from "../../context/LanguageContext";
 
 const Contact = () => {
+  const { t } = useLanguage();
   return (
     <>
       <OXMGlowOrb top="10%" left="-15%" size="600px" color="rgba(80,12,173,0.25)" />
       <section className="contact-page">
-        <h1>Contact Us</h1>
-        <p>
-          Have a question, issue, or just want to say hi? We're here to help you
-          with anything related to Oxymore and our tournaments.
-        </p>
+        <h1>{t('contact.title')}</h1>
+        <p>{t('contact.subtitle')}</p>
 
         <div className="contact__content">
           <div className="contact__form">
-            <h3>Send Us a Message</h3>
+            <h3>{t('contact.formTitle')}</h3>
             <form>
-              <label htmlFor="name">Name</label>
-              <input type="text" id="name" placeholder="Enter Name" />
+              <label htmlFor="name">{t('contact.form.name')}</label>
+              <input type="text" id="name" placeholder={t('contact.form.namePlaceholder')} />
 
-              <label htmlFor="email">Email</label>
-              <input type="email" id="email" placeholder="Enter Email" />
+              <label htmlFor="email">{t('contact.form.email')}</label>
+              <input type="email" id="email" placeholder={t('contact.form.emailPlaceholder')} />
 
-              <label htmlFor="message">Message</label>
-              <textarea id="message" placeholder="Type here"></textarea>
+              <label htmlFor="message">{t('contact.form.message')}</label>
+              <textarea id="message" placeholder={t('contact.form.messagePlaceholder')}></textarea>
 
-              <OXMButton>Submit</OXMButton>
+              <OXMButton>{t('contact.form.send')}</OXMButton>
             </form>
           </div>
 
           {/* Infos de contact */}
           <div className="contact__info">
             <div className="contact__box">
-              <h3>Support & Community Channels</h3>
+              <h3>{t('contact.infoTitle')}</h3>
               <p>
-                Support Email:{" "}
+                {t('contact.infoEmail')}:{" "}
                 <a href="mailto:support@oxymore.gg">support@oxymore.gg</a>
               </p>
               <p>
-                Join Our Discord:{" "}
+                {t('contact.infoDiscord')}:{" "}
                 <a
                   href="https://discord.gg/your-discord-link"
                   target="_blank"
                   rel="noreferrer"
                 >
-                  [Join Discord Link]
+                  {t('contact.infoDiscordLink')}
                 </a>
               </p>
             </div>
 
             <div className="contact__box">
-              <h3>Follow Us on Socials:</h3>
+              <h3>{t('contact.socialsTitle')}</h3>
               <div className="socials">
                 <a href="#" aria-label="Instagram">
                   <InstagramIcon />

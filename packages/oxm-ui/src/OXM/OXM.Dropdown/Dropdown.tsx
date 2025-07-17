@@ -35,7 +35,6 @@ const Dropdown: React.FC<DropdownProps> = ({ options, value, onChange, placehold
       className={`oxm-dropdown oxm-dropdown--${theme}${open ? " open" : ""}`}
       ref={ref}
       tabIndex={0}
-      onBlur={() => setOpen(false)}
     >
       <button
         className="oxm-dropdown__toggle"
@@ -71,4 +70,4 @@ const Dropdown: React.FC<DropdownProps> = ({ options, value, onChange, placehold
   );
 };
 
-export default Dropdown; 
+export default Dropdown;

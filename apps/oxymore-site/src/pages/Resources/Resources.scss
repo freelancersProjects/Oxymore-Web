@@ -1,5 +1,9 @@
 @import "../../styles/global.scss";
 
+body, .resources-bg-animated {
+  overflow-x: hidden !important;
+}
+
 .resources-page {
   max-width: 1400px;
   margin: rem-calc(120) auto rem-calc(80);
@@ -7,6 +11,7 @@
   text-align: center;
   position: relative;
   z-index: 1;
+  overflow-x: hidden;
 
   h1 {
     font-family: "Orbitron", sans-serif;

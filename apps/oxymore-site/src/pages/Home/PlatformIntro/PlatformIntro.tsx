@@ -1,18 +1,14 @@
 import { OXMCategorie } from "@oxymore/ui";
+import { useLanguage } from "../../../context/LanguageContext";
 import "./PlatformIntro.scss";
 
 const PlatformIntro = () => {
+  const { t } = useLanguage();
   return (
     <section className="platform-intro">
-      <OXMCategorie label="About Our Platform" />
-
+      <OXMCategorie label={t('home.platformIntro.categorie')} />
       <h2>
-        Oxymore is a competitive esports platform built for gamers who want more
-        — more tournaments,{" "}
-        <span>
-          more stats, more glory. Whether you’re a solo player or part of a
-          team, dive into the action and rise through the ranks.
-        </span>
+        {t('home.platformIntro.title')} <span>{t('home.platformIntro.span')}</span>
       </h2>
     </section>
   );

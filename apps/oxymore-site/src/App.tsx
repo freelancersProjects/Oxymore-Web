@@ -7,6 +7,7 @@ import Home from "./pages/Home/Home";
 import Contact from "./pages/Contact/Contact";
 import APIDevelopers from "./pages/APIDevelopers/APIDevelopers";
 import About from "./pages/About/About";
+import Download from "./pages/Download/Download";
 import IntegrateDiscordBot from "./pages/IntegrateDiscordBot/IntegrateDiscordBot";
 import JoinTournament from "./pages/JoinTournament/JoinTournament";
 import Tournaments from "./pages/Home/Tournaments/Tournaments";
@@ -25,6 +26,7 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/download" element={<Download />} />
           <Route path="/developers/api" element={<APIDevelopers />} />
           <Route
             path="/learn/integrate-api-discord"

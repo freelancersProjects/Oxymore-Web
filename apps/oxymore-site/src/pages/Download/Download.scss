@@ -1,0 +1,322 @@
+@import "../../styles/global.scss";
+
+.download-full-bg {
+  min-height: 100vh;
+  width: 100vw;
+  background-image: linear-gradient(rgba(10, 10, 30, 0.72), rgba(10, 10, 30, 0.82)), url('../../assets/images/fond-hexagonale.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+  overflow-x: hidden;
+}
+
+.download-overlay {
+  min-height: 100vh;
+  width: 100vw;
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 110px;
+  padding-bottom: 40px;
+  overflow-x: hidden;
+}
+
+.download-main-card {
+  background: rgba(10, 18, 40, 0.92);
+  border-radius: 3.2rem;
+  box-shadow: 0 0 64px 0 rgba($color-blue, 0.28), 0 0 0 4px rgba($color-blue, 0.18);
+  border: 2.5px solid rgba($color-blue, 0.28);
+  max-width: 1100px;
+  width: 90vw;
+  margin: 0 auto 64px auto;
+  padding: 5.5rem 4.5rem 4.5rem 4.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 2;
+  position: relative;
+  text-align: center;
+  backdrop-filter: blur(24px) saturate(1.3);
+  -webkit-backdrop-filter: blur(24px) saturate(1.3);
+  transition: box-shadow 0.3s;
+  &::after {
+    content: '';
+    position: absolute;
+    inset: -18px;
+    border-radius: 3.5rem;
+    box-shadow: 0 0 120px 20px rgba($color-blue, 0.22), 0 0 120px 20px rgba($color-blue, 0.13);
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  .categorie{
+    margin-bottom: 15px;
+  }
+}
+
+.download-badge {
+  display: inline-block;
+  background: linear-gradient(90deg, $color-blue 0%, lighten($color-blue, 10%) 100%);
+  color: $color-white;
+  font-weight: 800;
+  font-size: 2.1rem;
+  border-radius: 1.8rem;
+  padding: 0.7rem 2.5rem;
+  margin-bottom: 2.8rem;
+  letter-spacing: 0.04em;
+  box-shadow: 0 2px 18px rgba($color-blue, 0.18);
+  text-shadow: 0 1px 8px rgba($color-blue, 0.13);
+}
+
+.download-title {
+  font-size: 4.8rem;
+  font-weight: 900;
+  color: $color-white;
+  margin-bottom: 2.2rem;
+  letter-spacing: 0.01em;
+  text-shadow: 0 2px 32px rgba($color-blue, 0.22);
+}
+
+.download-subtitle {
+  font-size: 2.2rem;
+  color: $color-blue;
+  margin-bottom: 3.2rem;
+  line-height: 1.6;
+  font-weight: 600;
+  text-shadow: 0 1px 12px rgba($color-blue, 0.13);
+}
+
+.download-platform-row {
+  display: flex;
+  gap: 2.5rem;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 3.2rem;
+
+  .platform-select {
+    background: rgba($color-background, 0.98);
+    color: $color-white;
+    border: 2.5px solid $color-blue;
+    border-radius: 1.7rem;
+    font-size: 2.1rem;
+    padding: 1.3rem 2.7rem;
+    outline: none;
+    font-weight: 700;
+    transition: border 0.2s;
+    min-width: 180px;
+    margin-right: 0.5rem;
+    box-shadow: 0 2px 12px rgba($color-blue, 0.13);
+    &:focus {
+      border-color: $color-blue;
+    }
+  }
+
+  button {
+    font-size: 2.2rem;
+    font-weight: 800;
+    padding: 1.5rem 3.5rem;
+    border-radius: 1.7rem;
+    background: linear-gradient(90deg, $color-blue 0%, lighten($color-blue, 10%) 100%);
+    color: $color-white;
+    border: none;
+    box-shadow: 0 4px 32px 0 rgba($color-blue, 0.22);
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s, color 0.2s;
+    &:hover:not(:disabled) {
+      background: linear-gradient(90deg, lighten($color-blue, 8%) 0%, lighten($color-blue, 18%) 100%);
+      color: $color-white;
+      box-shadow: 0 8px 48px 0 rgba($color-blue, 0.28);
+    }
+    &:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+    .loading-spinner {
+      width: 32px;
+      height: 32px;
+      border: 3px solid transparent;
+      border-top: 3px solid $color-white;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.download-platform-icons {
+  display: flex;
+  justify-content: center;
+  gap: 3.5rem;
+  margin: 3.5rem 0 1.2rem 0;
+  width: 100%;
+
+  .platform-icon-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.2rem;
+    background: rgba($color-blue, 0.13);
+    border-radius: 2.2rem;
+    padding: 2.2rem 2.7rem 1.7rem 2.7rem;
+    box-shadow: 0 2px 32px rgba($color-blue, 0.18), 0 0 0 2px rgba($color-blue, 0.13);
+    border: 2px solid rgba($color-blue, 0.18);
+    min-width: 140px;
+    transition: box-shadow 0.2s, border 0.2s;
+    &:hover {
+      box-shadow: 0 8px 48px rgba($color-blue, 0.28), 0 0 0 3px $color-blue;
+      border-color: $color-blue;
+    }
+    img {
+      width: 64px;
+      height: 64px;
+      margin-bottom: 0.2rem;
+      filter: drop-shadow(0 2px 16px rgba($color-blue, 0.18));
+      filter: invert(1);
+    }
+    span {
+      color: $color-white;
+      font-size: 1.7rem;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      text-shadow: 0 1px 8px rgba($color-blue, 0.13);
+    }
+  }
+}
+
+.download-features-row {
+  display: flex;
+  justify-content: center;
+  gap: 3.5rem;
+  margin: 5.2rem 0 3.2rem 0;
+  width: 100%;
+  flex-wrap: wrap;
+
+  .feature-block {
+    background: rgba(10, 18, 40, 0.92);
+    border-radius: 2.2rem;
+    border: 2px solid rgba($color-blue, 0.18);
+    box-shadow: 0 2px 32px rgba($color-blue, 0.13), 0 0 0 2px rgba($color-blue, 0.10);
+    padding: 3.2rem 2.7rem 2.2rem 2.7rem;
+    min-width: 320px;
+    max-width: 400px;
+    flex: 1 1 320px;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 2.2rem;
+    svg {
+      flex-shrink: 0;
+      margin-top: 0.2rem;
+      filter: drop-shadow(0 2px 12px rgba($color-blue, 0.13));
+      width: 56px;
+      height: 56px;
+    }
+    h3 {
+      color: $color-white;
+      font-size: 2.1rem;
+      font-weight: 800;
+      margin-bottom: 0.7rem;
+      margin-top: 0;
+      letter-spacing: 0.01em;
+      text-shadow: 0 1px 8px rgba($color-blue, 0.13);
+    }
+    p {
+      color: $color-blue;
+      font-size: 1.35rem;
+      margin: 0;
+      line-height: 1.5;
+      font-weight: 600;
+      text-shadow: 0 1px 8px rgba($color-blue, 0.13);
+    }
+  }
+}
+
+.download-requirements-row {
+  display: flex;
+  justify-content: center;
+  gap: 3.5rem;
+  margin: 3.5rem 0 0 0;
+  width: 100%;
+  flex-wrap: wrap;
+
+  .requirement-card {
+    background: rgba(10, 18, 40, 0.92);
+    border-radius: 2.2rem;
+    border: 2px solid rgba($color-blue, 0.18);
+    box-shadow: 0 2px 32px rgba($color-blue, 0.13), 0 0 0 2px rgba($color-blue, 0.10);
+    padding: 3.2rem 2.7rem 2.2rem 2.7rem;
+    min-width: 340px;
+    max-width: 480px;
+    flex: 1 1 340px;
+    h3 {
+      color: $color-white;
+      font-size: 2.1rem;
+      font-weight: 800;
+      margin-bottom: 1.7rem;
+      margin-top: 0;
+      letter-spacing: 0.01em;
+      text-align: center;
+      text-shadow: 0 1px 8px rgba($color-blue, 0.13);
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      li {
+        color: $color-blue;
+        font-size: 1.35rem;
+        margin-bottom: 1.1rem;
+        padding-left: 0;
+        position: relative;
+        font-weight: 600;
+        text-shadow: 0 1px 8px rgba($color-blue, 0.13);
+      }
+    }
+  }
+}
+
+
+
+@media (max-width: 1200px) {
+  .download-main-card {
+    max-width: 98vw;
+    padding: 3.2rem 1.2rem 2.2rem 1.2rem;
+  }
+  .download-features-row, .download-requirements-row {
+    flex-direction: column;
+    align-items: center;
+    gap: 2.2rem;
+  }
+  .download-platform-icons {
+    gap: 1.7rem;
+  }
+}
+
+.download-platform-row .platform-select,
+.download-platform-row .oxm-dropdown,
+.download-platform-row .oxm-dropdown__control {
+  border: none !important;
+  color: $color-white !important;
+  box-shadow: none !important;
+}
+.download-platform-row .oxm-dropdown__control:focus,
+.download-platform-row .oxm-dropdown__control--is-focused {
+  border: none !important;
+  box-shadow: none !important;
+}
+.download-platform-row .oxm-dropdown__option--is-selected,
+.download-platform-row .oxm-dropdown__option--is-focused {
+  background: $color-blue !important;
+  color: $color-white !important;
+}

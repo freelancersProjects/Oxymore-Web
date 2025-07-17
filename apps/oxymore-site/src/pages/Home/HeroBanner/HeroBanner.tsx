@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { OXMButton, OXMPlayer } from "@oxymore/ui";
+import { useLanguage } from "../../../context/LanguageContext";
 import "./HeroBanner.scss";
 
 const videos = [
@@ -45,6 +46,7 @@ const HeroBanner = () => {
   const [selected, setSelected] = useState(0); // 0 = haut, 1 = bas
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [showVisualizer, setShowVisualizer] = useState(false);
+  const { t } = useLanguage();
 
   const nextIdx = (current + 1) % videos.length;
 
@@ -78,13 +80,12 @@ const HeroBanner = () => {
       <div className="hero-banner__content">
         <div className="hero-banner__left">
           <span className="tag orbitron">CS2</span>
-          <h1>Ace on Bind – Semi Finals</h1>
-          <OXMButton onClick={() => setShowVisualizer(true)}>View Full Highlight</OXMButton>
+          <h1>{t('home.hero.title')}</h1>
+          <OXMButton onClick={() => setShowVisualizer(true)}>{t('home.hero.viewHighlight')}</OXMButton>
           <p className="author">By: @ShadowSlayer</p>
         </div>
 
         <div className="hero-banner__right">
-          {/* Carte du haut */}
           <div
             className={`thumb ${selected === 0 ? "active" : ""} ${hoveredIndex === 0 ? "hovered" : ""}`}
             onClick={() => handleVideoClick(current)}
@@ -160,7 +161,7 @@ const HeroBanner = () => {
                 / {String(videos.length).padStart(2, "0")}
               </span>
             </span>
-            <button onClick={next}>Next</button>
+            <button onClick={next}>{t('common.viewAll')}</button>
           </div>
 
           <div className="carousel-bar">

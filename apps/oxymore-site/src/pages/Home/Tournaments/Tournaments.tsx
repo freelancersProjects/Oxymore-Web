@@ -1,4 +1,5 @@
 import { OXMCategorie } from "@oxymore/ui";
+import { useLanguage } from "../../../context/LanguageContext";
 import "./Tournaments.scss";
 
 const tournaments = [
@@ -21,10 +22,11 @@ const tournaments = [
 ];
 
 const Tournaments = () => {
+  const { t } = useLanguage();
   return (
     <section className="tournaments">
-      <OXMCategorie label="Upcoming Tournaments" />
-      <h1 className="orbitron">Tournaments</h1>
+      <OXMCategorie label={t('home.tournaments.categorie')} />
+      <h1 className="orbitron">{t('home.tournaments.title')}</h1>
 
       <div className="tournaments__list">
         {tournaments.map((tournament) => (
@@ -33,14 +35,14 @@ const Tournaments = () => {
             <div className="tournament-card__content">
               <h3 className="orbitron">{tournament.title}</h3>
               <div className="tournament-card__info">
-                <span>{`Date: ${tournament.date}`}</span>
-                <span>{`Format: ${tournament.format}`}</span>
+                <span>{`${t('home.tournaments.date')}: ${tournament.date}`}</span>
+                <span>{`${t('home.tournaments.format')}: ${tournament.format}`}</span>
               </div>
               <hr />
               <div className="tournament-card__prize orbitron">
                 Prize: {tournament.prize}
               </div>
-              <button className="tournament-card__button">Register Now</button>
+              <button className="tournament-card__button">{t('home.tournaments.register')}</button>
             </div>
           </div>
         ))}

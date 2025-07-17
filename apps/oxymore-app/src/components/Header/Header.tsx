@@ -26,12 +26,10 @@ export const Header: React.FC<HeaderProps> = ({ isSidebarCollapsed = false }) =>
     fetchUnreadCount();
   }, []);
 
-  // Met à jour le count à chaque ouverture/fermeture du DrawerNotif
   React.useEffect(() => {
     if (!notifOpen) fetchUnreadCount();
   }, [notifOpen]);
 
-  // Responsive : détecte si mobile
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 700;
 
   return (

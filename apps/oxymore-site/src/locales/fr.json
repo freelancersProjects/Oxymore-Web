@@ -1,0 +1,288 @@
+{
+  "nav": {
+    "home": "Accueil",
+    "about": "À propos",
+    "contact": "Contact",
+    "developers": "Développeurs",
+    "resources": "Ressources",
+    "tournaments": "Tournois",
+    "learn": "Learn",
+    "joinTournament": "Rejoindre un tournoi"
+  },
+  "home": {
+    "hero": {
+      "title": "Plateforme de Tournois Gaming",
+      "subtitle": "Créez, rejoignez et gérez vos tournois de jeux vidéo avec facilité",
+      "cta": "Commencer maintenant",
+      "viewHighlight": "Voir le moment fort complet"
+    },
+    "platformIntro": {
+      "title": "Oxymore est une plateforme e-sport compétitive conçue pour les gamers qui en veulent plus — plus de tournois,",
+      "span": "plus de stats, plus de gloire. Que vous soyez solo ou en équipe, plongez dans l’action et grimpez les classements.",
+      "categorie": "À propos de la plateforme"
+    },
+    "leagues": {
+      "title": "Sélectionnez votre ligue. Découvrez les meilleures.",
+      "subtitle": "Choisissez une ligue pour voir les équipes les plus performantes.",
+      "elo": "Score Elo",
+      "bestTeams": "Meilleures équipes",
+      "desc": "Chaque ligue offre une expérience compétitive unique. Gravissez les échelons et prouvez votre valeur !"
+    },
+    "tournaments": {
+      "categorie": "Tournois à venir",
+      "title": "Tournois",
+      "format": "Format",
+      "date": "Date",
+      "register": "S'inscrire maintenant"
+    },
+    "faq": {
+      "title": "Questions fréquentes",
+      "subtitle": "Tout ce que vous devez savoir sur Oxymore",
+      "items": [
+        {
+          "question": "Comment rejoindre un tournoi ?",
+          "answer": "Créez un compte, rendez-vous dans la section Tournois et cliquez sur “Rejoindre” sur n'importe quel événement actif. Vous pouvez jouer en solo ou avec votre équipe."
+        },
+        {
+          "question": "La participation est-elle gratuite ?",
+          "answer": "Oui ! La participation est gratuite pour tous les utilisateurs inscrits."
+        },
+        {
+          "question": "Puis-je suivre mes statistiques et performances ?",
+          "answer": "Absolument ! Notre plateforme fournit des statistiques détaillées et un suivi de vos performances."
+        },
+        {
+          "question": "Comment les équipes sont-elles classées ?",
+          "answer": "Les équipes sont classées selon leur score Elo, leurs résultats de match et leur activité."
+        },
+        {
+          "question": "Que se passe-t-il si mon équipe ne se présente pas ?",
+          "answer": "Si votre équipe ne se présente pas à un match, cela peut entraîner un forfait automatique ou une pénalité."
+        }
+      ]
+    }
+  },
+  "about": {
+    "title": "À propos d'Oxymore",
+    "hero": {
+      "tournaments": "Tournois",
+      "tournamentsDesc": "Compétitions quotidiennes",
+      "analytics": "Analytique",
+      "analyticsDesc": "Statistiques en temps réel",
+      "community": "Communauté",
+      "communityDesc": "Réseau mondial"
+    },
+    "mission": {
+      "title": "Notre mission",
+      "content": "Oxymore révolutionne l'organisation de tournois de jeux vidéo en offrant une plateforme complète et intuitive pour les joueurs, les organisateurs et les développeurs."
+    },
+    "vision": {
+      "title": "Notre vision",
+      "content": "Nous croyons que tout le monde devrait pouvoir organiser et participer à des tournois de qualité, peu importe son niveau d'expertise technique."
+    },
+    "values": {
+      "title": "Nos valeurs",
+      "innovation": {
+        "title": "Innovation",
+        "description": "Nous repoussons constamment les limites de la technologie pour améliorer l'expérience utilisateur."
+      },
+      "community": {
+        "title": "Communauté",
+        "description": "Nous construisons une communauté forte et inclusive de passionnés de gaming."
+      },
+      "excellence": {
+        "title": "Excellence",
+        "description": "Nous visons l'excellence dans chaque aspect de notre plateforme."
+      }
+    },
+    "team": {
+      "categorie": "Notre équipe",
+      "title": "Les esprits derrière Oxymore",
+      "intro": "Notre équipe réunit des experts du gaming, de la tech, du design et de la communauté pour créer quelque chose d’unique.",
+      "members": [
+        {
+          "name": "Alex Chen",
+          "role": "CEO & Fondateur",
+          "description": "Ancien joueur pro devenu entrepreneur, Alex évolue dans l’e-sport depuis plus de 10 ans."
+        },
+        {
+          "name": "Sarah Kim",
+          "role": "CTO",
+          "description": "Passionnée de tech, experte en plateformes scalables connectant les gamers du monde entier."
+        },
+        {
+            "name": "Marcus Rodriguez",
+            "role": "Directeur artistique",
+          "description": "Directeur créatif avec plus de 15 ans d’expérience en UI/UX gaming et développement de marque."
+        }
+      ]
+    },
+    "story": {
+      "categorie": "Notre histoire",
+      "title": "Du rêve à la réalité",
+      "timeline": {
+        "2020": {
+          "title": "2020 - Les débuts",
+          "desc": "Fondé par des gamers passionnés qui voulaient une meilleure plateforme e-sport."
+        },
+        "2021": {
+          "title": "2021 - Premier lancement",
+          "desc": "Lancement de la bêta avec les premières fonctionnalités de tournoi et de communauté."
+        },
+        "2022": {
+          "title": "2022 - Croissance & innovation",
+          "desc": "Support de plusieurs jeux, analytics avancées, et 10K utilisateurs atteints."
+        },
+        "2023": {
+          "title": "2023 - Expansion mondiale",
+          "desc": "Lancement à l’international, appli mobile, partenariats avec de grands acteurs e-sport."
+        },
+        "2024": {
+          "title": "2024 - Le futur",
+          "desc": "Toujours plus d’innovation : IA, VR, blockchain…"
+        }
+      }
+    },
+    "cta": {
+      "title": "Prêt à rejoindre la révolution ?",
+      "desc": "Rejoins le futur de l’e-sport. Crée ton compte, participe à des tournois, monte ton équipe et grimpe les classements !",
+      "getStarted": "Commencer gratuitement",
+      "contact": "Nous contacter"
+    }
+  },
+  "api": {
+    "categorie": "API Oxymore",
+    "heroTitle": "Boostez vos projets <br /> avec l’<span>API Oxymore</span>",
+    "heroDesc": "Connectez, automatisez et étendez votre écosystème. Offrez à vos joueurs des outils inégalés et à vos devs la liberté qu’ils méritent.",
+    "docBtn": "Documentation API",
+    "salesBtn": "Contacter le service commercial",
+    "quickCategorie": "Rapide & Facile",
+    "quickTitle": "Créez votre clé API en un éclair",
+    "quickDesc": "Découvrez l’API Oxymore : évolutive, facile à intégrer. Gérez vos clés, surveillez l’usage et sécurisez vos données.",
+    "quickDocBtn": "Notre documentation API",
+    "costCategorie": "Coût maîtrisé",
+    "costTitle": "Gardez le contrôle de votre budget",
+    "costDesc": "Choisissez des plans flexibles et suivez l’utilisation en temps réel. Adaptez vos dépenses et faites évoluer vos besoins API sans contrainte.",
+    "costBtn": "Créer ma première clé API",
+    "useCasesCategorie": "Cas d’usage",
+    "useCasesTitle": "Une API adaptée à vos besoins",
+    "useCasesDesc": "L’API Oxymore s’adapte à tous les domaines : gaming, automatisation, data… Évoluez facilement et répondez au marché sans effort.",
+    "useCases": [
+      {
+        "title": "Marketing & Publicité",
+        "description": "Engagez votre audience avec des visuels dynamiques et des insights."
+      },
+      {
+        "title": "Développement de jeux",
+        "description": "Créez des jeux immersifs avec des endpoints API puissants."
+      },
+      {
+        "title": "Éducation & Formation",
+        "description": "Facilitez l’apprentissage avec des flux de données automatisés."
+      },
+      {
+        "title": "E-Commerce",
+        "description": "Boostez vos boutiques en ligne avec des outils produits intelligents."
+      },
+      {
+        "title": "Film & Animation",
+        "description": "Optimisez la création avec une gestion d’actifs simplifiée."
+      },
+      {
+        "title": "IT & SaaS",
+        "description": "Intégrez l’API Oxymore à vos produits digitaux."
+      }
+    ]
+  },
+  "contact": {
+    "title": "Contactez-nous",
+    "subtitle": "Vous avez une question, un souci ou envie de dire bonjour ? Nous sommes là pour vous aider concernant Oxymore et nos tournois.",
+    "formTitle": "Envoyez-nous un message",
+    "form": {
+      "name": "Nom",
+      "namePlaceholder": "Entrez votre nom",
+      "email": "Email",
+      "emailPlaceholder": "Entrez votre email",
+      "message": "Message",
+      "messagePlaceholder": "Écrivez ici",
+      "send": "Envoyer"
+    },
+    "infoTitle": "Support & Communauté",
+    "infoEmail": "Email du support",
+    "infoDiscord": "Rejoignez notre Discord",
+    "infoDiscordLink": "[Lien Discord]",
+    "socialsTitle": "Suivez-nous sur les réseaux :"
+  },
+  "developers": {
+    "title": "API Développeurs",
+    "subtitle": "Intégrez Oxymore dans vos applications",
+    "documentation": "Documentation",
+    "getStarted": "Commencer",
+    "features": {
+      "title": "Fonctionnalités de l'API",
+      "tournaments": "Gestion des tournois",
+      "users": "Gestion des utilisateurs",
+      "matches": "Gestion des matchs",
+      "webhooks": "Webhooks en temps réel"
+    }
+  },
+  "resources": {
+    "title": "Ressources",
+    "subtitle": "Retrouvez tous les assets, guides et supports essentiels pour profiter au maximum d’Oxymore.",
+    "cards": {
+      "brandAssets": {
+        "title": "Identité visuelle",
+        "desc": "Téléchargez nos logos, palette de couleurs et chartes graphiques pour vos projets.",
+        "button": "Télécharger le kit"
+      },
+      "integrationGuides": {
+        "title": "Guides d’intégration",
+        "desc": "Des guides pas à pas pour intégrer des bots Discord, widgets, et plus encore.",
+        "button": "Voir les guides"
+      },
+      "pressKit": {
+        "title": "Kit presse",
+        "desc": "Retrouvez nos communiqués, infos société et ressources médias pour journalistes.",
+        "button": "Télécharger le kit presse"
+      },
+      "support": {
+        "title": "Support",
+        "desc": "Besoin d’aide ? Contactez notre équipe pour un support rapide.",
+        "button": "Contacter le support"
+      }
+    }
+  },
+  "footer": {
+    "description": "Plateforme de tournois gaming moderne et intuitive",
+    "links": {
+      "product": "Produit",
+      "developers": "Pour les Développeurs",
+      "company": "Entreprise",
+      "support": "Support"
+    },
+    "legal": {
+      "privacy": "Confidentialité",
+      "terms": "Conditions d'utilisation"
+    },
+    "copyright": "© 2024 Oxymore. Tous droits réservés."
+  },
+  "common": {
+    "loading": "Chargement...",
+    "error": "Une erreur est survenue",
+    "notFound": "Page non trouvée",
+    "backToHome": "Retour à l'accueil",
+    "learnMore": "En savoir plus",
+    "getStarted": "Démarrer l’aventure",
+    "viewAll": "Suivant",
+    "close": "Fermer",
+    "open": "Ouvrir",
+    "save": "Sauvegarder",
+    "cancel": "Annuler",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "create": "Créer",
+    "join": "Rejoindre",
+    "leave": "Quitter",
+    "download": "Télécharger"
+  }
+}
