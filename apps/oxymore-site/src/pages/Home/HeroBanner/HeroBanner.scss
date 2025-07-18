@@ -559,3 +559,8 @@
         p { font-size: 10px; }
     }
 }
+@media (max-width: 900px) {
+  .hero-banner__right .thumb {
+    display: none !important;
+  }
+}
