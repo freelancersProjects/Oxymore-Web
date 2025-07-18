@@ -1,29 +1,31 @@
-import React from 'react';
-import { useLanguage } from '../../context/LanguageContext';
-import './LanguageSelector.scss';
+import React from "react";
+import { useLanguage } from "../../context/LanguageContext";
+
+import "./LanguageSelector.scss";
 
 const LanguageSelector: React.FC = () => {
   const { language, setLanguage } = useLanguage();
+  const { t } = useLanguage();
 
-  const handleLanguageChange = (newLang: 'fr' | 'en') => {
+  const handleLanguageChange = (newLang: "fr" | "en") => {
     setLanguage(newLang);
   };
 
   return (
     <div className="language-selector">
       <button
-        className={`lang-btn ${language === 'fr' ? 'active' : ''}`}
-        onClick={() => handleLanguageChange('fr')}
+        className={`lang-btn ${language === "fr" ? "active" : ""}`}
+        onClick={() => handleLanguageChange("fr")}
         aria-label="Français"
       >
-        🇫🇷 FR
+        {t("common.language.fr")}
       </button>
       <button
-        className={`lang-btn ${language === 'en' ? 'active' : ''}`}
-        onClick={() => handleLanguageChange('en')}
+        className={`lang-btn ${language === "en" ? "active" : ""}`}
+        onClick={() => handleLanguageChange("en")}
         aria-label="English"
       >
-        🇬🇧 EN
+        {t("common.language.en")}
       </button>
     </div>
   );

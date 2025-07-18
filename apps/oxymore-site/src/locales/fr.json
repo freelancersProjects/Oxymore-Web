@@ -1,4 +1,27 @@
 {
+  "common": {
+    "loading": "Chargement...",
+    "error": "Une erreur est survenue",
+    "notFound": "Page non trouvée",
+    "backToHome": "Retour à l'accueil",
+    "learnMore": "En savoir plus",
+    "getStarted": "Démarrer l’aventure",
+    "viewAll": "Suivant",
+    "close": "Fermer",
+    "open": "Ouvrir",
+    "save": "Sauvegarder",
+    "cancel": "Annuler",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "create": "Créer",
+    "join": "Rejoindre",
+    "leave": "Quitter",
+    "download": "Télécharger",
+    "language": {
+      "fr": "🇫🇷 FR",
+      "en": "🇬🇧 EN"
+    }
+  },
   "nav": {
     "home": "Accueil",
     "about": "À propos",
@@ -111,8 +134,8 @@
           "description": "Passionnée de tech, experte en plateformes scalables connectant les gamers du monde entier."
         },
         {
-            "name": "Marcus Rodriguez",
-            "role": "Directeur artistique",
+          "name": "Marcus Rodriguez",
+          "role": "Directeur artistique",
           "description": "Directeur créatif avec plus de 15 ans d’expérience en UI/UX gaming et développement de marque."
         }
       ]
@@ -265,24 +288,5 @@
       "terms": "Conditions d'utilisation"
     },
     "copyright": "© 2024 Oxymore. Tous droits réservés."
-  },
-  "common": {
-    "loading": "Chargement...",
-    "error": "Une erreur est survenue",
-    "notFound": "Page non trouvée",
-    "backToHome": "Retour à l'accueil",
-    "learnMore": "En savoir plus",
-    "getStarted": "Démarrer l’aventure",
-    "viewAll": "Suivant",
-    "close": "Fermer",
-    "open": "Ouvrir",
-    "save": "Sauvegarder",
-    "cancel": "Annuler",
-    "delete": "Supprimer",
-    "edit": "Modifier",
-    "create": "Créer",
-    "join": "Rejoindre",
-    "leave": "Quitter",
-    "download": "Télécharger"
   }
 }

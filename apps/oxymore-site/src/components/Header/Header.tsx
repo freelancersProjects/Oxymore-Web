@@ -20,13 +20,11 @@ const Header = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Fermer le menu quand on clique sur un lien
   const handleNavClick = (path: string) => {
     navigate(path);
     setMenuOpen(false);
   };
 
-  // Empêcher le scroll du body quand le menu est ouvert
   useEffect(() => {
     if (menuOpen) {
       document.body.style.overflow = 'hidden';
@@ -44,7 +42,6 @@ const Header = () => {
         <img src={Logo} alt="Logo" className="logo" style={{ cursor: "pointer" }} />
       </div>
 
-      {/* Menu Burger */}
       <button
         className={`header__burger ${menuOpen ? "open" : ""}`}
         onClick={() => setMenuOpen(!menuOpen)}
@@ -55,7 +52,6 @@ const Header = () => {
         <div className="burger__line burger__line--3"></div>
       </button>
 
-      {/* Navigation Desktop */}
       <nav className="header__nav header__nav--desktop">
         <ul className="header__nav-links">
           <li>
@@ -95,7 +91,6 @@ const Header = () => {
         </ul>
       </nav>
 
-      {/* Navigation Mobile */}
       <nav className={`header__nav header__nav--mobile ${menuOpen ? "active" : ""}`}>
         <div className="mobile-nav__content">
           <ul className="mobile-nav__links">
