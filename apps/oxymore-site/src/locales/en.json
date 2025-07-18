@@ -1,4 +1,27 @@
 {
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "notFound": "Page not found",
+    "backToHome": "Back to home",
+    "learnMore": "Learn more",
+    "getStarted": "Get started",
+    "viewAll": "Next",
+    "close": "Close",
+    "open": "Open",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "join": "Join",
+    "leave": "Leave",
+    "download": "Download",
+    "language": {
+      "fr": "🇫🇷 FR",
+      "en": "🇬🇧 EN"
+    }
+  },
   "nav": {
     "home": "Home",
     "about": "About",
@@ -221,25 +244,6 @@
       "terms": "Terms of Service"
     },
     "copyright": "© 2024 Oxymore. All rights reserved."
-  },
-  "common": {
-    "loading": "Loading...",
-    "error": "An error occurred",
-    "notFound": "Page not found",
-    "backToHome": "Back to home",
-    "learnMore": "Learn more",
-    "getStarted": "Get started",
-    "viewAll": "Next",
-    "close": "Close",
-    "open": "Open",
-    "save": "Save",
-    "cancel": "Cancel",
-    "delete": "Delete",
-    "edit": "Edit",
-    "create": "Create",
-    "join": "Join",
-    "leave": "Leave",
-    "download": "Download"
   },
   "api": {
     "categorie": "Oxymore API",
