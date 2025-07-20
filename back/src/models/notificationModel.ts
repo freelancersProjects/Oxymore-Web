@@ -2,6 +2,20 @@
  * @openapi
  * components:
  *   schemas:
+ *     NotificationInput:
+ *       type: object
+ *       required:
+ *         - type
+ *         - title
+ *         - text
+ *       properties:
+ *         type:
+ *           type: string
+ *           enum: [message, success, alert]
+ *         title:
+ *           type: string
+ *         text:
+ *           type: string
  *     Notification:
  *       type: object
  *       properties:
@@ -85,4 +99,4 @@ export const notificationsRead: NotificationRead[] = [
     id_notification: 1,
     read_at: new Date().toISOString(),
   },
-]; 
+];

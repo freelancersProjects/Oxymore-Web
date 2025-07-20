@@ -72,21 +72,12 @@ router.get("/user/:userId/unread-count", getUnreadNotificationsCount);
  *     requestBody:
  *       required: true
  *       content:
+ *         application/x-www-form-urlencoded:
+ *           schema:
+ *             $ref: '#/components/schemas/NotificationInput'
  *         application/json:
  *           schema:
- *             type: object
- *             required:
- *               - type
- *               - title
- *               - text
- *             properties:
- *               type:
- *                 type: string
- *                 enum: [message, success, alert]
- *               title:
- *                 type: string
- *               text:
- *                 type: string
+ *             $ref: '#/components/schemas/NotificationInput'
  *     responses:
  *       201:
  *         description: Notification créée
@@ -187,4 +178,4 @@ router.delete("/:notificationId", deleteNotification);
  */
 router.delete("/user/:userId/:notificationId", require("../controllers/notificationController").deleteNotificationForUser);
 
-export default router; 
+export default router;

@@ -26,6 +26,8 @@
     "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^7.1.1",
     "@mui/material": "^7.1.1",
-    "lucide-react": "^0.522.0"
+    "lucide-react": "^0.522.0",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
   }
 }

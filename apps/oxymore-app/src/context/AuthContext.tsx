@@ -12,13 +12,16 @@ interface User {
   banner_url: string;
   bio: string;
   elo: number;
-  xp_total: number;
   wallet?: number | null;
   country_code: string;
-  discord_tag: string;
+  discord_link: string;
   faceit_id: string;
+  steam_link: string;
+  twitch_link: string;
+  youtube_link: string;
   verified: boolean;
   created_at: string;
+  team_chat_is_muted: boolean;
 }
 
 interface AuthContextType {
@@ -83,4 +86,4 @@ export const useAuth = () => {
     throw new Error('useAuth must be used within an AuthProvider');
   }
   return context;
-}; 
+};

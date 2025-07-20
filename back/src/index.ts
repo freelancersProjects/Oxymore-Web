@@ -4,10 +4,37 @@ import notificationRoutes from "./routes/notification";
 import dotenv from "dotenv";
 import swaggerUi from "swagger-ui-express";
 import swaggerJSDoc from "swagger-jsdoc";
-import channelRoutes from "./routes/channel";
-import messageRoutes from "./routes/message";
+import channelBotRoutes from "./routes/channelBot";
 import authRoutes from "./routes/auth";
 import cors from "cors";
+import messageBotRoutes from "./routes/messageBot";
+import userVideoRoutes from "./routes/userVideo";
+import videoCommentRoutes from "./routes/videoComment";
+import videoLikeRoutes from "./routes/videoLike";
+import notificationReadRoutes from "./routes/notificationRead";
+import firstPagePromotionVideoRoutes from "./routes/firstPagePromotionVideo";
+import badgeRoutes from "./routes/badge";
+import userBadgeRoutes from "./routes/userBadge";
+import userFollowingRoutes from "./routes/userFollowing";
+import userSanctionRoutes from "./routes/userSanction";
+import groupRoutes from "./routes/group";
+import groupMemberRoutes from "./routes/groupMember";
+import leagueRoutes from "./routes/league";
+import mapRoutes from "./routes/map";
+import mapPickbanRoutes from "./routes/mapPickban";
+import matchRoutes from "./routes/match";
+import matchChatRoutes from "./routes/matchChat";
+import matchMapRoutes from "./routes/matchMap";
+import pinnedMessageTeamRoutes from "./routes/pinnedMessageTeam";
+import roomRoutes from "./routes/room";
+import shopItemRoutes from "./routes/shopItem";
+import teamRoutes from "./routes/team";
+import teamChatRoutes from "./routes/teamChat";
+import teamMemberRoutes from "./routes/teamMember";
+import teamSubscriptionRoutes from "./routes/teamSubscription";
+import tournamentRoutes from "./routes/tournament";
+import tournamentMapRoutes from "./routes/tournamentMap";
+import { registerRoutes } from "./registerRoutes";
 
 dotenv.config();
 
@@ -17,11 +44,7 @@ const PORT = process.env.PORT || 3000;
 app.use(cors({ origin: ["http://localhost:5173", "http://localhost:5174"] }));
 app.use(express.json());
 
-app.use("/api/users", userRoutes);
-app.use("/api/notifications", notificationRoutes);
-app.use("/api/channels", channelRoutes);
-app.use("/api/messages", messageRoutes);
-app.use("/api/auth", authRoutes);
+registerRoutes(app);
 
 const swaggerOptions = {
   definition: {
