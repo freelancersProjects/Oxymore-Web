@@ -34,12 +34,15 @@ export const register = async (req: Request, res: Response) => {
       banner_url: "",
       bio: "",
       elo: 1000,
-      xp_total: 0,
       wallet: 0,
       country_code: "",
-      discord_tag: "",
+      discord_link: "",
       faceit_id: "",
+      steam_link: "",
+      twitch_link: "",
+      youtube_link: "",
       verified: false,
+      team_chat_is_muted: false,
     });
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -75,7 +78,7 @@ export const login = async (req: Request, res: Response) => {
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password_hash: _, ...userWithoutPassword } = user;
-    
+
     const token = jwt.sign({ id: user.id_user }, JWT_SECRET, {
       expiresIn: "24h",
     });
@@ -86,4 +89,4 @@ export const login = async (req: Request, res: Response) => {
     console.error("Login error:", error);
     res.status(500).json({ message: "Server error during login." });
   }
-}; 
+};

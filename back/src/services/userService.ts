@@ -7,8 +7,10 @@ export const getAllUsers = async (): Promise<User[]> => {
   return rows as User[];
 };
 
-export const getUserById = (id: string): User | undefined => {
-  return users.find((u) => u.id_user === id);
+export const getUserById = async (id: string): Promise<User | null> => {
+  const [rows] = await db.query("SELECT * FROM user WHERE id_user = ?", [id]);
+  const users = rows as User[];
+  return users.length > 0 ? users[0] : null;
 };
 
 export const getUserByEmail = async (email: string): Promise<User | null> => {
@@ -23,7 +25,9 @@ export const createUser = async (
   const id_user = crypto.randomUUID();
   const created_at = new Date().toISOString();
   await db.query(
-    "INSERT INTO user (id_user, first_name, last_name, username, email, password_hash, is_premium, avatar_url, banner_url, bio, elo, xp_total, wallet, country_code, discord_tag, faceit_id, verified, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+    `INSERT INTO user (
+      id_user, first_name, last_name, username, email, password_hash, is_premium, avatar_url, banner_url, bio, elo, wallet, country_code, discord_link, faceit_id, steam_link, twitch_link, youtube_link, verified, created_at, team_chat_is_muted
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     [
       id_user,
       data.first_name,
@@ -36,13 +40,16 @@ export const createUser = async (
       data.banner_url,
       data.bio,
       data.elo ?? 1000,
-      data.xp_total ?? 0,
       data.wallet ?? null,
       data.country_code,
-      data.discord_tag,
+      data.discord_link,
       data.faceit_id,
+      data.steam_link,
+      data.twitch_link,
+      data.youtube_link,
       data.verified ?? false,
       created_at,
+      data.team_chat_is_muted ?? false,
     ]
   );
   return { id_user, ...data, created_at };

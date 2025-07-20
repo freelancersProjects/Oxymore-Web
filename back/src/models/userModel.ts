@@ -27,21 +27,27 @@
  *           type: string
  *         elo:
  *           type: integer
- *         xp_total:
- *           type: integer
  *         wallet:
  *           type: number
  *         country_code:
  *           type: string
- *         discord_tag:
+ *         discord_link:
  *           type: string
  *         faceit_id:
+ *           type: string
+ *         steam_link:
+ *           type: string
+ *         twitch_link:
+ *           type: string
+ *         youtube_link:
  *           type: string
  *         verified:
  *           type: boolean
  *         created_at:
  *           type: string
  *           format: date-time
+ *         team_chat_is_muted:
+ *           type: boolean
  */
 export interface User {
   id_user: string;
@@ -55,13 +61,16 @@ export interface User {
   banner_url: string;
   bio: string;
   elo: number;
-  xp_total: number;
   wallet?: number | null;
   country_code: string;
-  discord_tag: string;
+  discord_link: string;
   faceit_id: string;
+  steam_link: string;
+  twitch_link: string;
+  youtube_link: string;
   verified: boolean;
   created_at: string;
+  team_chat_is_muted: boolean;
 }
 
 export const users: User[] = [
@@ -77,12 +86,15 @@ export const users: User[] = [
     banner_url: "https://example.com/banner.png",
     bio: "Gamer pro",
     elo: 1500,
-    xp_total: 2500,
     wallet: 100.5,
     country_code: "FR",
-    discord_tag: "Alice#1234",
+    discord_link: "Alice#1234",
     faceit_id: "FACEIT123",
+    steam_link: "STEAM123",
+    twitch_link: "twitch.tv/alice",
+    youtube_link: "youtube.com/alice",
     verified: true,
     created_at: new Date().toISOString(),
+    team_chat_is_muted: false,
   },
 ];
