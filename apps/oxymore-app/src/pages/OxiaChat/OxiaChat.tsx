@@ -81,21 +81,19 @@ const OxiaChat: React.FC = () => {
   } | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  // Fetch channels on mount
   useEffect(() => {
     if (!user) return;
-    apiService.get(`/channels?user_id=${user.id_user}`).then((data) => {
+    apiService.get(`/channel-bots?user_id=${user.id_user}`).then((data) => {
       setChannels(data);
       if (data.length > 0) setSelectedChannel(data[0] ?? null);
       else setSelectedChannel(null);
     });
   }, [user]);
 
-  // Fetch messages when channel changes
   useEffect(() => {
     if (!selectedChannel) return;
     apiService
-      .get(`/messages/channel/${selectedChannel.id_channel}`)
+    .get(`/message-bots?channel_id=${selectedChannel.id_channel}`)
       .then(
         (
           data: {
@@ -108,7 +106,6 @@ const OxiaChat: React.FC = () => {
           }[]
         ) => {
           if (data.length > 0) {
-            // Trie par created_at (ou id_message si tu veux)
             const sorted = [...data].sort(
               (a, b) =>
                 new Date(a.created_at).getTime() -
@@ -193,7 +190,7 @@ const OxiaChat: React.FC = () => {
       setIsThinking(false);
       return;
     }
-    await apiService.post("/messages", userMsgPayload);
+    await apiService.post("/message-bots", userMsgPayload);
 
     setTimeout(() => {
       inputRef.current?.focus();
@@ -233,7 +230,7 @@ const OxiaChat: React.FC = () => {
         content: iaMsg.text,
         is_from_ai: true,
       };
-      await apiService.post("/messages", iaMsgPayload);
+      await apiService.post("/message-bots", iaMsgPayload);
     } catch {
       const errorMsg: Message = {
         id: Date.now() + 1,
@@ -262,7 +259,7 @@ const OxiaChat: React.FC = () => {
 
   const handleCreateChannel = async () => {
     if (!newChannelName.trim() || !user) return;
-    const newChannel = await apiService.post("/channels", {
+    const newChannel = await apiService.post("/channel-bots", {
       name: newChannelName,
       user_id: user.id_user,
     });
@@ -274,7 +271,7 @@ const OxiaChat: React.FC = () => {
 
   // Fonction pour supprimer un channel
   const handleDeleteChannel = async (id_channel: string) => {
-    await apiService.delete(`/channels/${id_channel}`);
+    await apiService.delete(`/channel-bots/${id_channel}`);
     setChannels((prev) => prev.filter((ch) => ch.id_channel !== id_channel));
     if (selectedChannel?.id_channel === id_channel) setSelectedChannel(null);
     setShowDeleteModal(false);
@@ -285,7 +282,7 @@ const OxiaChat: React.FC = () => {
   // Fonction pour modifier le nom d'un channel
   const handleEditChannel = async (id_channel: string) => {
     if (!editChannelName.trim()) return;
-    await apiService.patch(`/channels/${id_channel}`, {
+    await apiService.patch(`/channel-bots/${id_channel}`, {
       name: editChannelName,
     });
     setChannels((prev) =>

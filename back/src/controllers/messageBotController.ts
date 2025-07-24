@@ -25,13 +25,15 @@ export const getMessageBotById = async (req: Request, res: Response) => {
   }
 };
 
-export const getMessageBotsByChannelId = async (req: Request, res: Response) => {
+export const getMessageBotsByChannel = async (req: Request, res: Response) => {
+  const channel_id = req.query.channel_id as string;
+
+  if (!channel_id) {
+    res.status(400).json({ message: "Missing channel_id" });
+    return;
+  }
+
   try {
-    const channel_id = req.query.channel_id as string;
-    if (!channel_id) {
-      res.status(400).json({ message: "Missing channel_id" });
-      return;
-    }
     const messageBots = await MessageBotService.getMessageBotsByChannelId(channel_id);
     res.json(messageBots);
   } catch (err) {

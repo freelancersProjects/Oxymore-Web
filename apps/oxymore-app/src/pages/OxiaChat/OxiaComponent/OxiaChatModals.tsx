@@ -42,7 +42,7 @@ const OxiaChatModals: React.FC<ModalsProps> = ({
           type="text"
           value={newChannelName}
           onChange={(e) => {
-            if (e.target.value.length <= 50) setNewChannelName(e.target.value);
+            if (e.target.value.length <= 50) setNewChannelName(e.target.value); // limation du nom du channel
           }}
           maxLength={50}
           placeholder="Nom du channel"

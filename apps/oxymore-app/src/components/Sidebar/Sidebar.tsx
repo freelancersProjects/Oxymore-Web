@@ -14,9 +14,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false, onToggle 
 
   const handleNavClick = () => setMobileOpen(false);
 
-  // Logout handler
   const handleLogout = () => {
-    localStorage.removeItem('user');
+    localStorage.removeItem('useroxm');
     localStorage.removeItem('token');
     window.location.href = '/login';
   };
@@ -27,7 +26,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false, onToggle 
         <Menu size={28} />
       </button>
       <div className={`oxm-sidebar-overlay${mobileOpen ? ' open' : ''}`} onClick={() => setMobileOpen(false)} />
-      {/* Zone cliquable pour réouvrir la sidebar quand collapsed */}
       {isCollapsed && !mobileOpen && (
         <div
           className="oxm-sidebar-collapsed-zone"
