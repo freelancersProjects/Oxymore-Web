@@ -269,7 +269,6 @@ const OxiaChat: React.FC = () => {
     setToast({ message: "Channel créé !", type: "success" });
   };
 
-  // Fonction pour supprimer un channel
   const handleDeleteChannel = async (id_channel: string) => {
     await apiService.delete(`/channel-bots/${id_channel}`);
     setChannels((prev) => prev.filter((ch) => ch.id_channel !== id_channel));

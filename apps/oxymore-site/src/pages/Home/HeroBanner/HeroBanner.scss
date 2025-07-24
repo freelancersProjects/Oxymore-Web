@@ -153,6 +153,14 @@
             cursor: pointer;
             transition: all 0.3s ease;
 
+            &.thumb-top {
+                z-index: 2;
+            }
+
+            &.thumb-bottom {
+                z-index: 1;
+            }
+
             &:hover {
                 transform: translateY(-5px);
                 border-color: rgba(255, 255, 255, 0.4);
@@ -198,6 +206,13 @@
                 width: 100%;
                 border-radius: 15px;
                 transition: transform 0.3s ease;
+            }
+
+            .thumb-video {
+                width: 100%;
+                border-radius: 15px;
+                object-fit: cover;
+                height: 180px;
             }
 
             .player-icon {
@@ -303,6 +318,10 @@
                 background: #fff;
                 border-radius: 31px;
                 transition: width 0.3s ease;
+                
+                &.progress-dynamic {
+                    width: var(--progress-width, 0%);
+                }
             }
 
             @media (max-width: 1024px) {

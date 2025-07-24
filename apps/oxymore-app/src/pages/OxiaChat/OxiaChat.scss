@@ -6,9 +6,6 @@
   background: linear-gradient(120deg, $color-gray-darkest 0%, $color-background 100%);
   color: $color-white;
 
-  input{
-  }
-
   small{
     color: $color-gray-light;
     font-size: rem-calc(14);
@@ -327,6 +324,24 @@
 
   &:hover {
     background: lighten($color-purple, 10%);
+  }
+  
+  &.oxia-chat-btn-cancel {
+    background: $color-secondary;
+    color: $color-white;
+    
+    &:hover {
+      background: lighten($color-secondary, 10%);
+    }
+  }
+  
+  &.oxia-chat-btn-delete {
+    background: $color-danger;
+    margin-right: rem-calc(12);
+    
+    &:hover {
+      background: lighten($color-danger, 10%);
+    }
   }
 }
 

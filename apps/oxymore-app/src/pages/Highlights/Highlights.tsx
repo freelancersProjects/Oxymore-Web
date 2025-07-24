@@ -151,7 +151,6 @@ const Highlights = () => {
             />
           ))}
         </div>
-        {/* Carte vidéo TikTok */}
         <div className="highlights-card">
           {currentHighlight && (
             <>
@@ -164,9 +163,8 @@ const Highlights = () => {
                   playsInline
                   className="highlights-video"
                   onClick={() => setIsPlaying(!isPlaying)}
-                  style={{ objectFit: 'cover' }}
+
                 />
-                {/* Overlay bas gauche */}
                 <div className="highlights-overlay-bottom">
                   <div className="highlights-author">@{currentHighlight.author}</div>
                   <div className="highlights-desc">{currentHighlight.description}</div>
@@ -174,7 +172,6 @@ const Highlights = () => {
                     {currentHighlight.isFollowing ? 'Following' : 'Follow'}
                   </button>
                 </div>
-                {/* Actions à droite */}
                 <div className="highlights-actions">
                   <button className={`action-btn like${currentHighlight.isLiked ? ' liked' : ''}`} onClick={() => handleLike(currentHighlight.id)}>
                     <Heart size={28} />
@@ -193,7 +190,6 @@ const Highlights = () => {
                   </button>
                 </div>
               </div>
-              {/* Sidebar commentaires TikTok */}
               {showComments && (
                 <div className="highlights-comments-sidebar">
                   <div className="comments-header">
@@ -222,7 +218,6 @@ const Highlights = () => {
                   </form>
                 </div>
               )}
-              {/* Overlay partage TikTok */}
               {showShare && (
                 <div className="highlights-share-overlay">
                   <div className="share-title">Share</div>

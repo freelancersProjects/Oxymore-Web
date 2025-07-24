@@ -15,6 +15,8 @@ $color-blue: #1593CE;
 $color-red: #F00;
 $color-primary: #6D28D9;
 $color-purple-light: #8B5CF6;
+$color-danger: #ff4747;
+$color-secondary: #23223a;
 $base-font-size: 10;
 
 @function rem-calc($px) {
@@ -68,6 +70,10 @@ td {
   display: flex;
   flex-direction: column;
   gap: rem-calc(15);
+}
+
+.tdnone{
+  text-decoration: none !important;
 }
 
 // Global custom scrollbar

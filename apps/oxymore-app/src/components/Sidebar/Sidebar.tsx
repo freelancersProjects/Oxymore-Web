@@ -30,7 +30,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false, onToggle 
         <div
           className="oxm-sidebar-collapsed-zone"
           onClick={onToggle}
-          style={{ position: 'fixed', top: 0, left: 0, width: 24, height: '100vh', zIndex: 999, cursor: 'pointer', background: 'rgba(80,12,173,0.03)' }}
         />
       )}
       <aside

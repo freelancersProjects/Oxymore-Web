@@ -103,8 +103,7 @@ const About = () => {
             {stats.map((stat, index) => (
               <div
                 key={index}
-                className="stat-item"
-                style={{ animationDelay: `${index * 0.2}s` }}
+                className={`stat-item stat-delay-${index}`}
               >
                 <span className="stat-number orbitron">{stat.number}</span>
                 <span className="stat-label">{stat.label}</span>
@@ -217,12 +216,11 @@ const About = () => {
         <OXMCategorie label={t("about.values.title")} />
         <h2 className="orbitron">{t("about.values.title")}</h2>
         <div className="values-grid">
-          {values.map((value, index) => (
-            <div
-              key={index}
-              className="value-card"
-              style={{ animationDelay: `${index * 0.1}s` }}
-            >
+                      {values.map((value, index) => (
+              <div
+                key={index}
+                className={`value-card value-delay-${index}`}
+              >
               <div className="value-icon">{value.icon}</div>
               <h3 className="orbitron">{value.title}</h3>
               <p>{value.description}</p>
@@ -245,8 +243,7 @@ const About = () => {
           {teamMembers.map((member: any, index: number) => (
             <div
               key={index}
-              className="team-member"
-              style={{ animationDelay: `${index * 0.15}s` }}
+              className={`team-member team-delay-${index}`}
             >
               <div className="member-image">
                 <div className="member-avatar">
