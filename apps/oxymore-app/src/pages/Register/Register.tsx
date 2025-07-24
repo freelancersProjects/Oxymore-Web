@@ -9,6 +9,8 @@ const Register: React.FC = () => {
     username: '',
     email: '',
     password: '',
+    first_name: '',
+    last_name: '',
   });
 
   const [errors, setErrors] = useState<{
@@ -101,6 +103,28 @@ const Register: React.FC = () => {
 
         <form onSubmit={handleSubmit} className="register-form">
           <div className="form-group">
+            <label htmlFor="first_name">First Name</label>
+            <input
+              type="text"
+              id="first_name"
+              name="first_name"
+              value={formData.first_name}
+              onChange={handleInputChange}
+              placeholder="Your first name (optional)"
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="last_name">Last Name</label>
+            <input
+              type="text"
+              id="last_name"
+              name="last_name"
+              value={formData.last_name}
+              onChange={handleInputChange}
+              placeholder="Your last name (optional)"
+            />
+          </div>
+          <div className="form-group">
             <label htmlFor="username">Username</label>
             <input
               type="text"
@@ -166,4 +190,4 @@ const Register: React.FC = () => {
   );
 };
 
-export default Register; 
+export default Register;
