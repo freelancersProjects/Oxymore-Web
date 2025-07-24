@@ -18,9 +18,9 @@ $base-font-size: 10;
 
 h1 {
     font-family: "Orbitron", sans-serif;
-    font-size: 42px;
+    font-size: rem-calc(42);
     font-weight: 600;
-    color: #fff;
+    color: $color-white;
 }
 
 a {

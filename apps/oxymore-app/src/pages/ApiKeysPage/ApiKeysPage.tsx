@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { OXMButton, OXMToast, OXMModal, OXMTabSwitcher } from "@oxymore/ui";
 import {
   FiZap,
@@ -62,7 +62,7 @@ export default function ApiKeysPage() {
       id: Date.now(),
       label: newKeyLabel,
       secret: fakeKey,
-      createdAt: new Date().toISOString().split("T")[0],
+      createdAt: new Date().toISOString().split("T")[0] || "",
     };
     setKeys([newItem, ...keys]);
     setNewKey(fakeKey);

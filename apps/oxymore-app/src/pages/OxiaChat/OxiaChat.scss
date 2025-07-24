@@ -362,7 +362,7 @@
   background: linear-gradient(135deg, lighten($color-purple, 10%) 0%, lighten($color-blue, 10%) 100%);
 }
 .oxia-chat-messages::-webkit-scrollbar-corner {
-  background: #18182a;
+  background: $color-gray-darkest;
 }
 
 @media (max-width: 900px) {
@@ -588,7 +588,7 @@
     left: 0;
     width: 100vw;
     height: 100dvh;
-    background: linear-gradient(120deg, #18182a 0%, #1a1333 100%);
+    background: linear-gradient(120deg, $color-gray-darkest 0%, $color-gray-darker 100%);
     z-index: 1203;
     box-shadow: rem-calc(2) 0 rem-calc(24) rgba(0,0,0,0.18);
     animation: oxiaSidebarIn 0.32s cubic-bezier(.4,1.4,.6,1);

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
-import { Home, Trophy, Layers, Play, Users, UserPlus, Code, LogOut, ChevronLeft, ChevronRight, Bot, Menu, X } from "lucide-react";
+import { Home, Trophy, Layers, Play, Users, UserPlus, Code, LogOut, ChevronLeft, Bot, Menu, X } from "lucide-react";
 import Logo from "./../../assets/logo.png";
 import "./Sidebar.scss";
 

@@ -29,9 +29,9 @@ $base-font-size: 10;
 
 h1 {
     font-family: "Orbitron", sans-serif;
-    font-size: 42px;
+    font-size: rem-calc(42);
     font-weight: 600;
-    color: #fff;
+    color: $color-white;
 }
 
 p,
@@ -78,24 +78,24 @@ td {
 
 // Global custom scrollbar
 ::-webkit-scrollbar {
-  width: 10px;
-  background: #18182a;
+  width: rem-calc(10);
+  background: $color-gray-darkest;
 }
 ::-webkit-scrollbar-thumb {
   background: linear-gradient(135deg, $color-purple 0%, $color-blue 100%);
-  border-radius: 8px;
+  border-radius: rem-calc(8);
 }
 ::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(135deg, lighten($color-purple, 10%) 0%, lighten($color-blue, 10%) 100%);
 }
 ::-webkit-scrollbar-corner {
-  background: #18182a;
+  background: $color-gray-darkest;
 }
 
 // For Firefox
 * {
   scrollbar-width: thin;
-  scrollbar-color: $color-purple #18182a;
+  scrollbar-color: $color-purple $color-gray-darkest;
 }
 
 html, body, #root {
