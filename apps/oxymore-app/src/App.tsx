@@ -44,7 +44,7 @@ export default function App() {
         <LayoutManager>
           {({ hideSidebar, hideHeader, isOxia }) => {
             const location = useLocation();
-            const isLoginPage = location.pathname === '/login';
+            const isLoginPage = location.pathname === '/login' || location.pathname === '/register';
             return (
               <div className={`oxm-layout${isSidebarCollapsed ? " sidebar-collapsed" : ""}${isOxia ? " oxia-mode" : ""}`}>
                 {!hideSidebar && (

@@ -9,6 +9,12 @@
   position: relative;
   overflow: hidden;
   padding: rem-calc(20);
+  margin: 0 !important;
+}
+
+// Annuler la marge du main pour éviter le décalage
+main {
+  margin: 0 !important;
 }
 
 .register-background {
