@@ -1,11 +1,11 @@
 .oxm-toast {
     position: relative;
-    min-width: 250px;
-    background: #111;
-    color: white;
-    padding: 16px 24px;
-    border-radius: 8px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    min-width: rem-calc(250);
+    background: $color-black;
+    color: $color-white;
+    padding: rem-calc(16) rem-calc(24);
+    border-radius: rem-calc(8);
+    box-shadow: 0 rem-calc(8) rem-calc(20) rgba(0, 0, 0, 0.2);
     font-family: "Outfit", sans-serif;
     font-size: rem-calc(16);
     display: flex;
@@ -13,27 +13,27 @@
     align-items: center;
 
     &--success {
-        border-left: 5px solid #10b981;
+        border-left: rem-calc(5) solid $color-success;
     }
 
     &--error {
-        border-left: 5px solid #ef4444;
+        border-left: rem-calc(5) solid $color-error;
     }
 
     &--info {
-        border-left: 5px solid #3b82f6;
+        border-left: rem-calc(5) solid $color-info;
     }
 
     button {
         background: transparent;
-        color: white;
+        color: $color-white;
         border: none;
         font-weight: bold;
         cursor: pointer;
-        margin-left: 16px;
+        margin-left: rem-calc(16);
 
         &:hover {
-            color: #aaa;
+            color: $color-gray;
         }
     }
 
@@ -49,7 +49,7 @@
 @keyframes slideIn {
     from {
         opacity: 0;
-        transform: translateY(30px);
+        transform: translateY(rem-calc(30));
     }
 
     to {
@@ -66,6 +66,6 @@
 
     to {
         opacity: 0;
-        transform: translateY(30px);
+        transform: translateY(rem-calc(30));
     }
 }

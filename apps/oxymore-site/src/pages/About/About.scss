@@ -81,6 +81,11 @@
           opacity: 0;
           transform: translateY(20px);
           animation: fadeInUp 0.6s ease forwards;
+          
+          &.stat-delay-0 { animation-delay: 0s; }
+          &.stat-delay-1 { animation-delay: 0.2s; }
+          &.stat-delay-2 { animation-delay: 0.4s; }
+          &.stat-delay-3 { animation-delay: 0.6s; }
 
           .stat-number {
             display: block;
@@ -349,6 +354,13 @@
         transform: translateY(30px);
         animation: fadeInUp 0.6s ease forwards;
         cursor: pointer;
+        
+        &.value-delay-0 { animation-delay: 0s; }
+        &.value-delay-1 { animation-delay: 0.1s; }
+        &.value-delay-2 { animation-delay: 0.2s; }
+        &.value-delay-3 { animation-delay: 0.3s; }
+        &.value-delay-4 { animation-delay: 0.4s; }
+        &.value-delay-5 { animation-delay: 0.5s; }
 
         &:hover {
           transform: translateY(-12px);
@@ -437,6 +449,13 @@
         transform: translateY(30px);
         animation: fadeInUp 0.6s ease forwards;
         transition: transform 0.3s ease;
+        
+        &.team-delay-0 { animation-delay: 0s; }
+        &.team-delay-1 { animation-delay: 0.15s; }
+        &.team-delay-2 { animation-delay: 0.3s; }
+        &.team-delay-3 { animation-delay: 0.45s; }
+        &.team-delay-4 { animation-delay: 0.6s; }
+        &.team-delay-5 { animation-delay: 0.75s; }
 
         &:hover {
           transform: translateY(-8px);

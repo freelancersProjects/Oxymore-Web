@@ -87,11 +87,10 @@ const HeroBanner = () => {
 
         <div className="hero-banner__right">
           <div
-            className={`thumb ${selected === 0 ? "active" : ""} ${hoveredIndex === 0 ? "hovered" : ""}`}
+            className={`thumb thumb-top ${selected === 0 ? "active" : ""} ${hoveredIndex === 0 ? "hovered" : ""}`}
             onClick={() => handleVideoClick(current)}
             onMouseEnter={() => setHoveredIndex(0)}
             onMouseLeave={() => setHoveredIndex(null)}
-            style={{ zIndex: 2 }}
           >
             <div className="player-icon">
               <svg
@@ -113,7 +112,6 @@ const HeroBanner = () => {
               className="thumb-video"
               muted
               preload="metadata"
-              style={{ width: "100%", borderRadius: 15, objectFit: "cover", height: '180px' }}
               onLoadedMetadata={e => (e.currentTarget.currentTime = 0.1)}
             />
             <h4>{videos[current].title}</h4>
@@ -121,11 +119,10 @@ const HeroBanner = () => {
           </div>
           {/* Carte du bas */}
           <div
-            className={`thumb ${selected === 1 ? "active" : ""} ${hoveredIndex === 1 ? "hovered" : ""}`}
+            className={`thumb thumb-bottom ${selected === 1 ? "active" : ""} ${hoveredIndex === 1 ? "hovered" : ""}`}
             onClick={() => { setCurrent(nextIdx); setSelected(0); }}
             onMouseEnter={() => setHoveredIndex(1)}
             onMouseLeave={() => setHoveredIndex(null)}
-            style={{ zIndex: 1 }}
           >
             <div className="player-icon">
               <svg
@@ -147,7 +144,6 @@ const HeroBanner = () => {
               className="thumb-video"
               muted
               preload="metadata"
-              style={{ width: "100%", borderRadius: 15, objectFit: "cover", height: '180px' }}
               onLoadedMetadata={e => (e.currentTarget.currentTime = 0.1)}
             />
             <h4>{videos[nextIdx].title}</h4>
@@ -166,8 +162,8 @@ const HeroBanner = () => {
 
           <div className="carousel-bar">
             <div
-              className="carousel-bar__progress"
-              style={{ width: `${((current + selected + 1) / videos.length) * 100}%` }}
+              className="carousel-bar__progress progress-dynamic"
+              style={{ '--progress-width': `${((current + selected + 1) / videos.length) * 100}%` } as React.CSSProperties}
             ></div>
           </div>
         </div>

@@ -53,7 +53,6 @@ const OxiaChatSidebar: React.FC<SidebarProps> = ({
 
   return (
     <aside className="oxia-chat-sidebar">
-      {/* Bouton Home mobile */}
       <button className="oxia-chat-home-btn" onClick={goHome}>
         <Home size={24} />
       </button>
@@ -62,7 +61,6 @@ const OxiaChatSidebar: React.FC<SidebarProps> = ({
         <span className="oxia-chat-title">Oxia</span>
         <span className="oxia-beta-chip">Bêta</span>
       </div>
-      {/* Channels desktop */}
       <div className="oxia-chat-channels oxia-chat-channels-desktop">
         <div className="oxia-chat-channels-title sidebar-channels-title">
           <span>Channels</span>

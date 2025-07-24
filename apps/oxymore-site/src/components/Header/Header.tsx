@@ -39,7 +39,7 @@ const Header = () => {
   return (
     <header className={`header${scrolled ? " scrolled" : ""}`}>
       <div className="header__logo" onClick={() => navigate("/")}>
-        <img src={Logo} alt="Logo" className="logo" style={{ cursor: "pointer" }} />
+        <img src={Logo} alt="Logo" className="logo" />
       </div>
 
       <button

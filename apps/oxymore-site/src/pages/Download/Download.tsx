@@ -139,7 +139,6 @@ const Download = () => {
                 key={p.value}
                 className={`platform-icon-card mega${selectedPlatform === p.value ? ' selected' : ''}`}
                 onClick={() => setSelectedPlatform(p.value)}
-                style={{ cursor: 'pointer' }}
               >
                 <div className="platform-icon-glass">
                   <img src={p.icon} alt={p.label} />
@@ -153,7 +152,10 @@ const Download = () => {
         {/* SECTION FEATURES */}
         <div className="download-features-row">
           {FEATURES.map((feature, idx) => (
-            <div className="feature-block futurist-glow" key={feature.title} style={{ animationDelay: `${0.1 * idx}s` }}>
+            <div 
+              className={`feature-block futurist-glow feature-block-animated feature-delay-${idx}`}
+              key={feature.title}
+            >
               <div className="feature-icon-anim">{feature.icon}</div>
               <div>
                 <h3>{feature.title}</h3>

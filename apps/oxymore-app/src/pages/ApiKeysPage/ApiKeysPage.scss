@@ -136,6 +136,7 @@
       margin: 15px 0;
 
       &__fill {
+        width: 65%;
         height: 100%;
         background: linear-gradient(90deg, $color-purple 0%, $color-purple-light 100%);
         transition: width 0.3s ease-in-out;
