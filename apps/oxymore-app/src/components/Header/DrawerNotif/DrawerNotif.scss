@@ -21,6 +21,11 @@
     align-items: center;
     gap: rem-calc(6);
   }
+  
+  .drawer-notif-header-icon {
+    margin-right: rem-calc(8);
+  }
+  
   .notif-badge-right {
     background: $color-purple;
     color: #fff;

@@ -2,7 +2,7 @@ import { Router } from "express";
 import {
   getAllMessageBots,
   getMessageBotById,
-  getMessageBotsByChannelId,
+  getMessageBotsByChannel,
   createMessageBot,
   deleteMessageBot,
 } from "../controllers/messageBotController";
@@ -28,7 +28,7 @@ const router = Router();
  */
 router.get("/", (req, res) => {
   if (req.query.channel_id) {
-    return getMessageBotsByChannelId(req, res);
+    return getMessageBotsByChannel(req, res);
   }
   return getAllMessageBots(req, res);
 });

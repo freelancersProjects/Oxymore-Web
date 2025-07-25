@@ -97,7 +97,7 @@ const DrawerNotif: React.FC<DrawerNotifProps> = ({ open, onClose, userId }) => {
   return (
     <OXMDrawer open={open} onClose={onClose} side="right" width={380} className="drawer-notif">
       <div className="drawer-notif-header">
-        <Bell size={22} style={{ marginRight: 8 }} />
+        <Bell size={22} className="drawer-notif-header-icon" />
         <span className="drawer-notif-title-main">Notifications</span>
         <span className="notif-badge-right">{unreadCount}</span>
         {/* {unreadCount > 0 && (

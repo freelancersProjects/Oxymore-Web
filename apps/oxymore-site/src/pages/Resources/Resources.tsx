@@ -14,7 +14,7 @@ const Resources = () => {
       title: t('resources.cards.brandAssets.title'),
       desc: t('resources.cards.brandAssets.desc'),
       action: (
-        <a href="#" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
+        <a href="#" target="_blank" rel="noopener noreferrer" className="tdnone">
           <OXMButton size="large">{t('resources.cards.brandAssets.button')}</OXMButton>
         </a>
       )
@@ -24,7 +24,7 @@ const Resources = () => {
       title: t('resources.cards.integrationGuides.title'),
       desc: t('resources.cards.integrationGuides.desc'),
       action: (
-        <a href="#" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
+        <a href="#" target="_blank" rel="noopener noreferrer" className="tdnone">
           <OXMButton size="large">{t('resources.cards.integrationGuides.button')}</OXMButton>
         </a>
       )
@@ -34,7 +34,7 @@ const Resources = () => {
       title: t('resources.cards.pressKit.title'),
       desc: t('resources.cards.pressKit.desc'),
       action: (
-        <a href="#" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
+        <a href="#" target="_blank" rel="noopener noreferrer" className="tdnone">
           <OXMButton size="large">{t('resources.cards.pressKit.button')}</OXMButton>
         </a>
       )
@@ -44,7 +44,7 @@ const Resources = () => {
       title: t('resources.cards.support.title'),
       desc: t('resources.cards.support.desc'),
       action: (
-        <a href="mailto:support@oxymore.gg" style={{ textDecoration: 'none' }}>
+        <a href="mailto:support@oxymore.gg" className="tdnone">
           <OXMButton size="large">{t('resources.cards.support.button')}</OXMButton>
         </a>
       )

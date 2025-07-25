@@ -46,14 +46,14 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
           // pour valider le token et récupérer les données fraîches.
           // Pour l'instant, on décode le token pour récupérer les données utilisateur
           // stockées lors de la connexion, si elles existent.
-          const storedUser = localStorage.getItem('user');
+          const storedUser = localStorage.getItem('useroxm');
           if (storedUser) {
             setUser(JSON.parse(storedUser));
           }
         } catch (error) {
           console.error("Failed to authenticate with token", error);
           localStorage.removeItem('token');
-          localStorage.removeItem('user');
+          localStorage.removeItem('useroxm');
         }
       }
       setIsLoading(false);
@@ -63,13 +63,13 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const login = ({ user, token }: { user: User; token: string }) => {
     localStorage.setItem('token', token);
-    localStorage.setItem('user', JSON.stringify(user)); // On stocke aussi l'user pour le récupérer au rechargement
+    localStorage.setItem('useroxm', JSON.stringify(user));
     setUser(user);
   };
 
   const logout = () => {
     localStorage.removeItem('token');
-    localStorage.removeItem('user');
+    localStorage.removeItem('useroxm');
     setUser(null);
   };
 
