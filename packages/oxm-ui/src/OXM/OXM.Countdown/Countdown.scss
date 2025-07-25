@@ -1,0 +1,157 @@
+@import "../../styles/global.scss";
+
+.oxm-countdown {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Outfit', sans-serif;
+
+  .oxm-countdown-grid {
+    display: flex;
+    gap: rem-calc(16);
+    align-items: center;
+  }
+
+  .oxm-countdown-unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: rem-calc(8);
+  }
+
+  .oxm-countdown-value {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: rem-calc(80);
+    height: rem-calc(80);
+    background: rgba($color-white, 0.05);
+    border: rem-calc(2) solid rgba($color-white, 0.1);
+    border-radius: rem-calc(12);
+    color: $color-white;
+    font-weight: 700;
+    font-size: rem-calc(24);
+    backdrop-filter: blur(rem-calc(10));
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, rgba($color-white, 0.1) 0%, transparent 100%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    &:hover::before {
+      opacity: 1;
+    }
+  }
+
+  .oxm-countdown-label {
+    color: rgba($color-white, 0.7);
+    font-size: rem-calc(12);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: rem-calc(1);
+  }
+
+  // Thème Violet (par défaut)
+  &--purple {
+    .oxm-countdown-value {
+      border-color: rgba($color-purple, 0.3);
+      background: rgba($color-purple, 0.05);
+
+      &:hover {
+        border-color: rgba($color-purple, 0.6);
+        background: rgba($color-purple, 0.1);
+        box-shadow: 0 0 rem-calc(20) rgba($color-purple, 0.2);
+      }
+    }
+  }
+
+  // Thème Bleu
+  &--blue {
+    .oxm-countdown-value {
+      border-color: rgba($color-blue, 0.3);
+      background: rgba($color-blue, 0.05);
+
+      &:hover {
+        border-color: rgba($color-blue, 0.6);
+        background: rgba($color-blue, 0.1);
+        box-shadow: 0 0 rem-calc(20) rgba($color-blue, 0.2);
+      }
+    }
+  }
+
+  // Tailles
+  &--small {
+    .oxm-countdown-grid {
+      gap: rem-calc(12);
+    }
+
+    .oxm-countdown-value {
+      min-width: rem-calc(60);
+      height: rem-calc(60);
+      font-size: rem-calc(18);
+      border-radius: rem-calc(8);
+    }
+
+    .oxm-countdown-label {
+      font-size: rem-calc(10);
+    }
+  }
+
+  &--medium {
+    .oxm-countdown-grid {
+      gap: rem-calc(16);
+    }
+
+    .oxm-countdown-value {
+      min-width: rem-calc(80);
+      height: rem-calc(80);
+      font-size: rem-calc(24);
+      border-radius: rem-calc(12);
+    }
+
+    .oxm-countdown-label {
+      font-size: rem-calc(12);
+    }
+  }
+
+  &--large {
+    .oxm-countdown-grid {
+      gap: rem-calc(20);
+    }
+
+    .oxm-countdown-value {
+      min-width: rem-calc(100);
+      height: rem-calc(100);
+      font-size: rem-calc(32);
+      border-radius: rem-calc(16);
+    }
+
+    .oxm-countdown-label {
+      font-size: rem-calc(14);
+    }
+  }
+
+  // État terminé
+  &--complete {
+    .oxm-countdown-complete {
+      color: $color-white;
+      font-size: rem-calc(24);
+      font-weight: 600;
+      text-align: center;
+      padding: rem-calc(20);
+      background: rgba($color-success, 0.1);
+      border: rem-calc(2) solid rgba($color-success, 0.3);
+      border-radius: rem-calc(12);
+    }
+  }
+} 

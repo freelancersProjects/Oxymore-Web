@@ -1,0 +1,211 @@
+@import "../../styles/global.scss";
+
+.oxm-card-selector {
+  width: 100%;
+
+  .oxm-card-selector-grid {
+    display: grid;
+    gap: rem-calc(16);
+    grid-template-columns: repeat(auto-fit, minmax(rem-calc(200), 1fr));
+  }
+
+  .oxm-card-selector-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: rem-calc(20);
+    background: rgba($color-white, 0.05);
+    border: rem-calc(2) solid rgba($color-white, 0.1);
+    border-radius: rem-calc(12);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(rem-calc(10));
+    min-height: rem-calc(120);
+
+    &:hover:not(.oxm-card-selector-card--disabled) {
+      border-color: rgba($color-white, 0.3);
+      background: rgba($color-white, 0.08);
+      transform: translateY(rem-calc(-2));
+    }
+
+    .oxm-card-selector-icon {
+      margin-bottom: rem-calc(12);
+      font-size: rem-calc(24);
+      color: rgba($color-white, 0.8);
+    }
+
+    .oxm-card-selector-content {
+      flex: 1;
+    }
+
+    .oxm-card-selector-title {
+      color: $color-white;
+      font-size: rem-calc(16);
+      font-weight: 600;
+      margin: 0 0 rem-calc(8) 0;
+      line-height: 1.4;
+    }
+
+    .oxm-card-selector-description {
+      color: rgba($color-white, 0.7);
+      font-size: rem-calc(14);
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    .oxm-card-selector-check {
+      position: absolute;
+      top: rem-calc(12);
+      right: rem-calc(12);
+      width: rem-calc(20);
+      height: rem-calc(20);
+      background: $color-purple;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transform: scale(0);
+      transition: all 0.3s ease;
+
+      svg {
+        width: rem-calc(12);
+        height: rem-calc(12);
+        color: $color-white;
+      }
+    }
+
+    &--selected {
+      border-color: $color-purple;
+      background: rgba($color-purple, 0.1);
+
+      .oxm-card-selector-check {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      &:hover {
+        border-color: $color-purple;
+        background: rgba($color-purple, 0.15);
+      }
+    }
+
+    &--disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+
+      &:hover {
+        border-color: rgba($color-white, 0.1);
+        background: rgba($color-white, 0.05);
+        transform: none;
+      }
+    }
+  }
+
+  &--purple {
+    .oxm-card-selector-card--selected {
+      border-color: $color-purple;
+      background: rgba($color-purple, 0.1);
+
+      .oxm-card-selector-check {
+        background: $color-purple;
+      }
+
+      &:hover {
+        border-color: $color-purple;
+        background: rgba($color-purple, 0.15);
+      }
+    }
+  }
+
+  &--blue {
+    .oxm-card-selector-card--selected {
+      border-color: $color-blue;
+      background: rgba($color-blue, 0.1);
+
+      .oxm-card-selector-check {
+        background: $color-blue;
+      }
+
+      &:hover {
+        border-color: $color-blue;
+        background: rgba($color-blue, 0.15);
+      }
+    }
+  }
+
+  &--small {
+    .oxm-card-selector-grid {
+      gap: rem-calc(12);
+    }
+
+    .oxm-card-selector-card {
+      padding: rem-calc(16);
+      min-height: rem-calc(100);
+
+      .oxm-card-selector-title {
+        font-size: rem-calc(14);
+      }
+
+      .oxm-card-selector-description {
+        font-size: rem-calc(12);
+      }
+
+      .oxm-card-selector-check {
+        width: rem-calc(16);
+        height: rem-calc(16);
+        top: rem-calc(8);
+        right: rem-calc(8);
+
+        svg {
+          width: rem-calc(10);
+          height: rem-calc(10);
+        }
+      }
+    }
+  }
+
+  &--large {
+    .oxm-card-selector-grid {
+      gap: rem-calc(20);
+    }
+
+    .oxm-card-selector-card {
+      padding: rem-calc(24);
+      min-height: rem-calc(140);
+
+      .oxm-card-selector-title {
+        font-size: rem-calc(18);
+      }
+
+      .oxm-card-selector-description {
+        font-size: rem-calc(16);
+      }
+
+      .oxm-card-selector-check {
+        width: rem-calc(24);
+        height: rem-calc(24);
+        top: rem-calc(16);
+        right: rem-calc(16);
+
+        svg {
+          width: rem-calc(14);
+          height: rem-calc(14);
+        }
+      }
+    }
+  }
+
+  &--disabled {
+    .oxm-card-selector-card {
+      opacity: 0.5;
+      cursor: not-allowed;
+
+      &:hover {
+        border-color: rgba($color-white, 0.1);
+        background: rgba($color-white, 0.05);
+        transform: none;
+      }
+    }
+  }
+} 
