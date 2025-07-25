@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
-import { Home, Trophy, Layers, Play, Users, UserPlus, Code, LogOut, ChevronLeft, ChevronRight, Bot, Menu, X } from "lucide-react";
+import { Home, Trophy, Layers, Play, Users, UserPlus, Code, LogOut, ChevronLeft, Bot, Menu, X } from "lucide-react";
 import Logo from "./../../assets/logo.png";
 import "./Sidebar.scss";
 
@@ -14,9 +14,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false, onToggle 
 
   const handleNavClick = () => setMobileOpen(false);
 
-  // Logout handler
   const handleLogout = () => {
-    localStorage.removeItem('user');
+    localStorage.removeItem('useroxm');
     localStorage.removeItem('token');
     window.location.href = '/login';
   };
@@ -27,12 +26,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false, onToggle 
         <Menu size={28} />
       </button>
       <div className={`oxm-sidebar-overlay${mobileOpen ? ' open' : ''}`} onClick={() => setMobileOpen(false)} />
-      {/* Zone cliquable pour réouvrir la sidebar quand collapsed */}
       {isCollapsed && !mobileOpen && (
         <div
           className="oxm-sidebar-collapsed-zone"
           onClick={onToggle}
-          style={{ position: 'fixed', top: 0, left: 0, width: 24, height: '100vh', zIndex: 999, cursor: 'pointer', background: 'rgba(80,12,173,0.03)' }}
         />
       )}
       <aside

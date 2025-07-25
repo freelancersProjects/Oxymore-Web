@@ -7,10 +7,7 @@ import "./JoinTournament.scss";
 
 const JoinTournament = () => {
   return (
-    <div
-      className="create-tournament-page"
-      style={{ position: "relative", overflow: "hidden" }}
-    >
+    <div className="create-tournament-page">
       <OXMGlowOrb
         top="-10%"
         left="-15%"

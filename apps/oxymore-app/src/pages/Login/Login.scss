@@ -1,12 +1,14 @@
+@import "../../styles/global.scss";
+
 .login-container {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+  background: linear-gradient(135deg, $color-black 0%, $color-gray-darker 50%, $color-gray-darkest 100%);
   position: relative;
   overflow: hidden;
-  padding: 20px;
+  padding: rem-calc(20);
   margin: 0 !important;
 }
 
@@ -22,33 +24,33 @@
 .login-glow-orb {
   position: absolute;
   border-radius: 50%;
-  filter: blur(80px);
+  filter: blur(rem-calc(80));
   opacity: 0.3;
   animation: float 6s ease-in-out infinite;
 }
 
 .login-glow-orb-1 {
-  width: 300px;
-  height: 300px;
-  background: radial-gradient(circle, #8b5cf6 0%, transparent 70%);
+  width: rem-calc(300);
+  height: rem-calc(300);
+  background: radial-gradient(circle, $color-purple-light 0%, transparent 70%);
   top: 10%;
   left: 10%;
   animation-delay: 0s;
 }
 
 .login-glow-orb-2 {
-  width: 250px;
-  height: 250px;
-  background: radial-gradient(circle, #06b6d4 0%, transparent 70%);
+  width: rem-calc(250);
+  height: rem-calc(250);
+  background: radial-gradient(circle, $color-blue 0%, transparent 70%);
   top: 60%;
   right: 15%;
   animation-delay: 2s;
 }
 
 .login-glow-orb-3 {
-  width: 200px;
-  height: 200px;
-  background: radial-gradient(circle, #ec4899 0%, transparent 70%);
+  width: rem-calc(200);
+  height: rem-calc(200);
+  background: radial-gradient(circle, $color-danger 0%, transparent 70%);
   bottom: 20%;
   left: 20%;
   animation-delay: 4s;
@@ -59,19 +61,19 @@
     transform: translateY(0px) scale(1);
   }
   50% {
-    transform: translateY(-20px) scale(1.05);
+    transform: translateY(rem-calc(-20)) scale(1.05);
   }
 }
 
 .login-card {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 24px;
-  padding: 48px;
+  background: rgba($color-white, 0.05);
+  backdrop-filter: blur(rem-calc(20));
+  border: 1px solid rgba($color-white, 0.1);
+  border-radius: rem-calc(24);
+  padding: rem-calc(48);
   width: 100%;
-  max-width: 420px;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  max-width: rem-calc(420);
+  box-shadow: 0 rem-calc(25) rem-calc(50) rem-calc(-12) rgba(0, 0, 0, 0.5);
   position: relative;
   z-index: 1;
   animation: slideUp 0.6s ease-out;
@@ -80,7 +82,7 @@
 @keyframes slideUp {
   from {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(rem-calc(30));
   }
   to {
     opacity: 1;
@@ -90,100 +92,100 @@
 
 .login-header {
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: rem-calc(40);
 }
 
 .login-logo {
-  margin-bottom: 24px;
+  margin-bottom: rem-calc(24);
 
   img {
-    height: 48px;
+    height: rem-calc(48);
     width: auto;
     filter: brightness(0) invert(1);
   }
 }
 
 .login-header h1 {
-  color: #ffffff;
-  font-size: 32px;
+  color: $color-white;
+  font-size: rem-calc(32);
   font-weight: 700;
-  margin-bottom: 8px;
+  margin-bottom: rem-calc(8);
   display: inline-block;
-  padding-bottom: 8px;
-  border-bottom: 2px solid;
+  padding-bottom: rem-calc(8);
+  border-bottom: rem-calc(2) solid;
   border-image-slice: 1;
-  border-image-source: linear-gradient(to right, #8b5cf6, #06b6d4);
+  border-image-source: linear-gradient(to right, $color-purple-light, $color-blue);
 }
 
 .login-header p {
-  color: #a1a1aa;
-  font-size: 16px;
+  color: $color-gray-medium;
+  font-size: rem-calc(16);
   margin: 0;
 }
 
 .login-form {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: rem-calc(24);
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: rem-calc(8);
 }
 
 .form-group label {
-  color: #ffffff;
-  font-size: 14px;
+  color: $color-white;
+  font-size: rem-calc(14);
   font-weight: 600;
-  margin-bottom: 4px;
+  margin-bottom: rem-calc(4);
 }
 
 .form-group input {
-  background: rgba(255, 255, 255, 0.08);
-  border: 2px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
-  padding: 16px;
-  color: #ffffff;
-  font-size: 16px;
+  background: rgba($color-white, 0.08);
+  border: rem-calc(2) solid rgba($color-white, 0.1);
+  border-radius: rem-calc(12);
+  padding: rem-calc(16);
+  color: $color-white;
+  font-size: rem-calc(16);
   transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(rem-calc(10));
 
   &::placeholder {
-    color: #71717a;
+    color: $color-gray-medium;
   }
 
   &:focus {
     outline: none;
-    border-color: #8b5cf6;
-    box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.1);
-    background: rgba(255, 255, 255, 0.12);
+    border-color: $color-purple-light;
+    box-shadow: 0 0 0 rem-calc(4) rgba($color-purple-light, 0.1);
+    background: rgba($color-white, 0.12);
   }
 
   &.error {
-    border-color: #ef4444;
-    box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1);
+    border-color: $color-danger;
+    box-shadow: 0 0 0 rem-calc(4) rgba($color-danger, 0.1);
   }
 }
 
 .error-message {
-  color: #ef4444;
-  font-size: 12px;
-  margin-top: 4px;
+  color: $color-danger;
+  font-size: rem-calc(12);
+  margin-top: rem-calc(4);
   animation: shake 0.5s ease-in-out;
 
   &.form-error {
     text-align: center;
-    margin-top: 10px;
-    margin-bottom: -10px;
+    margin-top: rem-calc(10);
+    margin-bottom: rem-calc(-10);
   }
 }
 
 @keyframes shake {
   0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-5px); }
-  75% { transform: translateX(5px); }
+  25% { transform: translateX(rem-calc(-5)); }
+  75% { transform: translateX(rem-calc(5)); }
 }
 
 .password-input-wrapper {
@@ -193,26 +195,26 @@
 
   input {
     width: 100%;
-    padding-right: 50px; // Espace pour l'icône
+    padding-right: rem-calc(50); // Espace pour l'icône
   }
 }
 
 .password-toggle-btn {
   position: absolute;
-  right: 15px;
+  right: rem-calc(15);
   top: 50%;
   transform: translateY(-50%);
   background: none;
   border: none;
   cursor: pointer;
-  color: #71717a;
+  color: $color-gray-medium;
   display: flex;
   align-items: center;
   padding: 0;
-  font-size: 18px;
+  font-size: rem-calc(18);
 
   &:hover {
-    color: #a1a1aa;
+    color: $color-gray-medium;
   }
 
   &:focus {
@@ -224,15 +226,15 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 8px;
+  margin-top: rem-calc(8);
 }
 
 .checkbox-container {
   display: flex;
   align-items: center;
-  gap: 8px;
-  color: #a1a1aa;
-  font-size: 14px;
+  gap: rem-calc(8);
+  color: $color-gray-medium;
+  font-size: rem-calc(14);
   cursor: pointer;
   user-select: none;
 
@@ -241,18 +243,18 @@
   }
 
   .checkmark {
-    width: 18px;
-    height: 18px;
-    border: 2px solid rgba(255, 255, 255, 0.2);
-    border-radius: 4px;
+    width: rem-calc(18);
+    height: rem-calc(18);
+    border: rem-calc(2) solid rgba($color-white, 0.2);
+    border-radius: rem-calc(4);
     position: relative;
     transition: all 0.3s ease;
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba($color-white, 0.05);
   }
 
   input[type="checkbox"]:checked + .checkmark {
-    background: #8b5cf6;
-    border-color: #8b5cf6;
+    background: $color-purple-light;
+    border-color: $color-purple-light;
 
     &::after {
       content: '✓';
@@ -260,43 +262,43 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      color: white;
-      font-size: 12px;
+      color: $color-white;
+      font-size: rem-calc(12);
       font-weight: bold;
     }
   }
 }
 
 .forgot-password {
-  color: #8b5cf6;
+  color: $color-purple-light;
   text-decoration: none;
-  font-size: 14px;
+  font-size: rem-calc(14);
   transition: color 0.3s ease;
 
   &:hover {
-    color: #a855f7;
+    color: $color-purple;
     text-decoration: underline;
   }
 }
 
 .login-button {
-  background-color: #8b5cf6;
+  background-color: $color-purple-light;
   border: none;
-  border-radius: 12px;
-  padding: 16px;
-  color: white;
-  font-size: 16px;
+  border-radius: rem-calc(12);
+  padding: rem-calc(16);
+  color: $color-white;
+  font-size: rem-calc(16);
   font-weight: 600;
   cursor: pointer;
   position: relative;
   overflow: hidden;
   transition: all 0.3s ease;
-  margin-top: 16px;
+  margin-top: rem-calc(16);
 
   &:hover {
-    transform: translateY(-3px);
-    background-color: #9333ea;
-    box-shadow: 0 12px 28px rgba(139, 92, 246, 0.3), 0 0 20px rgba(6, 182, 212, 0.15);
+    transform: translateY(rem-calc(-3));
+    background-color: $color-purple;
+    box-shadow: 0 rem-calc(12) rem-calc(28) rgba($color-purple-light, 0.3), 0 0 rem-calc(20) rgba($color-blue, 0.15);
   }
 
   &:active {
@@ -306,24 +308,24 @@
 
 .login-footer {
   text-align: center;
-  margin-top: 32px;
-  padding-top: 24px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: rem-calc(32);
+  padding-top: rem-calc(24);
+  border-top: 1px solid rgba($color-white, 0.1);
 
   p {
-    color: #a1a1aa;
-    font-size: 14px;
+    color: $color-gray-medium;
+    font-size: rem-calc(14);
     margin: 0;
   }
 
   .signup-link {
-    color: #8b5cf6;
+    color: $color-purple-light;
     text-decoration: none;
     font-weight: 600;
     transition: color 0.3s ease;
 
     &:hover {
-      color: #a855f7;
+      color: $color-purple;
       text-decoration: underline;
     }
   }
@@ -332,17 +334,17 @@
 // Responsive design
 @media (max-width: 480px) {
   .login-card {
-    padding: 32px 24px;
-    margin: 16px;
+    padding: rem-calc(32) rem-calc(24);
+    margin: rem-calc(16);
   }
 
   .login-header h1 {
-    font-size: 28px;
+    font-size: rem-calc(28);
   }
 
   .form-options {
     flex-direction: column;
-    gap: 16px;
+    gap: rem-calc(16);
     align-items: flex-start;
   }
 }

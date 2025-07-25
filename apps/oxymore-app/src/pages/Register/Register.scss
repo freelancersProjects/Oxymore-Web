@@ -211,7 +211,6 @@
   }
 }
 
-// Responsive design
 @media (max-width: 480px) {
   .register-card {
   padding: rem-calc(32) rem-calc(24);
@@ -230,7 +229,7 @@
 
   input {
     width: 100%;
-    padding-right: 50px; // Espace pour l'icône
+    padding-right: 50px;
   }
 }
 

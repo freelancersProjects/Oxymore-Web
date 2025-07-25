@@ -42,7 +42,7 @@ const OxiaChatModals: React.FC<ModalsProps> = ({
           type="text"
           value={newChannelName}
           onChange={(e) => {
-            if (e.target.value.length <= 50) setNewChannelName(e.target.value);
+            if (e.target.value.length <= 50) setNewChannelName(e.target.value); // limation du nom du channel
           }}
           maxLength={50}
           placeholder="Nom du channel"
@@ -79,8 +79,7 @@ const OxiaChatModals: React.FC<ModalsProps> = ({
           Renommer
         </button>
         <button
-          className="oxia-chat-send-btn"
-          style={{ background: "#23223a", color: "#fff" }}
+          className="oxia-chat-send-btn oxia-chat-btn-cancel"
           onClick={() => setShowRenameModal(false)}
         >
           Annuler
@@ -98,15 +97,13 @@ const OxiaChatModals: React.FC<ModalsProps> = ({
       </p>
       <div className="modal-actions">
         <button
-          className="oxia-chat-send-btn"
-          style={{ background: "#ff4747", marginRight: 12 }}
+          className="oxia-chat-send-btn oxia-chat-btn-delete"
           onClick={handleDeleteChannel}
         >
           Supprimer
         </button>
         <button
-          className="oxia-chat-send-btn"
-          style={{ background: "#23223a", color: "#fff" }}
+          className="oxia-chat-send-btn oxia-chat-btn-cancel"
           onClick={() => setShowDeleteModal(false)}
         >
           Annuler
