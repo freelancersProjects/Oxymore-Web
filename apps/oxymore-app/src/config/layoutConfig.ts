@@ -19,6 +19,7 @@ export const LAYOUT_CONFIG = {
   noHeaderPages: [
     '/oxia',
     '/highlights',
+    '/demo'
   ],
 
   // Pages qui doivent masquer seulement le footer

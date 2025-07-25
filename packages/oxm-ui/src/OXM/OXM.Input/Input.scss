@@ -1,0 +1,128 @@
+@import "../../styles/global.scss";
+
+.oxm-input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.oxm-input {
+  width: 100%;
+  border: none;
+  border-bottom: rem-calc(2) solid rgba($color-white, 0.3);
+  background: transparent;
+  color: $color-white;
+  font-family: 'Outfit', sans-serif;
+  font-size: rem-calc(16);
+  font-weight: 400;
+  padding: rem-calc(16) rem-calc(4) rem-calc(8) rem-calc(4);
+  transition: all 0.3s ease;
+  outline: none;
+  position: relative;
+
+  &::placeholder {
+    color: rgba($color-white, 0.5);
+    font-weight: 400;
+    transition: color 0.3s ease;
+  }
+
+  &:focus {
+    &::placeholder {
+      color: rgba($color-white, 0.3);
+    }
+  }
+
+  &--purple {
+    &:focus {
+      border-bottom-color: $color-purple;
+    }
+
+    &:focus::after {
+      content: '';
+      position: absolute;
+      bottom: rem-calc(-2);
+      left: 0;
+      width: 100%;
+      height: rem-calc(2);
+      background: linear-gradient(90deg, $color-purple 0%, $color-purple-light 100%);
+      animation: fillProgress 0.3s ease forwards;
+    }
+  }
+
+  &--blue {
+    &:focus {
+      border-bottom-color: $color-blue;
+    }
+
+    &:focus::after {
+      content: '';
+      position: absolute;
+      bottom: rem-calc(-2);
+      left: 0;
+      width: 100%;
+      height: rem-calc(2);
+      background: linear-gradient(90deg, $color-blue 0%, lighten($color-blue, 20%) 100%);
+      animation: fillProgress 0.3s ease forwards;
+    }
+  }
+
+  &--small {
+    padding: rem-calc(12) rem-calc(4) rem-calc(6) rem-calc(4);
+    font-size: rem-calc(14);
+  }
+
+  &--medium {
+    padding: rem-calc(16) rem-calc(4) rem-calc(8) rem-calc(4);
+    font-size: rem-calc(16);
+  }
+
+  &--large {
+    padding: rem-calc(20) rem-calc(4) rem-calc(10) rem-calc(4);
+    font-size: rem-calc(18);
+  }
+
+  &--error {
+    border-bottom-color: $color-error;
+
+    &:focus {
+      border-bottom-color: $color-error;
+    }
+
+    &:focus::after {
+      background: linear-gradient(90deg, $color-error 0%, lighten($color-error, 20%) 100%);
+    }
+  }
+
+  &--disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    border-bottom-color: rgba($color-white, 0.2);
+
+    &:focus {
+      border-bottom-color: rgba($color-white, 0.2);
+    }
+
+    &:focus::after {
+      display: none;
+    }
+  }
+}
+
+@keyframes fillProgress {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+.oxm-input-error-message {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: rem-calc(4);
+  color: $color-error;
+  font-size: rem-calc(12);
+  font-weight: 400;
+  line-height: 1.4;
+} 

@@ -1,0 +1,156 @@
+@import "../../styles/global.scss";
+
+.oxm-switch-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.oxm-switch {
+  display: flex;
+  align-items: center;
+  gap: rem-calc(12);
+  cursor: pointer;
+  user-select: none;
+  font-family: 'Outfit', sans-serif;
+  color: $color-white;
+  transition: all 0.3s ease;
+
+  .oxm-switch-input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+
+  .oxm-switch-track {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background: rgba($color-white, 0.2);
+    border-radius: rem-calc(20);
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+
+    .oxm-switch-thumb {
+      position: absolute;
+      left: rem-calc(2);
+      background: $color-white;
+      border-radius: 50%;
+      transition: all 0.3s ease;
+      box-shadow: 0 rem-calc(2) rem-calc(4) rgba(0, 0, 0, 0.2);
+    }
+  }
+
+  .oxm-switch-input:checked + .oxm-switch-track {
+    background: $color-purple;
+
+    .oxm-switch-thumb {
+      transform: translateX(100%);
+    }
+  }
+
+  .oxm-switch-label {
+    font-weight: 400;
+    line-height: 1.4;
+  }
+
+  &--purple {
+    .oxm-switch-input:checked + .oxm-switch-track {
+      background: $color-purple;
+    }
+
+    .oxm-switch-input:focus + .oxm-switch-track {
+      box-shadow: 0 0 0 rem-calc(3) rgba($color-purple, 0.3);
+    }
+  }
+
+  &--blue {
+    .oxm-switch-input:checked + .oxm-switch-track {
+      background: $color-blue;
+    }
+
+    .oxm-switch-input:focus + .oxm-switch-track {
+      box-shadow: 0 0 0 rem-calc(3) rgba($color-blue, 0.3);
+    }
+  }
+
+  &--small {
+    font-size: rem-calc(14);
+    gap: rem-calc(8);
+
+    .oxm-switch-track {
+      width: rem-calc(32);
+      height: rem-calc(16);
+    }
+
+    .oxm-switch-thumb {
+      width: rem-calc(12);
+      height: rem-calc(12);
+    }
+  }
+
+  &--medium {
+    font-size: rem-calc(16);
+    gap: rem-calc(12);
+
+    .oxm-switch-track {
+      width: rem-calc(44);
+      height: rem-calc(24);
+    }
+
+    .oxm-switch-thumb {
+      width: rem-calc(20);
+      height: rem-calc(20);
+    }
+  }
+
+  &--large {
+    font-size: rem-calc(18);
+    gap: rem-calc(16);
+
+    .oxm-switch-track {
+      width: rem-calc(56);
+      height: rem-calc(32);
+    }
+
+    .oxm-switch-thumb {
+      width: rem-calc(28);
+      height: rem-calc(28);
+    }
+  }
+
+  &--error {
+    .oxm-switch-track {
+      background: rgba($color-error, 0.3);
+    }
+
+    .oxm-switch-input:checked + .oxm-switch-track {
+      background: $color-error;
+    }
+  }
+
+  &--disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+
+    .oxm-switch-track {
+      background: rgba($color-gray, 0.3);
+    }
+
+    .oxm-switch-thumb {
+      background: $color-gray;
+    }
+  }
+}
+
+.oxm-switch-error-message {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: rem-calc(4);
+  color: $color-error;
+  font-size: rem-calc(12);
+  font-weight: 400;
+  line-height: 1.4;
+} 
