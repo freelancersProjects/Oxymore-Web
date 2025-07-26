@@ -9,6 +9,7 @@
     "dev:site": "npm run dev --workspace=oxymore-site",
     "dev:app": "npm run dev --workspace=oxymore-app",
     "dev:back": "npm run dev --prefix back",
+    "dev:admin": "npm run dev --workspace=oxymore-admin",
     "build": "npm run build --workspace=@oxymore/ui",
     "build:site": "npm run build --workspace=oxymore-site",
     "build:app": "npm run build --workspace=oxymore-app"
@@ -26,6 +27,8 @@
     "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^7.1.1",
     "@mui/material": "^7.1.1",
+    "@types/canvas-confetti": "^1.9.0",
+    "canvas-confetti": "^1.9.3",
     "lucide-react": "^0.522.0",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1"

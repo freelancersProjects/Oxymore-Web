@@ -1,7 +1,7 @@
 import React from "react";
 import "./UpcomingTournaments.scss";
-import { Eye } from "lucide-react";
 import LiveIcon from "../../../assets/svg/live-icon.svg?react";
+import EyeIcon from "../../../assets/svg/eye-icon-live.svg?react";
 import { OXMButton } from "@oxymore/ui";
 
 const tournaments = [
@@ -48,7 +48,7 @@ const UpcomingTournaments = () => {
               <img src={t.img} alt={t.title} className="card-image" />
               {t.live && <div className="live-badge"><LiveIcon className="live-icon" /> Live</div>}
               <div className="views">
-                <Eye size={14} /> <span>{t.views}</span>
+                <EyeIcon /> <span>{t.views}</span>
               </div>
             </div>
             <div className="tag">

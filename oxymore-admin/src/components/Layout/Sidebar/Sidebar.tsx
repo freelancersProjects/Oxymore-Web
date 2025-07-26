@@ -1,0 +1,175 @@
+import React from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import {
+  LayoutDashboard,
+  Users,
+  Trophy,
+  Shield,
+  Target,
+  Calendar,
+  Star,
+  Settings,
+  TrendingUp,
+  Activity,
+  ChevronRight,
+  LogOut
+} from 'lucide-react';
+import { useSidebar } from '../../../context/SidebarContext';
+
+const mainNav = [
+  { label: 'Dashboard', icon: LayoutDashboard, path: '/dashboard' },
+  { label: 'Users', icon: Users, path: '/users', badge: '12.8K' },
+  { label: 'Tournaments', icon: Trophy, path: '/tournaments', badge: '24', color: 'bg-gradient-purple' },
+  { label: 'Teams', icon: Shield, path: '/teams', badge: '156' },
+  { label: 'Leagues', icon: Target, path: '/leagues', badge: '8' },
+  { label: 'Matches', icon: Calendar, path: '/matches', badge: 'LIVE', color: 'bg-red-500' },
+  { label: 'Badges', icon: Star, path: '/badges' }
+];
+
+const statsNav = [
+  { label: 'Analytics', icon: TrendingUp, path: '/analytics' },
+  { label: 'Activity', icon: Activity, path: '/activity' }
+];
+
+const NavLink = ({ item }: { item: any }) => {
+  const location = useLocation();
+  const { isCollapsed } = useSidebar();
+  const isActive = location.pathname === item.path;
+
+  return (
+    <Link to={item.path} className="flex">
+      <motion.div
+        whileHover={{ x: 5 }}
+        whileTap={{ scale: 0.98 }}
+        className={`flex items-center justify-between p-3 rounded-xl w-full transition-all duration-300 group ${
+          isActive 
+            ? 'bg-gradient-oxymore text-white shadow-oxymore' 
+            : 'text-[var(--text-secondary)] hover:bg-[var(--overlay-hover)]'
+        }`}
+      >
+        <div className="flex items-center gap-3">
+          <item.icon className={`w-5 h-5 ${isActive ? 'text-white' : 'text-[var(--text-secondary)] group-hover:text-white'}`} />
+          {!isCollapsed && (
+            <span className={`font-medium ${isActive ? 'text-white' : 'group-hover:text-white'}`}>
+              {item.label}
+            </span>
+          )}
+        </div>
+        
+        {!isCollapsed && (
+          <div className="flex items-center gap-2">
+            {item.badge && (
+              <span className={`px-2 py-1 text-xs font-semibold rounded-lg ${
+                item.color || 'bg-[var(--overlay-hover)]'
+              }`}>
+                {item.badge}
+              </span>
+            )}
+            <ChevronRight className={`w-4 h-4 transition-transform ${
+              isActive ? 'rotate-90 text-white' : 'text-[var(--text-muted)] group-hover:translate-x-1'
+            }`} />
+          </div>
+        )}
+      </motion.div>
+    </Link>
+  );
+};
+
+const Sidebar = () => {
+  const { isCollapsed } = useSidebar();
+
+  return (
+    <aside className={`h-screen bg-[var(--card-background)] border-r border-[var(--border-color)] flex flex-col overflow-hidden transition-all duration-300 ${
+      isCollapsed ? 'w-[72px]' : 'w-70'
+    }`}>
+      {/* Logo - Fixed */}
+      <div className="p-6 border-b border-[var(--border-color)]">
+        <Link to="/dashboard">
+          <motion.div
+            whileHover={{ scale: 1.02 }}
+            className="flex items-center gap-3"
+          >
+            <div className="w-10 h-10 bg-gradient-oxymore rounded-xl flex items-center justify-center shadow-oxymore">
+              <span className="text-white font-bold text-xl">O</span>
+            </div>
+            {!isCollapsed && (
+              <h1 className="text-[var(--text-primary)] text-xl font-bold">
+                Oxymore <span className="text-sm text-oxymore-purple-light">Admin</span>
+              </h1>
+            )}
+          </motion.div>
+        </Link>
+      </div>
+
+      {/* Scrollable content */}
+      <div className="flex-1 overflow-y-auto">
+        {/* Stats Overview */}
+        {!isCollapsed && (
+          <div className="p-4 border-b border-[var(--border-color)]">
+            <div className="grid grid-cols-2 gap-3">
+              <div className="bg-[var(--overlay-hover)] p-3 rounded-xl">
+                <h3 className="text-sm text-[var(--text-secondary)]">Active Users</h3>
+                <div className="mt-1 flex items-end gap-1">
+                  <span className="text-2xl font-bold text-[var(--text-primary)]">1.2k</span>
+                  <span className="text-xs text-emerald-400 mb-1">+5%</span>
+                </div>
+              </div>
+              <div className="bg-[var(--overlay-hover)] p-3 rounded-xl">
+                <h3 className="text-sm text-[var(--text-secondary)]">Live Matches</h3>
+                <div className="mt-1 flex items-end gap-1">
+                  <span className="text-2xl font-bold text-[var(--text-primary)]">24</span>
+                  <span className="text-xs text-red-400 mb-1">LIVE</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Main Navigation */}
+        <div className="p-4 space-y-2">
+          {!isCollapsed && (
+            <h2 className="text-sm font-semibold text-[var(--text-secondary)] px-3 mb-3">MAIN MENU</h2>
+          )}
+          {mainNav.map((item) => (
+            <NavLink key={item.path} item={item} />
+          ))}
+        </div>
+
+        {/* Stats & Analytics */}
+        <div className="p-4 space-y-2">
+          {!isCollapsed && (
+            <h2 className="text-sm font-semibold text-[var(--text-secondary)] px-3 mb-3">ANALYTICS</h2>
+          )}
+          {statsNav.map((item) => (
+            <NavLink key={item.path} item={item} />
+          ))}
+        </div>
+      </div>
+
+      {/* Settings & Logout - Fixed at bottom */}
+      <div className="p-4 space-y-2 border-t border-[var(--border-color)]">
+        <NavLink item={{ 
+          label: 'Settings', 
+          icon: Settings, 
+          path: '/settings',
+          description: 'Manage your preferences'
+        }} />
+        <motion.button
+          whileHover={{ x: 5 }}
+          whileTap={{ scale: 0.98 }}
+          className="flex w-full items-center gap-3 p-3 text-red-400 hover:bg-red-500/10 rounded-xl transition-colors"
+        >
+          <LogOut className="w-5 h-5" />
+          {!isCollapsed && (
+            <span className="font-medium">Logout</span>
+          )}
+        </motion.button>
+      </div>
+    </aside>
+  );
+};
+
+export default Sidebar; 
+ 
+ 
