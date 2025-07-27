@@ -288,5 +288,32 @@
       "terms": "Conditions d'utilisation"
     },
     "copyright": "© 2024 Oxymore. Tous droits réservés."
+  },
+  "download": {
+    "title": {
+      "start": "Libérez Votre Potentiel",
+      "end": "Gaming"
+    },
+    "subtitle": "Transformez votre expérience de jeu avec notre plateforme alimentée par l'IA, conçue pour optimiser vos performances et vous connecter avec des joueurs de votre niveau.",
+    "download_button": "Télécharger pour {platform}",
+    "features": {
+      "matchmaking": {
+        "title": "Matchmaking Intelligent",
+        "description": "Notre système de matchmaking avancé vous connecte avec des joueurs de votre niveau pour des parties équilibrées et compétitives."
+      },
+      "ai": {
+        "title": "IA Adaptative",
+        "description": "Une intelligence artificielle qui analyse votre style de jeu et s'adapte pour vous offrir un entraînement personnalisé optimal."
+      },
+      "stats": {
+        "title": "Statistiques Détaillées",
+        "description": "Suivez votre progression avec des analyses approfondies, des graphiques détaillés et des métriques personnalisées en temps réel."
+      }
+    },
+    "platforms": {
+      "windows": "Windows",
+      "macos": "macOS",
+      "linux": "Linux"
+    }
   }
 }

@@ -18,8 +18,8 @@
     "leave": "Leave",
     "download": "Download",
     "language": {
-      "fr": "🇫🇷 FR",
-      "en": "🇬🇧 EN"
+      "fr": "FR",
+      "en": "EN"
     }
   },
   "nav": {
@@ -288,5 +288,32 @@
         "description": "Integrate Oxymore's API into your digital products."
       }
     ]
+  },
+  "download": {
+    "title": {
+      "start": "Unlock Your Gaming",
+      "end": "Potential"
+    },
+    "subtitle": "Transform your gaming experience with our AI-powered platform, designed to optimize your performance and connect you with players at your skill level.",
+    "download_button": "Download for {platform}",
+    "features": {
+      "matchmaking": {
+        "title": "Smart Matchmaking",
+        "description": "Our advanced matchmaking system connects you with players at your skill level for balanced and competitive matches."
+      },
+      "ai": {
+        "title": "Adaptive AI",
+        "description": "An artificial intelligence that analyzes your playstyle and adapts to provide optimal personalized training."
+      },
+      "stats": {
+        "title": "Detailed Statistics",
+        "description": "Track your progress with in-depth analytics, detailed graphs, and real-time personalized metrics."
+      }
+    },
+    "platforms": {
+      "windows": "Windows",
+      "macos": "macOS",
+      "linux": "Linux"
+    }
   }
 }
