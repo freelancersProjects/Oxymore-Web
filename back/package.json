@@ -3,9 +3,12 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon --watch src --ext ts --exec ts-node ./src/index.ts",
+    "dev": "nodemon src/index.ts",
     "build": "tsc",
-    "start": "node dist/index.js"
+    "start": "node dist/index.js",
+    "dev:ws": "nodemon src/index.ts -- --websocket",
+    "redis:ui": "redis-commander --redis-host localhost --redis-port 6379 --port 8081",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
@@ -13,6 +16,7 @@
   "description": "",
   "dependencies": {
     "@types/js-yaml": "^4.0.9",
+    "@types/socket.io": "^3.0.1",
     "bcrypt": "^6.0.0",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
@@ -20,6 +24,8 @@
     "js-yaml": "^4.1.0",
     "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.14.1",
+    "redis": "^5.6.1",
+    "socket.io": "^4.8.1",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1"
   },

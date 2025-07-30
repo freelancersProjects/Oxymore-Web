@@ -1,10 +1,22 @@
-// Sidebar width
+// Variables
 $sidebar-width: 280px;
 
 :root {
+  // Layout
   --sidebar-width: #{$sidebar-width};
+
+  // Colors
+  --page-background: #0A0A0A;
+  --card-background: #111111;
+  --border-color: rgba(255, 255, 255, 0.1);
+  --text-primary: #FFFFFF;
+  --text-secondary: #A0A0A0;
+  --text-muted: #666666;
+  --overlay-hover: rgba(255, 255, 255, 0.05);
+  --overlay-active: rgba(255, 255, 255, 0.1);
 }
 
+// Utility classes
 .w-70 {
   width: var(--sidebar-width);
 }
@@ -13,6 +25,28 @@ $sidebar-width: 280px;
   @media (min-width: 1024px) {
     margin-left: var(--sidebar-width);
   }
+}
+
+// Gradients
+.bg-gradient-oxymore {
+  background: linear-gradient(135deg, #500CAD, #7B2CBF);
+}
+
+.bg-gradient-purple {
+  background: linear-gradient(135deg, #8B5CF6, #6D28D9);
+}
+
+.bg-gradient-blue {
+  background: linear-gradient(135deg, #3B82F6, #1D4ED8);
+}
+
+// Shadows
+.shadow-oxymore {
+  box-shadow: 0 4px 12px rgba(80, 12, 173, 0.2);
+}
+
+.shadow-oxymore-lg {
+  box-shadow: 0 8px 24px rgba(80, 12, 173, 0.3);
 } 
  
  

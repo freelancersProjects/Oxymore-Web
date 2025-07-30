@@ -2,11 +2,13 @@
  * @openapi
  * components:
  *   schemas:
- *     User:
+ *     UserInput:
  *       type: object
+ *       required:
+ *         - username
+ *         - email
+ *         - password_hash
  *       properties:
- *         id_user:
- *           type: string
  *         first_name:
  *           type: string
  *         last_name:
@@ -43,12 +45,14 @@
  *           type: string
  *         verified:
  *           type: boolean
- *         created_at:
- *           type: string
- *           format: date-time
  *         team_chat_is_muted:
  *           type: boolean
+ *         role_id:
+ *           oneOf:
+ *             - type: string
+ *             - type: integer
  */
+
 export interface User {
   id_user: string;
   first_name: string;
@@ -71,30 +75,5 @@ export interface User {
   verified: boolean;
   created_at: string;
   team_chat_is_muted: boolean;
+  role_id: string | number;
 }
-
-export const users: User[] = [
-  {
-    id_user: "1",
-    first_name: "Alice",
-    last_name: "Doe",
-    username: "alice",
-    email: "alice@example.com",
-    password_hash: "hashedpassword",
-    is_premium: true,
-    avatar_url: "https://example.com/avatar.png",
-    banner_url: "https://example.com/banner.png",
-    bio: "Gamer pro",
-    elo: 1500,
-    wallet: 100.5,
-    country_code: "FR",
-    discord_link: "Alice#1234",
-    faceit_id: "FACEIT123",
-    steam_link: "STEAM123",
-    twitch_link: "twitch.tv/alice",
-    youtube_link: "youtube.com/alice",
-    verified: true,
-    created_at: new Date().toISOString(),
-    team_chat_is_muted: false,
-  },
-];

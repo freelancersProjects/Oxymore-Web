@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { useAuth } from '../../context/AuthContext';
+import apiService from '../../api/apiService';
 import './Login.scss';
 
 const Login: React.FC = () => {
@@ -62,27 +63,15 @@ const Login: React.FC = () => {
 
     if (validateForm()) {
       try {
-        const response = await fetch('http://localhost:3000/api/auth/login', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            email: formData.email,
-            password: formData.password,
-          }),
+        const response = await apiService.post('/auth/login', {
+          email: formData.email,
+          password: formData.password,
         });
 
-        if (response.ok) {
-          const { user, token } = await response.json();
-          login({ user, token });
-          navigate('/');
-        } else {
-          const errorData = await response.json();
-          setErrors({ form: errorData.message || 'Login failed.' });
-        }
-      } catch {
-        setErrors({ form: 'Could not connect to the server.' });
+        login(response);
+        navigate('/');
+      } catch (error) {
+        setErrors({ form: 'Invalid credentials or server error.' });
       }
     }
   };

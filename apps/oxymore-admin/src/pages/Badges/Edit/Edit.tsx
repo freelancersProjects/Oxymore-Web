@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, Link, useParams } from 'react-router-dom';
 import { ArrowLeft, Shield, Upload } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { apiService } from '../../../api/apiService';
+import { Badge } from '../../../types/badge';
+import Loader from '../../../components/Loader/Loader';
 
 interface BadgeFormData {
   badge_name: string;
@@ -11,11 +13,39 @@ interface BadgeFormData {
   image_url: string;
 }
 
-const Create = () => {
+const Edit = () => {
   const navigate = useNavigate();
-  const { register, handleSubmit, formState: { errors } } = useForm<BadgeFormData>();
+  const { id } = useParams();
+  const { register, handleSubmit, formState: { errors }, reset } = useForm<BadgeFormData>();
   const [dragActive, setDragActive] = useState(false);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetchBadge();
+  }, [id]);
+
+  const fetchBadge = async () => {
+    if (!id) return;
+    try {
+      setLoading(true);
+      setError(null);
+      const data = await apiService.get<Badge>(`/badges/${id}`);
+      reset({
+        badge_name: data.badge_name,
+        badge_description: data.badge_description || '',
+        unlock_condition: data.unlock_condition || '',
+        image_url: data.image_url || ''
+      });
+      setPreviewImage(data.image_url);
+    } catch (err) {
+      setError('Une erreur est survenue lors du chargement du badge');
+      console.error('Error fetching badge:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleDrag = (e: React.DragEvent) => {
     e.preventDefault();
@@ -53,19 +83,50 @@ const Create = () => {
   };
 
   const onSubmit = async (data: BadgeFormData) => {
+    if (!id) return;
     try {
-      // Pour l'instant, on utilise l'URL de prévisualisation
-      // Plus tard, on utilisera l'URL Cloudinary ici
       const formData = {
         ...data,
         image_url: previewImage
       };
-      await apiService.post('/badges', formData);
+      await apiService.patch(`/badges/${id}`, formData);
       navigate('/badges');
     } catch (error) {
-      console.error('Error creating badge:', error);
+      console.error('Error updating badge:', error);
     }
   };
+
+  if (loading) {
+    return (
+      <div className="space-y-6">
+        <div>
+          <h1 className="text-2xl font-bold text-primary">Edit Badge</h1>
+          <p className="text-secondary mt-1">Modify badge details</p>
+        </div>
+        <Loader />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="space-y-6">
+        <div>
+          <h1 className="text-2xl font-bold text-primary">Edit Badge</h1>
+          <p className="text-secondary mt-1">Modify badge details</p>
+        </div>
+        <div className="card-base p-6 text-center">
+          <p className="text-red-400 mb-4">{error}</p>
+          <button
+            onClick={fetchBadge}
+            className="button-primary px-4 py-2 rounded-xl"
+          >
+            Réessayer
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -78,7 +139,7 @@ const Create = () => {
           >
             <ArrowLeft className="w-5 h-5 text-[var(--text-primary)]" />
           </Link>
-          <h1 className="text-2xl font-bold text-[var(--text-primary)]">Create Badge</h1>
+          <h1 className="text-2xl font-bold text-[var(--text-primary)]">Edit Badge</h1>
         </div>
       </div>
 
@@ -199,7 +260,7 @@ const Create = () => {
             className="button-primary px-4 py-2 rounded-xl flex items-center gap-2"
           >
             <Shield className="w-5 h-5" />
-            Create Badge
+            Save Changes
           </button>
         </div>
       </form>
@@ -207,6 +268,4 @@ const Create = () => {
   );
 };
 
-export default Create; 
- 
- 
+export default Edit; 

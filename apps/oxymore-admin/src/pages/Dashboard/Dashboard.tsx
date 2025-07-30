@@ -25,8 +25,31 @@ import {
   BarChart,
   Bar
 } from 'recharts';
+import { useStats } from '../../context/StatsContext';
 
 const Dashboard = () => {
+  const { stats, loading } = useStats();
+
+  // Fonction pour formater les nombres
+  const formatNumber = (num: number): string => {
+    if (num >= 1000000) {
+      return (num / 1000000).toFixed(1) + 'M';
+    } else if (num >= 1000) {
+      return (num / 1000).toFixed(1) + 'K';
+    }
+    return num.toString();
+  };
+
+  // Fonction pour formater les prix
+  const formatPrice = (num: number): string => {
+    if (num >= 1000000) {
+      return '$' + (num / 1000000).toFixed(1) + 'M';
+    } else if (num >= 1000) {
+      return '$' + (num / 1000).toFixed(1) + 'K';
+    }
+    return '$' + num.toString();
+  };
+
   // Mock data for charts
   const userActivityData = [
     { name: 'Jan', users: 4000 },
@@ -66,7 +89,7 @@ const Dashboard = () => {
         {[
           {
             title: 'Total Users',
-            value: '12,847',
+            value: loading ? '...' : formatNumber(stats.totalUsers),
             change: '+12%',
             trend: 'up',
             icon: Users,
@@ -74,7 +97,7 @@ const Dashboard = () => {
           },
           {
             title: 'Active Tournaments',
-            value: '24',
+            value: loading ? '...' : stats.totalTournaments.toString(),
             change: '+3',
             trend: 'up',
             icon: Trophy,
@@ -82,7 +105,7 @@ const Dashboard = () => {
           },
           {
             title: 'Total Prize Pool',
-            value: '$48,592',
+            value: loading ? '...' : formatPrice(stats.totalTournaments * 5000), // Estimation
             change: '-5%',
             trend: 'down',
             icon: DollarSign,
@@ -90,7 +113,7 @@ const Dashboard = () => {
           },
           {
             title: 'Live Matches',
-            value: '8',
+            value: loading ? '...' : stats.activeMatches.toString(),
             change: '+2',
             trend: 'up',
             icon: Activity,

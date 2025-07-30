@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import apiService from '../../api/apiService';
 import './Register.scss';
 
 const Register: React.FC = () => {
@@ -65,22 +66,10 @@ const Register: React.FC = () => {
 
     if (validateForm()) {
       try {
-        const response = await fetch('http://localhost:3000/api/auth/register', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(formData),
-        });
-
-        if (response.ok) {
-          navigate('/login');
-        } else {
-          const errorData = await response.json();
-          setErrors(prev => ({ ...prev, form: errorData.message || 'Registration failed' }));
-        }
-      } catch {
-        setErrors(prev => ({ ...prev, form: 'Could not connect to the server.' }));
+        await apiService.post('/auth/register', formData);
+        navigate('/login');
+      } catch (error) {
+        setErrors(prev => ({ ...prev, form: 'Registration failed. Please try again.' }));
       }
     }
   };

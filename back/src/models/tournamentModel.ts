@@ -57,8 +57,8 @@ export interface Tournament {
   tournament_name: string;
   organized_by?: string;
   description?: string;
-  type: string;
-  format: string;
+  type: string; // 'ligue' | 'major' | 'open'
+  format: string; // 'BO1' | 'BO3' | 'BO5'
   structure: string;
   start_date: string;
   end_date: string;

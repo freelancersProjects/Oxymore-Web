@@ -1,79 +1,61 @@
 import { Request, Response } from "express";
 import * as UserService from "../services/userService";
 
-export const getAllUsers = async (req: Request, res: Response) => {
+export const getAllUsers = async (_req: Request, res: Response) => {
   try {
     const users = await UserService.getAllUsers();
     res.json(users);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server error" });
+  } catch (error) {
+    console.error("Error getting all users:", error);
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 
 export const getUserById = async (req: Request, res: Response) => {
   try {
     const user = await UserService.getUserById(req.params.id);
-    if (user) {
-      res.json(user);
-    } else {
-      res.status(404).json({ message: "User not found" });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
     }
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server error" });
+    res.json(user);
+  } catch (error) {
+    console.error("Error getting user by id:", error);
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 
 export const createUser = async (req: Request, res: Response) => {
   try {
-    const {
-      first_name,
-      last_name,
-      username,
-      email,
-      password_hash,
-      is_premium,
-      avatar_url,
-      banner_url,
-      bio,
-      elo,
-      wallet,
-      country_code,
-      discord_link,
-      faceit_id,
-      steam_link,
-      twitch_link,
-      youtube_link,
-      verified,
-      team_chat_is_muted,
-    } = req.body;
-
     const newUser = await UserService.createUser({
-      first_name,
-      last_name,
-      username,
-      email,
-      password_hash,
-      is_premium: is_premium ?? false,
-      avatar_url,
-      banner_url,
-      bio,
-      elo: elo ?? 1000,
-      wallet: wallet ?? null,
-      country_code,
-      discord_link,
-      faceit_id,
-      steam_link,
-      twitch_link,
-      youtube_link,
-      verified: verified ?? false,
-      team_chat_is_muted: team_chat_is_muted ?? false,
+      ...req.body,
+      role_id: req.body.role_id || 1
     });
-
     res.status(201).json(newUser);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server error" });
+  } catch (error) {
+    console.error("Error creating user:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const updateUser = async (req: Request, res: Response) => {
+  try {
+    const updatedUser = await UserService.updateUser(req.params.id, req.body);
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.json(updatedUser);
+  } catch (error) {
+    console.error("Error updating user:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const deleteUser = async (req: Request, res: Response) => {
+  try {
+    await UserService.deleteUser(req.params.id);
+    res.status(204).send();
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    res.status(500).json({ message: "Internal server error" });
   }
 };

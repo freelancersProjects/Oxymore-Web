@@ -7,6 +7,12 @@ export const getAllBadges = async (): Promise<Badge[]> => {
   return rows as Badge[];
 };
 
+export const getBadgeById = async (id_badge: string): Promise<Badge | null> => {
+  const [rows] = await db.query("SELECT * FROM badge WHERE id_badge = ?", [id_badge]);
+  const badges = rows as Badge[];
+  return badges.length > 0 ? badges[0] : null;
+};
+
 export const createBadge = async (data: Omit<Badge, "id_badge">): Promise<Badge> => {
   const id_badge = crypto.randomUUID();
   await db.query(
@@ -20,6 +26,33 @@ export const createBadge = async (data: Omit<Badge, "id_badge">): Promise<Badge>
     ]
   );
   return { id_badge, ...data };
+};
+
+export const updateBadge = async (id_badge: string, data: Partial<Omit<Badge, "id_badge">>): Promise<void> => {
+  const updates = [];
+  const values = [];
+
+  if (data.badge_name !== undefined) {
+    updates.push("badge_name = ?");
+    values.push(data.badge_name);
+  }
+  if (data.badge_description !== undefined) {
+    updates.push("badge_description = ?");
+    values.push(data.badge_description);
+  }
+  if (data.image_url !== undefined) {
+    updates.push("image_url = ?");
+    values.push(data.image_url);
+  }
+  if (data.unlock_condition !== undefined) {
+    updates.push("unlock_condition = ?");
+    values.push(data.unlock_condition);
+  }
+
+  if (updates.length > 0) {
+    const query = `UPDATE badge SET ${updates.join(", ")} WHERE id_badge = ?`;
+    await db.query(query, [...values, id_badge]);
+  }
 };
 
 export const deleteBadge = async (id_badge: string): Promise<void> => {

@@ -1,4 +1,5 @@
 import { Router } from "express";
+import type { Handler } from "express";
 import { register, login } from "../controllers/authController";
 
 const router = Router();
@@ -9,7 +10,7 @@ const router = Router();
  *   post:
  *     tags:
  *       - Auth
- *     summary: Crée un nouvel utilisateur
+ *     summary: Inscription d'un nouvel utilisateur
  *     requestBody:
  *       required: true
  *       content:
@@ -23,10 +24,8 @@ const router = Router();
  *             properties:
  *               email:
  *                 type: string
- *                 format: email
  *               password:
  *                 type: string
- *                 format: password
  *               username:
  *                 type: string
  *               first_name:
@@ -37,11 +36,9 @@ const router = Router();
  *       201:
  *         description: Utilisateur créé avec succès
  *       400:
- *         description: Champs manquants
- *       409:
- *         description: L'utilisateur existe déjà
+ *         description: Données invalides
  */
-router.post("/register", register);
+router.post("/register", register as Handler);
 
 /**
  * @openapi
@@ -49,7 +46,7 @@ router.post("/register", register);
  *   post:
  *     tags:
  *       - Auth
- *     summary: Connecte un utilisateur
+ *     summary: Connexion d'un utilisateur
  *     requestBody:
  *       required: true
  *       content:
@@ -62,18 +59,14 @@ router.post("/register", register);
  *             properties:
  *               email:
  *                 type: string
- *                 format: email
  *               password:
  *                 type: string
- *                 format: password
  *     responses:
  *       200:
  *         description: Connexion réussie
  *       400:
- *         description: Champs manquants
- *       401:
  *         description: Identifiants invalides
  */
-router.post("/login", login);
+router.post("/login", login as Handler);
 
 export default router;

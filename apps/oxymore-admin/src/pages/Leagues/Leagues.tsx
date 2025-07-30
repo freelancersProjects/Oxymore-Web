@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Plus,
@@ -13,82 +13,52 @@ import {
   Clock,
   ChevronRight
 } from 'lucide-react';
-
-const mockLeagues = [
-  {
-    id: '1',
-    name: 'Oxymore Premier League',
-    image_url: null,
-    max_teams: 12,
-    start_date: '2024-03-01',
-    end_date: '2024-06-01',
-    promotion_slots: 2,
-    relegation_slots: 2,
-    entry_type: 'invite',
-    status: 'active',
-    teams_count: 12,
-    matches_played: 45,
-    current_leader: 'Team Liquid',
-    prize_pool: '10,000€'
-  },
-  {
-    id: '2',
-    name: 'Oxymore Championship',
-    image_url: null,
-    max_teams: 10,
-    start_date: '2024-03-01',
-    end_date: '2024-06-01',
-    promotion_slots: 3,
-    relegation_slots: 3,
-    entry_type: 'open',
-    status: 'active',
-    teams_count: 8,
-    matches_played: 32,
-    current_leader: 'NAVI',
-    prize_pool: '5,000€'
-  },
-  {
-    id: '3',
-    name: 'Oxymore Elite Division',
-    image_url: null,
-    max_teams: 8,
-    start_date: '2024-02-01',
-    end_date: '2024-05-01',
-    promotion_slots: 2,
-    relegation_slots: 2,
-    entry_type: 'invite',
-    status: 'active',
-    teams_count: 8,
-    matches_played: 28,
-    current_leader: 'Vitality',
-    prize_pool: '7,500€'
-  }
-];
-
-const upcomingLeagues = [
-  {
-    id: '4',
-    name: 'Summer Major League',
-    start_date: '2024-06-15',
-    max_teams: 16,
-    entry_type: 'qualifier',
-    prize_pool: '15,000€',
-    registration_deadline: '2024-06-01'
-  },
-  {
-    id: '5',
-    name: 'Challenger Series',
-    start_date: '2024-07-01',
-    max_teams: 12,
-    entry_type: 'open',
-    prize_pool: '3,000€',
-    registration_deadline: '2024-06-15'
-  }
-];
+import { apiService } from '../../api/apiService';
+import { League } from '../../types/league';
 
 const Leagues = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('active');
+  const [leagues, setLeagues] = useState<League[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchLeagues();
+  }, []);
+
+  const fetchLeagues = async () => {
+    try {
+      setLoading(true);
+      const data = await apiService.get<League[]>('/leagues');
+      setLeagues(data);
+    } catch (error) {
+      console.error('Error fetching leagues:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Calculer les stats basées sur les vraies données
+  const activeLeagues = leagues.filter(league => {
+    const now = new Date();
+    const startDate = league.start_date ? new Date(league.start_date) : null;
+    const endDate = league.end_date ? new Date(league.end_date) : null;
+    
+    if (!startDate) return false;
+    if (endDate && now > endDate) return false;
+    
+    return now >= startDate;
+  });
+
+  const upcomingLeagues = leagues.filter(league => {
+    const now = new Date();
+    const startDate = league.start_date ? new Date(league.start_date) : null;
+    
+    return startDate && now < startDate;
+  });
+
+  const totalTeams = leagues.reduce((sum, league) => sum + (league.max_teams || 0), 0);
+  const totalPrizePool = leagues.length * 5000; // Estimation pour l'exemple
 
   return (
     <div className="space-y-6">
@@ -117,7 +87,7 @@ const Leagues = () => {
             <div>
               <p className="stat-label">Active Leagues</p>
               <div className="flex items-center gap-2">
-                <h3 className="stat-value">3</h3>
+                <h3 className="stat-value">{activeLeagues.length}</h3>
                 <span className="text-xs text-green-500">LIVE</span>
               </div>
             </div>
@@ -132,7 +102,7 @@ const Leagues = () => {
             <div>
               <p className="stat-label">Total Teams</p>
               <div className="flex items-center gap-2">
-                <h3 className="stat-value">28</h3>
+                <h3 className="stat-value">{totalTeams}</h3>
                 <ArrowUpRight className="w-4 h-4 text-green-500" />
               </div>
             </div>
@@ -147,7 +117,7 @@ const Leagues = () => {
             <div>
               <p className="stat-label">Prize Pool</p>
               <div className="flex items-center gap-2">
-                <h3 className="stat-value">22.5k€</h3>
+                <h3 className="stat-value">{(totalPrizePool / 1000).toFixed(1)}k€</h3>
                 <ArrowUpRight className="w-4 h-4 text-green-500" />
               </div>
             </div>
@@ -162,7 +132,7 @@ const Leagues = () => {
             <div>
               <p className="stat-label">Upcoming</p>
               <div className="flex items-center gap-2">
-                <h3 className="stat-value">2</h3>
+                <h3 className="stat-value">{upcomingLeagues.length}</h3>
                 <ArrowDownRight className="w-4 h-4 text-red-500" />
               </div>
             </div>
@@ -204,10 +174,10 @@ const Leagues = () => {
         {/* Active Leagues */}
         {activeTab === 'active' && (
           <div className="space-y-4">
-            {mockLeagues.map((league) => (
+            {activeLeagues.map((league) => (
               <div
-                key={league.id}
-                onClick={() => navigate(`/leagues/${league.id}`)}
+                key={league.id_league}
+                onClick={() => navigate(`/leagues/${league.id_league}`)}
                 className="p-6 bg-[var(--card-background)] rounded-xl border border-[var(--border-color)] hover:border-oxymore-purple transition-colors cursor-pointer"
               >
                 <div className="flex items-start gap-6">
@@ -217,22 +187,22 @@ const Leagues = () => {
                   <div className="flex-1">
                     <div className="flex items-start justify-between">
                       <div>
-                        <h3 className="text-lg font-semibold text-[var(--text-primary)]">{league.name}</h3>
+                        <h3 className="text-lg font-semibold text-[var(--text-primary)]">{league.league_name}</h3>
                         <div className="flex items-center gap-4 mt-2">
                           <div className="flex items-center gap-2">
                             <Users className="w-4 h-4 text-[var(--text-secondary)]" />
                             <span className="text-[var(--text-secondary)]">
-                              {league.teams_count}/{league.max_teams} teams
+                              {league.max_teams || 0} teams max
                             </span>
                           </div>
                           <div className="flex items-center gap-2">
                             <Trophy className="w-4 h-4 text-[var(--text-secondary)]" />
-                            <span className="text-[var(--text-secondary)]">{league.prize_pool}</span>
+                            <span className="text-[var(--text-secondary)]">Prize Pool</span>
                           </div>
                           <div className="flex items-center gap-2">
                             <Calendar className="w-4 h-4 text-[var(--text-secondary)]" />
                             <span className="text-[var(--text-secondary)]">
-                              {new Date(league.end_date).toLocaleDateString()}
+                              {league.end_date ? new Date(league.end_date).toLocaleDateString() : 'No end date'}
                             </span>
                           </div>
                         </div>
@@ -247,17 +217,19 @@ const Leagues = () => {
 
                     <div className="grid grid-cols-3 gap-6 mt-6">
                       <div className="p-4 rounded-xl bg-[var(--overlay-hover)]">
-                        <p className="text-[var(--text-secondary)] text-sm">Current Leader</p>
-                        <p className="text-[var(--text-primary)] font-medium mt-1">{league.current_leader}</p>
+                        <p className="text-[var(--text-secondary)] text-sm">Entry Type</p>
+                        <p className="text-[var(--text-primary)] font-medium mt-1 capitalize">{league.entry_type || 'N/A'}</p>
                       </div>
                       <div className="p-4 rounded-xl bg-[var(--overlay-hover)]">
-                        <p className="text-[var(--text-secondary)] text-sm">Matches Played</p>
-                        <p className="text-[var(--text-primary)] font-medium mt-1">{league.matches_played}</p>
-                      </div>
-                      <div className="p-4 rounded-xl bg-[var(--overlay-hover)]">
-                        <p className="text-[var(--text-secondary)] text-sm">Promotion Slots</p>
+                        <p className="text-[var(--text-secondary)] text-sm">Start Date</p>
                         <p className="text-[var(--text-primary)] font-medium mt-1">
-                          {league.promotion_slots} up / {league.relegation_slots} down
+                          {league.start_date ? new Date(league.start_date).toLocaleDateString() : 'Not set'}
+                        </p>
+                      </div>
+                      <div className="p-4 rounded-xl bg-[var(--overlay-hover)]">
+                        <p className="text-[var(--text-secondary)] text-sm">Promotion/Relegation</p>
+                        <p className="text-[var(--text-primary)] font-medium mt-1">
+                          {league.promotion_slots || 0} up / {league.relegation_slots || 0} down
                         </p>
                       </div>
                     </div>
@@ -273,8 +245,8 @@ const Leagues = () => {
           <div className="space-y-4">
             {upcomingLeagues.map((league) => (
               <div
-                key={league.id}
-                onClick={() => navigate(`/leagues/${league.id}`)}
+                key={league.id_league}
+                onClick={() => navigate(`/leagues/${league.id_league}`)}
                 className="p-6 bg-[var(--card-background)] rounded-xl border border-[var(--border-color)] hover:border-oxymore-purple transition-colors cursor-pointer"
               >
                 <div className="flex items-start gap-6">
@@ -284,22 +256,22 @@ const Leagues = () => {
                   <div className="flex-1">
                     <div className="flex items-start justify-between">
                       <div>
-                        <h3 className="text-lg font-semibold text-[var(--text-primary)]">{league.name}</h3>
+                        <h3 className="text-lg font-semibold text-[var(--text-primary)]">{league.league_name}</h3>
                         <div className="flex items-center gap-4 mt-2">
                           <div className="flex items-center gap-2">
                             <Users className="w-4 h-4 text-[var(--text-secondary)]" />
                             <span className="text-[var(--text-secondary)]">
-                              {league.max_teams} slots
+                              {league.max_teams || 0} slots
                             </span>
                           </div>
                           <div className="flex items-center gap-2">
                             <Trophy className="w-4 h-4 text-[var(--text-secondary)]" />
-                            <span className="text-[var(--text-secondary)]">{league.prize_pool}</span>
+                            <span className="text-[var(--text-secondary)]">Prize Pool</span>
                           </div>
                           <div className="flex items-center gap-2">
                             <Calendar className="w-4 h-4 text-[var(--text-secondary)]" />
                             <span className="text-[var(--text-secondary)]">
-                              Starts {new Date(league.start_date).toLocaleDateString()}
+                              Starts {league.start_date ? new Date(league.start_date).toLocaleDateString() : 'TBD'}
                             </span>
                           </div>
                         </div>
@@ -315,12 +287,12 @@ const Leagues = () => {
                     <div className="grid grid-cols-3 gap-6 mt-6">
                       <div className="p-4 rounded-xl bg-[var(--overlay-hover)]">
                         <p className="text-[var(--text-secondary)] text-sm">Entry Type</p>
-                        <p className="text-[var(--text-primary)] font-medium mt-1 capitalize">{league.entry_type}</p>
+                        <p className="text-[var(--text-primary)] font-medium mt-1 capitalize">{league.entry_type || 'N/A'}</p>
                       </div>
                       <div className="p-4 rounded-xl bg-[var(--overlay-hover)]">
-                        <p className="text-[var(--text-secondary)] text-sm">Registration Deadline</p>
+                        <p className="text-[var(--text-secondary)] text-sm">Start Date</p>
                         <p className="text-[var(--text-primary)] font-medium mt-1">
-                          {new Date(league.registration_deadline).toLocaleDateString()}
+                          {league.start_date ? new Date(league.start_date).toLocaleDateString() : 'Not set'}
                         </p>
                       </div>
                       <div className="p-4 rounded-xl bg-[var(--overlay-hover)]">

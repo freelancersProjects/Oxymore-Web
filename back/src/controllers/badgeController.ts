@@ -1,27 +1,66 @@
 import { Request, Response } from "express";
-import * as BadgeService from "../services/badgeService";
+import * as badgeService from "../services/badgeService";
 
 export const getAllBadges = async (req: Request, res: Response) => {
-  const badges = await BadgeService.getAllBadges();
-  res.json(badges);
+  try {
+    const badges = await badgeService.getAllBadges();
+    res.json(badges);
+  } catch (error) {
+    console.error("Error in getAllBadges:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+export const getBadgeById = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const badge = await badgeService.getBadgeById(id);
+    
+    if (!badge) {
+      return res.status(404).json({ error: "Badge not found" });
+    }
+    
+    res.json(badge);
+  } catch (error) {
+    console.error("Error in getBadgeById:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
 };
 
 export const createBadge = async (req: Request, res: Response) => {
-  const { badge_name, badge_description, image_url, unlock_condition } = req.body;
-  if (!badge_name) {
-    res.status(400).json({ message: "badge_name est requis" });
-    return;
+  try {
+    const badge = await badgeService.createBadge(req.body);
+    res.status(201).json(badge);
+  } catch (error) {
+    console.error("Error in createBadge:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
-  const newBadge = await BadgeService.createBadge({
-    badge_name,
-    badge_description,
-    image_url,
-    unlock_condition
-  });
-  res.status(201).json(newBadge);
+};
+
+export const updateBadge = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    await badgeService.updateBadge(id, req.body);
+    
+    const updatedBadge = await badgeService.getBadgeById(id);
+    if (!updatedBadge) {
+      return res.status(404).json({ error: "Badge not found" });
+    }
+    
+    res.json(updatedBadge);
+  } catch (error) {
+    console.error("Error in updateBadge:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
 };
 
 export const deleteBadge = async (req: Request, res: Response) => {
-  await BadgeService.deleteBadge(req.params.id);
-  res.status(204).send();
+  try {
+    const { id } = req.params;
+    await badgeService.deleteBadge(id);
+    res.status(204).send();
+  } catch (error) {
+    console.error("Error in deleteBadge:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
 };

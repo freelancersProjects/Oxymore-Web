@@ -11,6 +11,7 @@ import {
   ChevronRight,
   Command
 } from 'lucide-react';
+import { useAuth } from '../../../context/AuthContext';
 import ShortcutsModal from './ShortcutsModal';
 
 const notifications = [
@@ -20,6 +21,7 @@ const notifications = [
 ];
 
 const Header = () => {
+  const { user, logout } = useAuth();
   const [showNotifs, setShowNotifs] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
   const [showShortcuts, setShowShortcuts] = useState(false);
@@ -49,23 +51,43 @@ const Header = () => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
+  const handleLogout = () => {
+    logout();
+    setShowProfile(false);
+  };
+
+  const getUserInitials = () => {
+    if (!user) return 'A';
+    const firstName = user.first_name || '';
+    const lastName = user.last_name || '';
+    return `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase() || user.username.charAt(0).toUpperCase();
+  };
+
+  const getDisplayName = () => {
+    if (!user) return 'Admin';
+    if (user.first_name && user.last_name) {
+      return `${user.first_name} ${user.last_name}`;
+    }
+    return user.username || 'Admin';
+  };
+
   return (
     <header className="sticky top-0 z-40 bg-[var(--card-background)] border-b border-[var(--border-color)] backdrop-blur-sm">
       <div className="flex items-center justify-between h-16 px-6">
-        {/* Search */}
-        <div className="flex-1 max-w-xl">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--text-secondary)]" />
-            <input
-              type="text"
-              placeholder="Search anything... (⌘ K)"
-              className="w-full bg-[var(--overlay-hover)] border border-[var(--border-color)] rounded-xl pl-10 pr-4 py-2 text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-oxymore-purple/50"
-            />
+        {/* Search and Quick Actions */}
+        <div className="flex items-center gap-4 flex-1 max-w-2xl">
+          {/* Search */}
+          <div className="flex-1">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--text-secondary)]" />
+              <input
+                type="text"
+                placeholder="Search anything... (⌘ K)"
+                className="w-full bg-[var(--overlay-hover)] border border-[var(--border-color)] rounded-xl pl-10 pr-4 py-2 text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-oxymore-purple/50"
+              />
+            </div>
           </div>
-        </div>
 
-        {/* Actions */}
-        <div className="flex items-center gap-4">
           {/* Quick Actions */}
           <motion.button
             whileHover={{ scale: 1.05 }}
@@ -76,7 +98,10 @@ const Header = () => {
             <Command className="w-5 h-5" />
             <span>Quick Actions</span>
           </motion.button>
+        </div>
 
+        {/* Actions */}
+        <div className="flex items-center gap-4">
           {/* Notifications */}
           <div className="relative">
             <motion.button
@@ -138,11 +163,11 @@ const Header = () => {
               className="flex items-center gap-3 p-1.5 bg-[var(--overlay-hover)] hover:bg-[var(--overlay-active)] rounded-xl transition-colors"
             >
               <div className="w-7 h-7 rounded-lg bg-gradient-oxymore flex items-center justify-center">
-                <span className="text-white font-semibold">A</span>
+                <span className="text-white font-semibold">{getUserInitials()}</span>
               </div>
               <div className="pr-2">
-                <p className="text-[var(--text-primary)] font-medium">Admin</p>
-                <p className="text-[var(--text-secondary)] text-xs">Super Admin</p>
+                <p className="text-[var(--text-primary)] font-medium">{getDisplayName()}</p>
+                <p className="text-[var(--text-secondary)] text-xs">{user?.email}</p>
               </div>
               <ChevronRight className={`w-4 h-4 text-[var(--text-secondary)] transition-transform ${showProfile ? 'rotate-90' : ''}`} />
             </motion.button>
@@ -156,16 +181,18 @@ const Header = () => {
                   className="absolute right-0 mt-2 w-48 bg-[var(--card-background)] border border-[var(--border-color)] rounded-xl shadow-lg py-1"
                 >
                   <div className="px-4 py-3 border-b border-[var(--border-color)]">
-                    <p className="text-sm text-[var(--text-primary)] font-medium">Admin</p>
-                    <p className="text-xs text-[var(--text-secondary)]">admin@oxymore.gg</p>
+                    <p className="text-sm text-[var(--text-primary)] font-medium">{getDisplayName()}</p>
+                    <p className="text-xs text-[var(--text-secondary)]">{user?.email}</p>
                   </div>
                   <Link
                     to="/settings"
                     className="block px-4 py-2 text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--overlay-hover)]"
+                    onClick={() => setShowProfile(false)}
                   >
                     Settings
                   </Link>
                   <button
+                    onClick={handleLogout}
                     className="block w-full text-left px-4 py-2 text-sm text-red-400 hover:text-red-300 hover:bg-[var(--overlay-hover)]"
                   >
                     Sign out

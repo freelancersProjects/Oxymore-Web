@@ -1,8 +1,11 @@
 import { Router } from "express";
+import type { Handler } from "express";
 import {
   getAllUsers,
   getUserById,
   createUser,
+  updateUser,
+  deleteUser,
 } from "../controllers/userController";
 
 const router = Router();
@@ -18,7 +21,7 @@ const router = Router();
  *       200:
  *         description: Liste des utilisateurs
  */
-router.get("/", getAllUsers);
+router.get("/", getAllUsers as Handler);
 
 /**
  * @openapi
@@ -39,7 +42,7 @@ router.get("/", getAllUsers);
  *       404:
  *         description: Utilisateur non trouvé
  */
-router.get("/:id", getUserById);
+router.get("/:id", getUserById as Handler);
 
 /**
  * @openapi
@@ -53,11 +56,59 @@ router.get("/:id", getUserById);
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/User'
+ *             $ref: '#/components/schemas/UserInput'
  *     responses:
  *       201:
  *         description: Utilisateur créé
  */
-router.post("/", createUser);
+router.post("/", createUser as Handler);
+
+/**
+ * @openapi
+ * /api/users/{id}:
+ *   put:
+ *     tags:
+ *       - Users
+ *     summary: Met à jour un utilisateur
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/UserInput'
+ *     responses:
+ *       200:
+ *         description: Utilisateur mis à jour
+ *       404:
+ *         description: Utilisateur non trouvé
+ */
+router.put("/:id", updateUser as Handler);
+
+/**
+ * @openapi
+ * /api/users/{id}:
+ *   delete:
+ *     tags:
+ *       - Users
+ *     summary: Supprime un utilisateur
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       204:
+ *         description: Utilisateur supprimé
+ *       404:
+ *         description: Utilisateur non trouvé
+ */
+router.delete("/:id", deleteUser as Handler);
 
 export default router;

@@ -38,6 +38,6 @@ export interface League {
   promotion_slots?: number;
   relegation_slots?: number;
   image_url?: string;
-  entry_type?: string;
+  entry_type?: string; // 'tournament' | 'promotion'
   id_badge_champion?: string;
 }

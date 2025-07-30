@@ -16,21 +16,8 @@ import {
   LogOut
 } from 'lucide-react';
 import { useSidebar } from '../../../context/SidebarContext';
-
-const mainNav = [
-  { label: 'Dashboard', icon: LayoutDashboard, path: '/dashboard' },
-  { label: 'Users', icon: Users, path: '/users', badge: '12.8K' },
-  { label: 'Tournaments', icon: Trophy, path: '/tournaments', badge: '24', color: 'bg-gradient-purple' },
-  { label: 'Teams', icon: Shield, path: '/teams', badge: '156' },
-  { label: 'Leagues', icon: Target, path: '/leagues', badge: '8' },
-  { label: 'Matches', icon: Calendar, path: '/matches', badge: 'LIVE', color: 'bg-red-500' },
-  { label: 'Badges', icon: Star, path: '/badges' }
-];
-
-const statsNav = [
-  { label: 'Analytics', icon: TrendingUp, path: '/analytics' },
-  { label: 'Activity', icon: Activity, path: '/activity' }
-];
+import { useAuth } from '../../../context/AuthContext';
+import { useStats } from '../../../context/StatsContext';
 
 const NavLink = ({ item }: { item: any }) => {
   const location = useLocation();
@@ -62,7 +49,7 @@ const NavLink = ({ item }: { item: any }) => {
             {item.badge && (
               <span className={`px-2 py-1 text-xs font-semibold rounded-lg ${
                 item.color || 'bg-[var(--overlay-hover)]'
-              }`}>
+              } ${item.color ? 'text-white' : ''}`}>
                 {item.badge}
               </span>
             )}
@@ -78,6 +65,37 @@ const NavLink = ({ item }: { item: any }) => {
 
 const Sidebar = () => {
   const { isCollapsed } = useSidebar();
+  const { logout } = useAuth();
+  const { stats, loading } = useStats();
+
+  const handleLogout = () => {
+    logout();
+  };
+
+  // Fonction pour formater les nombres
+  const formatNumber = (num: number): string => {
+    if (num >= 1000000) {
+      return (num / 1000000).toFixed(1) + 'M';
+    } else if (num >= 1000) {
+      return (num / 1000).toFixed(1) + 'K';
+    }
+    return num.toString();
+  };
+
+  const mainNav = [
+    { label: 'Dashboard', icon: LayoutDashboard, path: '/dashboard' },
+    { label: 'Users', icon: Users, path: '/users', badge: loading ? '...' : formatNumber(stats.totalUsers) },
+    { label: 'Tournaments', icon: Trophy, path: '/tournaments', badge: loading ? '...' : stats.totalTournaments.toString(), color: 'bg-gradient-purple' },
+    { label: 'Teams', icon: Shield, path: '/teams', badge: loading ? '...' : stats.totalTeams.toString() },
+    { label: 'Leagues', icon: Target, path: '/leagues', badge: loading ? '...' : stats.totalLeagues.toString() },
+    { label: 'Matches', icon: Calendar, path: '/matches', badge: 'LIVE', color: 'bg-red-500' },
+    { label: 'Badges', icon: Star, path: '/badges' }
+  ];
+
+  const statsNav = [
+    { label: 'Analytics', icon: TrendingUp, path: '/analytics' },
+    { label: 'Activity', icon: Activity, path: '/activity' }
+  ];
 
   return (
     <aside className={`h-screen bg-[var(--card-background)] border-r border-[var(--border-color)] flex flex-col overflow-hidden transition-all duration-300 ${
@@ -111,14 +129,18 @@ const Sidebar = () => {
               <div className="bg-[var(--overlay-hover)] p-3 rounded-xl">
                 <h3 className="text-sm text-[var(--text-secondary)]">Active Users</h3>
                 <div className="mt-1 flex items-end gap-1">
-                  <span className="text-2xl font-bold text-[var(--text-primary)]">1.2k</span>
+                  <span className="text-2xl font-bold text-[var(--text-primary)]">
+                    {loading ? '...' : formatNumber(stats.activeUsers)}
+                  </span>
                   <span className="text-xs text-emerald-400 mb-1">+5%</span>
                 </div>
               </div>
               <div className="bg-[var(--overlay-hover)] p-3 rounded-xl">
                 <h3 className="text-sm text-[var(--text-secondary)]">Live Matches</h3>
                 <div className="mt-1 flex items-end gap-1">
-                  <span className="text-2xl font-bold text-[var(--text-primary)]">24</span>
+                  <span className="text-2xl font-bold text-[var(--text-primary)]">
+                    {loading ? '...' : stats.activeMatches}
+                  </span>
                   <span className="text-xs text-red-400 mb-1">LIVE</span>
                 </div>
               </div>
@@ -158,6 +180,7 @@ const Sidebar = () => {
         <motion.button
           whileHover={{ x: 5 }}
           whileTap={{ scale: 0.98 }}
+          onClick={handleLogout}
           className="flex w-full items-center gap-3 p-3 text-red-400 hover:bg-red-500/10 rounded-xl transition-colors"
         >
           <LogOut className="w-5 h-5" />

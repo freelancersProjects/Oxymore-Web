@@ -53,8 +53,8 @@
   }
 
   body {
-    @apply bg-gradient-dark transition-colors duration-200;
     background-image: var(--page-background);
+    transition: background-image 0.2s ease-in-out;
   }
 
   /* Base components */

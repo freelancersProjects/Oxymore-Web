@@ -1,50 +1,25 @@
 import express from "express";
-import userRoutes from "./routes/user";
-import notificationRoutes from "./routes/notification";
+import cors from "cors";
 import dotenv from "dotenv";
 import swaggerUi from "swagger-ui-express";
 import swaggerJSDoc from "swagger-jsdoc";
-import channelBotRoutes from "./routes/channelBot";
-import authRoutes from "./routes/auth";
-import cors from "cors";
-import messageBotRoutes from "./routes/messageBot";
-import userVideoRoutes from "./routes/userVideo";
-import videoCommentRoutes from "./routes/videoComment";
-import videoLikeRoutes from "./routes/videoLike";
-import notificationReadRoutes from "./routes/notificationRead";
-import firstPagePromotionVideoRoutes from "./routes/firstPagePromotionVideo";
-import badgeRoutes from "./routes/badge";
-import userBadgeRoutes from "./routes/userBadge";
-import userFollowingRoutes from "./routes/userFollowing";
-import userSanctionRoutes from "./routes/userSanction";
-import groupRoutes from "./routes/group";
-import groupMemberRoutes from "./routes/groupMember";
-import leagueRoutes from "./routes/league";
-import mapRoutes from "./routes/map";
-import mapPickbanRoutes from "./routes/mapPickban";
-import matchRoutes from "./routes/match";
-import matchChatRoutes from "./routes/matchChat";
-import matchMapRoutes from "./routes/matchMap";
-import pinnedMessageTeamRoutes from "./routes/pinnedMessageTeam";
-import roomRoutes from "./routes/room";
-import shopItemRoutes from "./routes/shopItem";
-import teamRoutes from "./routes/team";
-import teamChatRoutes from "./routes/teamChat";
-import teamMemberRoutes from "./routes/teamMember";
-import teamSubscriptionRoutes from "./routes/teamSubscription";
-import tournamentRoutes from "./routes/tournament";
-import tournamentMapRoutes from "./routes/tournamentMap";
+import { createServer } from "http";
 import { registerRoutes } from "./registerRoutes";
+import { WebSocketManager } from "./websocket";
 
 dotenv.config();
 
 const app = express();
+const server = createServer(app);
 const PORT = process.env.PORT || 3000;
 
-app.use(cors({ origin: ["http://localhost:5173", "http://localhost:5174"] }));
+app.use(cors({ 
+  origin: ["http://localhost:5173", "http://localhost:5174", "http://localhost:5175"],
+  credentials: true
+}));
 app.use(express.json());
 
-registerRoutes(app);
+const wsManager = new WebSocketManager(server);
 
 const swaggerOptions = {
   definition: {
@@ -56,6 +31,20 @@ const swaggerOptions = {
     },
     servers: [
       { url: `http://localhost:${PORT}` }
+    ],
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT"
+        }
+      }
+    },
+    security: [
+      {
+        bearerAuth: []
+      }
     ]
   },
   apis: ["./src/routes/*.ts", "./src/models/*.ts"]
@@ -63,8 +52,17 @@ const swaggerOptions = {
 
 const swaggerSpec = swaggerJSDoc(swaggerOptions);
 
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+registerRoutes(app);
 
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}/api-docs`);
+
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+  explorer: true,
+  customSiteTitle: "Oxymore API Documentation"
+}));
+
+server.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
+  console.log(`API Documentation: http://localhost:${PORT}/api-docs`);
+  console.log(`WebSocket ready on ws://localhost:${PORT}`);
 });

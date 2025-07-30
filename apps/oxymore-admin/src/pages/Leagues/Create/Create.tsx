@@ -1,277 +1,294 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import {
-  ArrowLeft,
-  Calendar,
-  Trophy,
-  Users,
-  Star,
-  Upload,
-  Info,
-  ChevronDown
-} from 'lucide-react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import { ArrowLeft, Trophy, Upload } from 'lucide-react';
+import { useForm } from 'react-hook-form';
+import { apiService } from '../../../api/apiService';
+import { Badge } from '../../../types/badge';
 
-const mockBadges = [
-  { id: '1', name: 'Champion Trophy', icon: Trophy },
-  { id: '2', name: 'Elite Badge', icon: Star },
-  { id: '3', name: 'Victory Crown', icon: Trophy }
-];
+interface LeagueFormData {
+  league_name: string;
+  max_teams?: number;
+  start_date?: string;
+  end_date?: string;
+  promotion_slots?: number;
+  relegation_slots?: number;
+  image_url?: string;
+  entry_type?: string; // 'tournament' | 'promotion'
+  id_badge_champion?: string;
+}
 
-const CreateLeague = () => {
+const Create = () => {
   const navigate = useNavigate();
-  const [selectedBadge, setSelectedBadge] = useState('');
-  const [showBadgeSelector, setShowBadgeSelector] = useState(false);
+  const { register, handleSubmit, formState: { errors }, setValue, watch } = useForm<LeagueFormData>();
+  const [badges, setBadges] = useState<Badge[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+
+  // Récupérer les badges
+  useEffect(() => {
+    const fetchBadges = async () => {
+      try {
+        const badgesData = await apiService.get<Badge[]>('/badges');
+        setBadges(badgesData);
+      } catch (error) {
+        console.error('Error fetching badges:', error);
+      }
+    };
+
+    fetchBadges();
+  }, []);
+
+  // Gérer la sélection d'image
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setSelectedImage(file);
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setImagePreview(e.target?.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const onSubmit = async (data: LeagueFormData) => {
+    setLoading(true);
+    try {
+      // Si une image est sélectionnée, l'uploader d'abord
+      let imageUrl = data.image_url;
+      if (selectedImage) {
+        const formData = new FormData();
+        formData.append('image', selectedImage);
+        
+        try {
+          const uploadResponse = await apiService.post<{ url: string }>('/upload', formData);
+          imageUrl = uploadResponse.url;
+        } catch (uploadError) {
+          console.error('Error uploading image:', uploadError);
+          // Continuer sans l'image si l'upload échoue
+        }
+      }
+
+      // Créer la ligue avec l'URL de l'image
+      await apiService.post('/leagues', {
+        ...data,
+        image_url: imageUrl
+      });
+      navigate('/leagues');
+    } catch (error) {
+      console.error('Error creating league:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center gap-4">
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={() => navigate('/leagues')}
-          className="p-2 bg-[var(--overlay-hover)] hover:bg-[var(--overlay-active)] rounded-xl transition-colors"
-        >
-          <ArrowLeft className="w-5 h-5 text-[var(--text-primary)]" />
-        </motion.button>
-        <div>
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-4">
+          <Link
+            to="/leagues"
+            className="p-2 hover:bg-[var(--overlay-hover)] rounded-lg transition-colors"
+          >
+            <ArrowLeft className="w-5 h-5 text-[var(--text-primary)]" />
+          </Link>
           <h1 className="text-2xl font-bold text-[var(--text-primary)]">Create League</h1>
-          <p className="text-[var(--text-secondary)] mt-1">Set up a new competitive league</p>
         </div>
       </div>
 
       {/* Form */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Main Form */}
-        <div className="lg:col-span-2 space-y-6">
-          {/* Basic Information */}
-          <div className="card-base p-6">
-            <h2 className="text-lg font-semibold text-[var(--text-primary)] mb-6">Basic Information</h2>
-            
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-[var(--text-secondary)] mb-2">
-                  League Name
-                </label>
-                <input
-                  type="text"
-                  placeholder="Enter league name"
-                  className="input-base w-full"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-[var(--text-secondary)] mb-2">
-                  Description
-                </label>
-                <textarea
-                  rows={4}
-                  placeholder="Describe the league..."
-                  className="input-base w-full resize-none"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-[var(--text-secondary)] mb-2">
-                  League Image
-                </label>
-                <div className="border-2 border-dashed border-[var(--border-color)] rounded-xl p-8 text-center">
-                  <div className="flex flex-col items-center gap-2">
-                    <Upload className="w-8 h-8 text-[var(--text-secondary)]" />
-                    <p className="text-[var(--text-secondary)]">
-                      Drag and drop an image, or{' '}
-                      <span className="text-oxymore-purple cursor-pointer">browse</span>
-                    </p>
-                    <p className="text-sm text-[var(--text-muted)]">
-                      Recommended: 800x400px, max 2MB
-                    </p>
-                  </div>
-                </div>
-              </div>
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+        {/* Basic Information */}
+        <div className="card-base p-6">
+          <h2 className="text-lg font-semibold text-primary mb-4">Basic Information</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label className="label-base" htmlFor="league_name">League Name *</label>
+              <input
+                {...register('league_name', { required: 'League name is required' })}
+                type="text"
+                id="league_name"
+                className="input-base w-full"
+                placeholder="e.g. Premier League"
+              />
+              {errors.league_name && <p className="text-red-400 text-sm mt-1">{errors.league_name.message}</p>}
             </div>
-          </div>
 
-          {/* Structure */}
-          <div className="card-base p-6">
-            <h2 className="text-lg font-semibold text-[var(--text-primary)] mb-6">League Structure</h2>
-            
-            <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-[var(--text-secondary)] mb-2">
-                    Maximum Teams
-                  </label>
-                  <input
-                    type="number"
-                    min="2"
-                    placeholder="Enter max teams"
-                    className="input-base w-full"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-[var(--text-secondary)] mb-2">
-                    Entry Type
-                  </label>
-                  <select className="input-base w-full">
-                    <option value="open">Open Entry</option>
-                    <option value="invite">Invite Only</option>
-                    <option value="qualifier">Qualifier Required</option>
-                  </select>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-[var(--text-secondary)] mb-2">
-                    Promotion Slots
-                  </label>
-                  <input
-                    type="number"
-                    min="0"
-                    placeholder="Number of teams promoted"
-                    className="input-base w-full"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-[var(--text-secondary)] mb-2">
-                    Relegation Slots
-                  </label>
-                  <input
-                    type="number"
-                    min="0"
-                    placeholder="Number of teams relegated"
-                    className="input-base w-full"
-                  />
-                </div>
-              </div>
+            <div>
+              <label className="label-base" htmlFor="entry_type">Entry Type</label>
+              <select
+                {...register('entry_type')}
+                id="entry_type"
+                className="input-base w-full"
+              >
+                <option value="">Select entry type</option>
+                <option value="tournament">Tournament</option>
+                <option value="promotion">Promotion</option>
+              </select>
             </div>
-          </div>
 
-          {/* Schedule */}
-          <div className="card-base p-6">
-            <h2 className="text-lg font-semibold text-[var(--text-primary)] mb-6">Schedule</h2>
-            
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-[var(--text-secondary)] mb-2">
-                  Start Date
-                </label>
-                <input
-                  type="date"
-                  className="input-base w-full"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-[var(--text-secondary)] mb-2">
-                  End Date
-                </label>
-                <input
-                  type="date"
-                  className="input-base w-full"
-                />
-              </div>
+            <div>
+              <label className="label-base" htmlFor="max_teams">Maximum Teams</label>
+              <input
+                {...register('max_teams', { 
+                  min: { value: 2, message: 'Minimum 2 teams required' }
+                })}
+                type="number"
+                id="max_teams"
+                className="input-base w-full"
+                min="2"
+                placeholder="e.g. 16"
+              />
+              {errors.max_teams && <p className="text-red-400 text-sm mt-1">{errors.max_teams.message}</p>}
+            </div>
+
+            <div>
+              <label className="label-base" htmlFor="promotion_slots">Promotion Slots</label>
+              <input
+                {...register('promotion_slots', { 
+                  min: { value: 0, message: 'Cannot be negative' }
+                })}
+                type="number"
+                id="promotion_slots"
+                className="input-base w-full"
+                min="0"
+                placeholder="e.g. 2"
+              />
+              {errors.promotion_slots && <p className="text-red-400 text-sm mt-1">{errors.promotion_slots.message}</p>}
+            </div>
+
+            <div>
+              <label className="label-base" htmlFor="relegation_slots">Relegation Slots</label>
+              <input
+                {...register('relegation_slots', { 
+                  min: { value: 0, message: 'Cannot be negative' }
+                })}
+                type="number"
+                id="relegation_slots"
+                className="input-base w-full"
+                min="0"
+                placeholder="e.g. 2"
+              />
+              {errors.relegation_slots && <p className="text-red-400 text-sm mt-1">{errors.relegation_slots.message}</p>}
             </div>
           </div>
         </div>
 
-        {/* Sidebar */}
-        <div className="space-y-6">
-          {/* Champion Badge */}
-          <div className="card-base p-6">
-            <div className="flex items-center gap-3 mb-6">
-              <Star className="w-5 h-5 text-oxymore-purple" />
-              <h2 className="text-lg font-semibold text-[var(--text-primary)]">Champion Badge</h2>
+        {/* Schedule */}
+        <div className="card-base p-6">
+          <h2 className="text-lg font-semibold text-primary mb-4">Schedule</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label className="label-base" htmlFor="start_date">Start Date</label>
+              <input
+                {...register('start_date')}
+                type="datetime-local"
+                id="start_date"
+                className="input-base w-full"
+              />
             </div>
 
-            <div className="relative">
-              <button
-                onClick={() => setShowBadgeSelector(!showBadgeSelector)}
-                className="w-full p-4 bg-[var(--overlay-hover)] rounded-xl flex items-center justify-between"
-              >
+            <div>
+              <label className="label-base" htmlFor="end_date">End Date</label>
+              <input
+                {...register('end_date')}
+                type="datetime-local"
+                id="end_date"
+                className="input-base w-full"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Additional Settings */}
+        <div className="card-base p-6">
+          <h2 className="text-lg font-semibold text-primary mb-4">Additional Settings</h2>
+          <div className="space-y-6">
+            <div>
+              <label className="label-base" htmlFor="league_image">League Image</label>
+              <div className="space-y-3">
                 <div className="flex items-center gap-3">
-                  {selectedBadge ? (
-                    <>
-                      <Trophy className="w-5 h-5 text-[var(--text-primary)]" />
-                      <span className="text-[var(--text-primary)]">
-                        {mockBadges.find(b => b.id === selectedBadge)?.name}
-                      </span>
-                    </>
-                  ) : (
-                    <span className="text-[var(--text-secondary)]">Select champion badge</span>
+                  <label className="cursor-pointer inline-flex items-center gap-2 px-4 py-2 bg-[var(--overlay-hover)] hover:bg-[var(--overlay-active)] rounded-lg transition-colors">
+                    <Upload className="w-4 h-4" />
+                    Choose File
+                    <input
+                      type="file"
+                      id="league_image"
+                      accept="image/*"
+                      onChange={handleImageChange}
+                      className="hidden"
+                    />
+                  </label>
+                  {selectedImage && (
+                    <span className="text-sm text-[var(--text-secondary)]">
+                      {selectedImage.name}
+                    </span>
                   )}
                 </div>
-                <ChevronDown className={`w-4 h-4 text-[var(--text-secondary)] transition-transform ${
-                  showBadgeSelector ? 'rotate-180' : ''
-                }`} />
-              </button>
-
-              {showBadgeSelector && (
-                <div className="absolute top-full left-0 right-0 mt-2 bg-[var(--card-background)] border border-[var(--border-color)] rounded-xl shadow-lg">
-                  {mockBadges.map((badge) => (
-                    <button
-                      key={badge.id}
-                      onClick={() => {
-                        setSelectedBadge(badge.id);
-                        setShowBadgeSelector(false);
-                      }}
-                      className="w-full p-3 flex items-center gap-3 hover:bg-[var(--overlay-hover)] transition-colors"
-                    >
-                      <badge.icon className="w-5 h-5 text-[var(--text-primary)]" />
-                      <span className="text-[var(--text-primary)]">{badge.name}</span>
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Tips */}
-          <div className="card-base p-6">
-            <div className="flex items-center gap-3 mb-4">
-              <Info className="w-5 h-5 text-oxymore-purple" />
-              <h2 className="text-lg font-semibold text-[var(--text-primary)]">Tips</h2>
+                {imagePreview && (
+                  <div className="w-32 h-32 rounded-lg overflow-hidden border border-[var(--border-color)]">
+                    <img
+                      src={imagePreview}
+                      alt="Preview"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                )}
+              </div>
             </div>
 
-            <div className="space-y-4 text-sm">
-              <p className="text-[var(--text-secondary)]">
-                • Set realistic team limits based on your expected participation
-              </p>
-              <p className="text-[var(--text-secondary)]">
-                • Consider time zones when setting match schedules
-              </p>
-              <p className="text-[var(--text-secondary)]">
-                • Balance promotion/relegation slots for league sustainability
-              </p>
-              <p className="text-[var(--text-secondary)]">
-                • Choose an appropriate entry type for your target audience
-              </p>
-            </div>
-          </div>
-
-          {/* Actions */}
-          <div className="card-base p-6">
-            <div className="space-y-3">
-              <button
-                onClick={() => {/* Handle create */}}
-                className="w-full py-2 px-4 bg-oxymore-purple text-white rounded-xl hover:bg-oxymore-purple-light transition-colors"
+            <div>
+              <label className="label-base" htmlFor="id_badge_champion">Champion Badge</label>
+              <select
+                {...register('id_badge_champion')}
+                id="id_badge_champion"
+                className="input-base w-full"
               >
-                Create League
-              </button>
-              <button
-                onClick={() => navigate('/leagues')}
-                className="w-full py-2 px-4 button-secondary rounded-xl"
-              >
-                Cancel
-              </button>
+                <option value="">Select a badge (optional)</option>
+                {badges.map((badge) => (
+                  <option key={badge.id_badge} value={badge.id_badge}>
+                    {badge.badge_name}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
         </div>
-      </div>
+
+        <div className="flex items-center justify-end gap-3">
+          <button
+            type="button"
+            onClick={() => navigate('/leagues')}
+            className="button-secondary px-4 py-2 rounded-xl"
+            disabled={loading}
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            className="button-primary px-4 py-2 rounded-xl flex items-center gap-2"
+            disabled={loading}
+          >
+            {loading ? (
+              <>
+                <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                Creating...
+              </>
+            ) : (
+              <>
+                <Trophy className="w-5 h-5" />
+                Create League
+              </>
+            )}
+          </button>
+        </div>
+      </form>
     </div>
   );
 };
 
-export default CreateLeague; 
+export default Create; 
  
  
