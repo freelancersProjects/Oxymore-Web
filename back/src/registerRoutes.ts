@@ -3,6 +3,8 @@ import userRoutes from "./routes/user";
 import notificationRoutes from "./routes/notification";
 import channelBotRoutes from "./routes/channelBot";
 import authRoutes from "./routes/auth";
+import roleRoutes from "./routes/role";
+
 import messageBotRoutes from "./routes/messageBot";
 import userVideoRoutes from "./routes/userVideo";
 import videoCommentRoutes from "./routes/videoComment";
@@ -31,11 +33,13 @@ import teamSubscriptionRoutes from "./routes/teamSubscription";
 import tournamentRoutes from "./routes/tournament";
 import tournamentMapRoutes from "./routes/tournamentMap";
 
-export function registerRoutes(app: Express) {
+export const registerRoutes = (app: Express) => {
+  // Routes publiques
+  app.use("/api/auth", authRoutes);
   app.use("/api/users", userRoutes);
+  app.use("/api/roles", roleRoutes);
   app.use("/api/notifications", notificationRoutes);
   app.use("/api/channel-bots", channelBotRoutes);
-  app.use("/api/auth", authRoutes);
   app.use("/api/message-bots", messageBotRoutes);
   app.use("/api/user-videos", userVideoRoutes);
   app.use("/api/video-comments", videoCommentRoutes);
@@ -63,4 +67,6 @@ export function registerRoutes(app: Express) {
   app.use("/api/team-subscriptions", teamSubscriptionRoutes);
   app.use("/api/tournaments", tournamentRoutes);
   app.use("/api/tournament-maps", tournamentMapRoutes);
-}
+
+
+};
