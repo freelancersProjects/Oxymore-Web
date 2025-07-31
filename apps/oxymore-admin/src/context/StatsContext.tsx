@@ -10,6 +10,37 @@ interface Stats {
   activeUsers: number;
 }
 
+interface User {
+  id: string;
+  username: string;
+  email: string;
+  isVerified: boolean;
+  isPremium: boolean;
+  createdAt: string;
+}
+
+interface Tournament {
+  id: string;
+  name: string;
+  status: string;
+  startDate: string;
+  endDate: string;
+}
+
+interface Team {
+  id: string;
+  name: string;
+  members: User[];
+  createdAt: string;
+}
+
+interface League {
+  id: string;
+  name: string;
+  status: string;
+  createdAt: string;
+}
+
 interface StatsContextType {
   stats: Stats;
   loading: boolean;
@@ -34,20 +65,25 @@ export const StatsProvider = ({ children }: { children: ReactNode }) => {
       setLoading(true);
 
       // Récupérer les données en parallèle
-      const [users, tournaments, teams, leagues] = await Promise.all([
-        apiService.get('/users'),
-        apiService.get('/tournaments'),
-        apiService.get('/teams'),
-        apiService.get('/leagues')
+      const [usersResponse, tournamentsResponse, teamsResponse, leaguesResponse] = await Promise.all([
+        apiService.get<User[]>('/users'),
+        apiService.get<Tournament[]>('/tournaments'),
+        apiService.get<Team[]>('/teams'),
+        apiService.get<League[]>('/leagues')
       ]);
 
+      const users = usersResponse || [];
+      const tournaments = tournamentsResponse || [];
+      const teams = teamsResponse || [];
+      const leagues = leaguesResponse || [];
+
       setStats({
-        totalUsers: (users as any[]).length,
-        totalTournaments: (tournaments as any[]).length,
-        totalTeams: (teams as any[]).length,
-        totalLeagues: (leagues as any[]).length,
+        totalUsers: users.length,
+        totalTournaments: tournaments.length,
+        totalTeams: teams.length,
+        totalLeagues: leagues.length,
         activeMatches: 24, // Pour l'instant, on garde une valeur fixe
-        activeUsers: Math.floor((users as any[]).length * 0.1) // 10% des utilisateurs actifs
+        activeUsers: Math.floor(users.length * 0.1) // 10% des utilisateurs actifs
       });
     } catch (error) {
       console.error('Error fetching stats:', error);

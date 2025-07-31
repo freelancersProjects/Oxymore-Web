@@ -83,7 +83,7 @@ const OxiaChat: React.FC = () => {
 
   useEffect(() => {
     if (!user) return;
-    apiService.get(`/channel-bots?user_id=${user.id}`).then((data) => {
+    apiService.get(`/channel-bots?user_id=${user.id_user}`).then((data) => {
       setChannels(data);
       if (data.length > 0) setSelectedChannel(data[0] ?? null);
       else setSelectedChannel(null);
@@ -170,7 +170,7 @@ const OxiaChat: React.FC = () => {
       side: "right",
       avatar: "",
       channel_id: selectedChannel.id_channel,
-      user_id: user?.id,
+      user_id: user?.id_user,
       is_from_ai: false,
     };
     setMessages((prev) => [...prev, userMsg]);
@@ -268,21 +268,19 @@ const OxiaChat: React.FC = () => {
       return;
     }
 
-    if (!user.id) {
-      setToast({ message: "Erreur d'authentification - ID utilisateur manquant", type: "error" });
+    if (!user.id_user) {
+      setToast({
+        message: "Erreur d'authentification - ID utilisateur manquant",
+        type: "error",
+      });
       console.error("User object:", user);
       return;
     }
 
-    console.log("Debug - Sending request with:", {
-      name: newChannelName,
-      user_id: user.id,
-    });
-
     try {
       const newChannel = await apiService.post("/channel-bots", {
         name: newChannelName,
-        user_id: user.id,
+        user_id: user.id_user,
       });
       setChannels((prev) => [...prev, newChannel]);
       setSelectedChannel(newChannel);
@@ -304,7 +302,6 @@ const OxiaChat: React.FC = () => {
     setToast({ message: "Channel supprimé avec succès", type: "success" });
   };
 
-  // Fonction pour modifier le nom d'un channel
   const handleEditChannel = async (id_channel: string) => {
     if (!editChannelName.trim()) return;
     await apiService.patch(`/channel-bots/${id_channel}`, {

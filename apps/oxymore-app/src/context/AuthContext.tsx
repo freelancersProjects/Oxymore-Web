@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, useEffect, type ReactNode }
 
 // Basé sur le userModel du backend, sans le password_hash
 interface User {
-  id: string;
+  id_user: string;
   first_name: string;
   last_name: string;
   username: string;
