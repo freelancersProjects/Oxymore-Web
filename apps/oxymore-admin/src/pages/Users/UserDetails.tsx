@@ -17,7 +17,7 @@ import {
   Lock
 } from 'lucide-react';
 import { apiService } from '../../api/apiService';
-import { User } from '../../types/user';
+import { User, UserRole } from '../../types';
 import { useAuth } from '../../context/AuthContext';
 import Loader from '../../components/Loader/Loader';
 import Tooltip, { getTooltipMessage } from '../../components/Tooltip/Tooltip';
@@ -28,10 +28,21 @@ const UserDetails = () => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [userRole, setUserRole] = useState<UserRole | null>(null);
 
   useEffect(() => {
     fetchUser();
   }, [id]);
+
+  const fetchUserRole = async (userId: string): Promise<UserRole | null> => {
+    try {
+      const role = await apiService.get<UserRole>(`/roles/${userId}`);
+      return role;
+    } catch (error) {
+      console.error(`Error fetching role for user ${userId}:`, error);
+      return null;
+    }
+  };
 
   const fetchUser = async () => {
     if (!id) return;
@@ -40,6 +51,10 @@ const UserDetails = () => {
       setError(null);
       const data = await apiService.get<User>(`/users/${id}`);
       setUser(data);
+
+      // Récupérer le rôle de l'utilisateur
+      const role = await fetchUserRole(id);
+      setUserRole(role);
     } catch (err) {
       setError('Une erreur est survenue lors du chargement des données utilisateur');
       console.error('Error fetching user:', err);
@@ -54,6 +69,11 @@ const UserDetails = () => {
     return `${numWallet.toFixed(2)} €`;
   };
 
+  // Vérifier si l'utilisateur consulté est admin
+  const isUserAdmin = (): boolean => {
+    return userRole?.name === 'admin';
+  };
+
   // Vérifier si l'utilisateur connecté peut modifier l'utilisateur consulté
   const canModifyUser = () => {
     if (!currentUser || !user) return false;
@@ -64,14 +84,14 @@ const UserDetails = () => {
     }
 
     // Si l'utilisateur consulté est admin, pas de modification (protection des admins)
-    if (user.role === 'admin') {
+    if (isUserAdmin()) {
       return false;
     }
 
     return true;
   };
 
-  const isViewingAdmin = user?.role === 'admin';
+  const isViewingAdmin = isUserAdmin();
 
   if (loading) {
     return <Loader />;
@@ -161,9 +181,13 @@ const UserDetails = () => {
                   {user.first_name} {user.last_name}
                 </p>
               </div>
-              {user.is_premium && (
-                <div className="px-3 py-1 bg-gradient-oxymore text-white text-sm font-medium rounded-lg">
+              {user.is_premium ? (
+                <div className="px-3 py-1 bg-oxymore-purple text-white text-sm font-medium rounded-lg">
                   Premium
+                </div>
+              ) : (
+                <div className="px-3 py-1 bg-green-600 text-white text-sm font-medium rounded-lg">
+                  Free
                 </div>
               )}
             </div>
@@ -355,7 +379,7 @@ const UserDetails = () => {
                 content={getTooltipMessage(
                   canModifyUser(),
                   currentUser?.id === user?.id_user,
-                  user?.role === "admin",
+                  isUserAdmin(),
                   "Bannir"
                 )}
                 disabled={canModifyUser()}
@@ -376,7 +400,7 @@ const UserDetails = () => {
                 content={getTooltipMessage(
                   canModifyUser(),
                   currentUser?.id === user?.id_user,
-                  user?.role === "admin",
+                  isUserAdmin(),
                   user.team_chat_is_muted ? "Démuter" : "Muter"
                 )}
                 disabled={canModifyUser()}
@@ -399,7 +423,7 @@ const UserDetails = () => {
                 content={getTooltipMessage(
                   canModifyUser(),
                   currentUser?.id === user?.id_user,
-                  user?.role === "admin",
+                  isUserAdmin(),
                   user.is_premium ? "Retirer Premium" : "Donner Premium"
                 )}
                 disabled={canModifyUser()}

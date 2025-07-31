@@ -13,12 +13,12 @@ const Layout = () => {
         <div className="flex h-screen">
           {/* Sidebar */}
           <Sidebar />
-          
+
           {/* Main Content */}
           <div className="flex-1 flex flex-col overflow-hidden">
             {/* Header */}
             <Header />
-            
+
             {/* Page Content */}
             <main className={`flex-1 overflow-y-auto transition-all duration-300 ${isCollapsed ? 'ml-18' : 'ml-70'}`}>
               <div className="p-6">
@@ -32,6 +32,5 @@ const Layout = () => {
   );
 };
 
-export default Layout; 
- 
- 
+export default Layout;
+
