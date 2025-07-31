@@ -1,4 +1,4 @@
-import { Notification, NotificationRead, NotificationWithReadStatus, notifications, notificationsRead } from "../models/notificationModel";
+import { Notification, NotificationWithReadStatus, notifications, notificationsRead } from "../models/notificationModel";
 import { db } from "../config/db";
 
 export const getAllNotifications = async (): Promise<Notification[]> => {
@@ -8,7 +8,7 @@ export const getAllNotifications = async (): Promise<Notification[]> => {
 
 export const getNotificationsByUserId = async (userId: string): Promise<NotificationWithReadStatus[]> => {
   const [rows] = await db.query(`
-    SELECT 
+    SELECT
       n.*,
       CASE WHEN nr.id_notification_read IS NOT NULL THEN 1 ELSE 0 END as is_read,
       nr.read_at
@@ -16,7 +16,7 @@ export const getNotificationsByUserId = async (userId: string): Promise<Notifica
     LEFT JOIN notification_read nr ON n.id_notification = nr.id_notification AND nr.id_user = ?
     ORDER BY n.created_at DESC
   `, [userId]);
-  
+
   return (rows as any[]).map((row: any) => ({
     id_notification: row.id_notification,
     type: row.type,
@@ -35,7 +35,7 @@ export const getUnreadNotificationsCount = async (userId: string): Promise<numbe
     LEFT JOIN notification_read nr ON n.id_notification = nr.id_notification AND nr.id_user = ?
     WHERE nr.id_notification_read IS NULL
   `, [userId]);
-  
+
   return (rows as any)[0].count;
 };
 
@@ -46,10 +46,10 @@ export const createNotification = async (
     "INSERT INTO notification (type, title, text) VALUES (?, ?, ?)",
     [data.type, data.title, data.text]
   );
-  
+
   const id_notification = (result as any).insertId;
   const created_at = new Date().toISOString();
-  
+
   return { id_notification, ...data, created_at };
 };
 
@@ -91,7 +91,7 @@ export const getNotificationsByUserIdFallback = (userId: string): NotificationWi
     const readRecord = notificationsRead.find(
       nr => nr.id_user === userId && nr.id_notification === notification.id_notification
     );
-    
+
     return {
       ...notification,
       is_read: !!readRecord,
@@ -107,4 +107,4 @@ export const getUnreadNotificationsCountFallback = (userId: string): number => {
     );
     return !readRecord;
   }).length;
-}; 
+};

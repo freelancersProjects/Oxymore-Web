@@ -11,44 +11,38 @@ const handleResponse = async (response: Response) => {
 };
 
 const apiService = {
-  get: async (endpoint: string, options: RequestInit = {}) => {
-    const res = await fetch(`${BASE_URL}${endpoint}`, { ...options, method: 'GET' });
+  get: async (endpoint: string) => {
+    const res = await fetch(`${BASE_URL}${endpoint}`, { method: 'GET' });
     return handleResponse(res);
   },
-  post: async (endpoint: string, data?: any, options: RequestInit = {}) => {
+  post: async (endpoint: string, data?: any) => {
     const res = await fetch(`${BASE_URL}${endpoint}`, {
-      ...options,
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', ...(options.headers || {}) },
+      headers: { 'Content-Type': 'application/json' },
       body: data ? JSON.stringify(data) : undefined,
     });
     return handleResponse(res);
   },
-  put: async (endpoint: string, data?: any, options: RequestInit = {}) => {
+  put: async (endpoint: string, data?: any) => {
     const res = await fetch(`${BASE_URL}${endpoint}`, {
-      ...options,
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json', ...(options.headers || {}) },
+      headers: { 'Content-Type': 'application/json' },
       body: data ? JSON.stringify(data) : undefined,
     });
     return handleResponse(res);
   },
-  patch: async (endpoint: string, data?: any, options: RequestInit = {}) => {
+  patch: async (endpoint: string, data?: any) => {
     const res = await fetch(`${BASE_URL}${endpoint}`, {
-      ...options,
       method: 'PATCH',
-      headers: { 'Content-Type': 'application/json', ...(options.headers || {}) },
+      headers: { 'Content-Type': 'application/json' },
       body: data ? JSON.stringify(data) : undefined,
     });
     return handleResponse(res);
   },
-  delete: async (endpoint: string, options: RequestInit = {}) => {
-    const res = await fetch(`${BASE_URL}${endpoint}`, { ...options, method: 'DELETE' });
+  delete: async (endpoint: string) => {
+    const res = await fetch(`${BASE_URL}${endpoint}`, { method: 'DELETE' });
     return handleResponse(res);
   },
 };
 
 export default apiService;
-
-// Ajout d'un export type pour TypeScript
-export type { };

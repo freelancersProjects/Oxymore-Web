@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { apiService } from '../api/apiService';
 
 interface Stats {
@@ -32,7 +32,7 @@ export const StatsProvider = ({ children }: { children: ReactNode }) => {
   const fetchStats = async () => {
     try {
       setLoading(true);
-      
+
       // Récupérer les données en parallèle
       const [users, tournaments, teams, leagues] = await Promise.all([
         apiService.get('/users'),
@@ -42,12 +42,12 @@ export const StatsProvider = ({ children }: { children: ReactNode }) => {
       ]);
 
       setStats({
-        totalUsers: users.length,
-        totalTournaments: tournaments.length,
-        totalTeams: teams.length,
-        totalLeagues: leagues.length,
+        totalUsers: (users as any[]).length,
+        totalTournaments: (tournaments as any[]).length,
+        totalTeams: (teams as any[]).length,
+        totalLeagues: (leagues as any[]).length,
         activeMatches: 24, // Pour l'instant, on garde une valeur fixe
-        activeUsers: Math.floor(users.length * 0.1) // 10% des utilisateurs actifs
+        activeUsers: Math.floor((users as any[]).length * 0.1) // 10% des utilisateurs actifs
       });
     } catch (error) {
       console.error('Error fetching stats:', error);
@@ -77,4 +77,4 @@ export const useStats = () => {
     throw new Error('useStats must be used within a StatsProvider');
   }
   return context;
-}; 
+};

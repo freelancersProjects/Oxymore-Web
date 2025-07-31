@@ -1,13 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Search,
   Bell,
-  Plus,
-  Settings,
-  LogOut,
-  User,
   ChevronRight,
   Command
 } from 'lucide-react';
@@ -210,7 +206,6 @@ const Header = () => {
   );
 };
 
-export default Header; 
- 
- 
- 
+export default Header;
+
+

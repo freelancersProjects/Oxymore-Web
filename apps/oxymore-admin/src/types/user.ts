@@ -16,10 +16,11 @@ export interface User {
   tournaments_count?: number;
   teams_count?: number;
   twitter_url?: string;
-  twitch_url?: string;
-  youtube_url?: string;
-  steam_url?: string;
-  faceit_url?: string;
+  discord_link?: string;
+  faceit_id?: string;
+  twitch_link?: string;
+  youtube_link?: string;
+  steam_link?: string;
   team_chat_is_muted?: boolean;
   role?: string;
 }
@@ -31,4 +32,4 @@ export interface UserContextType {
   error: string | null;
   logout: () => void;
   updateUser: (data: Partial<User>) => Promise<void>;
-} 
+}

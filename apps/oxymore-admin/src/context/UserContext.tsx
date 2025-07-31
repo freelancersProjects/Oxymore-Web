@@ -20,7 +20,6 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
   useEffect(() => {
     const loadUser = async () => {
       try {
-        // TODO: Remplacer par un vrai appel API
         const mockUser: User = {
           id_user: "123",
           first_name: "John",
@@ -56,13 +55,11 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   const logout = () => {
-    // TODO: Implémenter la déconnexion avec l'API
     setUser(null);
   };
 
   const updateUser = async (data: Partial<User>) => {
     try {
-      // TODO: Implémenter la mise à jour avec l'API
       setUser(prev => prev ? { ...prev, ...data } : null);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Une erreur est survenue');
@@ -71,17 +68,17 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   return (
-    <UserContext.Provider 
-      value={{ 
-        user, 
-        setUser, 
-        isLoading, 
-        error, 
+    <UserContext.Provider
+      value={{
+        user,
+        setUser,
+        isLoading,
+        error,
         logout,
-        updateUser 
+        updateUser
       }}
     >
       {children}
     </UserContext.Provider>
   );
-}; 
+};

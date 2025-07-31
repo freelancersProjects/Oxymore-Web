@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
   ArrowLeft,
@@ -103,8 +103,7 @@ const mockLeague = {
   ]
 };
 
-const LeagueDetails = () => {
-  const { id } = useParams();
+const LeagueDetails = (): React.JSX.Element => {
   const navigate = useNavigate();
 
   return (
@@ -339,6 +338,5 @@ const LeagueDetails = () => {
   );
 };
 
-export default LeagueDetails; 
- 
- 
+export default LeagueDetails;
+

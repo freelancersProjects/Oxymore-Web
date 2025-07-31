@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -15,14 +15,7 @@ import {
   ChevronRight,
   LogOut
 } from 'lucide-react';
-
-interface NavItem {
-  label: string;
-  icon: any;
-  path: string;
-  badge?: number | string;
-  color?: string;
-}
+import { NavItem } from '../../types';
 
 const mainNav: NavItem[] = [
   { label: 'Dashboard', icon: LayoutDashboard, path: '/dashboard' },
@@ -44,15 +37,15 @@ const Sidebar = () => {
 
   const NavLink = ({ item }: { item: NavItem }) => {
     const isActive = location.pathname === item.path;
-    
+
     return (
       <Link to={item.path}>
         <motion.div
           whileHover={{ x: 5 }}
           whileTap={{ scale: 0.98 }}
           className={`flex items-center justify-between p-3 rounded-xl transition-all duration-300 group ${
-            isActive 
-              ? 'bg-gradient-oxymore text-white shadow-oxymore' 
+            isActive
+              ? 'bg-gradient-oxymore text-white shadow-oxymore'
               : 'text-gray-400 hover:bg-white/5'
           }`}
         >
@@ -62,7 +55,7 @@ const Sidebar = () => {
               {item.label}
             </span>
           </div>
-          
+
           <div className="flex items-center gap-2">
             {item.badge && (
               <span className={`px-2 py-1 text-xs font-semibold rounded-lg ${
@@ -151,6 +144,5 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar; 
- 
- 
+export default Sidebar;
+

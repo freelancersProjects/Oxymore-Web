@@ -1,17 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { useParams, useNavigate, Link } from 'react-router-dom';
-import { 
-  ArrowLeft, 
-  Shield, 
-  Ban, 
-  Edit, 
+import { useState, useEffect } from 'react';
+import { useParams, Link } from 'react-router-dom';
+import {
+  ArrowLeft,
+  Shield,
   Calendar,
   Trophy,
   Wallet,
-  MessageCircle,
-  ExternalLink,
-  Crown,
   User as UserIcon,
   Flag,
   MessageSquare,
@@ -63,17 +57,17 @@ const UserDetails = () => {
   // Vérifier si l'utilisateur connecté peut modifier l'utilisateur consulté
   const canModifyUser = () => {
     if (!currentUser || !user) return false;
-    
+
     // Si c'est le même utilisateur (mon propre compte), pas de modification
     if (currentUser.id === user.id_user) {
       return false;
     }
-    
+
     // Si l'utilisateur consulté est admin, pas de modification (protection des admins)
     if (user.role === 'admin') {
       return false;
     }
-    
+
     return true;
   };
 
@@ -108,7 +102,9 @@ const UserDetails = () => {
           >
             <ArrowLeft className="w-5 h-5 text-[var(--text-primary)]" />
           </Link>
-          <h1 className="text-2xl font-bold text-[var(--text-primary)]">Détails de l'utilisateur</h1>
+          <h1 className="text-2xl font-bold text-[var(--text-primary)]">
+            Détails de l'utilisateur
+          </h1>
         </div>
         {isViewingAdmin && (
           <div className="flex items-center gap-2 px-3 py-1 bg-purple-500/20 text-purple-400 rounded-lg">
@@ -121,9 +117,9 @@ const UserDetails = () => {
       {/* Banner & Avatar */}
       <div className="relative rounded-2xl overflow-hidden bg-[var(--overlay-hover)] h-48">
         {user.banner_url ? (
-          <img 
-            src={user.banner_url} 
-            alt="Banner" 
+          <img
+            src={user.banner_url}
+            alt="Banner"
             className="w-full h-full object-cover"
           />
         ) : (
@@ -133,9 +129,9 @@ const UserDetails = () => {
         <div className="absolute -bottom-6 left-8 ring-8 ring-[var(--background)] rounded-2xl overflow-hidden">
           <div className="w-24 h-24 bg-[var(--overlay-hover)]">
             {user.avatar_url ? (
-              <img 
-                src={user.avatar_url} 
-                alt={user.username} 
+              <img
+                src={user.avatar_url}
+                alt={user.username}
                 className="w-full h-full object-cover"
               />
             ) : (
@@ -157,7 +153,9 @@ const UserDetails = () => {
               <div>
                 <h2 className="text-2xl font-bold text-[var(--text-primary)] flex items-center gap-2">
                   {user.username}
-                  {isViewingAdmin && <Shield className="w-5 h-5 text-purple-400" />}
+                  {isViewingAdmin && (
+                    <Shield className="w-5 h-5 text-purple-400" />
+                  )}
                 </h2>
                 <p className="text-[var(--text-secondary)]">
                   {user.first_name} {user.last_name}
@@ -175,7 +173,10 @@ const UserDetails = () => {
             <div className="flex items-center gap-6 text-sm">
               <div className="flex items-center gap-2 text-[var(--text-secondary)]">
                 <Calendar className="w-4 h-4" />
-                <span>Inscrit le {new Date(user.created_at || '').toLocaleDateString()}</span>
+                <span>
+                  Inscrit le{" "}
+                  {new Date(user.created_at || "").toLocaleDateString()}
+                </span>
               </div>
               {user.country_code && (
                 <div className="flex items-center gap-2 text-[var(--text-secondary)]">
@@ -188,7 +189,9 @@ const UserDetails = () => {
 
           {/* Statistiques */}
           <div className="bg-[var(--card-background)] rounded-2xl p-6">
-            <h3 className="text-lg font-bold text-[var(--text-primary)] mb-4">Statistiques</h3>
+            <h3 className="text-lg font-bold text-[var(--text-primary)] mb-4">
+              Statistiques
+            </h3>
             <div className="grid grid-cols-3 gap-4">
               <div className="bg-[var(--overlay-hover)] rounded-xl p-4">
                 <div className="flex items-center gap-3 mb-2">
@@ -197,7 +200,9 @@ const UserDetails = () => {
                   </div>
                   <span className="text-[var(--text-secondary)]">ELO</span>
                 </div>
-                <p className="text-2xl font-bold text-[var(--text-primary)]">{user.elo || '-'}</p>
+                <p className="text-2xl font-bold text-[var(--text-primary)]">
+                  {user.elo || "-"}
+                </p>
               </div>
               {user.wallet !== undefined && (
                 <div className="bg-[var(--overlay-hover)] rounded-xl p-4">
@@ -220,7 +225,7 @@ const UserDetails = () => {
                   <span className="text-[var(--text-secondary)]">Chat</span>
                 </div>
                 <p className="text-[var(--text-primary)]">
-                  {user.team_chat_is_muted ? 'Muté' : 'Actif'}
+                  {user.team_chat_is_muted ? "Muté" : "Actif"}
                 </p>
               </div>
             </div>
@@ -231,20 +236,22 @@ const UserDetails = () => {
         <div className="space-y-6">
           {/* Liens */}
           <div className="bg-[var(--card-background)] rounded-2xl p-6">
-            <h3 className="text-lg font-bold text-[var(--text-primary)] mb-4">Liens</h3>
+            <h3 className="text-lg font-bold text-[var(--text-primary)] mb-4">
+              Liens
+            </h3>
             <div className="space-y-4">
               <div className="flex items-center gap-3 text-[var(--text-secondary)]">
                 <Star className="w-5 h-5" />
                 <div>
                   <span>Faceit</span>
-                  {user.faceit_url ? (
-                    <a 
-                      href={user.faceit_url}
+                  {user.faceit_id ? (
+                    <a
+                      href={user.faceit_id}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="ml-2 hover:text-[var(--text-primary)] transition-colors"
                     >
-                      {user.faceit_url.replace(/^https?:\/\/(www\.)?/, '')}
+                      {user.faceit_id.replace(/^https?:\/\/(www\.)?/, "")}
                     </a>
                   ) : (
                     <span className="ml-2">-</span>
@@ -256,14 +263,14 @@ const UserDetails = () => {
                 <LinkIcon className="w-5 h-5" />
                 <div>
                   <span>Steam</span>
-                  {user.steam_url ? (
-                    <a 
-                      href={user.steam_url}
+                  {user.steam_link ? (
+                    <a
+                      href={user.steam_link}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="ml-2 hover:text-[var(--text-primary)] transition-colors"
                     >
-                      {user.steam_url.replace(/^https?:\/\/(www\.)?/, '')}
+                      {user.steam_link.replace(/^https?:\/\/(www\.)?/, "")}
                     </a>
                   ) : (
                     <span className="ml-2">-</span>
@@ -276,13 +283,13 @@ const UserDetails = () => {
                 <div>
                   <span>Twitter</span>
                   {user.twitter_url ? (
-                    <a 
+                    <a
                       href={user.twitter_url}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="ml-2 hover:text-[var(--text-primary)] transition-colors"
                     >
-                      {user.twitter_url.replace(/^https?:\/\/(www\.)?/, '')}
+                      {user.twitter_url.replace(/^https?:\/\/(www\.)?/, "")}
                     </a>
                   ) : (
                     <span className="ml-2">-</span>
@@ -294,14 +301,14 @@ const UserDetails = () => {
                 <Twitch className="w-5 h-5 text-purple-500" />
                 <div>
                   <span>Twitch</span>
-                  {user.twitch_url ? (
-                    <a 
-                      href={user.twitch_url}
+                  {user.twitch_link ? (
+                    <a
+                      href={user.twitch_link}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="ml-2 hover:text-[var(--text-primary)] transition-colors"
                     >
-                      {user.twitch_url.replace(/^https?:\/\/(www\.)?/, '')}
+                      {user.twitch_link.replace(/^https?:\/\/(www\.)?/, "")}
                     </a>
                   ) : (
                     <span className="ml-2">-</span>
@@ -313,14 +320,14 @@ const UserDetails = () => {
                 <Youtube className="w-5 h-5 text-red-500" />
                 <div>
                   <span>YouTube</span>
-                  {user.youtube_url ? (
-                    <a 
-                      href={user.youtube_url}
+                  {user.youtube_link ? (
+                    <a
+                      href={user.youtube_link}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="ml-2 hover:text-[var(--text-primary)] transition-colors"
                     >
-                      {user.youtube_url.replace(/^https?:\/\/(www\.)?/, '')}
+                      {user.youtube_link.replace(/^https?:\/\/(www\.)?/, "")}
                     </a>
                   ) : (
                     <span className="ml-2">-</span>
@@ -333,7 +340,9 @@ const UserDetails = () => {
           {/* Actions */}
           <div className="bg-[var(--card-background)] rounded-2xl p-6">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-bold text-[var(--text-primary)]">Actions</h3>
+              <h3 className="text-lg font-bold text-[var(--text-primary)]">
+                Actions
+              </h3>
               {!canModifyUser() && (
                 <div className="flex items-center gap-1 text-[var(--text-muted)] text-sm">
                   <Lock className="w-4 h-4" />
@@ -342,75 +351,76 @@ const UserDetails = () => {
               )}
             </div>
             <div className="space-y-2">
-              <Tooltip 
+              <Tooltip
                 content={getTooltipMessage(
                   canModifyUser(),
                   currentUser?.id === user?.id_user,
-                  user?.role === 'admin',
-                  'Bannir'
+                  user?.role === "admin",
+                  "Bannir"
                 )}
                 disabled={canModifyUser()}
               >
-                <button 
+                <button
                   className={`w-full px-4 py-2 rounded-lg transition-colors ${
-                    canModifyUser() 
-                      ? 'bg-red-500/20 text-red-500 hover:bg-red-500/30' 
-                      : 'bg-[var(--overlay-hover)] text-[var(--text-muted)] cursor-not-allowed'
+                    canModifyUser()
+                      ? "bg-red-500/20 text-red-500 hover:bg-red-500/30"
+                      : "bg-[var(--overlay-hover)] text-[var(--text-muted)] cursor-not-allowed"
                   }`}
                   disabled={!canModifyUser()}
                 >
                   Bannir l'utilisateur
                 </button>
               </Tooltip>
-              
-              <Tooltip 
+
+              <Tooltip
                 content={getTooltipMessage(
                   canModifyUser(),
                   currentUser?.id === user?.id_user,
-                  user?.role === 'admin',
-                  user.team_chat_is_muted ? 'Démuter' : 'Muter'
+                  user?.role === "admin",
+                  user.team_chat_is_muted ? "Démuter" : "Muter"
                 )}
                 disabled={canModifyUser()}
               >
-                <button 
+                <button
                   className={`w-full px-4 py-2 rounded-lg transition-colors ${
-                    canModifyUser() 
-                      ? 'bg-[var(--overlay-hover)] text-[var(--text-primary)] hover:bg-[var(--overlay-active)]' 
-                      : 'bg-[var(--overlay-hover)] text-[var(--text-muted)] cursor-not-allowed'
+                    canModifyUser()
+                      ? "bg-[var(--overlay-hover)] text-[var(--text-primary)] hover:bg-[var(--overlay-active)]"
+                      : "bg-[var(--overlay-hover)] text-[var(--text-muted)] cursor-not-allowed"
                   }`}
                   disabled={!canModifyUser()}
                 >
-                  {user.team_chat_is_muted ? 'Démuter le chat' : 'Muter le chat'}
+                  {user.team_chat_is_muted
+                    ? "Démuter le chat"
+                    : "Muter le chat"}
                 </button>
               </Tooltip>
-              
-              <Tooltip 
+
+              <Tooltip
                 content={getTooltipMessage(
                   canModifyUser(),
                   currentUser?.id === user?.id_user,
-                  user?.role === 'admin',
-                  user.is_premium ? 'Retirer Premium' : 'Donner Premium'
+                  user?.role === "admin",
+                  user.is_premium ? "Retirer Premium" : "Donner Premium"
                 )}
                 disabled={canModifyUser()}
               >
-                <button 
+                <button
                   className={`w-full px-4 py-2 rounded-lg transition-colors ${
-                    canModifyUser() 
-                      ? 'bg-[var(--overlay-hover)] text-[var(--text-primary)] hover:bg-[var(--overlay-active)]' 
-                      : 'bg-[var(--overlay-hover)] text-[var(--text-muted)] cursor-not-allowed'
+                    canModifyUser()
+                      ? "bg-[var(--overlay-hover)] text-[var(--text-primary)] hover:bg-[var(--overlay-active)]"
+                      : "bg-[var(--overlay-hover)] text-[var(--text-muted)] cursor-not-allowed"
                   }`}
                   disabled={!canModifyUser()}
                 >
-                  {user.is_premium ? 'Retirer Premium' : 'Donner Premium'}
+                  {user.is_premium ? "Retirer Premium" : "Donner Premium"}
                 </button>
               </Tooltip>
             </div>
             {!canModifyUser() && (
               <p className="text-xs text-[var(--text-muted)] mt-3">
-                {isViewingAdmin 
-                  ? "Les actions sont désactivées pour les comptes administrateur" 
-                  : "Vous n'avez pas les permissions pour modifier cet utilisateur"
-                }
+                {isViewingAdmin
+                  ? "Les actions sont désactivées pour les comptes administrateur"
+                  : "Vous n'avez pas les permissions pour modifier cet utilisateur"}
               </p>
             )}
           </div>
@@ -420,4 +430,4 @@ const UserDetails = () => {
   );
 };
 
-export default UserDetails; 
+export default UserDetails;

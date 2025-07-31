@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
   ArrowLeft,
@@ -7,13 +7,11 @@ import {
   Star,
   Users,
   Crown,
-  Calendar,
   MessageSquare,
   Settings,
   Ban,
   Clock,
   DollarSign,
-  ChevronRight,
   Send
 } from 'lucide-react';
 
@@ -48,7 +46,6 @@ const mockTeam = {
 };
 
 const TeamDetails = () => {
-  const { id } = useParams();
   const navigate = useNavigate();
   const [newMessage, setNewMessage] = useState('');
 
@@ -252,6 +249,5 @@ const TeamDetails = () => {
   );
 };
 
-export default TeamDetails; 
- 
- 
+export default TeamDetails;
+

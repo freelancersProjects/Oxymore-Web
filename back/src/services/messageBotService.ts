@@ -1,4 +1,4 @@
-import { MessageBot, messageBots } from "../models/messageBotModel";
+import { MessageBot } from "../models/messageBotModel";
 import crypto from "crypto";
 import { db } from "../config/db";
 

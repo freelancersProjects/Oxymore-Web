@@ -15,10 +15,12 @@ export type NotificationType = 'message' | 'success' | 'alert';
 
 export interface Notification {
   id_notification: number;
-  type: NotificationType;
+  id_user: string;
   title: string;
   text: string;
+  type: NotificationType;
   created_at: string;
+  updated_at?: string;
 }
 
 export interface NotificationWithReadStatus extends Notification {

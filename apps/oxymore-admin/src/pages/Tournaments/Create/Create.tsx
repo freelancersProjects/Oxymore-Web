@@ -1,29 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { ArrowLeft, Trophy } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { apiService } from '../../../api/apiService';
-import { League } from '../../../types/league';
-
-interface TournamentFormData {
-  tournament_name: string;
-  organized_by?: string;
-  description?: string;
-  type: string; // 'ligue' | 'major' | 'open'
-  format: string; // 'BO1' | 'BO3' | 'BO5'
-  structure: string;
-  start_date: string;
-  end_date: string;
-  check_in_date?: string;
-  cash_prize?: number;
-  entry_fee?: number;
-  max_participant?: number;
-  min_participant?: number;
-  is_premium?: boolean;
-  image_url?: string;
-  id_league: string;
-  id_badge_winner?: string;
-}
+import { League, TournamentFormData } from '../../../types';
 
 const Create = () => {
   const navigate = useNavigate();
@@ -223,7 +203,7 @@ const Create = () => {
             <div>
               <label className="label-base" htmlFor="min_participant">Minimum Participants</label>
               <input
-                {...register('min_participant', { 
+                {...register('min_participant', {
                   min: { value: 2, message: 'Minimum 2 participants required' }
                 })}
                 type="number"
@@ -238,7 +218,7 @@ const Create = () => {
             <div>
               <label className="label-base" htmlFor="max_participant">Maximum Participants</label>
               <input
-                {...register('max_participant', { 
+                {...register('max_participant', {
                   min: { value: 2, message: 'Minimum 2 participants required' }
                 })}
                 type="number"
@@ -253,7 +233,7 @@ const Create = () => {
             <div>
               <label className="label-base" htmlFor="entry_fee">Entry Fee (€)</label>
               <input
-                {...register('entry_fee', { 
+                {...register('entry_fee', {
                   min: { value: 0, message: 'Entry fee cannot be negative' }
                 })}
                 type="number"
@@ -269,7 +249,7 @@ const Create = () => {
             <div>
               <label className="label-base" htmlFor="cash_prize">Cash Prize (€)</label>
               <input
-                {...register('cash_prize', { 
+                {...register('cash_prize', {
                   min: { value: 0, message: 'Cash prize cannot be negative' }
                 })}
                 type="number"
@@ -345,6 +325,5 @@ const Create = () => {
   );
 };
 
-export default Create; 
- 
- 
+export default Create;
+

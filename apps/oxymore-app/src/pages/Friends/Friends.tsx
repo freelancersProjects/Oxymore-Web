@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import { useState, useRef } from "react";
 import { OXMButton, OXMTabSwitcher, OXMGlowOrb } from "@oxymore/ui";
 import {
   Person as PersonIcon,

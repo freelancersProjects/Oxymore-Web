@@ -1,4 +1,4 @@
-import { ChannelBot, channelBots } from "../models/channelBotModel";
+import { ChannelBot } from "../models/channelBotModel";
 import crypto from "crypto";
 import { db } from "../config/db";
 

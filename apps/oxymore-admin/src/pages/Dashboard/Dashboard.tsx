@@ -3,13 +3,8 @@ import { motion } from 'framer-motion';
 import {
   Users,
   Trophy,
-  Calendar,
-  Target,
-  TrendingUp,
   Activity,
   DollarSign,
-  Star,
-  ArrowRight,
   ArrowUpRight,
   ArrowDownRight,
   Clock
@@ -27,7 +22,7 @@ import {
 } from 'recharts';
 import { useStats } from '../../context/StatsContext';
 
-const Dashboard = () => {
+const Dashboard = (): React.JSX.Element => {
   const { stats, loading } = useStats();
 
   // Fonction pour formater les nombres
@@ -166,29 +161,11 @@ const Dashboard = () => {
           <div className="h-80">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={userActivityData}>
-                <defs>
-                  <linearGradient id="userGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#500CAD" stopOpacity={0.8}/>
-                    <stop offset="95%" stopColor="#500CAD" stopOpacity={0}/>
-                  </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color)" />
-                <XAxis dataKey="name" stroke="var(--text-secondary)" />
-                <YAxis stroke="var(--text-secondary)" />
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: 'var(--card-background)',
-                    border: '1px solid var(--border-color)',
-                    borderRadius: '8px'
-                  }}
-                />
-                <Area
-                  type="monotone"
-                  dataKey="users"
-                  stroke="#500CAD"
-                  fillOpacity={1}
-                  fill="url(#userGradient)"
-                />
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip />
+                <Area type="monotone" dataKey="users" stroke="#8884d8" fill="#8884d8" />
               </AreaChart>
             </ResponsiveContainer>
           </div>
@@ -211,17 +188,11 @@ const Dashboard = () => {
           <div className="h-80">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={tournamentData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color)" />
-                <XAxis dataKey="name" stroke="var(--text-secondary)" />
-                <YAxis stroke="var(--text-secondary)" />
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: 'var(--card-background)',
-                    border: '1px solid var(--border-color)',
-                    borderRadius: '8px'
-                  }}
-                />
-                <Bar dataKey="value" fill="#8B5CF6" radius={[4, 4, 0, 0]} />
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip />
+                <Bar dataKey="value" fill="#8884d8" />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -318,7 +289,6 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard; 
- 
- 
- 
+export default Dashboard;
+
+

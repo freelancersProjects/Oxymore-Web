@@ -1,6 +1,5 @@
 import { Router } from "express";
 import {
-  getAllChannelBots,
   getChannelBotById,
   getChannelBotsByUserId,
   createChannelBot,

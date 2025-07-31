@@ -11,7 +11,7 @@ import { UserProvider } from './context/UserContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import Layout from './components/Layout/Layout';
 import LiveMatch from './components/LiveMatch/LiveMatch';
-import MapPicker from './components/MapPicker/MapPicker';
+import GameMapPicker from './components/MapPicker/MapPicker';
 import GameSelector from './components/GameSelector/GameSelector';
 import Login from './pages/Auth/Login';
 import Dashboard from './pages/Dashboard/Dashboard';
@@ -35,6 +35,11 @@ import Activity from './pages/Activity/Activity';
 
 const queryClient = new QueryClient();
 
+const ToastWrapper = () => {
+  // @ts-expect-error - Ignore le problème de type avec react-hot-toast
+  return <Toaster position="top-right" />;
+};
+
 const App = () => {
   return (
     <UserProvider>
@@ -49,7 +54,7 @@ const App = () => {
                       <div className="min-h-screen">
                         <Routes>
                           <Route path="/login" element={<Login />} />
-                          
+
                           <Route
                             path="/"
                             element={
@@ -79,9 +84,9 @@ const App = () => {
                             <Route path="settings" element={<Settings />} />
                           </Route>
                         </Routes>
-                        <Toaster position="top-right" />
+                        <ToastWrapper />
                         <LiveMatch />
-                        <MapPicker />
+                        <GameMapPicker />
                         <GameSelector />
                       </div>
                     </AuthProvider>
@@ -96,6 +101,5 @@ const App = () => {
   );
 };
 
-export default App; 
- 
- 
+export default App;
+

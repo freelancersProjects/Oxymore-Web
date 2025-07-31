@@ -1,6 +1,4 @@
-import React from "react";
 import "./News.scss";
-import TournamentBanner from "../../../assets/images/imagecsgo.webp";
 import SoldierOverlay from "../../../assets/images/imagenewscsgo2.webp";
 import { OXMButton } from "@oxymore/ui";
 

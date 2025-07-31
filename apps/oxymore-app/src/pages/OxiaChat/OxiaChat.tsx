@@ -83,7 +83,7 @@ const OxiaChat: React.FC = () => {
 
   useEffect(() => {
     if (!user) return;
-    apiService.get(`/channel-bots?user_id=${user.id_user}`).then((data) => {
+    apiService.get(`/channel-bots?user_id=${user.id}`).then((data) => {
       setChannels(data);
       if (data.length > 0) setSelectedChannel(data[0] ?? null);
       else setSelectedChannel(null);
@@ -170,7 +170,7 @@ const OxiaChat: React.FC = () => {
       side: "right",
       avatar: "",
       channel_id: selectedChannel.id_channel,
-      user_id: user?.id_user,
+      user_id: user?.id,
       is_from_ai: false,
     };
     setMessages((prev) => [...prev, userMsg]);
@@ -257,16 +257,42 @@ const OxiaChat: React.FC = () => {
     setIsModalOpen(true);
   };
 
-  const handleCreateChannel = async () => {
-    if (!newChannelName.trim() || !user) return;
-    const newChannel = await apiService.post("/channel-bots", {
+ const handleCreateChannel = async () => {
+    if (!newChannelName.trim()) {
+      setToast({ message: "Le nom du channel ne peut pas être vide", type: "error" });
+      return;
+    }
+
+    if (!user) {
+      setToast({ message: "Vous devez être connecté pour créer un channel", type: "error" });
+      return;
+    }
+
+    if (!user.id) {
+      setToast({ message: "Erreur d'authentification - ID utilisateur manquant", type: "error" });
+      console.error("User object:", user);
+      return;
+    }
+
+    console.log("Debug - Sending request with:", {
       name: newChannelName,
-      user_id: user.id_user,
+      user_id: user.id,
     });
-    setChannels((prev) => [...prev, newChannel]);
-    setSelectedChannel(newChannel);
-    setIsModalOpen(false);
-    setToast({ message: "Channel créé !", type: "success" });
+
+    try {
+      const newChannel = await apiService.post("/channel-bots", {
+        name: newChannelName,
+        user_id: user.id,
+      });
+      setChannels((prev) => [...prev, newChannel]);
+      setSelectedChannel(newChannel);
+      setIsModalOpen(false);
+      setNewChannelName("");
+      setToast({ message: "Channel créé !", type: "success" });
+    } catch (error) {
+      console.error("Error creating channel:", error);
+      setToast({ message: "Erreur lors de la création du channel", type: "error" });
+    }
   };
 
   const handleDeleteChannel = async (id_channel: string) => {
