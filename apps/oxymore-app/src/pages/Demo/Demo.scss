@@ -1,0 +1,66 @@
+@import '../../styles/global.scss';
+
+.demo-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, $color-black 0%, $color-gray-darkest 50%, $color-gray-darker 100%);
+  padding: rem-calc(40) rem-calc(20);
+}
+
+.demo-container {
+  max-width: rem-calc(1200);
+  margin: 0 auto;
+
+  h1 {
+    color: $color-white;
+    font-size: rem-calc(48);
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: rem-calc(60);
+    background: linear-gradient(135deg, $color-purple 0%, $color-blue 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .demo-section {
+    margin-bottom: rem-calc(60);
+
+    h2 {
+      color: $color-white;
+      font-size: rem-calc(32);
+      font-weight: 600;
+      margin-bottom: rem-calc(30);
+      border-bottom: rem-calc(2) solid rgba($color-white, 0.1);
+      padding-bottom: rem-calc(15);
+    }
+
+    .demo-row {
+      display: flex;
+      gap: rem-calc(20);
+      flex-wrap: wrap;
+      align-items: flex-start;
+
+      .demo-input {
+        flex: 1;
+        min-width: rem-calc(250);
+      }
+
+      .demo-textarea {
+        flex: 1;
+        min-width: rem-calc(300);
+      }
+
+      .demo-card-selector {
+        flex: 1;
+        min-width: rem-calc(400);
+      }
+
+      .demo-code-input {
+        flex: 1;
+        min-width: rem-calc(300);
+        display: flex;
+        justify-content: center;
+      }
+    }
+  }
+} 

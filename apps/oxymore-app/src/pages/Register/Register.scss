@@ -9,12 +9,6 @@
   position: relative;
   overflow: hidden;
   padding: rem-calc(20);
-  margin: 0 !important;
-}
-
-// Annuler la marge du main pour éviter le décalage
-main {
-  margin: 0 !important;
 }
 
 .register-background {
@@ -55,7 +49,7 @@ main {
 .register-glow-orb-3 {
   width: rem-calc(200);
   height: rem-calc(200);
-  background: radial-gradient(circle, $color-danger 0%, transparent 70%);
+  background: radial-gradient(circle, #ec4899 0%, transparent 70%);
   bottom: 20%;
   left: 20%;
   animation-delay: 4s;
@@ -183,7 +177,7 @@ main {
 
   &:hover {
   transform: translateY(-#{rem-calc(3)});
-  background-color: $color-purple;
+  background-color: #9333ea;
   box-shadow: 0 rem-calc(12) rem-calc(28) rgba($color-purple-light, 0.3), 0 0 rem-calc(20) rgba($color-blue, 0.15);
   }
 
@@ -211,13 +205,12 @@ main {
   transition: color 0.3s ease;
 
   &:hover {
-    color: $color-purple;
+    color: #a855f7;
     text-decoration: underline;
   }
   }
 }
 
-// Responsive design
 @media (max-width: 480px) {
   .register-card {
   padding: rem-calc(32) rem-calc(24);
@@ -236,26 +229,26 @@ main {
 
   input {
     width: 100%;
-    padding-right: rem-calc(50); // Espace pour l'icône
+    padding-right: 50px;
   }
 }
 
 .password-toggle-btn {
   position: absolute;
-  right: rem-calc(15);
+  right: 15px;
   top: 50%;
   transform: translateY(-50%);
   background: none;
   border: none;
   cursor: pointer;
-  color: $color-gray-medium;
+  color: #71717a;
   display: flex;
   align-items: center;
   padding: 0;
-  font-size: rem-calc(18);
+  font-size: 18px;
 
   &:hover {
-    color: $color-gray-medium;
+    color: #a1a1aa;
   }
 
   &:focus {
@@ -264,7 +257,7 @@ main {
 }
 
 .register-button {
-  background-color: $color-purple-light;
+  background-color: #8b5cf6;
   border: none;
   border-radius: rem-calc(12);
   padding: rem-calc(16);
