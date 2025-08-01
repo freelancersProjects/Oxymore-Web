@@ -55,7 +55,7 @@ const Badges = () => {
     // Recherche textuelle
     if (searchQuery) {
       const query = searchQuery.toLowerCase();
-      result = result.filter(badge => 
+      result = result.filter(badge =>
         badge.badge_name.toLowerCase().includes(query) ||
         badge.badge_description?.toLowerCase().includes(query) ||
         badge.unlock_condition?.toLowerCase().includes(query)
@@ -64,17 +64,17 @@ const Badges = () => {
 
     // Filtres
     if (filters.hasImage !== null) {
-      result = result.filter(badge => 
+      result = result.filter(badge =>
         filters.hasImage ? !!badge.image_url : !badge.image_url
       );
     }
     if (filters.hasDescription !== null) {
-      result = result.filter(badge => 
+      result = result.filter(badge =>
         filters.hasDescription ? !!badge.badge_description : !badge.badge_description
       );
     }
     if (filters.hasUnlockCondition !== null) {
-      result = result.filter(badge => 
+      result = result.filter(badge =>
         filters.hasUnlockCondition ? !!badge.unlock_condition : !badge.unlock_condition
       );
     }
@@ -165,7 +165,7 @@ const Badges = () => {
           <p className="text-secondary mt-1">Manage and create badges</p>
         </div>
         <button
-          onClick={() => navigate('/badges/create')}
+          onClick={() => navigate("/badges/create")}
           className="button-primary px-4 py-2 rounded-xl flex items-center gap-2"
         >
           <Plus className="w-5 h-5" />
@@ -186,12 +186,16 @@ const Badges = () => {
           />
         </div>
         <div className="relative">
-          <button 
-            className={`button-secondary px-4 py-2 rounded-xl flex items-center gap-2 ${showFilters ? 'bg-oxymore-purple text-white' : ''}`}
+          <button
+            className={`button-secondary px-4 py-2 rounded-xl flex items-center gap-2 ${
+              showFilters ? "bg-oxymore-purple text-white" : ""
+            }`}
             onClick={() => setShowFilters(!showFilters)}
           >
             <Filter className="w-5 h-5" />
-            {(filters.hasImage !== null || filters.hasDescription !== null || filters.hasUnlockCondition !== null) && (
+            {(filters.hasImage !== null ||
+              filters.hasDescription !== null ||
+              filters.hasUnlockCondition !== null) && (
               <span className="w-2 h-2 rounded-full bg-oxymore-purple absolute -top-1 -right-1" />
             )}
           </button>
@@ -211,30 +215,39 @@ const Badges = () => {
 
               <div className="space-y-3">
                 <button
-                  onClick={() => toggleFilter('hasImage')}
-                  className={`w-full px-3 py-2 rounded-lg text-left transition-colors ${getFilterButtonClass(filters.hasImage)}`}
+                  onClick={() => toggleFilter("hasImage")}
+                  className={`w-full px-3 py-2 rounded-lg text-left transition-colors ${getFilterButtonClass(
+                    filters.hasImage
+                  )}`}
                 >
-                  {filters.hasImage === null && 'Any image status'}
-                  {filters.hasImage === true && 'Has image'}
-                  {filters.hasImage === false && 'No image'}
+                  {filters.hasImage === null && "Any image status"}
+                  {filters.hasImage === true && "Has image"}
+                  {filters.hasImage === false && "No image"}
                 </button>
 
                 <button
-                  onClick={() => toggleFilter('hasDescription')}
-                  className={`w-full px-3 py-2 rounded-lg text-left transition-colors ${getFilterButtonClass(filters.hasDescription)}`}
+                  onClick={() => toggleFilter("hasDescription")}
+                  className={`w-full px-3 py-2 rounded-lg text-left transition-colors ${getFilterButtonClass(
+                    filters.hasDescription
+                  )}`}
                 >
-                  {filters.hasDescription === null && 'Any description status'}
-                  {filters.hasDescription === true && 'Has description'}
-                  {filters.hasDescription === false && 'No description'}
+                  {filters.hasDescription === null && "Any description status"}
+                  {filters.hasDescription === true && "Has description"}
+                  {filters.hasDescription === false && "No description"}
                 </button>
 
                 <button
-                  onClick={() => toggleFilter('hasUnlockCondition')}
-                  className={`w-full px-3 py-2 rounded-lg text-left transition-colors ${getFilterButtonClass(filters.hasUnlockCondition)}`}
+                  onClick={() => toggleFilter("hasUnlockCondition")}
+                  className={`w-full px-3 py-2 rounded-lg text-left transition-colors ${getFilterButtonClass(
+                    filters.hasUnlockCondition
+                  )}`}
                 >
-                  {filters.hasUnlockCondition === null && 'Any unlock condition status'}
-                  {filters.hasUnlockCondition === true && 'Has unlock condition'}
-                  {filters.hasUnlockCondition === false && 'No unlock condition'}
+                  {filters.hasUnlockCondition === null &&
+                    "Any unlock condition status"}
+                  {filters.hasUnlockCondition === true &&
+                    "Has unlock condition"}
+                  {filters.hasUnlockCondition === false &&
+                    "No unlock condition"}
                 </button>
               </div>
             </div>
@@ -243,28 +256,48 @@ const Badges = () => {
       </div>
 
       {/* Active Filters */}
-      {(filters.hasImage !== null || filters.hasDescription !== null || filters.hasUnlockCondition !== null) && (
+      {(filters.hasImage !== null ||
+        filters.hasDescription !== null ||
+        filters.hasUnlockCondition !== null) && (
         <div className="flex flex-wrap gap-2">
           {filters.hasImage !== null && (
             <div className="px-3 py-1 bg-[var(--overlay-hover)] rounded-full text-sm flex items-center gap-2">
-              <span>{filters.hasImage ? 'Has image' : 'No image'}</span>
-              <button onClick={() => setFilters(prev => ({ ...prev, hasImage: null }))}>
+              <span>{filters.hasImage ? "Has image" : "No image"}</span>
+              <button
+                onClick={() =>
+                  setFilters((prev) => ({ ...prev, hasImage: null }))
+                }
+              >
                 <X className="w-4 h-4" />
               </button>
             </div>
           )}
           {filters.hasDescription !== null && (
             <div className="px-3 py-1 bg-[var(--overlay-hover)] rounded-full text-sm flex items-center gap-2">
-              <span>{filters.hasDescription ? 'Has description' : 'No description'}</span>
-              <button onClick={() => setFilters(prev => ({ ...prev, hasDescription: null }))}>
+              <span>
+                {filters.hasDescription ? "Has description" : "No description"}
+              </span>
+              <button
+                onClick={() =>
+                  setFilters((prev) => ({ ...prev, hasDescription: null }))
+                }
+              >
                 <X className="w-4 h-4" />
               </button>
             </div>
           )}
           {filters.hasUnlockCondition !== null && (
             <div className="px-3 py-1 bg-[var(--overlay-hover)] rounded-full text-sm flex items-center gap-2">
-              <span>{filters.hasUnlockCondition ? 'Has unlock condition' : 'No unlock condition'}</span>
-              <button onClick={() => setFilters(prev => ({ ...prev, hasUnlockCondition: null }))}>
+              <span>
+                {filters.hasUnlockCondition
+                  ? "Has unlock condition"
+                  : "No unlock condition"}
+              </span>
+              <button
+                onClick={() =>
+                  setFilters((prev) => ({ ...prev, hasUnlockCondition: null }))
+                }
+              >
                 <X className="w-4 h-4" />
               </button>
             </div>
@@ -273,9 +306,13 @@ const Badges = () => {
       )}
 
       {/* Results Count - Only show when filtering or searching */}
-      {(searchQuery || filters.hasImage !== null || filters.hasDescription !== null || filters.hasUnlockCondition !== null) && (
+      {(searchQuery ||
+        filters.hasImage !== null ||
+        filters.hasDescription !== null ||
+        filters.hasUnlockCondition !== null) && (
         <div className="text-secondary">
-          {filteredBadges.length} badge{filteredBadges.length !== 1 ? 's' : ''} found
+          {filteredBadges.length} badge{filteredBadges.length !== 1 ? "s" : ""}{" "}
+          found
         </div>
       )}
 
@@ -285,7 +322,7 @@ const Badges = () => {
           <div
             key={badge.id_badge}
             className="card-base p-6 group relative cursor-pointer transition-all duration-200"
-            onClick={() => navigate(`/badges/${badge.id_badge}`)}
+            onClick={(e) => handleEdit(badge.id_badge, e)}
           >
             <div className="aspect-square rounded-2xl bg-[var(--overlay-hover)] mb-4 flex items-center justify-center overflow-hidden">
               {badge.image_url ? (
@@ -298,9 +335,13 @@ const Badges = () => {
                 <Shield className="w-12 h-12 text-muted" />
               )}
             </div>
-            <h3 className="font-semibold text-primary mb-1">{badge.badge_name}</h3>
+            <h3 className="font-semibold text-primary mb-1">
+              {badge.badge_name}
+            </h3>
             {badge.badge_description && (
-              <p className="text-secondary text-sm line-clamp-2">{badge.badge_description}</p>
+              <p className="text-secondary text-sm line-clamp-2">
+                {badge.badge_description}
+              </p>
             )}
             {badge.unlock_condition && (
               <p className="text-xs text-muted mt-2 italic">
@@ -326,11 +367,20 @@ const Badges = () => {
 
             {/* Delete Confirmation Modal */}
             {showDeleteConfirm === badge.id_badge && (
-              <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setShowDeleteConfirm(null)}>
-                <div className="bg-[var(--card-background)] p-6 rounded-2xl max-w-md mx-4" onClick={e => e.stopPropagation()}>
-                  <h3 className="text-xl font-bold text-primary mb-2">Delete Badge</h3>
+              <div
+                className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+                onClick={() => setShowDeleteConfirm(null)}
+              >
+                <div
+                  className="bg-[var(--card-background)] p-6 rounded-2xl max-w-md mx-4"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <h3 className="text-xl font-bold text-primary mb-2">
+                    Delete Badge
+                  </h3>
                   <p className="text-secondary mb-6">
-                    Are you sure you want to delete the badge "{badge.badge_name}"? This action cannot be undone.
+                    Are you sure you want to delete the badge "
+                    {badge.badge_name}"? This action cannot be undone.
                   </p>
                   <div className="flex justify-end gap-3">
                     <button
@@ -356,6 +406,5 @@ const Badges = () => {
   );
 };
 
-export default Badges; 
- 
- 
+export default Badges;
+

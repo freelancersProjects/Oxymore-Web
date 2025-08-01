@@ -172,6 +172,5 @@ export interface UserActivity {
   action: string;
   timestamp: string;
   details?: any;
-} 
- 
- 
+}
+

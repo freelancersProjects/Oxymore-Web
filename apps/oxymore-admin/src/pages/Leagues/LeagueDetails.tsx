@@ -323,7 +323,10 @@ const LeagueDetails = () => {
           {/* Actions */}
           <div className="card-base p-6">
             <div className="space-y-3">
-              <button className="w-full py-2 px-4 bg-oxymore-purple text-white rounded-xl hover:bg-oxymore-purple-light transition-colors flex items-center justify-center gap-2">
+              <button
+                onClick={() => navigate(`/leagues/${id}/edit`)}
+                className="w-full py-2 px-4 bg-oxymore-purple text-white rounded-xl hover:bg-oxymore-purple-light transition-colors flex items-center justify-center gap-2"
+              >
                 <Settings className="w-4 h-4" />
                 <span>Edit League</span>
               </button>
@@ -339,6 +342,5 @@ const LeagueDetails = () => {
   );
 };
 
-export default LeagueDetails; 
- 
- 
+export default LeagueDetails;
+

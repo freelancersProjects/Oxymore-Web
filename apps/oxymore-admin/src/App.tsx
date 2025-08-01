@@ -24,6 +24,7 @@ import TeamDetails from './pages/Teams/TeamDetails';
 import Leagues from './pages/Leagues/Leagues';
 import LeagueDetails from './pages/Leagues/LeagueDetails';
 import CreateLeague from './pages/Leagues/Create/Create';
+import EditLeague from './pages/Leagues/Edit/Edit';
 import Matches from './pages/Matches/Matches';
 import MatchDetails from './pages/Matches/MatchDetails';
 import Badges from './pages/Badges/Badges';
@@ -49,7 +50,7 @@ const App = () => {
                       <div className="min-h-screen">
                         <Routes>
                           <Route path="/login" element={<Login />} />
-                          
+
                           <Route
                             path="/"
                             element={
@@ -67,8 +68,9 @@ const App = () => {
                             <Route path="teams" element={<Teams />} />
                             <Route path="teams/:id" element={<TeamDetails />} />
                             <Route path="leagues" element={<Leagues />} />
-                            <Route path="leagues/:id" element={<LeagueDetails />} />
                             <Route path="leagues/create" element={<CreateLeague />} />
+                            <Route path="leagues/:id/edit" element={<EditLeague />} />
+                            <Route path="leagues/:id" element={<LeagueDetails />} />
                             <Route path="matches" element={<Matches />} />
                             <Route path="matches/:id" element={<MatchDetails />} />
                             <Route path="badges" element={<Badges />} />
@@ -96,6 +98,5 @@ const App = () => {
   );
 };
 
-export default App; 
- 
- 
+export default App;
+
