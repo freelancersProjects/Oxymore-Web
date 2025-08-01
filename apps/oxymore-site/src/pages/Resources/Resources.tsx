@@ -51,7 +51,7 @@ const Resources = () => {
     }
   ];
   return (
-    <>
+    <div className="resources-container">
       <div className="resources-bg-animated" />
       <OXMGlowOrb top="-10%" left="-20%" size="900px" color="rgba(80,12,173,0.22)" />
       <section className="resources-page">
@@ -71,7 +71,7 @@ const Resources = () => {
         </div>
       </section>
       <OXMGlowOrb bottom="-10%" right="-15%" size="1100px" color="rgba(21,147,206,0.18)" />
-    </>
+    </div>
   );
 };
 
