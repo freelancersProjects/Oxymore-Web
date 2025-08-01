@@ -9,5 +9,5 @@ export default defineConfig({
   splitting: false,
   sourcemap: false,
   bundle: false,
-  onSuccess: 'cpx "src/**/*.{scss,tsx,ts}" dist/ && cpx "src/assets/**/*" dist/assets/',
+  onSuccess: 'cpx "src/**/*.{scss,tsx,ts}" dist/ && cpx "src/assets/**/*" dist/assets/ && npm run generate-dts',
 });

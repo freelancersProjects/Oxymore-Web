@@ -95,7 +95,7 @@ const OXMCountdown: React.FC<CountdownProps> = ({
         </div>
       ) : (
         <div className="oxm-countdown-grid">
-          {timeUnits.map((unit, index) => (
+          {timeUnits.map((unit) => (
             <div key={unit.label} className="oxm-countdown-unit">
               <div className="oxm-countdown-value">
                 {formatNumber(unit.value)}
@@ -111,4 +111,4 @@ const OXMCountdown: React.FC<CountdownProps> = ({
   );
 };
 
-export default OXMCountdown; 
+export default OXMCountdown;

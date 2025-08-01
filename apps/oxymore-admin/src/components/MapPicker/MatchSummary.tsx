@@ -2,17 +2,17 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Trophy, Crown } from 'lucide-react';
 import confetti from 'canvas-confetti';
-import { Map, SelectedMap } from './types';
+import { GameMap, SelectedMap } from './types';
 
 interface MatchSummaryProps {
-  maps: Map[];
+  maps: GameMap[];
   onClose: () => void;
 }
 
-const MatchSummary: React.FC<MatchSummaryProps> = ({ maps, onClose }) => {
-  const selectedMaps = maps.filter((map): map is SelectedMap => 
-    map.status === 'team1_picked' || 
-    map.status === 'team2_picked' || 
+const MatchSummary: React.FC<MatchSummaryProps> = ({ maps, onClose }): React.JSX.Element => {
+  const selectedMaps = maps.filter((map): map is SelectedMap =>
+    map.status === 'team1_picked' ||
+    map.status === 'team2_picked' ||
     map.status === 'decider'
   );
 
@@ -21,7 +21,7 @@ const MatchSummary: React.FC<MatchSummaryProps> = ({ maps, onClose }) => {
     const duration = 5 * 1000;
     const end = Date.now() + duration;
 
-    const frame = () => {
+    const frame = (): void => {
       confetti({
         particleCount: 3,
         angle: 60,
@@ -54,7 +54,7 @@ const MatchSummary: React.FC<MatchSummaryProps> = ({ maps, onClose }) => {
     >
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(120,0,255,0.15),rgba(0,0,0,0))]" />
       <div className="absolute inset-0 bg-[url('/effects/noise.png')] opacity-[0.02] mix-blend-overlay" />
-      
+
       <div className="relative h-full flex flex-col items-center justify-center p-8">
         {/* Titre */}
         <motion.div
@@ -89,10 +89,10 @@ const MatchSummary: React.FC<MatchSummaryProps> = ({ maps, onClose }) => {
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 transition={{ delay: index * 0.2 + 0.3, type: "spring" }}
-                className={`absolute -top-10 left-1/2 -translate-x-1/2 w-20 h-20 rounded-full 
+                className={`absolute -top-10 left-1/2 -translate-x-1/2 w-20 h-20 rounded-full
                   flex items-center justify-center z-10 backdrop-blur-sm
-                  ${map.status === 'team1_picked' 
-                    ? 'bg-blue-500/30 ring-2 ring-blue-500/50' 
+                  ${map.status === 'team1_picked'
+                    ? 'bg-blue-500/30 ring-2 ring-blue-500/50'
                     : map.status === 'team2_picked'
                     ? 'bg-red-500/30 ring-2 ring-red-500/50'
                     : 'bg-yellow-500/30 ring-2 ring-yellow-500/50'}`}
@@ -105,7 +105,7 @@ const MatchSummary: React.FC<MatchSummaryProps> = ({ maps, onClose }) => {
               {/* Card de map */}
               <div className={`relative aspect-video rounded-2xl overflow-hidden transition-all
                 group-hover:scale-105 group-hover:-translate-y-2 duration-300
-                ${map.status === 'team1_picked' 
+                ${map.status === 'team1_picked'
                   ? 'ring-4 ring-blue-500 shadow-[0_0_50px_rgba(59,130,246,0.3)]'
                   : map.status === 'team2_picked'
                   ? 'ring-4 ring-red-500 shadow-[0_0_50px_rgba(239,68,68,0.3)]'
@@ -116,16 +116,16 @@ const MatchSummary: React.FC<MatchSummaryProps> = ({ maps, onClose }) => {
                   alt={map.name}
                   className="w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/20 
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/20
                   flex flex-col justify-end p-8 group-hover:from-black/80">
-                  <motion.h3 
+                  <motion.h3
                     initial={false}
                     animate={{ scale: 1 }}
                     className="text-4xl font-bold text-white mb-4 group-hover:scale-110 origin-left transition-transform"
                   >
                     {map.name}
                   </motion.h3>
-                  
+
                   <motion.div
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
@@ -161,7 +161,7 @@ const MatchSummary: React.FC<MatchSummaryProps> = ({ maps, onClose }) => {
           animate={{ opacity: 1 }}
           transition={{ delay: 1.5 }}
           onClick={onClose}
-          className="mt-20 mx-auto block px-10 py-4 bg-white/5 backdrop-blur-sm text-white 
+          className="mt-20 mx-auto block px-10 py-4 bg-white/5 backdrop-blur-sm text-white
             rounded-xl text-xl font-medium hover:bg-white/10 transition-all duration-300"
         >
           CLOSE
@@ -171,5 +171,4 @@ const MatchSummary: React.FC<MatchSummaryProps> = ({ maps, onClose }) => {
   );
 };
 
-export default MatchSummary; 
- 
+export default MatchSummary;

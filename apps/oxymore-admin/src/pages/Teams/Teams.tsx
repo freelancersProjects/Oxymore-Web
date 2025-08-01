@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+
 import { useNavigate } from 'react-router-dom';
 import {
   Search,
@@ -50,7 +49,7 @@ const mockTeams = [
 
 const Teams = () => {
   const navigate = useNavigate();
-  const [selectedTeams, setSelectedTeams] = useState<string[]>([]);
+
 
   return (
     <div className="space-y-6">
@@ -186,6 +185,5 @@ const Teams = () => {
   );
 };
 
-export default Teams; 
- 
- 
+export default Teams;
+

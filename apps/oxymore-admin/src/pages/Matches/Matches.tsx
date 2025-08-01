@@ -1,17 +1,14 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Search,
-  Filter,
   Trophy,
-  Users,
   Monitor,
   Calendar,
   MapPin,
   ChevronRight,
   Clock,
   Swords,
-  Crown,
   Shield
 } from 'lucide-react';
 
@@ -149,7 +146,7 @@ const Matches = () => {
             />
           </div>
           <div className="flex gap-2">
-            <button 
+            <button
               onClick={() => setFilter('all')}
               className={`px-4 py-2 rounded-xl transition-colors ${
                 filter === 'all' ? 'bg-oxymore-purple text-white' : 'button-secondary'
@@ -157,7 +154,7 @@ const Matches = () => {
             >
               All
             </button>
-            <button 
+            <button
               onClick={() => setFilter('live')}
               className={`px-4 py-2 rounded-xl transition-colors ${
                 filter === 'live' ? 'bg-oxymore-purple text-white' : 'button-secondary'
@@ -165,7 +162,7 @@ const Matches = () => {
             >
               Live
             </button>
-            <button 
+            <button
               onClick={() => setFilter('upcoming')}
               className={`px-4 py-2 rounded-xl transition-colors ${
                 filter === 'upcoming' ? 'bg-oxymore-purple text-white' : 'button-secondary'

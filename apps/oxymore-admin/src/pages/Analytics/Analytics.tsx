@@ -1,9 +1,6 @@
-import React from 'react';
 import {
-  TrendingUp,
   Users,
   Trophy,
-  Swords,
   ArrowUpRight,
   ArrowDownRight,
   Clock,
@@ -141,8 +138,8 @@ const Analytics = () => {
                 <XAxis dataKey="name" stroke="var(--text-secondary)" />
                 <YAxis stroke="var(--text-secondary)" />
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color)" />
-                <Tooltip 
-                  contentStyle={{ 
+                <Tooltip
+                  contentStyle={{
                     backgroundColor: 'var(--card-background)',
                     border: '1px solid var(--border-color)',
                     borderRadius: '12px'
@@ -181,7 +178,7 @@ const Analytics = () => {
                 <YAxis stroke="var(--text-secondary)" />
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color)" />
                 <Tooltip
-                  contentStyle={{ 
+                  contentStyle={{
                     backgroundColor: 'var(--card-background)',
                     border: '1px solid var(--border-color)',
                     borderRadius: '12px'
@@ -191,9 +188,9 @@ const Analytics = () => {
               </BarChart>
             </ResponsiveContainer>
           </div>
-        </div>
+         </div>
 
-        {/* Regional Distribution */}
+        {/* Regional  Distribution */}
         <div className="card-base p-6">
           <div className="flex items-center gap-3 mb-6">
             <MapPin className="w-5 h-5 text-oxymore-purple" />
@@ -207,7 +204,7 @@ const Analytics = () => {
                 <YAxis dataKey="name" type="category" stroke="var(--text-secondary)" />
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color)" />
                 <Tooltip
-                  contentStyle={{ 
+                  contentStyle={{
                     backgroundColor: 'var(--card-background)',
                     border: '1px solid var(--border-color)',
                     borderRadius: '12px'
@@ -249,7 +246,7 @@ const Analytics = () => {
                 <YAxis stroke="var(--text-secondary)" />
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color)" />
                 <Tooltip
-                  contentStyle={{ 
+                  contentStyle={{
                     backgroundColor: 'var(--card-background)',
                     border: '1px solid var(--border-color)',
                     borderRadius: '12px'
@@ -271,6 +268,5 @@ const Analytics = () => {
   );
 };
 
-export default Analytics; 
- 
- 
+export default Analytics;
+

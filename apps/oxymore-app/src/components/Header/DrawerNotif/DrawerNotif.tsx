@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { OXMDrawer } from "@oxymore/ui";
 import './DrawerNotif.scss';
-import { Bell, CheckCircle, AlertTriangle, MessageCircle, CheckCheck, Loader2, Trash2 } from 'lucide-react';
+import { Bell, CheckCircle, AlertTriangle, MessageCircle, Loader2, Trash2 } from 'lucide-react';
 import apiService from '../../../api/apiService';
 import type { NotificationWithReadStatus, NotificationType } from '@oxymore/types';
 
@@ -28,13 +28,13 @@ const formatTimeAgo = (dateString: string) => {
   const date = new Date(dateString);
   const now = new Date();
   const diffInMinutes = Math.floor((now.getTime() - date.getTime()) / (1000 * 60));
-  
+
   if (diffInMinutes < 1) return 'À l\'instant';
   if (diffInMinutes < 60) return `il y a ${diffInMinutes} min`;
-  
+
   const diffInHours = Math.floor(diffInMinutes / 60);
   if (diffInHours < 24) return `il y a ${diffInHours}h`;
-  
+
   const diffInDays = Math.floor(diffInHours / 24);
   return `il y a ${diffInDays}j`;
 };
@@ -42,7 +42,7 @@ const formatTimeAgo = (dateString: string) => {
 const DrawerNotif: React.FC<DrawerNotifProps> = ({ open, onClose, userId }) => {
   const [notifications, setNotifications] = useState<NotificationWithReadStatus[]>([]);
   const [loading, setLoading] = useState(false);
-  const [markingAllRead, setMarkingAllRead] = useState(false);
+  // const [markingAllRead, setMarkingAllRead] = useState(false);
 
   const fetchNotifications = async () => {
     setLoading(true);
@@ -71,17 +71,17 @@ const DrawerNotif: React.FC<DrawerNotifProps> = ({ open, onClose, userId }) => {
     }
   };
 
-  const handleMarkAllAsRead = async () => {
-    setMarkingAllRead(true);
-    try {
-      await apiService.post(`/notifications/user/${userId}/mark-all-read`);
-      await fetchNotifications();
-    } catch (error) {
-      console.error('Erreur lors du marquage de toutes les notifications:', error);
-    } finally {
-      setMarkingAllRead(false);
-    }
-  };
+  // const handleMarkAllAsRead = async () => {
+  //   setMarkingAllRead(true);
+  //   try {
+  //     await apiService.post(`/notifications/user/${userId}/mark-all-read`);
+  //     await fetchNotifications();
+  //   } catch (error) {
+  //     console.error('Erreur lors du marquage de toutes les notifications:', error);
+  //   } finally {
+  //     setMarkingAllRead(false);
+  //   }
+  // };
 
   const handleDeleteNotif = async (notificationId: number) => {
     try {
@@ -113,7 +113,7 @@ const DrawerNotif: React.FC<DrawerNotifProps> = ({ open, onClose, userId }) => {
           </button>
         )} */}
       </div>
-      
+
       <div className="drawer-notif-list">
         {loading ? (
           <div className="drawer-notif-loading">
@@ -122,8 +122,8 @@ const DrawerNotif: React.FC<DrawerNotifProps> = ({ open, onClose, userId }) => {
           </div>
         ) : notifications.length > 0 ? (
           notifications.map(notif => (
-            <div 
-              key={notif.id_notification} 
+            <div
+              key={notif.id_notification}
               className={`drawer-notif-item ${notif.is_read ? 'read' : 'unread'} notif-${notif.type}`}
               onClick={() => !notif.is_read && handleMarkAsRead(notif.id_notification)}
             >

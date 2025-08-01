@@ -257,16 +257,40 @@ const OxiaChat: React.FC = () => {
     setIsModalOpen(true);
   };
 
-  const handleCreateChannel = async () => {
-    if (!newChannelName.trim() || !user) return;
-    const newChannel = await apiService.post("/channel-bots", {
-      name: newChannelName,
-      user_id: user.id_user,
-    });
-    setChannels((prev) => [...prev, newChannel]);
-    setSelectedChannel(newChannel);
-    setIsModalOpen(false);
-    setToast({ message: "Channel créé !", type: "success" });
+ const handleCreateChannel = async () => {
+    if (!newChannelName.trim()) {
+      setToast({ message: "Le nom du channel ne peut pas être vide", type: "error" });
+      return;
+    }
+
+    if (!user) {
+      setToast({ message: "Vous devez être connecté pour créer un channel", type: "error" });
+      return;
+    }
+
+    if (!user.id_user) {
+      setToast({
+        message: "Erreur d'authentification - ID utilisateur manquant",
+        type: "error",
+      });
+      console.error("User object:", user);
+      return;
+    }
+
+    try {
+      const newChannel = await apiService.post("/channel-bots", {
+        name: newChannelName,
+        user_id: user.id_user,
+      });
+      setChannels((prev) => [...prev, newChannel]);
+      setSelectedChannel(newChannel);
+      setIsModalOpen(false);
+      setNewChannelName("");
+      setToast({ message: "Channel créé !", type: "success" });
+    } catch (error) {
+      console.error("Error creating channel:", error);
+      setToast({ message: "Erreur lors de la création du channel", type: "error" });
+    }
   };
 
   const handleDeleteChannel = async (id_channel: string) => {
@@ -278,7 +302,6 @@ const OxiaChat: React.FC = () => {
     setToast({ message: "Channel supprimé avec succès", type: "success" });
   };
 
-  // Fonction pour modifier le nom d'un channel
   const handleEditChannel = async (id_channel: string) => {
     if (!editChannelName.trim()) return;
     await apiService.patch(`/channel-bots/${id_channel}`, {

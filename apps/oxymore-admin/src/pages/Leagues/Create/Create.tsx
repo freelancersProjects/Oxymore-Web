@@ -3,23 +3,11 @@ import { useNavigate, Link } from 'react-router-dom';
 import { ArrowLeft, Trophy, Upload } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { apiService } from '../../../api/apiService';
-import { Badge } from '../../../types/badge';
-
-interface LeagueFormData {
-  league_name: string;
-  max_teams?: number;
-  start_date?: string;
-  end_date?: string;
-  promotion_slots?: number;
-  relegation_slots?: number;
-  image_url?: string;
-  entry_type?: string; // 'tournament' | 'promotion'
-  id_badge_champion?: string;
-}
+import { Badge, LeagueFormData } from '../../../types';
 
 const Create = () => {
   const navigate = useNavigate();
-  const { register, handleSubmit, formState: { errors }, setValue, watch } = useForm<LeagueFormData>();
+  const { register, handleSubmit, formState: { errors } } = useForm<LeagueFormData>();
   const [badges, setBadges] = useState<Badge[]>([]);
   const [loading, setLoading] = useState(false);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
@@ -60,7 +48,7 @@ const Create = () => {
       if (selectedImage) {
         const formData = new FormData();
         formData.append('image', selectedImage);
-        
+
         try {
           const uploadResponse = await apiService.post<{ url: string }>('/upload', formData);
           imageUrl = uploadResponse.url;
@@ -132,7 +120,7 @@ const Create = () => {
             <div>
               <label className="label-base" htmlFor="max_teams">Maximum Teams</label>
               <input
-                {...register('max_teams', { 
+                {...register('max_teams', {
                   min: { value: 2, message: 'Minimum 2 teams required' }
                 })}
                 type="number"
@@ -147,7 +135,7 @@ const Create = () => {
             <div>
               <label className="label-base" htmlFor="promotion_slots">Promotion Slots</label>
               <input
-                {...register('promotion_slots', { 
+                {...register('promotion_slots', {
                   min: { value: 0, message: 'Cannot be negative' }
                 })}
                 type="number"
@@ -162,7 +150,7 @@ const Create = () => {
             <div>
               <label className="label-base" htmlFor="relegation_slots">Relegation Slots</label>
               <input
-                {...register('relegation_slots', { 
+                {...register('relegation_slots', {
                   min: { value: 0, message: 'Cannot be negative' }
                 })}
                 type="number"
@@ -289,6 +277,5 @@ const Create = () => {
   );
 };
 
-export default Create; 
- 
- 
+export default Create;
+

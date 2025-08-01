@@ -14,7 +14,7 @@
     "composite": true
   },
   "include": [
-    "src"
+    "src/**/*"
   ],
   "exclude": ["tsup.config.ts", "playground"]
 }

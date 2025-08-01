@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { apiService } from '../api/apiService';
 
 interface Stats {
@@ -8,6 +8,37 @@ interface Stats {
   totalLeagues: number;
   activeMatches: number;
   activeUsers: number;
+}
+
+interface User {
+  id: string;
+  username: string;
+  email: string;
+  isVerified: boolean;
+  isPremium: boolean;
+  createdAt: string;
+}
+
+interface Tournament {
+  id: string;
+  name: string;
+  status: string;
+  startDate: string;
+  endDate: string;
+}
+
+interface Team {
+  id: string;
+  name: string;
+  members: User[];
+  createdAt: string;
+}
+
+interface League {
+  id: string;
+  name: string;
+  status: string;
+  createdAt: string;
 }
 
 interface StatsContextType {
@@ -32,14 +63,19 @@ export const StatsProvider = ({ children }: { children: ReactNode }) => {
   const fetchStats = async () => {
     try {
       setLoading(true);
-      
+
       // Récupérer les données en parallèle
-      const [users, tournaments, teams, leagues] = await Promise.all([
-        apiService.get('/users'),
-        apiService.get('/tournaments'),
-        apiService.get('/teams'),
-        apiService.get('/leagues')
+      const [usersResponse, tournamentsResponse, teamsResponse, leaguesResponse] = await Promise.all([
+        apiService.get<User[]>('/users'),
+        apiService.get<Tournament[]>('/tournaments'),
+        apiService.get<Team[]>('/teams'),
+        apiService.get<League[]>('/leagues')
       ]);
+
+      const users = usersResponse || [];
+      const tournaments = tournamentsResponse || [];
+      const teams = teamsResponse || [];
+      const leagues = leaguesResponse || [];
 
       setStats({
         totalUsers: users.length,
@@ -77,4 +113,4 @@ export const useStats = () => {
     throw new Error('useStats must be used within a StatsProvider');
   }
   return context;
-}; 
+};

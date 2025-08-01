@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Lock, Gamepad2, Trophy, Users } from 'lucide-react';
 import { useGameSelector } from '../../context/GameSelectorContext';
@@ -93,10 +93,10 @@ const GameSelector = () => {
               className="fixed inset-0 z-[9999] bg-black/95 backdrop-blur-[30px] overflow-y-auto"
             >
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(120,0,255,0.15),rgba(0,0,0,0))]" />
-              
+
               <div className="relative min-h-screen flex flex-col items-center justify-start p-8 pt-24">
                 {/* Header avec animation */}
-                <motion.div 
+                <motion.div
                   initial={{ y: -50, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   className="text-center mb-16"
@@ -121,8 +121,8 @@ const GameSelector = () => {
                       onHoverEnd={() => setHoveredGame(null)}
                       onClick={() => handleGameSelect(game)}
                       className={`relative group rounded-2xl overflow-hidden transition-all duration-500
-                        ${game.available 
-                          ? 'cursor-pointer hover:shadow-[0_0_50px_rgba(120,0,255,0.3)]' 
+                        ${game.available
+                          ? 'cursor-pointer hover:shadow-[0_0_50px_rgba(120,0,255,0.3)]'
                           : 'cursor-not-allowed opacity-50'}`}
                     >
                       {/* Background avec effet de zoom */}
@@ -199,7 +199,7 @@ const GameSelector = () => {
                   animate={{ opacity: 1, scale: 1 }}
                   whileHover={{ scale: 1.1 }}
                   onClick={closeGameSelector}
-                  className="fixed top-8 right-8 w-12 h-12 rounded-xl bg-white/10 hover:bg-white/20 
+                  className="fixed top-8 right-8 w-12 h-12 rounded-xl bg-white/10 hover:bg-white/20
                     flex items-center justify-center transition-colors backdrop-blur-sm"
                 >
                   <X className="w-6 h-6 text-white" />
@@ -213,4 +213,4 @@ const GameSelector = () => {
   );
 };
 
-export default GameSelector; 
+export default GameSelector;

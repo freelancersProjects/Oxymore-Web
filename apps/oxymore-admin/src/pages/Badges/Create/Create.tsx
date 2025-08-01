@@ -3,13 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { ArrowLeft, Shield, Upload } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { apiService } from '../../../api/apiService';
-
-interface BadgeFormData {
-  badge_name: string;
-  badge_description: string;
-  unlock_condition: string;
-  image_url: string;
-}
+import { BadgeFormData } from '../../../types';
 
 const Create = () => {
   const navigate = useNavigate();
@@ -86,7 +80,7 @@ const Create = () => {
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <div className="card-base p-6">
           <h2 className="text-lg font-semibold text-primary mb-4">Badge Information</h2>
-          
+
           {/* Image Upload */}
           <div className="mb-6">
             <label className="label-base">Badge Image</label>
@@ -207,6 +201,5 @@ const Create = () => {
   );
 };
 
-export default Create; 
- 
- 
+export default Create;
+

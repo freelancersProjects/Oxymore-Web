@@ -1,23 +1,16 @@
 import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import {
-  X,
+  Search,
   Sidebar,
+  Moon,
   Maximize2,
   Play,
   Volume2,
-  FastForward,
-  Rewind,
-  Camera,
-  Layout,
-  Eye,
-  Moon,
-  Sun,
-  Search,
+  X,
   Command,
   Radio,
   MessageSquare,
-  Map,
+  Map as MapIcon,
   Gamepad2
 } from 'lucide-react';
 
@@ -67,7 +60,7 @@ const shortcutGroups: ShortcutGroup[] = [
       {
         keys: ['⌘', 'P'],
         description: 'Open map pick/ban',
-        icon: Map
+        icon: MapIcon
       },
       {
         keys: ['F'],
@@ -109,7 +102,7 @@ const ShortcutsModal: React.FC<ShortcutsModalProps> = ({ isOpen, onClose }) => {
   return (
     <div className="fixed inset-0 z-[9999] flex items-start justify-center" style={{ marginTop: '6rem' }}>
       {/* Overlay qui couvre tout l'écran */}
-      <div 
+      <div
         className="fixed inset-0 bg-black/30"
         style={{ backdropFilter: 'blur(8px)' }}
         onClick={onClose}
@@ -196,6 +189,5 @@ const ShortcutsModal: React.FC<ShortcutsModalProps> = ({ isOpen, onClose }) => {
   );
 };
 
-export default ShortcutsModal; 
- 
- 
+export default ShortcutsModal;
+

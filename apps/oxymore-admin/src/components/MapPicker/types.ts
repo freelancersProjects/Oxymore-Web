@@ -1,4 +1,4 @@
-export type MapStatus = 
+export type MapStatus =
   | 'available'
   | 'team1_picked'
   | 'team2_picked'
@@ -6,7 +6,7 @@ export type MapStatus =
   | 'team2_banned'
   | 'decider';
 
-export interface Map {
+export interface GameMap {
   id: string;
   name: string;
   image: string;
@@ -15,8 +15,7 @@ export interface Map {
 
 export type SelectedMapStatus = 'team1_picked' | 'team2_picked' | 'decider';
 
-export interface SelectedMap extends Omit<Map, 'status'> {
+export interface SelectedMap extends Omit<GameMap, 'status'> {
   status: SelectedMapStatus;
-} 
- 
- 
+}
+

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   X,
@@ -16,10 +16,7 @@ import {
 } from 'lucide-react';
 import { useLiveMatch } from '../../context/LiveMatchContext';
 
-interface LiveMatchProps {
-  isOpen: boolean;
-  onClose: () => void;
-}
+
 
 const mockMatch = {
   id: '1',
@@ -289,6 +286,5 @@ const LiveMatch = () => {
   );
 };
 
-export default LiveMatch; 
- 
- 
+export default LiveMatch;
+

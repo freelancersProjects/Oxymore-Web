@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Plus,
@@ -8,7 +8,6 @@ import {
   ArrowUpRight,
   ArrowDownRight,
   Search,
-  Filter,
   Star,
   Clock,
   ChevronRight
@@ -20,7 +19,6 @@ const Leagues = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('active');
   const [leagues, setLeagues] = useState<League[]>([]);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchLeagues();
@@ -28,13 +26,10 @@ const Leagues = () => {
 
   const fetchLeagues = async () => {
     try {
-      setLoading(true);
       const data = await apiService.get<League[]>('/leagues');
       setLeagues(data);
     } catch (error) {
       console.error('Error fetching leagues:', error);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -43,17 +38,17 @@ const Leagues = () => {
     const now = new Date();
     const startDate = league.start_date ? new Date(league.start_date) : null;
     const endDate = league.end_date ? new Date(league.end_date) : null;
-    
+
     if (!startDate) return false;
     if (endDate && now > endDate) return false;
-    
+
     return now >= startDate;
   });
 
   const upcomingLeagues = leagues.filter(league => {
     const now = new Date();
     const startDate = league.start_date ? new Date(league.start_date) : null;
-    
+
     return startDate && now < startDate;
   });
 
@@ -314,6 +309,5 @@ const Leagues = () => {
   );
 };
 
-export default Leagues; 
- 
- 
+export default Leagues;
+

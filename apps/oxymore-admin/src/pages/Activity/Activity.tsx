@@ -1,4 +1,4 @@
-import React from 'react';
+
 import {
   Users,
   Trophy,
@@ -6,7 +6,6 @@ import {
   MessageSquare,
   Star,
   Clock,
-  Filter,
   Search,
   ArrowUpRight
 } from 'lucide-react';
@@ -192,6 +191,5 @@ const Activity = () => {
   );
 };
 
-export default Activity; 
- 
- 
+export default Activity;
+

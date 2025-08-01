@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { apiService } from '../../api/apiService';
+import { LoginResponse } from '../../types';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -16,7 +17,7 @@ const Login = () => {
     setError('');
 
     try {
-      const response = await apiService.post('/auth/login', {
+      const response = await apiService.post<LoginResponse>('/auth/login', {
         email,
         password
       });
@@ -135,6 +136,5 @@ const Login = () => {
   );
 };
 
-export default Login; 
- 
- 
+export default Login;
+

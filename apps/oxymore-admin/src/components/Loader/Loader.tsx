@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { motion } from 'framer-motion';
 
 const Loader = () => {
@@ -9,16 +9,15 @@ const Loader = () => {
         animate={{ rotate: 360 }}
         transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
       >
-        {/* Cercle principal avec effet d'ondulation */}
         <svg
           className="absolute inset-0 w-full h-full"
           viewBox="0 0 100 100"
         >
           <motion.path
-            d="M50,10 
-              C70,10 90,30 90,50 
-              C90,70 70,90 50,90 
-              C30,90 10,70 10,50 
+            d="M50,10
+              C70,10 90,30 90,50
+              C90,70 70,90 50,90
+              C30,90 10,70 10,50
               C10,30 30,10 50,10"
             fill="none"
             strokeWidth="3"
@@ -39,7 +38,6 @@ const Loader = () => {
           />
         </svg>
 
-        {/* Effet de brillance */}
         <motion.div
           className="absolute inset-0 rounded-full"
           style={{
@@ -60,4 +58,4 @@ const Loader = () => {
   );
 };
 
-export default Loader; 
+export default Loader;
