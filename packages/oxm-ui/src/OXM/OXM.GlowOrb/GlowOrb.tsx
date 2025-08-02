@@ -31,6 +31,9 @@ const GlowOrb: React.FC<GlowOrbProps> = ({
     filter: "blur(150px)",
     zIndex: 0,
     pointerEvents: "none",
+    overflow: "visible",
+    maxWidth: "none",
+    maxHeight: "none",
   };
 
   return <div className="oxm-glow-orb" style={style} />;

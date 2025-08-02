@@ -13,6 +13,7 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import CloudIcon from "@mui/icons-material/Cloud";
 
 import "./APIDevelopers.scss";
+import GlowOrb from "../../../../../packages/oxm-ui/dist/OXM/OXM.GlowOrb/GlowOrb";
 
 const useCasesIcons = [
   <CampaignIcon />, <SportsEsportsIcon />, <SchoolIcon />, <ShoppingCartIcon />, <MovieCreationIcon />, <CloudIcon />
@@ -29,12 +30,15 @@ const APIDevelopers = () => {
     <main className="api-dev">
       <section className="api-dev__hero">
         <div className="api-dev__hero-content">
-          <OXMCategorie label={t('api.categorie')} />
-          <h1 className="orbitron" dangerouslySetInnerHTML={{ __html: t('api.heroTitle') }} />
-          <p>{t('api.heroDesc')}</p>
+          <OXMCategorie label={t("api.categorie")} />
+          <h1
+            className="orbitron"
+            dangerouslySetInnerHTML={{ __html: t("api.heroTitle") }}
+          />
+          <p>{t("api.heroDesc")}</p>
           <div className="api-dev__hero-buttons">
-            <OXMButton>{t('api.docBtn')}</OXMButton>
-            <OXMButton variant="secondary">{t('api.salesBtn')}</OXMButton>
+            <OXMButton>{t("api.docBtn")}</OXMButton>
+            <OXMButton variant="secondary">{t("api.salesBtn")}</OXMButton>
           </div>
         </div>
         <div className="api-dev__hero-visual">
@@ -49,32 +53,39 @@ const APIDevelopers = () => {
           </div>
         </div>
         <div className="api-dev__section-content">
-          <OXMCategorie label={t('api.quickCategorie')} />
-          <h2 className="orbitron">{t('api.quickTitle')}</h2>
-          <p>{t('api.quickDesc')}</p>
-          <OXMButton variant="secondary">{t('api.quickDocBtn')} <ArrowForwardIcon /></OXMButton>
+          <OXMCategorie label={t("api.quickCategorie")} />
+          <h2 className="orbitron">{t("api.quickTitle")}</h2>
+          <p>{t("api.quickDesc")}</p>
+          <OXMButton variant="secondary">
+            {t("api.quickDocBtn")} <ArrowForwardIcon />
+          </OXMButton>
         </div>
       </section>
 
       <section className="api-dev__section api-dev__section--reversed">
         <div className="api-dev__section-content">
-          <OXMCategorie label={t('api.costCategorie')} />
-          <h2 className="orbitron">{t('api.costTitle')}</h2>
-          <p>{t('api.costDesc')}</p>
-          <OXMButton>{t('api.costBtn')}</OXMButton>
+          <OXMCategorie label={t("api.costCategorie")} />
+          <h2 className="orbitron">{t("api.costTitle")}</h2>
+          <p>{t("api.costDesc")}</p>
+          <OXMButton>{t("api.costBtn")}</OXMButton>
         </div>
         <div className="api-dev__section-visual">
           <div className="visual-placeholder">
-            <img src={APIKeyPremium} className="left-placeholder" alt="API Key Premium" />
+            <img
+              src={APIKeyPremium}
+              className="left-placeholder"
+              alt="API Key Premium"
+            />
           </div>
         </div>
       </section>
 
       <section className="api-dev__use-cases">
-        <OXMCategorie label={t('api.useCasesCategorie')} />
-        <h2 className="orbitron">{t('api.useCasesTitle')}</h2>
+        <GlowOrb right="-10%" color="rgba(21,147,206, 1)" />
+        <OXMCategorie label={t("api.useCasesCategorie")} />
+        <h2 className="orbitron">{t("api.useCasesTitle")}</h2>
         <p className="api-dev__use-cases-description">
-          {t('api.useCasesDesc')}
+          {t("api.useCasesDesc")}
         </p>
         <div className="api-dev__use-cases-grid">
           {useCases.map((useCase: any, index: number) => (

@@ -1,4 +1,9 @@
 .oxm-glow-orb {
     position: absolute;
     pointer-events: none;
+    z-index: 0;
+    overflow: visible;
+    max-width: none;
+    max-height: none;
+    box-sizing: border-box;
 }
