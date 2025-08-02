@@ -469,7 +469,7 @@ const fetchUserRole = async (userId: string): Promise<UserRole | null> => {
                         <div className="flex items-center gap-2">
                         <p className="text-primary font-medium">{user.username}</p>
                                 {user.is_premium ? (
-                                  <span className="px-2 py-0.5 text-xs font-medium bg-oxymore-purple/10 text-oxymore-purple rounded-full">
+                                  <span className="px-2 py-0.5 text-xs font-medium bg-oxymore-purple rounded-full">
                                     Premium
                                   </span>
                                 ) : (
@@ -501,13 +501,15 @@ const fetchUserRole = async (userId: string): Promise<UserRole | null> => {
                   <td className="px-4 py-4">
                     <div className="flex items-center justify-end gap-2">
                       <Tooltip
-                        content={getTooltipMessage(
-                          canModifyUser(user),
-                          currentUser?.id === user.id_user,
-                          user.role === 'admin',
-                          'Gérer les permissions'
-                        )}
-                        disabled={canModifyUser(user)}
+                        content={canModifyUser(user)
+                          ? "Gérer les permissions de l'utilisateur"
+                          : getTooltipMessage(
+                              canModifyUser(user),
+                              currentUser?.id === user.id_user,
+                              user.role === 'admin',
+                              'Gérer les permissions'
+                            )
+                        }
                       >
                         <button
                           className={`p-2 rounded-lg ${canModifyUser(user) ? 'hover-overlay' : 'opacity-50 cursor-not-allowed'}`}
@@ -518,13 +520,15 @@ const fetchUserRole = async (userId: string): Promise<UserRole | null> => {
                       </Tooltip>
 
                       <Tooltip
-                        content={getTooltipMessage(
-                          canModifyUser(user),
-                          currentUser?.id === user.id_user,
-                          user.role === 'admin',
-                          'Modifier'
-                        )}
-                        disabled={canModifyUser(user)}
+                        content={canModifyUser(user)
+                          ? "Modifier les informations de l'utilisateur"
+                          : getTooltipMessage(
+                              canModifyUser(user),
+                              currentUser?.id === user.id_user,
+                              user.role === 'admin',
+                              'Modifier'
+                            )
+                        }
                       >
                         <button
                           className={`p-2 rounded-lg ${canModifyUser(user) ? 'hover-overlay' : 'opacity-50 cursor-not-allowed'}`}
@@ -535,13 +539,15 @@ const fetchUserRole = async (userId: string): Promise<UserRole | null> => {
                       </Tooltip>
 
                       <Tooltip
-                        content={getTooltipMessage(
-                          canModifyUser(user),
-                          currentUser?.id === user.id_user,
-                          user.role === 'admin',
-                          'Voir l\'historique'
-                        )}
-                        disabled={canModifyUser(user)}
+                        content={canModifyUser(user)
+                          ? "Voir l'historique des actions de l'utilisateur"
+                          : getTooltipMessage(
+                              canModifyUser(user),
+                              currentUser?.id === user.id_user,
+                              user.role === 'admin',
+                              'Voir l\'historique'
+                            )
+                        }
                       >
                         <button
                           className={`p-2 rounded-lg ${canModifyUser(user) ? 'hover-overlay' : 'opacity-50 cursor-not-allowed'}`}
@@ -552,13 +558,15 @@ const fetchUserRole = async (userId: string): Promise<UserRole | null> => {
                       </Tooltip>
 
                       <Tooltip
-                        content={getTooltipMessage(
-                          canModifyUser(user),
-                          currentUser?.id === user.id_user,
-                          user.role === 'admin',
-                          'Bannir'
-                        )}
-                        disabled={canModifyUser(user)}
+                        content={canModifyUser(user)
+                          ? "Bannir l'utilisateur"
+                          : getTooltipMessage(
+                              canModifyUser(user),
+                              currentUser?.id === user.id_user,
+                              user.role === 'admin',
+                              'Bannir'
+                            )
+                        }
                       >
                         <button
                           className={`p-2 rounded-lg ${canModifyUser(user) ? 'hover-overlay' : 'opacity-50 cursor-not-allowed'}`}

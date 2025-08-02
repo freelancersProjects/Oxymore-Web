@@ -1,5 +1,7 @@
 
 import { Link, useLocation } from 'react-router-dom';
+import Logo from '../../../../public/logo.png';
+import LogoPuple from '../../../../public/logo-purple.png';
 import { motion } from 'framer-motion';
 import {
   LayoutDashboard,
@@ -19,6 +21,51 @@ import { useSidebar } from '../../../context/SidebarContext';
 import { useAuth } from '../../../context/AuthContext';
 import { useStats } from '../../../context/StatsContext';
 import { NavItem } from '../../../types';
+import { useState, useEffect, useRef } from 'react';
+
+const useThemeDetector = () => {
+  const [currentTheme, setCurrentTheme] = useState<'light' | 'dark'>('light');
+  const lastThemeRef = useRef<string>('');
+
+  useEffect(() => {
+    const checkTheme = () => {
+      const theme = localStorage.getItem('theme');
+      const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const effectiveTheme = theme || (systemPrefersDark ? 'dark' : 'light');
+
+      if (effectiveTheme !== lastThemeRef.current) {
+        lastThemeRef.current = effectiveTheme;
+        setCurrentTheme(effectiveTheme as 'light' | 'dark');
+      }
+    };
+
+    checkTheme();
+
+    const interval = setInterval(checkTheme, 16);
+
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'theme') {
+        checkTheme();
+      }
+    };
+
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const handleSystemThemeChange = () => {
+      checkTheme();
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    mediaQuery.addEventListener('change', handleSystemThemeChange);
+
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener('storage', handleStorageChange);
+      mediaQuery.removeEventListener('change', handleSystemThemeChange);
+    };
+  }, []);
+
+  return currentTheme;
+};
 
 const NavLink = ({ item }: { item: NavItem }) => {
   const location = useLocation();
@@ -68,12 +115,12 @@ const Sidebar = () => {
   const { isCollapsed } = useSidebar();
   const { logout } = useAuth();
   const { stats, loading } = useStats();
+  const currentTheme = useThemeDetector();
 
   const handleLogout = () => {
     logout();
   };
 
-  // Fonction pour formater les nombres
   const formatNumber = (num: number): string => {
     if (num >= 1000000) {
       return (num / 1000000).toFixed(1) + 'M';
@@ -102,16 +149,24 @@ const Sidebar = () => {
     <aside className={`h-screen bg-[var(--card-background)] border-r border-[var(--border-color)] flex flex-col overflow-hidden transition-all duration-300 ${
       isCollapsed ? 'w-[72px]' : 'w-70'
     }`}>
-      {/* Logo - Fixed */}
       <div className="p-6 border-b border-[var(--border-color)]">
         <Link to="/dashboard">
           <motion.div
             whileHover={{ scale: 1.02 }}
             className="flex items-center gap-3"
           >
-            <div className="w-10 h-10 bg-gradient-oxymore rounded-xl flex items-center justify-center shadow-oxymore">
-              <span className="text-white font-bold text-xl">O</span>
-            </div>
+            <motion.img
+              key={currentTheme} // Force re-render quand le thème change
+              src={currentTheme === 'light' ? LogoPuple : Logo}
+              alt="Oxymore Logo"
+              className="w-12 h-13 transition-all duration-300"
+              style={{
+                filter: isCollapsed ? 'grayscale(0.5)' : 'none'
+              }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.2 }}
+            />
             {!isCollapsed && (
               <h1 className="text-[var(--text-primary)] text-xl font-bold">
                 Oxymore <span className="text-sm text-oxymore-purple-light">Admin</span>
@@ -121,9 +176,7 @@ const Sidebar = () => {
         </Link>
       </div>
 
-      {/* Scrollable content */}
       <div className="flex-1 overflow-y-auto">
-        {/* Stats Overview */}
         {!isCollapsed && (
           <div className="p-4 border-b border-[var(--border-color)]">
             <div className="grid grid-cols-2 gap-3">
@@ -149,7 +202,6 @@ const Sidebar = () => {
           </div>
         )}
 
-        {/* Main Navigation */}
         <div className="p-4 space-y-2">
           {!isCollapsed && (
             <h2 className="text-sm font-semibold text-[var(--text-secondary)] px-3 mb-3">MAIN MENU</h2>
@@ -159,7 +211,6 @@ const Sidebar = () => {
           ))}
         </div>
 
-        {/* Stats & Analytics */}
         <div className="p-4 space-y-2">
           {!isCollapsed && (
             <h2 className="text-sm font-semibold text-[var(--text-secondary)] px-3 mb-3">ANALYTICS</h2>
@@ -170,7 +221,6 @@ const Sidebar = () => {
         </div>
       </div>
 
-      {/* Settings & Logout - Fixed at bottom */}
       <div className="p-4 space-y-2 border-t border-[var(--border-color)]">
         <NavLink item={{
           label: 'Settings',
