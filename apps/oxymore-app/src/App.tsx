@@ -8,7 +8,6 @@ import Highlights from "./pages/Highlights/Highlights";
 import Login from "./pages/Login/Login";
 import OxiaChat from "./pages/OxiaChat/OxiaChat";
 import Register from "./pages/Register/Register";
-import Demo from "./pages/Demo/Demo";
 import {Teams} from "./pages/Teams/Teams";
 import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./context/ProtectedRoute";
@@ -66,7 +65,6 @@ export default function App() {
                         <Route path="/teams" element={<Teams />} />
                         <Route path="/friends" element={<Friends />} />
                         <Route path="/oxia" element={<OxiaChat />} />
-                        <Route path="/demo" element={<Demo />} />
                       </Route>
                     </Routes>
                   </main>
