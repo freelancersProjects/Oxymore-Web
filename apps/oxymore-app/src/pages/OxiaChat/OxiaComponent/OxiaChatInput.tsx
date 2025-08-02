@@ -1,4 +1,4 @@
-import React, { type RefObject } from 'react';
+import React from 'react';
 
 interface InputProps {
   input: string;

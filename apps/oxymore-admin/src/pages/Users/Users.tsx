@@ -1,23 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { useState, useEffect } from 'react';
 import {
-  Users as UsersIcon,
   Search,
   Filter,
   Shield,
   Ban,
   Edit,
-  Trash,
   ArrowUpRight,
   ArrowDownRight,
-  ChevronLeft,
-  ChevronRight,
-  History,
+  History as HistoryIcon,
   X
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { apiService } from '../../api/apiService';
-import { User } from '../../types/user';
+import { User, UserRole } from '../../types';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import { CustomCheckbox } from '../../components/CustomCheckbox/CustomCheckbox';
@@ -36,8 +31,8 @@ const Users = () => {
   const [selectAll, setSelectAll] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [showFilters, setShowFilters] = useState(false);
-  const [userRoles, setUserRoles] = useState<Record<string, any>>({});
-  const [previousStats, setPreviousStats] = useState(() => {
+  const [userRoles, setUserRoles] = useState<Record<string, UserRole>>({});
+  const [previousStats] = useState(() => {
     const saved = localStorage.getItem('users_previous_stats');
     return saved ? JSON.parse(saved) : {
       totalUsers: 0,
@@ -51,15 +46,15 @@ const Users = () => {
     isAdmin: null as boolean | null
   });
 
-  const fetchUserRole = async (userId: string): Promise<any | null> => {
-    try {
-      const role = await apiService.get<any>(`/roles/${userId}`);
-      return role;
-    } catch (error) {
-      console.error(`Error fetching role for user ${userId}:`, error);
-      return null;
-    }
-  };
+const fetchUserRole = async (userId: string): Promise<UserRole | null> => {
+  try {
+    const role = await apiService.get<UserRole>(`/roles/${userId}`);
+    return role;
+  } catch (error) {
+    console.error(`Error fetching role for user ${userId}:`, error);
+    return null;
+  }
+};
 
   const isUserAdmin = (user: User): boolean => {
     const userRole = userRoles[user.id_user];
@@ -68,15 +63,15 @@ const Users = () => {
 
   const canModifyUser = (user: User) => {
     if (!currentUser) return false;
-    
+
     if (currentUser.id === user.id_user) {
       return false;
     }
-    
+
     if (isUserAdmin(user)) {
       return false;
     }
-    
+
     return true;
   };
 
@@ -93,7 +88,7 @@ const Users = () => {
       const target = event.target as Element;
       const filterContainer = target.closest('.filter-container');
       const filterMenu = target.closest('.filter-menu');
-      
+
       if (!filterContainer && !filterMenu) {
         setShowFilters(false);
       }
@@ -110,7 +105,7 @@ const Users = () => {
       setLoading(true);
       setError(null);
       const data = await apiService.get<User[]>('/users');
-      
+
       // Calculer les stats actuelles
       const currentStats = {
         totalUsers: data.length,
@@ -126,14 +121,14 @@ const Users = () => {
 
       const rolesPromises = data.map(user => fetchUserRole(user.id_user));
       const rolesResults = await Promise.allSettled(rolesPromises);
-      
+
       const newUserRoles: Record<string, any> = {};
       rolesResults.forEach((result, index) => {
         if (result.status === 'fulfilled' && result.value) {
           newUserRoles[data[index].id_user] = result.value;
         }
       });
-      
+
       setUserRoles(newUserRoles);
     } catch (err) {
       setError('Une erreur est survenue lors du chargement des utilisateurs');
@@ -148,7 +143,7 @@ const Users = () => {
 
     if (searchQuery) {
       const query = searchQuery.toLowerCase();
-      result = result.filter(user => 
+      result = result.filter(user =>
         user.username.toLowerCase().includes(query) ||
         user.email.toLowerCase().includes(query) ||
         user.first_name?.toLowerCase().includes(query) ||
@@ -213,7 +208,7 @@ const Users = () => {
       const newSelection = prev.includes(userId)
         ? prev.filter(id => id !== userId)
         : [...prev, userId];
-      
+
       setSelectAll(newSelection.length === filteredUsers.length);
       return newSelection;
     });
@@ -223,7 +218,7 @@ const Users = () => {
     if (previous === 0) {
       return { value: current > 0 ? 100 : 0, trend: current > 0 ? 'up' : 'neutral' };
     }
-    
+
     const change = ((current - previous) / previous) * 100;
     return {
       value: Math.abs(change),
@@ -308,12 +303,12 @@ const Users = () => {
                 <h3 className="stat-value">{stat.value}</h3>
             </div>
               <div className={`flex items-center gap-1 ${
-              stat.change.trend === 'up' ? 'stat-trend-up' : 
-              stat.change.trend === 'down' ? 'stat-trend-down' : 
+              stat.change.trend === 'up' ? 'stat-trend-up' :
+              stat.change.trend === 'down' ? 'stat-trend-down' :
               'text-gray-400'
             }`}>
-              {stat.change.trend === 'up' ? <ArrowUpRight className="w-4 h-4" /> : 
-               stat.change.trend === 'down' ? <ArrowDownRight className="w-4 h-4" /> : 
+              {stat.change.trend === 'up' ? <ArrowUpRight className="w-4 h-4" /> :
+               stat.change.trend === 'down' ? <ArrowDownRight className="w-4 h-4" /> :
                null}
               <span className="text-sm font-medium">
                 {stat.change.value === 0 ? '0' : `${stat.change.value.toFixed(1)}%`}
@@ -336,9 +331,9 @@ const Users = () => {
             className="input-base w-full pl-10"
           />
         </div>
-        
+
         <div className="relative filter-container">
-          <button 
+          <button
             className={`button-secondary px-4 py-2 rounded-xl flex items-center gap-2 ${showFilters ? 'bg-oxymore-purple text-white' : ''}`}
             onClick={() => setShowFilters(!showFilters)}
           >
@@ -454,8 +449,8 @@ const Users = () => {
             </thead>
             <tbody>
               {filteredUsers.map((user) => (
-                <tr 
-                  key={user.id_user} 
+                <tr
+                  key={user.id_user}
                   className="border-b border-[var(--border-color)] hover:bg-[var(--overlay-hover)] cursor-pointer"
                   onClick={() => navigate(`/users/${user.id_user}`)}
                 >
@@ -505,7 +500,7 @@ const Users = () => {
                   </td>
                   <td className="px-4 py-4">
                     <div className="flex items-center justify-end gap-2">
-                      <Tooltip 
+                      <Tooltip
                         content={getTooltipMessage(
                           canModifyUser(user),
                           currentUser?.id === user.id_user,
@@ -514,15 +509,15 @@ const Users = () => {
                         )}
                         disabled={canModifyUser(user)}
                       >
-                        <button 
+                        <button
                           className={`p-2 rounded-lg ${canModifyUser(user) ? 'hover-overlay' : 'opacity-50 cursor-not-allowed'}`}
                           disabled={!canModifyUser(user)}
                         >
                           <Shield className="w-4 h-4 text-secondary" />
                         </button>
                       </Tooltip>
-                      
-                      <Tooltip 
+
+                      <Tooltip
                         content={getTooltipMessage(
                           canModifyUser(user),
                           currentUser?.id === user.id_user,
@@ -531,15 +526,15 @@ const Users = () => {
                         )}
                         disabled={canModifyUser(user)}
                       >
-                        <button 
+                        <button
                           className={`p-2 rounded-lg ${canModifyUser(user) ? 'hover-overlay' : 'opacity-50 cursor-not-allowed'}`}
                           disabled={!canModifyUser(user)}
                         >
                           <Edit className="w-4 h-4 text-secondary" />
                         </button>
                       </Tooltip>
-                      
-                      <Tooltip 
+
+                      <Tooltip
                         content={getTooltipMessage(
                           canModifyUser(user),
                           currentUser?.id === user.id_user,
@@ -548,15 +543,15 @@ const Users = () => {
                         )}
                         disabled={canModifyUser(user)}
                       >
-                        <button 
+                        <button
                           className={`p-2 rounded-lg ${canModifyUser(user) ? 'hover-overlay' : 'opacity-50 cursor-not-allowed'}`}
                           disabled={!canModifyUser(user)}
                         >
-                          <History className="w-4 h-4 text-secondary" />
+                          <HistoryIcon className="w-4 h-4 text-secondary" />
                         </button>
                       </Tooltip>
-                      
-                      <Tooltip 
+
+                      <Tooltip
                         content={getTooltipMessage(
                           canModifyUser(user),
                           currentUser?.id === user.id_user,
@@ -565,7 +560,7 @@ const Users = () => {
                         )}
                         disabled={canModifyUser(user)}
                       >
-                        <button 
+                        <button
                           className={`p-2 rounded-lg ${canModifyUser(user) ? 'hover-overlay' : 'opacity-50 cursor-not-allowed'}`}
                           disabled={!canModifyUser(user)}
                         >
@@ -584,7 +579,6 @@ const Users = () => {
   );
 };
 
-export default Users; 
- 
- 
- 
+export default Users;
+
+

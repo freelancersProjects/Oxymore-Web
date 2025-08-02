@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Plus,
@@ -8,7 +8,6 @@ import {
   ArrowUpRight,
   ArrowDownRight,
   Search,
-  Filter,
   Star,
   Clock,
   ChevronRight
@@ -20,7 +19,6 @@ const Leagues = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('all');
   const [leagues, setLeagues] = useState<League[]>([]);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchLeagues();
@@ -28,13 +26,10 @@ const Leagues = () => {
 
   const fetchLeagues = async () => {
     try {
-      setLoading(true);
       const data = await apiService.get<League[]>('/leagues');
       setLeagues(data);
     } catch (error) {
       console.error('Error fetching leagues:', error);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -189,17 +184,14 @@ const Leagues = () => {
               const startDate = league.start_date ? new Date(league.start_date) : null;
               const endDate = league.end_date ? new Date(league.end_date) : null;
 
-              let status = 'upcoming';
               let statusText = 'UPCOMING';
               let statusColor = 'bg-blue-500/10 text-blue-500';
 
               if (startDate && now >= startDate) {
                 if (endDate && now > endDate) {
-                  status = 'ended';
                   statusText = 'ENDED';
                   statusColor = 'bg-gray-500/10 text-gray-500';
                 } else {
-                  status = 'active';
                   statusText = 'LIVE';
                   statusColor = 'bg-green-500/10 text-green-500';
                 }

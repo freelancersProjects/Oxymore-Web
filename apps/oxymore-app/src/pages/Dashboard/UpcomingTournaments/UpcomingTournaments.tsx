@@ -1,4 +1,3 @@
-import React from "react";
 import "./UpcomingTournaments.scss";
 import LiveIcon from "../../../assets/svg/live-icon.svg?react";
 import EyeIcon from "../../../assets/svg/eye-icon-live.svg?react";
@@ -42,7 +41,7 @@ const UpcomingTournaments = () => {
     <section className="upcoming-tournaments">
       <h2 className="section-title">Upcoming Tournaments</h2>
       <div className="cards">
-        {tournaments.map((t, i) => (
+        {tournaments.map((t) => (
           <div className="card" key={t.id}>
             <div className="card-image-container">
               <img src={t.img} alt={t.title} className="card-image" />
@@ -52,7 +51,7 @@ const UpcomingTournaments = () => {
               </div>
             </div>
             <div className="tag">
-              Minor Tournament #2 <div className="dot" />
+              {t.tag} <div className="dot" />
             </div>
             <div className="title">{t.title}</div>
             <hr className="card-separator" />

@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -18,8 +18,9 @@ import {
 import { useSidebar } from '../../../context/SidebarContext';
 import { useAuth } from '../../../context/AuthContext';
 import { useStats } from '../../../context/StatsContext';
+import { NavItem } from '../../../types';
 
-const NavLink = ({ item }: { item: any }) => {
+const NavLink = ({ item }: { item: NavItem }) => {
   const location = useLocation();
   const { isCollapsed } = useSidebar();
   const isActive = location.pathname === item.path;
@@ -30,20 +31,20 @@ const NavLink = ({ item }: { item: any }) => {
         whileHover={{ x: 5 }}
         whileTap={{ scale: 0.98 }}
         className={`flex items-center justify-between p-3 rounded-xl w-full transition-all duration-300 group ${
-          isActive 
-            ? 'bg-gradient-oxymore text-white shadow-oxymore' 
-            : 'text-[var(--text-secondary)] hover:bg-[var(--overlay-hover)]'
+          isActive
+            ? 'bg-gradient-oxymore text-white shadow-oxymore'
+            : 'text-[var(--text-secondary)] hover:bg-[var(--overlay-hover)] hover:shadow-md hover:shadow-black/5 dark:hover:shadow-white/5'
         }`}
       >
         <div className="flex items-center gap-3">
-          <item.icon className={`w-5 h-5 ${isActive ? 'text-white' : 'text-[var(--text-secondary)] group-hover:text-white'}`} />
+          <item.icon className={`w-5 h-5 ${isActive ? 'text-white' : 'text-[var(--text-secondary)] group-hover:text-[var(--text-primary)]'}`} />
           {!isCollapsed && (
-            <span className={`font-medium ${isActive ? 'text-white' : 'group-hover:text-white'}`}>
+            <span className={`font-medium ${isActive ? 'text-white' : 'group-hover:text-[var(--text-primary)]'}`}>
               {item.label}
             </span>
           )}
         </div>
-        
+
         {!isCollapsed && (
           <div className="flex items-center gap-2">
             {item.badge && (
@@ -54,7 +55,7 @@ const NavLink = ({ item }: { item: any }) => {
               </span>
             )}
             <ChevronRight className={`w-4 h-4 transition-transform ${
-              isActive ? 'rotate-90 text-white' : 'text-[var(--text-muted)] group-hover:translate-x-1'
+              isActive ? 'rotate-90 text-white' : 'text-[var(--text-muted)] group-hover:translate-x-1 group-hover:text-[var(--text-primary)]'
             }`} />
           </div>
         )}
@@ -171,9 +172,9 @@ const Sidebar = () => {
 
       {/* Settings & Logout - Fixed at bottom */}
       <div className="p-4 space-y-2 border-t border-[var(--border-color)]">
-        <NavLink item={{ 
-          label: 'Settings', 
-          icon: Settings, 
+        <NavLink item={{
+          label: 'Settings',
+          icon: Settings,
           path: '/settings',
           description: 'Manage your preferences'
         }} />
@@ -193,6 +194,5 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar; 
- 
- 
+export default Sidebar;
+

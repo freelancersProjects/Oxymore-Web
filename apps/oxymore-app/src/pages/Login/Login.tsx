@@ -19,7 +19,7 @@ const Login: React.FC = () => {
     password?: string;
     form?: string;
   }>({});
-  
+
   const [passwordVisible, setPasswordVisible] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -68,7 +68,7 @@ const Login: React.FC = () => {
           password: formData.password,
         });
 
-        login(response);
+        login({ user: response.user, token: response.token });
         navigate('/');
       } catch (error) {
         setErrors({ form: 'Invalid credentials or server error.' });

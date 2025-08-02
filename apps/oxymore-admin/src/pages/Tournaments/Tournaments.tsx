@@ -7,14 +7,13 @@ import {
   Trash,
   ArrowUpRight,
   ArrowDownRight,
-  History,
+  History as HistoryIcon,
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { CustomCheckbox } from '../../components/CustomCheckbox/CustomCheckbox';
 import { apiService } from '../../api/apiService';
 import { Tournament } from '../../types/tournament';
 import { format } from 'date-fns';
-import { fr } from 'date-fns/locale';
 import Loader from '../../components/Loader/Loader';
 
 const Tournaments = () => {
@@ -87,7 +86,7 @@ const Tournaments = () => {
       const newSelection = prev.includes(tournamentId)
         ? prev.filter(id => id !== tournamentId)
         : [...prev, tournamentId];
-      
+
       setSelectAll(newSelection.length === tournaments.length);
       return newSelection;
     });
@@ -212,8 +211,8 @@ const Tournaments = () => {
               {tournaments.map((tournament) => {
                 const status = calculateStatus(tournament.start_date, tournament.end_date);
                 return (
-                  <tr 
-                    key={tournament.id_tournament} 
+                  <tr
+                    key={tournament.id_tournament}
                     className="border-b border-[var(--border-color)] hover:bg-[var(--overlay-hover)] cursor-pointer"
                     onClick={() => navigate(`/tournaments/${tournament.id_tournament}`)}
                   >
@@ -251,7 +250,7 @@ const Tournaments = () => {
                         <Edit className="w-4 h-4 text-secondary" />
                       </button>
                         <button className="p-2 hover-overlay rounded-lg">
-                          <History className="w-4 h-4 text-secondary" />
+                          <HistoryIcon className="w-4 h-4 text-secondary" />
                         </button>
                       <button className="p-2 hover-overlay rounded-lg">
                         <Trash className="w-4 h-4 text-red-400" />
@@ -269,6 +268,5 @@ const Tournaments = () => {
   );
 };
 
-export default Tournaments; 
- 
- 
+export default Tournaments;
+

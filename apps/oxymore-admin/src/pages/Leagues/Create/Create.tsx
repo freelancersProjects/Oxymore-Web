@@ -3,23 +3,11 @@ import { useNavigate, Link } from 'react-router-dom';
 import { ArrowLeft, Trophy, Upload } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { apiService } from '../../../api/apiService';
-import { Badge } from '../../../types/badge';
-
-interface LeagueFormData {
-  league_name: string;
-  max_teams?: number;
-  start_date?: string;
-  end_date?: string;
-  promotion_slots?: number;
-  relegation_slots?: number;
-  image_url?: string;
-  entry_type?: string; // 'tournament' | 'promotion'
-  id_badge_champion?: string;
-}
+import { Badge, LeagueFormData } from '../../../types';
 
 const Create = () => {
   const navigate = useNavigate();
-  const { register, handleSubmit, formState: { errors }, setValue, watch } = useForm<LeagueFormData>();
+  const { register, handleSubmit, formState: { errors } } = useForm<LeagueFormData>();
   const [badges, setBadges] = useState<Badge[]>([]);
   const [loading, setLoading] = useState(false);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);

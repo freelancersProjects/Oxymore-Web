@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Bell, 
+import {
+  Bell,
   Search,
   Plus,
   Trophy,
@@ -13,11 +13,7 @@ import {
   User
 } from 'lucide-react';
 
-interface HeaderProps {
-  sidebarOpen: boolean;
-}
-
-const Header = ({ sidebarOpen }: HeaderProps) => {
+const Header = () => {
   const [showNotifs, setShowNotifs] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
   const [showActions, setShowActions] = useState(false);
@@ -72,7 +68,7 @@ const Header = ({ sidebarOpen }: HeaderProps) => {
                   className="absolute right-0 mt-2 w-56 bg-oxymore-dark-secondary border border-white/10 rounded-xl shadow-oxymore overflow-hidden"
                 >
                   <div className="p-2">
-                    {quickActions.map((action, i) => (
+                    {quickActions.map((action) => (
                       <motion.button
                         key={action.label}
                         whileHover={{ x: 5 }}
@@ -201,6 +197,5 @@ const Header = ({ sidebarOpen }: HeaderProps) => {
   );
 };
 
-export default Header; 
- 
- 
+export default Header;
+

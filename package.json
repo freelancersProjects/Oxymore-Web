@@ -12,7 +12,12 @@
     "dev:admin": "npm run dev --workspace=oxymore-admin",
     "build": "npm run build --workspace=@oxymore/ui",
     "build:site": "npm run build --workspace=oxymore-site",
-    "build:app": "npm run build --workspace=oxymore-app"
+    "build:app": "npm run build --workspace=oxymore-app",
+    "build:admin": "npm run build --workspace=oxymore-admin",
+    "lint:site": "npm run lint --workspace=oxymore-site",
+    "lint:app": "npm run lint --workspace=oxymore-app",
+    "lint:back": "npm run lint --prefix back",
+    "lint:admin": "npm run lint --workspace=oxymore-admin"
   },
   "devDependencies": {
     "@types/express": "^5.0.3",

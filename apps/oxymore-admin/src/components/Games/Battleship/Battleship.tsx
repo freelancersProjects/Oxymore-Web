@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, RotateCcw, Trophy, Target, Waves } from 'lucide-react';
 
@@ -6,14 +6,20 @@ interface BattleshipProps {
   onClose: () => void;
 }
 
-type Cell = {
+interface Cell {
   isShip: boolean;
   isHit: boolean;
   isRevealed: boolean;
-};
+}
 
-type Board = Cell[][];
-type ShipPlacement = { x: number; y: number; length: number; isVertical: boolean; };
+interface Board extends Array<Array<Cell>> {}
+
+interface ShipPlacement {
+  x: number;
+  y: number;
+  length: number;
+  isVertical: boolean;
+}
 
 const BOARD_SIZE = 10;
 const SHIPS = [
@@ -24,8 +30,8 @@ const SHIPS = [
   { name: 'Torpilleur', length: 2, image: 'https://i.imgur.com/2qWSHHX.png' }
 ];
 
-const createEmptyBoard = (): Board => 
-  Array(BOARD_SIZE).fill(null).map(() => 
+const createEmptyBoard = (): Board =>
+  Array(BOARD_SIZE).fill(null).map(() =>
     Array(BOARD_SIZE).fill(null).map(() => ({
       isShip: false,
       isHit: false,
@@ -76,14 +82,14 @@ const canPlaceShip = (board: Board, ship: ShipPlacement): boolean => {
 
 const generateRandomBoard = (): Board => {
   let board = createEmptyBoard();
-  
+
   for (const ship of SHIPS) {
     let placed = false;
     while (!placed) {
       const isVertical = Math.random() < 0.5;
       const x = Math.floor(Math.random() * (BOARD_SIZE - (isVertical ? 1 : ship.length)));
       const y = Math.floor(Math.random() * (BOARD_SIZE - (isVertical ? ship.length : 1)));
-      
+
       const placement = { x, y, length: ship.length, isVertical };
       if (canPlaceShip(board, placement)) {
         board = placeShip(board, placement);
@@ -91,7 +97,7 @@ const generateRandomBoard = (): Board => {
       }
     }
   }
-  
+
   return board;
 };
 
@@ -140,7 +146,7 @@ const Battleship: React.FC<BattleshipProps> = ({ onClose }) => {
       className="fixed inset-0 z-[9999] bg-black/95 backdrop-blur-[30px]"
     >
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(120,0,255,0.15),rgba(0,0,0,0))]" />
-      
+
       <div className="relative h-full flex flex-col items-center justify-center p-8">
         {/* Header */}
         <div className="text-center mb-8">
@@ -165,9 +171,9 @@ const Battleship: React.FC<BattleshipProps> = ({ onClose }) => {
                 <motion.button
                   key={`${x}-${y}`}
                   className={`w-12 h-12 rounded-lg relative overflow-hidden
-                    ${cell.isRevealed 
-                      ? cell.isHit 
-                        ? 'bg-red-500/20' 
+                    ${cell.isRevealed
+                      ? cell.isHit
+                        ? 'bg-red-500/20'
                         : 'bg-blue-500/20'
                       : 'bg-[var(--overlay-hover)] hover:bg-[var(--overlay-active)]'
                     } transition-colors`}
@@ -207,12 +213,12 @@ const Battleship: React.FC<BattleshipProps> = ({ onClose }) => {
         {/* Ships */}
         <div className="mt-8 flex flex-wrap justify-center gap-4">
           {SHIPS.map((ship, index) => (
-            <div 
+            <div
               key={index}
               className="bg-[var(--card-background)] p-4 rounded-xl border border-[var(--border-color)]"
             >
-              <img 
-                src={ship.image} 
+              <img
+                src={ship.image}
                 alt={ship.name}
                 className="w-24 h-12 object-contain mb-2"
               />
@@ -244,7 +250,7 @@ const Battleship: React.FC<BattleshipProps> = ({ onClose }) => {
         <div className="mt-8 flex items-center gap-4">
           <button
             onClick={resetGame}
-            className="px-6 py-3 rounded-xl bg-[var(--overlay-hover)] hover:bg-[var(--overlay-active)] 
+            className="px-6 py-3 rounded-xl bg-[var(--overlay-hover)] hover:bg-[var(--overlay-active)]
               text-[var(--text-primary)] flex items-center gap-2 transition-colors"
           >
             <RotateCcw className="w-5 h-5" />
@@ -252,7 +258,7 @@ const Battleship: React.FC<BattleshipProps> = ({ onClose }) => {
           </button>
           <button
             onClick={onClose}
-            className="px-6 py-3 rounded-xl bg-[var(--overlay-hover)] hover:bg-[var(--overlay-active)] 
+            className="px-6 py-3 rounded-xl bg-[var(--overlay-hover)] hover:bg-[var(--overlay-active)]
               text-[var(--text-primary)] flex items-center gap-2 transition-colors"
           >
             <X className="w-5 h-5" />
@@ -264,4 +270,4 @@ const Battleship: React.FC<BattleshipProps> = ({ onClose }) => {
   );
 };
 
-export default Battleship; 
+export default Battleship;

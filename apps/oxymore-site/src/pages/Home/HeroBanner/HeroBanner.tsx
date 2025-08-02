@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { OXMButton, OXMPlayer } from "@oxymore/ui";
 import { useLanguage } from "../../../context/LanguageContext";
 import "./HeroBanner.scss";

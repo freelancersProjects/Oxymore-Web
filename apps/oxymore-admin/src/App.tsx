@@ -1,6 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
 import { SidebarProvider } from './context/SidebarContext';
@@ -11,7 +10,7 @@ import { UserProvider } from './context/UserContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import Layout from './components/Layout/Layout';
 import LiveMatch from './components/LiveMatch/LiveMatch';
-import MapPicker from './components/MapPicker/MapPicker';
+import GameMapPicker from './components/MapPicker/MapPicker';
 import GameSelector from './components/GameSelector/GameSelector';
 import Login from './pages/Auth/Login';
 import Dashboard from './pages/Dashboard/Dashboard';
@@ -81,9 +80,8 @@ const App = () => {
                             <Route path="settings" element={<Settings />} />
                           </Route>
                         </Routes>
-                        <Toaster position="top-right" />
                         <LiveMatch />
-                        <MapPicker />
+                        <GameMapPicker />
                         <GameSelector />
                       </div>
                     </AuthProvider>

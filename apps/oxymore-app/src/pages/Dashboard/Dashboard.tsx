@@ -1,4 +1,4 @@
-import React from 'react'
+
 import News from './News/News'
 import UpcomingTournaments from './UpcomingTournaments/UpcomingTournaments'
 import './Dashboard.scss'

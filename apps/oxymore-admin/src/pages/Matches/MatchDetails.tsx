@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
   ArrowLeft,
@@ -10,11 +10,8 @@ import {
   Clock,
   MessageSquare,
   Send,
-  Users,
   Settings,
   Ban,
-  Crown,
-  Star,
   GitBranch,
   LayoutGrid
 } from 'lucide-react';
@@ -63,28 +60,28 @@ const mockMatch = {
               id: '1',
               team1: { name: 'Team Liquid', score: 1 },
               team2: { name: 'Fnatic', score: 0 },
-              status: 'live',
+              status: 'live' as 'live',
               date: '2024-02-20T15:00:00'
             },
             {
               id: '2',
               team1: { name: 'NAVI', score: 0 },
               team2: { name: 'Vitality', score: 0 },
-              status: 'upcoming',
+              status: 'upcoming' as 'upcoming',
               date: '2024-02-20T18:00:00'
             },
             {
               id: '3',
               team1: { name: 'FaZe', score: 2 },
               team2: { name: 'G2', score: 1 },
-              status: 'completed',
+              status: 'completed' as 'completed',
               date: '2024-02-20T12:00:00'
             },
             {
               id: '4',
               team1: { name: 'Cloud9', score: 0 },
               team2: { name: 'NiP', score: 2 },
-              status: 'completed',
+              status: 'completed' as 'completed',
               date: '2024-02-20T09:00:00'
             }
           ]
@@ -96,14 +93,14 @@ const mockMatch = {
               id: '5',
               team1: { name: 'TBD', score: 0 },
               team2: { name: 'TBD', score: 0 },
-              status: 'upcoming',
+              status: 'upcoming' as 'upcoming',
               date: '2024-02-21T15:00:00'
             },
             {
               id: '6',
               team1: { name: 'TBD', score: 0 },
               team2: { name: 'TBD', score: 0 },
-              status: 'upcoming',
+              status: 'upcoming' as 'upcoming',
               date: '2024-02-21T18:00:00'
             }
           ]
@@ -115,7 +112,7 @@ const mockMatch = {
               id: '7',
               team1: { name: 'TBD', score: 0 },
               team2: { name: 'TBD', score: 0 },
-              status: 'upcoming',
+              status: 'upcoming' as 'upcoming',
               date: '2024-02-22T18:00:00'
             }
           ]
@@ -153,7 +150,7 @@ const mockMatch = {
   is_streamed: true,
   match_date: '2024-02-20T15:00:00',
   maps: [
-    { 
+    {
       name: 'Inferno',
       status: 'completed',
       winner: 'Team Liquid',
@@ -163,7 +160,7 @@ const mockMatch = {
         team2: { rounds_won: 14, rounds_lost: 16, t_rounds: 6, ct_rounds: 8 }
       }
     },
-    { 
+    {
       name: 'Mirage',
       status: 'live',
       score: '12-10',
@@ -177,7 +174,7 @@ const mockMatch = {
   room: {
     id: '1',
     name: 'Room #1',
-    status: 'active',
+    status: 'live',
     chat: [
       { id: '1', user: 'Admin', message: 'Match is starting in 5 minutes', time: '15:55' },
       { id: '2', user: 'Team Liquid', message: 'We are ready', time: '15:56' },
@@ -187,7 +184,7 @@ const mockMatch = {
   }
 };
 
-const BracketMatch: React.FC<BracketMatchProps> = ({ match, isCurrentMatch = false }) => (
+const BracketMatchComponent: React.FC<BracketMatchProps> = ({ match, isCurrentMatch = false }) => (
   <div
     className={`p-4 rounded-xl border transition-all ${
       isCurrentMatch
@@ -217,9 +214,9 @@ const BracketMatch: React.FC<BracketMatchProps> = ({ match, isCurrentMatch = fal
         {new Date(match.date).toLocaleTimeString()}
       </span>
       <span className={`ml-auto text-xs font-medium ${
-        match.status === 'live' 
-          ? 'text-green-500' 
-          : match.status === 'completed' 
+        match.status === 'live'
+          ? 'text-green-500'
+          : match.status === 'completed'
           ? 'text-[var(--text-secondary)]'
           : 'text-blue-500'
       }`}>
@@ -283,9 +280,9 @@ const TreeBracket: React.FC<BracketProps> = ({ rounds, currentMatchId }) => (
                     {match.date.split('T')[1].substring(0, 5)}
                   </span>
                   <span className={`ml-auto text-sm font-medium ${
-                    match.status === 'live' 
-                      ? 'text-green-500' 
-                      : match.status === 'completed' 
+                    match.status === 'live'
+                      ? 'text-green-500'
+                      : match.status === 'completed'
                       ? 'text-[var(--text-secondary)]'
                       : 'text-blue-500'
                   }`}>
@@ -323,9 +320,9 @@ const TreeBracket: React.FC<BracketProps> = ({ rounds, currentMatchId }) => (
                     {match.date.split('T')[1].substring(0, 5)}
                   </span>
                   <span className={`ml-auto text-sm font-medium ${
-                    match.status === 'live' 
-                      ? 'text-green-500' 
-                      : match.status === 'completed' 
+                    match.status === 'live'
+                      ? 'text-green-500'
+                      : match.status === 'completed'
                       ? 'text-[var(--text-secondary)]'
                       : 'text-blue-500'
                   }`}>
@@ -363,9 +360,9 @@ const TreeBracket: React.FC<BracketProps> = ({ rounds, currentMatchId }) => (
                     {match.date.split('T')[1].substring(0, 5)}
                   </span>
                   <span className={`ml-auto text-sm font-medium ${
-                    match.status === 'live' 
-                      ? 'text-green-500' 
-                      : match.status === 'completed' 
+                    match.status === 'live'
+                      ? 'text-green-500'
+                      : match.status === 'completed'
                       ? 'text-[var(--text-secondary)]'
                       : 'text-blue-500'
                   }`}>
@@ -391,7 +388,7 @@ const CardBracket: React.FC<BracketProps> = ({ rounds, currentMatchId }) => (
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {round.matches.map((match) => (
-            <BracketMatch
+            <BracketMatchComponent
               key={match.id}
               match={match}
               isCurrentMatch={match.id === currentMatchId}
@@ -403,8 +400,7 @@ const CardBracket: React.FC<BracketProps> = ({ rounds, currentMatchId }) => (
   </div>
 );
 
-const MatchDetails = () => {
-  const { id } = useParams();
+const MatchDetails = (): React.JSX.Element => {
   const navigate = useNavigate();
   const [newMessage, setNewMessage] = useState('');
   const [bracketView, setBracketView] = useState('tree'); // 'tree' ou 'cards'
@@ -754,4 +750,4 @@ const MatchDetails = () => {
   );
 };
 
-export default MatchDetails; 
+export default MatchDetails;

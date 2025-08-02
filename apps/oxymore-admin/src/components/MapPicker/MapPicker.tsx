@@ -3,9 +3,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, Crown } from 'lucide-react';
 import { useMapPicker } from '../../context/MapPickerContext';
 import MatchSummary from './MatchSummary';
-import { Map, MapStatus } from './types';
+import { GameMap, MapStatus } from './types';
 
-const initialMaps: Map[] = [
+const initialMaps: GameMap[] = [
   {
     id: 'ancient',
     name: 'Ancient',
@@ -62,9 +62,9 @@ const phaseSequence: Phase[] = [
   'decider'      // Last map is decider
 ];
 
-const MapPicker = () => {
+const GameMapPicker = (): React.JSX.Element => {
   const { isOpen, closeMapPicker } = useMapPicker();
-  const [maps, setMaps] = useState<Map[]>(initialMaps);
+  const [maps, setMaps] = useState<GameMap[]>(initialMaps);
   const [currentPhase, setCurrentPhase] = useState<number>(0);
   const [selectedMap, setSelectedMap] = useState<string | null>(null);
   const [hoveredMap, setHoveredMap] = useState<string | null>(null);
@@ -73,12 +73,12 @@ const MapPicker = () => {
   const phase = currentPhase < phaseSequence.length ? phaseSequence[currentPhase] : 'finished';
   const isTeam1Turn = phase.startsWith('team1_');
 
-  const handleMapClick = (mapId: string) => {
+  const handleMapClick = (mapId: string): void => {
     if (phase === 'finished' || maps.find(m => m.id === mapId)?.status !== 'available') return;
 
-    const newMaps = maps.map(map => {
+    const newMaps = maps.map((map): GameMap => {
       if (map.id === mapId) {
-        const status: MapStatus = phase === 'decider' ? 'decider' 
+        const status: MapStatus = phase === 'decider' ? 'decider'
           : phase.includes('pick') ? (isTeam1Turn ? 'team1_picked' : 'team2_picked')
           : (isTeam1Turn ? 'team1_banned' : 'team2_banned');
         return { ...map, status };
@@ -97,43 +97,19 @@ const MapPicker = () => {
     }, 1000);
   };
 
-  const getPhaseText = () => {
-    if (phase === 'finished') return 'Pick/Ban Phase Complete';
-    const team = isTeam1Turn ? 'Team 1' : 'Team 2';
-    const action = phase.includes('pick') ? 'PICK' : 'BAN';
-    return `${team} - ${action} PHASE`;
-  };
-
-  const getMapStyle = (status: Map['status']) => {
-    switch (status) {
-      case 'team1_picked':
-        return 'border-blue-500 brightness-100 shadow-[0_0_30px_rgba(59,130,246,0.5)]';
-      case 'team2_picked':
-        return 'border-red-500 brightness-100 shadow-[0_0_30px_rgba(239,68,68,0.5)]';
-      case 'team1_banned':
-        return 'border-blue-500 brightness-50 grayscale';
-      case 'team2_banned':
-        return 'border-red-500 brightness-50 grayscale';
-      case 'decider':
-        return 'border-yellow-500 brightness-100 shadow-[0_0_30px_rgba(234,179,8,0.5)]';
-      default:
-        return 'border-[var(--border-color)] hover:border-oxymore-purple brightness-75 hover:brightness-100';
-    }
-  };
-
   return (
     <AnimatePresence>
       {isOpen && (
         <>
           {showSummary ? (
-            <MatchSummary 
-              maps={maps} 
+            <MatchSummary
+              maps={maps}
               onClose={() => {
                 setShowSummary(false);
                 closeMapPicker();
                 setMaps(initialMaps);
                 setCurrentPhase(0);
-              }} 
+              }}
             />
           ) : (
             <motion.div
@@ -145,10 +121,10 @@ const MapPicker = () => {
               {/* Background Effect */}
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(120,0,255,0.15),rgba(0,0,0,0))]" />
               <div className="absolute inset-0 bg-[url('/effects/noise.png')] opacity-[0.02] mix-blend-overlay" />
-              
+
               <div className="relative h-full flex flex-col items-center justify-center p-8 max-w-[2000px] mx-auto">
                 {/* Header */}
-                <motion.div 
+                <motion.div
                   initial={{ y: -50, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   className="text-center mb-12"
@@ -157,7 +133,7 @@ const MapPicker = () => {
                     Map Pick & Ban Phase
                   </h2>
                   <p className="text-2xl text-white/60">
-                    {phase === 'finished' ? 'All maps have been selected' : 
+                    {phase === 'finished' ? 'All maps have been selected' :
                      phase === 'decider' ? 'Decider Map' :
                      `${isTeam1Turn ? 'Team 1' : 'Team 2'}'s turn to ${phase.includes('pick') ? 'pick' : 'ban'}`}
                   </p>
@@ -169,13 +145,13 @@ const MapPicker = () => {
                     const isAvailable = map.status === 'available';
                     const isSelected = selectedMap === map.id;
                     const isHovered = hoveredMap === map.id;
-                    
+
                     return (
                       <motion.div
                         key={map.id}
                         initial={{ scale: 0.8, opacity: 0 }}
-                        animate={{ 
-                          scale: isSelected ? 1.1 : isHovered ? 1.05 : 1, 
+                        animate={{
+                          scale: isSelected ? 1.1 : isHovered ? 1.05 : 1,
                           opacity: isAvailable ? 1 : 0.5,
                           y: isSelected ? -20 : 0
                         }}
@@ -193,7 +169,7 @@ const MapPicker = () => {
                           alt={map.name}
                           className="absolute inset-0 w-full h-full object-cover"
                         />
-                        
+
                         {/* Overlay */}
                         <div className={`absolute inset-0 transition-colors duration-300
                           ${map.status === 'team1_picked' ? 'bg-gradient-to-t from-blue-500/90 via-blue-500/20 to-transparent' :
@@ -206,14 +182,14 @@ const MapPicker = () => {
 
                         {/* Map Info */}
                         <div className="absolute inset-x-0 bottom-0 p-6 flex flex-col items-start">
-                          <motion.h3 
+                          <motion.h3
                             initial={false}
                             animate={{ scale: isHovered ? 1.1 : 1, x: isHovered ? 10 : 0 }}
                             className="text-4xl font-bold text-white mb-3"
                           >
                             {map.name}
                           </motion.h3>
-                          
+
                           {map.status !== 'available' && (
                             <motion.div
                               initial={{ opacity: 0, x: -20 }}
@@ -251,7 +227,7 @@ const MapPicker = () => {
                             animate={{ scale: [1.5, 2], opacity: [0, 0.5, 0] }}
                             transition={{ duration: 0.8, times: [0, 0.5, 1] }}
                             className={`absolute inset-0 rounded-2xl
-                              ${phase.includes('pick') ? 
+                              ${phase.includes('pick') ?
                                 (isTeam1Turn ? 'border-4 border-blue-500' : 'border-4 border-red-500') :
                                 (isTeam1Turn ? 'border-4 border-blue-900' : 'border-4 border-red-900')}`}
                           />
@@ -270,7 +246,7 @@ const MapPicker = () => {
                     setMaps(initialMaps);
                     setCurrentPhase(0);
                   }}
-                  className="absolute top-8 right-8 w-12 h-12 rounded-xl bg-white/10 hover:bg-white/20 
+                  className="absolute top-8 right-8 w-12 h-12 rounded-xl bg-white/10 hover:bg-white/20
                     flex items-center justify-center transition-colors"
                 >
                   <X className="w-6 h-6 text-white" />
@@ -284,6 +260,5 @@ const MapPicker = () => {
   );
 };
 
-export default MapPicker; 
- 
- 
+export default GameMapPicker;
+

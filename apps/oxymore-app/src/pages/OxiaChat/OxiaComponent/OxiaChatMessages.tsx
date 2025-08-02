@@ -1,4 +1,4 @@
-import React, { type RefObject } from 'react';
+import React from 'react';
 import LogoOxia from '../../../assets/images/Oxia.png';
 
 interface Message {
