@@ -1,15 +1,30 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Trophy, Upload } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { apiService } from '../../../api/apiService';
-import { Badge, LeagueFormData } from '../../../types';
+import { League } from '../../../types/league';
+import { Badge } from '../../../types/badge';
 
-const Create = () => {
+interface LeagueFormData {
+  league_name: string;
+  max_teams?: number;
+  start_date?: string;
+  end_date?: string;
+  promotion_slots?: number;
+  relegation_slots?: number;
+  image_url?: string;
+  entry_type?: string; // 'inscription' | 'promotion'
+  id_badge_champion?: string;
+}
+
+const Edit = () => {
   const navigate = useNavigate();
-  const { register, handleSubmit, formState: { errors } } = useForm<LeagueFormData>();
+  const { id } = useParams<{ id: string }>();
+  const { register, handleSubmit, formState: { errors }, setValue, watch } = useForm<LeagueFormData>();
   const [badges, setBadges] = useState<Badge[]>([]);
   const [loading, setLoading] = useState(false);
+  const [initialLoading, setInitialLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
@@ -26,6 +41,36 @@ const Create = () => {
 
     fetchBadges();
   }, []);
+
+  // Récupérer la league
+  useEffect(() => {
+    if (id) {
+      fetchLeague();
+    }
+  }, [id]);
+
+    const fetchLeague = async () => {
+    try {
+      setInitialLoading(true);
+      const league = await apiService.get<League>(`/leagues/${id}`);
+
+      // Pré-remplir le formulaire
+      setValue('league_name', league.league_name || '');
+      setValue('max_teams', league.max_teams || 0);
+      setValue('start_date', league.start_date ? new Date(league.start_date).toISOString().slice(0, 16) : '');
+      setValue('end_date', league.end_date ? new Date(league.end_date).toISOString().slice(0, 16) : '');
+      setValue('promotion_slots', league.promotion_slots || 0);
+      setValue('relegation_slots', league.relegation_slots || 0);
+      setValue('entry_type', league.entry_type || 'inscription');
+      setValue('image_url', league.image_url || '');
+      setValue('id_badge_champion', league.id_badge_champion || '');
+    } catch (error) {
+      console.error('Error fetching league:', error);
+      // Ne pas rediriger automatiquement, laisser l'utilisateur décider
+    } finally {
+      setInitialLoading(false);
+    }
+  };
 
   // Gérer la sélection d'image
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -58,18 +103,54 @@ const Create = () => {
         }
       }
 
-      // Créer la ligue avec l'URL de l'image
-      await apiService.post('/leagues', {
+      // Mettre à jour la ligue avec l'URL de l'image
+      await apiService.put(`/leagues/${id}`, {
         ...data,
         image_url: imageUrl
       });
       navigate('/leagues');
     } catch (error) {
-      console.error('Error creating league:', error);
+      console.error('Error updating league:', error);
     } finally {
       setLoading(false);
     }
   };
+
+  if (initialLoading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="w-8 h-8 border-4 border-oxymore-purple border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  }
+
+  // Si on a une erreur lors du chargement, afficher un message
+  if (!initialLoading && !watch('league_name')) {
+    return (
+      <div className="space-y-6">
+        <div className="flex items-center gap-4">
+          <Link
+            to="/leagues"
+            className="p-2 hover:bg-[var(--overlay-hover)] rounded-lg transition-colors"
+          >
+            <ArrowLeft className="w-5 h-5 text-[var(--text-primary)]" />
+          </Link>
+          <h1 className="text-2xl font-bold text-[var(--text-primary)]">Edit League</h1>
+        </div>
+        <div className="card-base p-6">
+          <div className="text-center">
+            <p className="text-[var(--text-secondary)] mb-4">Impossible de charger les données de la league</p>
+            <button
+              onClick={() => navigate('/leagues')}
+              className="button-secondary px-4 py-2 rounded-xl"
+            >
+              Retour aux leagues
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -82,7 +163,7 @@ const Create = () => {
           >
             <ArrowLeft className="w-5 h-5 text-[var(--text-primary)]" />
           </Link>
-          <h1 className="text-2xl font-bold text-[var(--text-primary)]">Create League</h1>
+          <h1 className="text-2xl font-bold text-[var(--text-primary)]">Edit League</h1>
         </div>
       </div>
 
@@ -111,8 +192,8 @@ const Create = () => {
                 id="entry_type"
                 className="input-base w-full"
               >
-                                 <option value="inscription">Inscription</option>
-                 <option value="promotion">Promotion</option>
+                <option value="inscription">Inscription</option>
+                <option value="promotion">Promotion</option>
               </select>
             </div>
 
@@ -261,12 +342,12 @@ const Create = () => {
             {loading ? (
               <>
                 <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                Creating...
+                Updating...
               </>
             ) : (
               <>
                 <Trophy className="w-5 h-5" />
-                Create League
+                Update League
               </>
             )}
           </button>
@@ -276,5 +357,4 @@ const Create = () => {
   );
 };
 
-export default Create;
-
+export default Edit;

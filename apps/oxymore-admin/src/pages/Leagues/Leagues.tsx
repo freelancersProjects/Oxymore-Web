@@ -17,7 +17,7 @@ import { League } from '../../types/league';
 
 const Leagues = () => {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState('active');
+  const [activeTab, setActiveTab] = useState('all');
   const [leagues, setLeagues] = useState<League[]>([]);
 
   useEffect(() => {
@@ -51,6 +51,8 @@ const Leagues = () => {
 
     return startDate && now < startDate;
   });
+
+  const allLeagues = leagues;
 
   const totalTeams = leagues.reduce((sum, league) => sum + (league.max_teams || 0), 0);
   const totalPrizePool = leagues.length * 5000; // Estimation pour l'exemple
@@ -148,6 +150,14 @@ const Leagues = () => {
           </div>
           <div className="flex gap-2">
             <button
+              onClick={() => setActiveTab('all')}
+              className={`px-4 py-2 rounded-xl transition-colors ${
+                activeTab === 'all' ? 'bg-oxymore-purple text-white' : 'button-secondary'
+              }`}
+            >
+              All
+            </button>
+            <button
               onClick={() => setActiveTab('active')}
               className={`px-4 py-2 rounded-xl transition-colors ${
                 activeTab === 'active' ? 'bg-oxymore-purple text-white' : 'button-secondary'
@@ -165,6 +175,94 @@ const Leagues = () => {
             </button>
           </div>
         </div>
+
+        {/* All Leagues */}
+        {activeTab === 'all' && (
+          <div className="space-y-4">
+            {allLeagues.map((league) => {
+              const now = new Date();
+              const startDate = league.start_date ? new Date(league.start_date) : null;
+              const endDate = league.end_date ? new Date(league.end_date) : null;
+
+              let statusText = 'UPCOMING';
+              let statusColor = 'bg-blue-500/10 text-blue-500';
+
+              if (startDate && now >= startDate) {
+                if (endDate && now > endDate) {
+                  statusText = 'ENDED';
+                  statusColor = 'bg-gray-500/10 text-gray-500';
+                } else {
+                  statusText = 'LIVE';
+                  statusColor = 'bg-green-500/10 text-green-500';
+                }
+              }
+
+              return (
+              <div
+                key={league.id_league}
+                onClick={() => navigate(`/leagues/${league.id_league}`)}
+                className="p-6 bg-[var(--card-background)] rounded-xl border border-[var(--border-color)] hover:border-oxymore-purple transition-colors cursor-pointer"
+              >
+                <div className="flex items-start gap-6">
+                  <div className="w-16 h-16 rounded-xl bg-gradient-oxymore flex items-center justify-center flex-shrink-0">
+                    <Trophy className="w-8 h-8 text-white" />
+                  </div>
+                  <div className="flex-1">
+                    <div className="flex items-start justify-between">
+                      <div>
+                        <h3 className="text-lg font-semibold text-[var(--text-primary)]">{league.league_name}</h3>
+                        <div className="flex items-center gap-4 mt-2">
+                          <div className="flex items-center gap-2">
+                            <Users className="w-4 h-4 text-[var(--text-secondary)]" />
+                            <span className="text-[var(--text-secondary)]">
+                              {league.max_teams || 0} teams max
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Trophy className="w-4 h-4 text-[var(--text-secondary)]" />
+                            <span className="text-[var(--text-secondary)]">Prize Pool</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Calendar className="w-4 h-4 text-[var(--text-secondary)]" />
+                            <span className="text-[var(--text-secondary)]">
+                              {league.end_date ? new Date(league.end_date).toLocaleDateString() : 'No end date'}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <div className={`px-3 py-1 ${statusColor} rounded-full text-sm font-medium`}>
+                          {statusText}
+                        </div>
+                        <ChevronRight className="w-5 h-5 text-[var(--text-secondary)]" />
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-3 gap-6 mt-6">
+                      <div className="p-4 rounded-xl bg-[var(--overlay-hover)]">
+                        <p className="text-[var(--text-secondary)] text-sm">Entry Type</p>
+                        <p className="text-[var(--text-primary)] font-medium mt-1 capitalize">{league.entry_type || 'N/A'}</p>
+                      </div>
+                      <div className="p-4 rounded-xl bg-[var(--overlay-hover)]">
+                        <p className="text-[var(--text-secondary)] text-sm">Start Date</p>
+                        <p className="text-[var(--text-primary)] font-medium mt-1">
+                          {league.start_date ? new Date(league.start_date).toLocaleDateString() : 'Not set'}
+                        </p>
+                      </div>
+                      <div className="p-4 rounded-xl bg-[var(--overlay-hover)]">
+                        <p className="text-[var(--text-secondary)] text-sm">Promotion/Relegation</p>
+                        <p className="text-[var(--text-primary)] font-medium mt-1">
+                          {league.promotion_slots || 0} up / {league.relegation_slots || 0} down
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
+            })}
+          </div>
+        )}
 
         {/* Active Leagues */}
         {activeTab === 'active' && (

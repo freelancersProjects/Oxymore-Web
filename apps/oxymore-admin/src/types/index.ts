@@ -8,6 +8,3 @@ export * from './badge';
 export * from './league';
 export * from './stats';
 export * from './match';
-
-
-

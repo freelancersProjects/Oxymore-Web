@@ -1,6 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
 import { SidebarProvider } from './context/SidebarContext';
@@ -24,6 +23,7 @@ import TeamDetails from './pages/Teams/TeamDetails';
 import Leagues from './pages/Leagues/Leagues';
 import LeagueDetails from './pages/Leagues/LeagueDetails';
 import CreateLeague from './pages/Leagues/Create/Create';
+import EditLeague from './pages/Leagues/Edit/Edit';
 import Matches from './pages/Matches/Matches';
 import MatchDetails from './pages/Matches/MatchDetails';
 import Badges from './pages/Badges/Badges';
@@ -34,11 +34,6 @@ import Analytics from './pages/Analytics/Analytics';
 import Activity from './pages/Activity/Activity';
 
 const queryClient = new QueryClient();
-
-const ToastWrapper = () => {
-  // @ts-expect-error - Ignore le problème de type avec react-hot-toast
-  return <Toaster position="top-right" />;
-};
 
 const App = () => {
   return (
@@ -72,8 +67,9 @@ const App = () => {
                             <Route path="teams" element={<Teams />} />
                             <Route path="teams/:id" element={<TeamDetails />} />
                             <Route path="leagues" element={<Leagues />} />
-                            <Route path="leagues/:id" element={<LeagueDetails />} />
                             <Route path="leagues/create" element={<CreateLeague />} />
+                            <Route path="leagues/:id/edit" element={<EditLeague />} />
+                            <Route path="leagues/:id" element={<LeagueDetails />} />
                             <Route path="matches" element={<Matches />} />
                             <Route path="matches/:id" element={<MatchDetails />} />
                             <Route path="badges" element={<Badges />} />
@@ -84,7 +80,6 @@ const App = () => {
                             <Route path="settings" element={<Settings />} />
                           </Route>
                         </Routes>
-                        <ToastWrapper />
                         <LiveMatch />
                         <GameMapPicker />
                         <GameSelector />
