@@ -140,14 +140,14 @@ const Tournaments = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-primary">Tournaments</h1>
           <p className="text-secondary mt-1">Manage and monitor tournaments</p>
         </div>
         <button
           onClick={() => navigate('/tournaments/create')}
-          className="button-primary px-4 py-2 rounded-xl flex items-center gap-2"
+          className="button-primary px-4 py-2 rounded-xl flex items-center gap-2 self-start sm:self-auto"
         >
           <Trophy className="w-5 h-5" />
           Create Tournament
