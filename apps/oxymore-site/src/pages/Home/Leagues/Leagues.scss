@@ -1,4 +1,4 @@
-@import "../../../styles/global.scss";
+@import "../../../styles/global";
 
 .leagues {
     text-align: center;
@@ -6,12 +6,14 @@
 
     h1 {
         @extend .orbitron;
+
         color: $color-white;
         margin: rem-calc(20) 0 rem-calc(10);
     }
 
     .subtitle {
         @extend .outfit;
+
         color: $color-white;
         opacity: 0.7;
         font-size: rem-calc(16);
@@ -27,6 +29,7 @@
 
         .tab {
             @extend .outfit;
+
             border: none;
             background: rgba($color-white, 0.04);
             color: $color-white;
@@ -35,8 +38,8 @@
             cursor: pointer;
             font-size: rem-calc(16);
             font-weight: 500;
-            letter-spacing: 0.5px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            letter-spacing: rem-calc(0.5);
+            box-shadow: 0 rem-calc(2) rem-calc(8) rgb(0 0 0 / 8%);
             margin: 0 rem-calc(4);
             transition: background 0.2s, color 0.2s, box-shadow 0.2s;
             outline: none;
@@ -45,13 +48,13 @@
             &:focus {
                 background: $color-purple;
                 color: $color-white;
-                box-shadow: 0 4px 16px rgba($color-purple, 0.18);
+                box-shadow: 0 rem-calc(4) rem-calc(16) rgba($color-purple, 0.18);
             }
 
             &.active {
                 background: $color-purple;
                 color: $color-white;
-                box-shadow: 0 4px 16px rgba($color-purple, 0.25);
+                box-shadow: 0 rem-calc(4) rem-calc(16) rgba($color-purple, 0.25);
             }
         }
     }
@@ -75,37 +78,44 @@
         margin-bottom: rem-calc(40);
         min-height: rem-calc(380);
 
-        @media (max-width: 900px) {
+        @media (width <= rem-calc(900)) {
             flex-direction: column;
             align-items: center;
             gap: rem-calc(20);
             min-height: unset;
+
             .team-card {
                 width: 92vw;
                 max-width: rem-calc(300);
                 margin: 0 auto;
-                padding: rem-calc(24) rem-calc(10) rem-calc(18) rem-calc(10);
+                padding: rem-calc(24) rem-calc(10) rem-calc(18);
+
                 img {
                     width: rem-calc(80);
                     height: rem-calc(80);
                     margin-bottom: rem-calc(12);
                 }
+
                 h3 {
                     font-size: rem-calc(18);
                     margin-bottom: rem-calc(8);
                 }
+
                 .score {
                     font-size: rem-calc(22);
                 }
+
                 .label {
                     font-size: rem-calc(12);
                 }
+
                 hr {
                     margin: rem-calc(10) 0 rem-calc(8);
                 }
+
                 &.first, &.second, &.third {
                     transform: none !important;
-                    box-shadow: 0 8px 32px 0 rgba($color-purple, 0.10);
+                    box-shadow: 0 rem-calc(8) rem-calc(32) 0 rgba($color-purple, 0.10);
                     margin-bottom: rem-calc(10);
                 }
             }
@@ -113,11 +123,11 @@
 
         .team-card {
             background: linear-gradient(135deg, rgba($color-white, 0.08) 0%, rgba($color-white, 0.02) 100%);
-            border: 1.5px solid rgba($color-white, 0.12);
+            border: rem-calc(1.5) solid rgba($color-white, 0.12);
             border-radius: rem-calc(32);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.25), 0 1.5px 0 rgba($color-purple, 0.15);
+            box-shadow: 0 rem-calc(8) rem-calc(32) 0 rgb(0 0 0 / 25%), 0 rem-calc(1.5) 0 rgba($color-purple, 0.15);
             backdrop-filter: blur(rem-calc(40));
-            padding: rem-calc(44) rem-calc(36) rem-calc(38) rem-calc(36);
+            padding: rem-calc(44) rem-calc(36) rem-calc(38);
             width: rem-calc(400);
             min-height: rem-calc(340);
             text-align: center;
@@ -132,28 +142,30 @@
                 width: rem-calc(130);
                 height: rem-calc(130);
                 margin-bottom: rem-calc(22);
-                filter: drop-shadow(0 4px 16px rgba($color-white, 0.15));
+                filter: drop-shadow(0 rem-calc(4) rem-calc(16) rgba($color-white, 0.15));
             }
 
             h3 {
                 @extend .orbitron;
+
                 font-size: rem-calc(26);
                 color: $color-white;
                 margin-bottom: rem-calc(12);
                 font-weight: 700;
-                letter-spacing: 0.5px;
+                letter-spacing: rem-calc(0.5);
             }
 
             hr {
                 width: 90%;
                 border: none;
-                border-top: 2px solid rgba($color-white, 0.16);
+                border-top: rem-calc(2) solid rgba($color-white, 0.16);
                 margin: rem-calc(18) 0 rem-calc(12);
                 align-self: center;
             }
 
             .label {
                 @extend .outfit;
+
                 font-size: rem-calc(14);
                 color: $color-blue;
                 display: block;
@@ -162,31 +174,32 @@
 
             .score {
                 @extend .orbitron;
+
                 font-size: rem-calc(32);
                 color: $color-white;
                 font-weight: 700;
-                letter-spacing: 1px;
+                letter-spacing: rem-calc(1);
                 margin-bottom: rem-calc(6);
             }
 
             &.first {
                 z-index: 2;
-                transform: translateY(-64px) scale(1.12);
-                box-shadow: 0 16px 48px 0 rgba($color-purple, 0.25), 0 2px 0 rgba($color-purple, 0.18);
-                border: 2.5px solid $color-purple;
+                transform: translateY(rem-calc(-64)) scale(1.12);
+                box-shadow: 0 rem-calc(16) rem-calc(48) 0 rgba($color-purple, 0.25), 0 rem-calc(2) 0 rgba($color-purple, 0.18);
+                border: rem-calc(2.5) solid $color-purple;
                 background: linear-gradient(135deg, rgba($color-purple, 0.18) 0%, rgba($color-white, 0.08) 100%);
             }
 
             &.second {
                 z-index: 1;
-                transform: translateY(24px) scale(0.98);
-                border: 1.5px solid rgba($color-white, 0.18);
+                transform: translateY(rem-calc(24)) scale(0.98);
+                border: rem-calc(1.5) solid rgba($color-white, 0.18);
             }
 
             &.third {
                 z-index: 1;
-                transform: translateY(32px) scale(0.98);
-                border: 1.5px solid rgba($color-white, 0.18);
+                transform: translateY(rem-calc(32)) scale(0.98);
+                border: rem-calc(1.5) solid rgba($color-white, 0.18);
             }
         }
     }

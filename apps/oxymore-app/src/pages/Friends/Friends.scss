@@ -1,4 +1,4 @@
-@import "../../styles/global.scss";
+@import "../../styles/global";
 
 .friends-container {
   position: relative;
@@ -16,18 +16,17 @@
 
   .header-content {
     .friends-title {
-      font-family: "Orbitron", sans-serif;
+      font-family: Orbitron, sans-serif;
       font-size: rem-calc(48);
       font-weight: 700;
       background: linear-gradient(135deg, $color-purple 0%, $color-blue 100%);
-      -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
       margin-bottom: rem-calc(8);
     }
 
     .friends-subtitle {
-      font-family: "Outfit", sans-serif;
+      font-family: Outfit, sans-serif;
       font-size: rem-calc(18);
       color: rgba($color-white, 0.7);
       margin: 0;
@@ -45,12 +44,12 @@
       .search-input {
         width: rem-calc(280);
         height: rem-calc(50);
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(255, 255, 255, 0.2);
+        background: rgb(255 255 255 / 5%);
+        border: 1px solid rgb(255 255 255 / 20%);
         border-radius: rem-calc(12);
         padding: rem-calc(15) rem-calc(45) rem-calc(15) rem-calc(20);
         color: $color-white;
-        font-family: "Outfit", sans-serif;
+        font-family: Outfit, sans-serif;
         font-size: rem-calc(16);
         transition: all 0.3s ease;
 
@@ -61,7 +60,7 @@
         &:focus {
           outline: none;
           border-color: $color-purple;
-          background: rgba(255, 255, 255, 0.08);
+          background: rgb(255 255 255 / 8%);
           box-shadow: 0 0 0 3px rgba($color-purple, 0.1);
         }
       }
@@ -90,8 +89,8 @@
 
   .stat-card {
     flex: 1;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgb(255 255 255 / 5%);
+    border: 1px solid rgb(255 255 255 / 10%);
     border-radius: rem-calc(16);
     padding: rem-calc(20);
     text-align: center;
@@ -99,13 +98,13 @@
     backdrop-filter: blur(10px);
 
     &:hover {
-      background: rgba(255, 255, 255, 0.08);
+      background: rgb(255 255 255 / 8%);
       border-color: rgba($color-purple, 0.3);
       transform: translateY(-2px);
     }
 
     .stat-number {
-      font-family: "Orbitron", sans-serif;
+      font-family: Orbitron, sans-serif;
       font-size: rem-calc(32);
       font-weight: 700;
       color: $color-purple;
@@ -113,7 +112,7 @@
     }
 
     .stat-label {
-      font-family: "Outfit", sans-serif;
+      font-family: Outfit, sans-serif;
       font-size: rem-calc(14);
       color: rgba($color-white, 0.7);
       text-transform: uppercase;
@@ -130,8 +129,8 @@
 }
 
 .friend-card {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgb(255 255 255 / 5%);
+  border: 1px solid rgb(255 255 255 / 10%);
   border-radius: rem-calc(20);
   padding: rem-calc(24);
   transition: all 0.3s ease;
@@ -152,10 +151,10 @@
   }
 
   &:hover {
-    background: rgba(255, 255, 255, 0.08);
+    background: rgb(255 255 255 / 8%);
     border-color: rgba($color-purple, 0.3);
     transform: translateY(-4px);
-    box-shadow: 0 rem-calc(20) rem-calc(40) rgba(0, 0, 0, 0.3);
+    box-shadow: 0 rem-calc(20) rem-calc(40) rgb(0 0 0 / 30%);
 
     &::before {
       opacity: 1;
@@ -182,7 +181,7 @@
       .avatar-icon {
         font-size: rem-calc(28) !important;
         color: $color-white !important;
-        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+        filter: drop-shadow(0 2px 4px rgb(0 0 0 / 30%));
       }
 
       .status-indicator {
@@ -193,7 +192,7 @@
         height: rem-calc(16);
         border-radius: 50%;
         border: 2px solid $color-background;
-        box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
+        box-shadow: 0 0 0 2px rgb(255 255 255 / 10%);
       }
     }
 
@@ -202,18 +201,18 @@
       min-width: 0;
 
       .friend-name {
-        font-family: "Orbitron", sans-serif;
+        font-family: Orbitron, sans-serif;
         font-size: rem-calc(18);
         font-weight: 600;
         color: $color-white;
-        margin: 0 0 rem-calc(4) 0;
+        margin: 0 0 rem-calc(4);
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
       }
 
       .friend-level {
-        font-family: "Outfit", sans-serif;
+        font-family: Outfit, sans-serif;
         font-size: rem-calc(14);
         color: rgba($color-white, 0.6);
         font-weight: 500;
@@ -234,13 +233,13 @@
     margin-bottom: rem-calc(20);
 
     .league-badge {
-      background: rgba(255, 255, 255, 0.05);
+      background: rgb(255 255 255 / 5%);
       border: 1px solid;
       border-radius: rem-calc(8);
       padding: rem-calc(6) rem-calc(12);
 
       .league-name {
-        font-family: "Orbitron", sans-serif;
+        font-family: Orbitron, sans-serif;
         font-size: rem-calc(12);
         font-weight: 600;
         text-transform: uppercase;
@@ -252,7 +251,7 @@
       text-align: right;
 
       .status-text {
-        font-family: "Outfit", sans-serif;
+        font-family: Outfit, sans-serif;
         font-size: rem-calc(14);
         font-weight: 600;
         display: block;
@@ -260,7 +259,7 @@
       }
 
       .last-seen {
-        font-family: "Outfit", sans-serif;
+        font-family: Outfit, sans-serif;
         font-size: rem-calc(12);
         color: rgba($color-white, 0.5);
       }
@@ -274,11 +273,11 @@
     .action-btn {
       flex: 1;
       height: rem-calc(40);
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgb(255 255 255 / 5%);
+      border: 1px solid rgb(255 255 255 / 20%);
       border-radius: rem-calc(8);
       color: $color-white;
-      font-family: "Outfit", sans-serif;
+      font-family: Outfit, sans-serif;
       font-size: rem-calc(14);
       font-weight: 500;
       cursor: pointer;
@@ -293,7 +292,7 @@
       }
 
       &:hover {
-        background: rgba(255, 255, 255, 0.1);
+        background: rgb(255 255 255 / 10%);
         border-color: rgba($color-purple, 0.5);
       }
 
@@ -314,8 +313,8 @@
 .empty-state {
   text-align: center;
   padding: rem-calc(80) rem-calc(20);
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgb(255 255 255 / 2%);
+  border: 1px solid rgb(255 255 255 / 5%);
   border-radius: rem-calc(20);
   backdrop-filter: blur(10px);
 
@@ -323,18 +322,18 @@
     font-size: rem-calc(64) !important;
     color: rgba($color-white, 0.3) !important;
     margin-bottom: rem-calc(20);
-    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+    filter: drop-shadow(0 4px 8px rgb(0 0 0 / 30%));
   }
 
   h3 {
-    font-family: "Orbitron", sans-serif;
+    font-family: Orbitron, sans-serif;
     font-size: rem-calc(24);
     color: $color-white;
     margin-bottom: rem-calc(12);
   }
 
   p {
-    font-family: "Outfit", sans-serif;
+    font-family: Outfit, sans-serif;
     font-size: rem-calc(16);
     color: rgba($color-white, 0.7);
     margin-bottom: rem-calc(30);
@@ -348,13 +347,14 @@
   0%, 100% {
     transform: scale(1);
   }
+
   50% {
     transform: scale(1.1);
   }
 }
 
 // Responsive design
-@media (max-width: 768px) {
+@media (width <= 768px) {
   .friends-container {
     padding: rem-calc(20);
   }
@@ -406,7 +406,6 @@
 .friends-title.white {
   color: $color-white !important;
   background: none !important;
-  -webkit-background-clip: unset !important;
   -webkit-text-fill-color: unset !important;
   background-clip: unset !important;
 }
@@ -429,6 +428,7 @@
     border-radius: 50%;
     transition: background 0.2s;
     margin-left: rem-calc(8);
+
     &:hover {
       background: rgba($color-purple, 0.08);
       color: $color-purple;
@@ -440,24 +440,27 @@
     align-items: center;
     gap: rem-calc(8);
     width: 100%;
+
     .search-input {
       width: rem-calc(280);
       height: rem-calc(50);
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgb(255 255 255 / 5%);
+      border: 1px solid rgb(255 255 255 / 20%);
       border-radius: rem-calc(12);
       padding: rem-calc(15) rem-calc(45) rem-calc(15) rem-calc(20);
       color: $color-white;
-      font-family: "Outfit", sans-serif;
+      font-family: Outfit, sans-serif;
       font-size: rem-calc(16);
       transition: all 0.3s ease;
+
       &::placeholder {
         color: rgba($color-white, 0.5);
       }
+
       &:focus {
         outline: none;
         border-color: $color-purple;
-        background: rgba(255, 255, 255, 0.08);
+        background: rgb(255 255 255 / 8%);
         box-shadow: 0 0 0 3px rgba($color-purple, 0.1);
       }
     }
@@ -465,55 +468,59 @@
 }
 
 .favorite-badge.favorite-gradient {
-  font-size: 32px !important;
+  font-size: rem-calc(32) !important;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+
   /* Dégradé violet/bleu */
-  background: linear-gradient(135deg, #500CAD 0%, #1593CE 100%);
-  -webkit-background-clip: text;
+  background: linear-gradient(135deg, $color-purple 0%, $color-blue 100%);
   -webkit-text-fill-color: transparent;
   background-clip: text;
   color: transparent !important;
-  filter: drop-shadow(0 2px 4px rgba(80, 12, 173, 0.3));
+  filter: drop-shadow(0 rem-calc(2) rem-calc(4) rgb(80 12 173 / 30%));
   transition: transform 0.18s cubic-bezier(0.4,1.4,0.6,1), filter 0.18s;
 }
+
 .favorite-badge.favorite-gradient.anim {
   transform: scale(1.25) rotate(-10deg);
-  filter: drop-shadow(0 4px 12px #500CAD99);
+  filter: drop-shadow(0 rem-calc(4) rem-calc(12) rgba($color-purple, 0.6));
 }
 
 .favorite-badge.favorite-gradient-svg {
-  font-size: 32px !important;
+  font-size: rem-calc(32) !important;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: transform 0.18s cubic-bezier(0.4,1.4,0.6,1), filter 0.18s;
 }
+
 .favorite-badge.favorite-gradient-svg.anim {
   transform: scale(1.25) rotate(-10deg);
-  filter: drop-shadow(0 4px 12px #500CAD99);
+  filter: drop-shadow(0 rem-calc(4) rem-calc(12) rgba($color-purple, 0.6));
 }
 
 .custom-search-icon {
-  font-size: 28px !important;
+  font-size: rem-calc(28) !important;
   transition: transform 0.22s cubic-bezier(0.4,1.4,0.6,1);
 }
+
 .custom-search-icon.anim {
   transform: scale(1.25) rotate(15deg);
 }
 
-@media (max-width: 600px) {
+@media (width <= 600px) {
   .stat-tooltip-content {
-    min-width: 140px;
+    min-width: rem-calc(140);
     max-width: 98vw;
-    font-size: 13px;
-    padding: 10px 6px 8px 10px;
+    font-size: rem-calc(13);
+    padding: rem-calc(10) rem-calc(6) rem-calc(8) rem-calc(10);
   }
+
   .stat-tooltip-table th, .stat-tooltip-table td {
-    font-size: 12px;
-    padding: 2px 4px;
+    font-size: rem-calc(12);
+    padding: rem-calc(2) rem-calc(4);
   }
 }

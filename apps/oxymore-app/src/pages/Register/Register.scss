@@ -1,4 +1,4 @@
-@import '../../styles/global.scss';
+@import '../../styles/global';
 
 .register-container {
   min-height: 100vh;
@@ -49,7 +49,7 @@
 .register-glow-orb-3 {
   width: rem-calc(200);
   height: rem-calc(200);
-  background: radial-gradient(circle, #ec4899 0%, transparent 70%);
+  background: radial-gradient(circle, $color-pink 0%, transparent 70%);
   bottom: 20%;
   left: 20%;
   animation-delay: 4s;
@@ -177,7 +177,7 @@
 
   &:hover {
   transform: translateY(-#{rem-calc(3)});
-  background-color: #9333ea;
+  background-color: $color-purple-9333ea;
   box-shadow: 0 rem-calc(12) rem-calc(28) rgba($color-purple-light, 0.3), 0 0 rem-calc(20) rgba($color-blue, 0.15);
   }
 
@@ -205,13 +205,13 @@
   transition: color 0.3s ease;
 
   &:hover {
-    color: #a855f7;
+    color: $color-purple-9333ea;
     text-decoration: underline;
   }
   }
 }
 
-@media (max-width: 480px) {
+@media (width <= 480px) {
   .register-card {
   padding: rem-calc(32) rem-calc(24);
   margin: rem-calc(16);
@@ -229,26 +229,26 @@
 
   input {
     width: 100%;
-    padding-right: 50px;
+    padding-right: rem-calc(50);
   }
 }
 
 .password-toggle-btn {
   position: absolute;
-  right: 15px;
+  right: rem-calc(15);
   top: 50%;
   transform: translateY(-50%);
   background: none;
   border: none;
   cursor: pointer;
-  color: #71717a;
+  color: $color-gray-71717a;
   display: flex;
   align-items: center;
   padding: 0;
-  font-size: 18px;
+  font-size: rem-calc(18);
 
   &:hover {
-    color: #a1a1aa;
+    color: $color-gray-a1a1aa;
   }
 
   &:focus {
@@ -257,7 +257,7 @@
 }
 
 .register-button {
-  background-color: #8b5cf6;
+  background-color: $color-purple-light;
   border: none;
   border-radius: rem-calc(12);
   padding: rem-calc(16);
@@ -272,7 +272,7 @@
 
   &:hover {
   transform: translateY(-#{rem-calc(3)});
-  background-color: #9333ea;
+  background-color: $color-purple-9333ea;
   box-shadow: 0 rem-calc(12) rem-calc(28) rgba($color-purple-light, 0.3), 0 0 rem-calc(20) rgba($color-blue, 0.15);
   }
 

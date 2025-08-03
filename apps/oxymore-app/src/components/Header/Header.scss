@@ -1,11 +1,10 @@
-@import '../../styles/global.scss';
+@import '../../styles/global';
 
 .oxm-header {
   position: fixed;
   top: 0;
   left: rem-calc(274);
   right: 0;
-  height: rem-calc(80);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -21,15 +20,15 @@
       width: rem-calc(300);
       padding: rem-calc(12) rem-calc(20);
       border-radius: rem-calc(12);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgb(255 255 255 / 20%);
+      background: rgb(255 255 255 / 5%);
       color: $color-white;
       font-size: rem-calc(16);
-      font-family: "Outfit", sans-serif;
+      font-family: Outfit, sans-serif;
       outline: none;
 
       &::placeholder {
-        color: rgba(255, 255, 255, 0.5);
+        color: rgb(255 255 255 / 50%);
       }
     }
   }
@@ -61,11 +60,11 @@
       width: rem-calc(54);
       border-radius: 50%;
       object-fit: cover;
-      box-shadow: 0 rem-calc(2) rem-calc(8) rgba(80, 12, 173, 0.1);
+      box-shadow: 0 rem-calc(2) rem-calc(8) rgb(80 12 173 / 10%);
       transition: box-shadow 0.2s ease-in-out;
 
       &:hover {
-        box-shadow: 0 0 0 rem-calc(3) rgba(80, 12, 173, 0.5);
+        box-shadow: 0 0 0 rem-calc(3) rgb(80 12 173 / 50%);
         cursor: pointer;
         transition: box-shadow 0.2s ease-in-out;
       }
@@ -83,7 +82,7 @@
   font-weight: 700;
   border-radius: rem-calc(15);
   padding: rem-calc(2) rem-calc(7);
-  box-shadow: 0 rem-calc(2) rem-calc(8) rgba(80, 12, 173, 0.10);
+  box-shadow: 0 rem-calc(2) rem-calc(8) rgb(80 12 173 / 10%);
   letter-spacing: 1px;
   z-index: 2;
   display: inline-block;
@@ -110,13 +109,14 @@
   transition: left 0.3s, width 0.3s;
 }
 
-@media (max-width: 700px) {
+@media (width <= 700px) {
   .oxm-header {
     width: 100vw !important;
     padding: 0 rem-calc(10);
     height: rem-calc(60);
     min-width: 0;
     .oxm-header__search { display: none !important; }
+
     .oxm-header__actions {
       gap: rem-calc(10);
       .avatar { width: rem-calc(38); }

@@ -72,7 +72,7 @@ const FriendsStatTooltip: React.FC<Props> = ({
                 <td>{f.level}</td>
                 <td>
                   <span
-                    className="league-badge-mini"
+                    className="league-badge-mini orbitron"
                     style={{ borderColor: f.leagueColor }}
                   >
                     {f.league}

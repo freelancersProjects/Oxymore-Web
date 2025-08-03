@@ -1,4 +1,4 @@
-@import "../../../styles/global.scss";
+@import "../../../styles/global";
 
 .stat-tooltip {
     position: fixed;
@@ -12,25 +12,25 @@
 }
 
 .stat-tooltip-content {
-    background: rgba(30, 20, 50, 0.98);
-    border: 1.5px solid rgba(80, 12, 173, 0.18);
+    background: rgb(30 20 50 / 98%);
+    border: 1.5px solid rgb(80 12 173 / 18%);
     border-radius: 14px;
-    box-shadow: 0 8px 32px rgba(80, 12, 173, 0.12), 0 2px 8px rgba(0, 0, 0, 0.18);
-    padding: 18px 22px 14px 22px;
-    min-width: 220px;
-    max-width: 320px;
+    box-shadow: 0 8px 32px rgb(80 12 173 / 12%), 0 2px 8px rgb(0 0 0 / 18%);
+    padding: rem-calc(18) rem-calc(22) rem-calc(14);
+    min-width: rem-calc(220);
+    max-width: rem-calc(320);
     color: $color-white;
-    font-family: "Outfit", sans-serif;
-    font-size: 15px;
+    font-family: Outfit, sans-serif;
+    font-size: rem-calc(15);
     pointer-events: auto;
     opacity: 0.98;
-    transform: translateY(-18px) scale(1.03);
+    transform: translateY(rem-calc(-18)) scale(1.03);
     animation: tooltip-pop-in 0.22s cubic-bezier(.4, 1.4, .6, 1);
 }
 
 .stat-tooltip-title {
-    font-family: "Orbitron", sans-serif;
-    font-size: 17px;
+    font-family: Orbitron, sans-serif;
+    font-size: rem-calc(17);
     font-weight: 700;
     color: $color-purple;
     margin-bottom: 10px;
@@ -44,9 +44,9 @@
 
     th,
     td {
-        padding: 4px 8px;
+        padding: rem-calc(4) rem-calc(8);
         text-align: left;
-        font-size: 14px;
+        font-size: rem-calc(14);
         border: none;
         background: none;
         color: $color-white;
@@ -55,7 +55,7 @@
     th {
         color: $color-blue;
         font-weight: 600;
-        font-size: 13px;
+        font-size: rem-calc(13);
         letter-spacing: 0.5px;
         border-bottom: 1px solid rgba($color-blue, 0.18);
     }
@@ -68,32 +68,31 @@
 .league-badge-mini {
     display: inline-block;
     border: 1.5px solid;
-    border-radius: 6px;
-    padding: 2px 7px;
-    font-size: 12px;
-    font-family: "Orbitron", sans-serif;
+    border-radius: rem-calc(6);
+    padding: rem-calc(2) rem-calc(7);
+    font-size: rem-calc(12);
     color: $color-white;
-    background: rgba(80, 12, 173, 0.08);
-    margin-right: 2px;
+    background: rgb(80 12 173 / 8%);
+    margin-right: rem-calc(2);
 }
 
 .status-dot {
     display: inline-block;
-    width: 10px;
-    height: 10px;
+    width: rem-calc(10);
+    height: rem-calc(10);
     border-radius: 50%;
     margin-right: 5px;
     vertical-align: middle;
-    box-shadow: 0 0 6px 1px rgba(80, 12, 173, 0.12);
+    box-shadow: 0 0 rem-calc(6) rem-calc(1) rgb(80 12 173 / 12%);
 }
 
 .stat-tooltip-arrow {
-    width: 18px;
-    height: 18px;
-    background: rgba(30, 20, 50, 0.98);
-    border-left: 1.5px solid rgba(80, 12, 173, 0.18);
-    border-bottom: 1.5px solid rgba(80, 12, 173, 0.18);
-    transform: rotate(45deg) translateY(-8px);
+    width: rem-calc(18);
+    height: rem-calc(18);
+    background: rgb(30 20 50 / 98%);
+    border-left: 1.5px solid rgb(80 12 173 / 18%);
+    border-bottom: 1.5px solid rgb(80 12 173 / 18%);
+    transform: rotate(45deg) translateY(rem-calc(-8));
     margin-top: -9px;
     z-index: 11;
     animation: arrow-pop-in 0.22s cubic-bezier(.4, 1.4, .6, 1);
@@ -112,23 +111,23 @@
 @keyframes tooltip-pop-in {
     from {
         opacity: 0;
-        transform: translateY(-30px) scale(0.95);
+    transform: translateY(rem-calc(-30)) scale(0.95);
     }
 
     to {
         opacity: 0.98;
-        transform: translateY(-18px) scale(1.03);
+    transform: translateY(rem-calc(-18)) scale(1.03);
     }
 }
 
 @keyframes arrow-pop-in {
     from {
         opacity: 0;
-        transform: rotate(45deg) translateY(-30px) scale(0.7);
+    transform: rotate(45deg) translateY(rem-calc(-30)) scale(0.7);
     }
 
     to {
         opacity: 1;
-        transform: rotate(45deg) translateY(-8px) scale(1);
+    transform: rotate(45deg) translateY(rem-calc(-8)) scale(1);
     }
 }

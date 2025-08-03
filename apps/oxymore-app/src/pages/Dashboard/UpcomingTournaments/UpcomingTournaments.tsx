@@ -39,7 +39,7 @@ const tournaments = [
 const UpcomingTournaments = () => {
   return (
     <section className="upcoming-tournaments">
-      <h2 className="section-title">Upcoming Tournaments</h2>
+      <h2 className="section-title orbitron">Upcoming Tournaments</h2>
       <div className="cards">
         {tournaments.map((t) => (
           <div className="card" key={t.id}>
@@ -53,9 +53,9 @@ const UpcomingTournaments = () => {
             <div className="tag">
               {t.tag} <div className="dot" />
             </div>
-            <div className="title">{t.title}</div>
+            <div className="title orbitron">{t.title}</div>
             <hr className="card-separator" />
-            <div className="meta">
+            <div className="meta outfit">
               <span>{t.date}</span>
               <span>{t.format}</span>
             </div>

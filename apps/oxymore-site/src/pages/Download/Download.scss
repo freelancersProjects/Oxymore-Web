@@ -1,8 +1,8 @@
-@import "../../styles/global.scss";
+@import "../../styles/global";
 
 .download-page {
   min-height: 100vh;
-  background: linear-gradient(180deg, #0A0A1B 0%, #1A1A3F 100%);
+  background: linear-gradient(180deg, #0a0a1b 0%, #1a1a3f 100%);
   color: white;
   overflow-x: hidden;
   position: relative;
@@ -25,49 +25,45 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 24px;
+  padding: 0 rem-calc(24);
   position: relative;
   z-index: 1;
 
   &::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: radial-gradient(circle at 50% 0%, rgba(123, 97, 255, 0.15) 0%, transparent 70%);
+    inset: 0;
+    background: radial-gradient(circle at 50% 0%, rgb(123 97 255 / 15%) 0%, transparent 70%);
     pointer-events: none;
   }
 }
 
 .hero-content {
-  max-width: 1400px;
+  max-width: rem-calc(1400);
   width: 100%;
   text-align: center;
-  padding: 0 24px;
+  padding: 0 rem-calc(24);
 
   h1 {
-    font-size: 96px;
+    font-size: rem-calc(96);
     font-weight: 700;
     line-height: 1;
     margin-bottom: 32px;
     font-family: 'Chakra Petch', sans-serif;
     letter-spacing: -0.02em;
-    
+
     .gradient-text {
-      background: linear-gradient(135deg, #7B61FF 0%, #9B61FF 100%);
-      -webkit-background-clip: text;
+      background: linear-gradient(135deg, #7b61ff 0%, #9b61ff 100%);
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
   }
 
   .hero-subtitle {
-    font-size: 24px;
-    color: rgba(255, 255, 255, 0.7);
-    max-width: 800px;
-    margin: 0 auto 64px;
+    font-size: rem-calc(24);
+    color: rgb(255 255 255 / 70%);
+    max-width: rem-calc(800);
+    margin: 0 auto rem-calc(64);
     line-height: 1.6;
   }
 }
@@ -75,35 +71,35 @@
 .platform-selector {
   display: flex;
   justify-content: center;
-  gap: 24px;
-  margin-bottom: 48px;
+  gap: rem-calc(24);
+  margin-bottom: rem-calc(48);
 
   .platform-button {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 16px;
-    padding: 24px 32px;
+    background: rgb(255 255 255 / 5%);
+    border: 1px solid rgb(255 255 255 / 10%);
+    border-radius: rem-calc(16);
+    padding: rem-calc(24) rem-calc(32);
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: rem-calc(16);
     cursor: pointer;
     transition: all 0.3s ease;
-    min-width: 200px;
+    min-width: rem-calc(200);
 
     &:hover {
-      background: rgba(123, 97, 255, 0.1);
+      background: rgb(123 97 255 / 10%);
       transform: translateY(-4px);
     }
 
     &.active {
-      background: rgba(123, 97, 255, 0.2);
-      border-color: rgba(123, 97, 255, 0.4);
-      box-shadow: 0 0 30px rgba(123, 97, 255, 0.2);
+      background: rgb(123 97 255 / 20%);
+      border-color: rgb(123 97 255 / 40%);
+      box-shadow: 0 0 30px rgb(123 97 255 / 20%);
     }
 
     img {
-      width: 32px;
-      height: 32px;
+      width: rem-calc(32);
+      height: rem-calc(32);
       filter: brightness(0) invert(1);
       opacity: 0.8;
     }
@@ -115,14 +111,14 @@
         display: block;
         color: white;
         font-weight: 500;
-        font-size: 18px;
-        margin-bottom: 4px;
+        font-size: rem-calc(18);
+        margin-bottom: rem-calc(4);
       }
 
       .platform-version {
         display: block;
-        color: rgba(255, 255, 255, 0.5);
-        font-size: 14px;
+        color: rgb(255 255 255 / 50%);
+        font-size: rem-calc(14);
       }
     }
   }
@@ -132,27 +128,24 @@
   display: inline-block;
 
   .oxm-button {
-    padding: 20px 40px !important;
-    font-size: 20px !important;
-    border-radius: 16px !important;
-    background: linear-gradient(135deg, #7B61FF 0%, #9B61FF 100%) !important;
+    padding: rem-calc(20) rem-calc(40) !important;
+    font-size: rem-calc(20) !important;
+    border-radius: rem-calc(16) !important;
+    background: linear-gradient(135deg, #7b61ff 0%, #9b61ff 100%) !important;
     border: none !important;
     display: inline-flex !important;
     align-items: center !important;
-    gap: 16px !important;
+    gap: rem-calc(16) !important;
     transition: all 0.3s ease !important;
     position: relative !important;
     overflow: hidden !important;
-    min-width: 300px !important;
+    min-width: rem-calc(300) !important;
 
     &::before {
       content: '';
       position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 100%);
+      inset: 0;
+      background: linear-gradient(135deg, rgb(255 255 255 / 10%) 0%, transparent 100%);
       opacity: 0;
       transition: opacity 0.3s ease;
     }
@@ -162,14 +155,14 @@
     }
 
     svg {
-      width: 24px;
-      height: 24px;
+      width: rem-calc(24);
+      height: rem-calc(24);
     }
   }
 }
 
 .features-section {
-  padding: 120px 24px;
+  padding: rem-calc(120) rem-calc(24);
   position: relative;
   z-index: 1;
   display: flex;
@@ -179,68 +172,68 @@
 .features-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 32px;
-  max-width: 1400px;
+  gap: rem-calc(32);
+  max-width: rem-calc(1400);
   margin: 0 auto;
   width: 100%;
 }
 
 .feature-card {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 24px;
-  padding: 48px;
+  background: rgb(255 255 255 / 3%);
+  border: 1px solid rgb(255 255 255 / 10%);
+  border-radius: rem-calc(24);
+  padding: rem-calc(48);
   transition: all 0.3s ease;
   height: 100%;
 
   &:hover {
-    transform: translateY(-8px);
-    background: rgba(123, 97, 255, 0.05);
-    border-color: rgba(123, 97, 255, 0.4);
-    box-shadow: 0 0 30px rgba(123, 97, 255, 0.1);
+    transform: translateY(rem-calc(-8));
+    background: rgb(123 97 255 / 5%);
+    border-color: rgb(123 97 255 / 40%);
+    box-shadow: 0 0 rem-calc(30) rgb(123 97 255 / 10%);
 
     .feature-icon {
-      background: rgba(123, 97, 255, 0.2);
+      background: rgb(123 97 255 / 20%);
       transform: scale(1.1);
     }
   }
 
   .feature-icon {
-    width: 80px;
-    height: 80px;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 20px;
+    width: rem-calc(80);
+    height: rem-calc(80);
+    background: rgb(255 255 255 / 5%);
+    border-radius: rem-calc(20);
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 32px;
+    margin-bottom: rem-calc(32);
     transition: all 0.3s ease;
 
     svg {
-      width: 40px;
-      height: 40px;
-      color: rgba(255, 255, 255, 0.9);
+      width: rem-calc(40);
+      height: rem-calc(40);
+      color: rgb(255 255 255 / 90%);
     }
   }
 
   h3 {
-    font-size: 28px;
+    font-size: rem-calc(28);
     font-weight: 600;
-    margin-bottom: 24px;
+    margin-bottom: rem-calc(24);
     color: white;
   }
 
   p {
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 18px;
+    color: rgb(255 255 255 / 70%);
+    font-size: rem-calc(18);
     line-height: 1.6;
   }
 }
 
 .download-progress {
   position: relative;
-  width: 24px;
-  height: 24px;
+  width: rem-calc(24);
+  height: rem-calc(24);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -248,41 +241,41 @@
   svg {
     position: absolute;
     transform: rotate(-90deg);
-    
+
     path {
       fill: none;
-      stroke: currentColor;
+      stroke: currentcolor;
       stroke-width: 3;
       transition: stroke-dasharray 0.3s ease;
     }
   }
 
   span {
-    font-size: 10px;
+    font-size: rem-calc(10);
     font-weight: 600;
   }
 }
 
-@media (max-width: 1200px) {
+@media (width <= 1200px) {
   .features-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 
   .hero-content h1 {
-    font-size: 72px;
+    font-size: rem-calc(72);
   }
 }
 
-@media (max-width: 768px) {
+@media (width <= 768px) {
   .hero-content {
-    padding: 60px 0;
+    padding: rem-calc(60) 0;
 
     h1 {
-      font-size: 48px;
+      font-size: rem-calc(48);
     }
 
     .hero-subtitle {
-      font-size: 18px;
+      font-size: rem-calc(18);
     }
   }
 
@@ -300,6 +293,6 @@
   }
 
   .feature-card {
-    padding: 32px;
+    padding: rem-calc(32);
   }
 }

@@ -1,8 +1,10 @@
 name: CI
 
 on:
+  push:
+    branches: [ main, develop ]
   pull_request:
-    branches: [ main ]
+    branches: [ main, develop ]
 
 jobs:
   backend:
@@ -60,15 +62,19 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
+          cache: npm
+      - name: Install deps (root)
+        working-directory: .
+        run: npm install --workspaces --include-workspace-root
       - name: Download UI Library artifacts
         uses: actions/download-artifact@v4
         with:
           name: ui-library
           path: packages/oxm-ui/dist
-      - name: Install deps
-        run: npm install
       - name: Lint
         run: npm run lint
+      - name: Lint SCSS
+        run: npm run lint:scss
       - name: Build
         run: npm run build
 
@@ -104,14 +110,18 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
+          cache: npm
+      - name: Install deps (root)
+        working-directory: .
+        run: npm install --workspaces --include-workspace-root
       - name: Download UI Library artifacts
         uses: actions/download-artifact@v4
         with:
           name: ui-library
           path: packages/oxm-ui/dist
-      - name: Install deps
-        run: npm install
       - name: Lint
         run: npm run lint
+      - name: Lint SCSS
+        run: npm run lint:scss
       - name: Build
         run: npm run build
