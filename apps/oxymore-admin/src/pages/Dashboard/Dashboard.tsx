@@ -8,7 +8,21 @@ import {
   ArrowUpRight,
   ArrowDownRight,
   Clock,
-  X
+  X,
+  Calendar,
+  MapPin,
+  Award,
+  Eye,
+  Star,
+  Target,
+  Zap,
+  Shield,
+  TrendingUp,
+  Users as UsersIcon,
+  MessageCircle,
+  Share2,
+  Bookmark,
+  Flag
 } from 'lucide-react';
 import {
   AreaChart,
@@ -31,6 +45,10 @@ const Dashboard = (): React.JSX.Element => {
   const [distributionType, setDistributionType] = useState('game');
   const [showUpcomingMatchesModal, setShowUpcomingMatchesModal] = useState(false);
   const [showRecentActivityModal, setShowRecentActivityModal] = useState(false);
+  const [showMatchDetailsModal, setShowMatchDetailsModal] = useState(false);
+  const [showActivityDetailsModal, setShowActivityDetailsModal] = useState(false);
+  const [selectedMatch, setSelectedMatch] = useState<any>(null);
+  const [selectedActivity, setSelectedActivity] = useState<any>(null);
   const [matchesFilter, setMatchesFilter] = useState('all');
   const [activityFilter, setActivityFilter] = useState('all');
 
@@ -62,6 +80,18 @@ const Dashboard = (): React.JSX.Element => {
     { value: 'user', label: 'User Actions' },
     { value: 'team', label: 'Team Actions' }
   ];
+
+  // Fonction pour ouvrir les détails d'un match
+  const openMatchDetails = (match: any) => {
+    setSelectedMatch(match);
+    setShowMatchDetailsModal(true);
+  };
+
+  // Fonction pour ouvrir les détails d'une activité
+  const openActivityDetails = (activity: any) => {
+    setSelectedActivity(activity);
+    setShowActivityDetailsModal(true);
+  };
 
   // Fonction pour formater les nombres
   const formatNumber = (num: number): string => {
@@ -294,7 +324,8 @@ const Dashboard = (): React.JSX.Element => {
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: i * 0.1 }}
-                className="flex items-center justify-between p-3 md:p-4 bg-[var(--overlay-hover)] rounded-xl hover:bg-[var(--overlay-active)] transition-colors"
+                className="flex items-center justify-between p-3 md:p-4 bg-[var(--overlay-hover)] rounded-xl hover:bg-[var(--overlay-active)] transition-colors cursor-pointer"
+                onClick={() => openMatchDetails(match)}
               >
                 <div className="flex items-center gap-3 md:gap-4">
                   <div className="w-8 h-8 md:w-10 md:h-10 bg-gradient-purple rounded-lg flex items-center justify-center">
@@ -344,7 +375,8 @@ const Dashboard = (): React.JSX.Element => {
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: i * 0.1 }}
-                className="flex items-center justify-between p-3 md:p-4 bg-[var(--overlay-hover)] rounded-xl hover:bg-[var(--overlay-active)] transition-colors"
+                className="flex items-center justify-between p-3 md:p-4 bg-[var(--overlay-hover)] rounded-xl hover:bg-[var(--overlay-active)] transition-colors cursor-pointer"
+                onClick={() => openActivityDetails(activity)}
               >
                 <div className="flex items-center gap-3 md:gap-4 min-w-0 flex-1">
                   <div className="w-8 h-8 md:w-10 md:h-10 bg-gradient-oxymore rounded-lg flex items-center justify-center flex-shrink-0">
@@ -416,7 +448,8 @@ const Dashboard = (): React.JSX.Element => {
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: i * 0.1 }}
-                      className="bg-[var(--overlay-hover)] rounded-xl p-4 sm:p-6 hover:bg-[var(--overlay-active)] transition-all border border-[var(--border-color)]"
+                      className="bg-[var(--overlay-hover)] rounded-xl p-4 sm:p-6 hover:bg-[var(--overlay-active)] transition-all border border-[var(--border-color)] cursor-pointer"
+                      onClick={() => openMatchDetails(match)}
                     >
                       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 mb-4">
                         <div className="flex items-center gap-3">
@@ -528,7 +561,8 @@ const Dashboard = (): React.JSX.Element => {
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: i * 0.1 }}
-                      className="bg-[var(--overlay-hover)] rounded-xl p-4 sm:p-6 hover:bg-[var(--overlay-active)] transition-all border border-[var(--border-color)]"
+                      className="bg-[var(--overlay-hover)] rounded-xl p-4 sm:p-6 hover:bg-[var(--overlay-active)] transition-all border border-[var(--border-color)] cursor-pointer"
+                      onClick={() => openActivityDetails(activity)}
                     >
                       <div className="flex items-start gap-3 sm:gap-4">
                         <div className="flex-shrink-0">
@@ -567,6 +601,466 @@ const Dashboard = (): React.JSX.Element => {
                       </div>
                     </motion.div>
                   ))}
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Match Details Modal */}
+      <AnimatePresence>
+        {showMatchDetailsModal && selectedMatch && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-2 sm:p-4"
+            onClick={() => setShowMatchDetailsModal(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="bg-[var(--card-background)] rounded-2xl shadow-2xl w-full max-w-4xl max-h-[95vh] sm:max-h-[90vh] overflow-hidden"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Header */}
+              <div className="p-4 sm:p-6 border-b border-[var(--border-color)] flex items-center justify-between">
+                <div className="flex items-center gap-3 sm:gap-4">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-purple rounded-xl flex items-center justify-center">
+                    <Trophy className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+                  </div>
+                  <div>
+                    <h2 className="text-xl sm:text-2xl font-bold text-[var(--text-primary)]">Match Details</h2>
+                    <p className="text-sm text-[var(--text-secondary)]">{selectedMatch.tournament}</p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setShowMatchDetailsModal(false)}
+                  className="p-2 hover:bg-[var(--overlay-hover)] rounded-lg transition-colors"
+                >
+                  <X className="w-5 h-5 text-[var(--text-secondary)]" />
+                </button>
+              </div>
+
+              {/* Content */}
+              <div className="p-4 sm:p-6 overflow-y-auto max-h-[calc(95vh-120px)] sm:max-h-[calc(90vh-120px)]">
+                {/* Match Info */}
+                <div className="grid gap-6">
+                  {/* Teams Section */}
+                  <div className="bg-[var(--overlay-hover)] rounded-xl p-6">
+                    <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-4">Teams</h3>
+                    <div className="flex items-center justify-center gap-8">
+                      <div className="text-center">
+                        <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-blue rounded-xl flex items-center justify-center mb-3">
+                          <span className="text-white font-bold text-lg">{selectedMatch.team1Logo}</span>
+                        </div>
+                        <h4 className="text-lg font-semibold text-[var(--text-primary)] mb-1">{selectedMatch.team1}</h4>
+                        <div className="flex items-center justify-center gap-2 text-sm text-[var(--text-secondary)]">
+                          <Star className="w-4 h-4" />
+                          <span>4.8/5</span>
+                        </div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-3xl sm:text-4xl font-bold text-[var(--text-muted)] mb-2">VS</div>
+                        <p className="text-sm text-[var(--text-secondary)]">Best of 3</p>
+                        <div className="mt-2 px-3 py-1 bg-green-500/10 text-green-400 text-xs font-medium rounded-full">
+                          {selectedMatch.status}
+                        </div>
+                      </div>
+                      <div className="text-center">
+                        <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-red rounded-xl flex items-center justify-center mb-3">
+                          <span className="text-white font-bold text-lg">{selectedMatch.team2Logo}</span>
+                        </div>
+                        <h4 className="text-lg font-semibold text-[var(--text-primary)] mb-1">{selectedMatch.team2}</h4>
+                        <div className="flex items-center justify-center gap-2 text-sm text-[var(--text-secondary)]">
+                          <Star className="w-4 h-4" />
+                          <span>4.6/5</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Tournament Info */}
+                  <div className="bg-[var(--overlay-hover)] rounded-xl p-6">
+                    <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-4">Tournament Information</h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div className="flex items-center gap-3">
+                        <Calendar className="w-5 h-5 text-[var(--text-secondary)]" />
+                        <div>
+                          <p className="text-sm font-medium text-[var(--text-primary)]">Date & Time</p>
+                          <p className="text-sm text-[var(--text-secondary)]">Today at 20:00 UTC</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <MapPin className="w-5 h-5 text-[var(--text-secondary)]" />
+                        <div>
+                          <p className="text-sm font-medium text-[var(--text-primary)]">Location</p>
+                          <p className="text-sm text-[var(--text-secondary)]">Online Tournament</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <Award className="w-5 h-5 text-[var(--text-secondary)]" />
+                        <div>
+                          <p className="text-sm font-medium text-[var(--text-primary)]">Prize Pool</p>
+                          <p className="text-sm text-[var(--text-secondary)]">{selectedMatch.prize}</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <Eye className="w-5 h-5 text-[var(--text-secondary)]" />
+                        <div>
+                          <p className="text-sm font-medium text-[var(--text-primary)]">Expected Viewers</p>
+                          <p className="text-sm text-[var(--text-secondary)]">{selectedMatch.viewers}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Stats */}
+                  <div className="bg-[var(--overlay-hover)] rounded-xl p-6">
+                    <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-4">Match Statistics</h3>
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                      <div className="text-center">
+                        <div className="w-12 h-12 bg-blue-500/10 rounded-lg flex items-center justify-center mb-2 mx-auto">
+                          <Target className="w-6 h-6 text-blue-400" />
+                        </div>
+                        <p className="text-sm font-medium text-[var(--text-primary)]">Win Rate</p>
+                        <p className="text-lg font-bold text-blue-400">65%</p>
+                      </div>
+                      <div className="text-center">
+                        <div className="w-12 h-12 bg-green-500/10 rounded-lg flex items-center justify-center mb-2 mx-auto">
+                          <TrendingUp className="w-6 h-6 text-green-400" />
+                        </div>
+                        <p className="text-sm font-medium text-[var(--text-primary)]">Form</p>
+                        <p className="text-lg font-bold text-green-400">W-W-L-W</p>
+                      </div>
+                      <div className="text-center">
+                        <div className="w-12 h-12 bg-purple-500/10 rounded-lg flex items-center justify-center mb-2 mx-auto">
+                          <UsersIcon className="w-6 h-6 text-purple-400" />
+                        </div>
+                        <p className="text-sm font-medium text-[var(--text-primary)]">Team Size</p>
+                        <p className="text-lg font-bold text-purple-400">5v5</p>
+                      </div>
+                      <div className="text-center">
+                        <div className="w-12 h-12 bg-orange-500/10 rounded-lg flex items-center justify-center mb-2 mx-auto">
+                          <Zap className="w-6 h-6 text-orange-400" />
+                        </div>
+                        <p className="text-sm font-medium text-[var(--text-primary)]">Duration</p>
+                        <p className="text-lg font-bold text-orange-400">~2h</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Actions */}
+                  <div className="flex flex-wrap gap-3">
+                    <button className="flex items-center gap-2 px-4 py-2 bg-gradient-purple text-white rounded-lg font-medium hover:opacity-90 transition-opacity">
+                      <Eye className="w-4 h-4" />
+                      Watch Live
+                    </button>
+                    <button className="flex items-center gap-2 px-4 py-2 bg-[var(--overlay-hover)] text-[var(--text-primary)] rounded-lg font-medium hover:bg-[var(--overlay-active)] transition-colors">
+                      <Bookmark className="w-4 h-4" />
+                      Save Match
+                    </button>
+                    <button className="flex items-center gap-2 px-4 py-2 bg-[var(--overlay-hover)] text-[var(--text-primary)] rounded-lg font-medium hover:bg-[var(--overlay-active)] transition-colors">
+                      <Share2 className="w-4 h-4" />
+                      Share
+                    </button>
+                    <button className="flex items-center gap-2 px-4 py-2 bg-[var(--overlay-hover)] text-[var(--text-primary)] rounded-lg font-medium hover:bg-[var(--overlay-active)] transition-colors">
+                      <MessageCircle className="w-4 h-4" />
+                      Chat
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Activity Details Modal */}
+      <AnimatePresence>
+        {showActivityDetailsModal && selectedActivity && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-2 sm:p-4"
+            onClick={() => setShowActivityDetailsModal(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="bg-[var(--card-background)] rounded-2xl shadow-2xl w-full max-w-4xl max-h-[95vh] sm:max-h-[90vh] overflow-hidden"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Header */}
+              <div className="p-4 sm:p-6 border-b border-[var(--border-color)] flex items-center justify-between">
+                <div className="flex items-center gap-3 sm:gap-4">
+                  <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center ${
+                    selectedActivity.status === 'success' ? 'bg-green-500/10' :
+                    selectedActivity.status === 'error' ? 'bg-red-500/10' :
+                    'bg-blue-500/10'
+                  }`}>
+                    <span className={`font-bold text-lg ${
+                      selectedActivity.status === 'success' ? 'text-green-400' :
+                      selectedActivity.status === 'error' ? 'text-red-400' :
+                      'text-blue-400'
+                    }`}>{selectedActivity.avatar}</span>
+                  </div>
+                  <div>
+                    <h2 className="text-xl sm:text-2xl font-bold text-[var(--text-primary)]">Activity Details</h2>
+                    <p className="text-sm text-[var(--text-secondary)]">{selectedActivity.user} • {selectedActivity.time}</p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setShowActivityDetailsModal(false)}
+                  className="p-2 hover:bg-[var(--overlay-hover)] rounded-lg transition-colors"
+                >
+                  <X className="w-5 h-5 text-[var(--text-secondary)]" />
+                </button>
+              </div>
+
+              {/* Content */}
+              <div className="p-4 sm:p-6 overflow-y-auto max-h-[calc(95vh-120px)] sm:max-h-[calc(90vh-120px)]">
+                <div className="grid gap-6">
+                  {/* Activity Info */}
+                  <div className="bg-[var(--overlay-hover)] rounded-xl p-6">
+                    <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-4">Activity Information</h3>
+                    <div className="space-y-4">
+                      <div>
+                        <p className="text-sm font-medium text-[var(--text-primary)] mb-1">Action</p>
+                        <p className="text-base text-[var(--text-primary)]">{selectedActivity.action}</p>
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-[var(--text-primary)] mb-1">Details</p>
+                        <p className="text-sm text-[var(--text-secondary)] leading-relaxed">{selectedActivity.details}</p>
+                      </div>
+                      <div className="flex flex-wrap gap-2">
+                        <span className={`px-3 py-1 text-sm font-medium rounded-full ${
+                          selectedActivity.status === 'success' ? 'bg-green-500/10 text-green-400' :
+                          selectedActivity.status === 'error' ? 'bg-red-500/10 text-red-400' :
+                          'bg-blue-500/10 text-blue-400'
+                        }`}>
+                          {selectedActivity.type}
+                        </span>
+                        <span className="px-3 py-1 bg-[var(--overlay-active)] text-sm font-medium rounded-full text-[var(--text-secondary)]">
+                          {selectedActivity.game}
+                        </span>
+                        <span className={`px-3 py-1 text-sm font-medium rounded-full ${
+                          selectedActivity.status === 'success' ? 'bg-green-500/10 text-green-400' :
+                          selectedActivity.status === 'error' ? 'bg-red-500/10 text-red-400' :
+                          'bg-blue-500/10 text-blue-400'
+                        }`}>
+                          {selectedActivity.status}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Dynamic Content Based on Activity Type */}
+                  {selectedActivity.type === 'tournament' && (
+                    <div className="bg-[var(--overlay-hover)] rounded-xl p-6">
+                      <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-4">Tournament Details</h3>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div className="flex items-center gap-3">
+                          <Trophy className="w-5 h-5 text-[var(--text-secondary)]" />
+                          <div>
+                            <p className="text-sm font-medium text-[var(--text-primary)]">Tournament</p>
+                            <p className="text-sm text-[var(--text-secondary)]">CS2 Championship 2024</p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <Award className="w-5 h-5 text-[var(--text-secondary)]" />
+                          <div>
+                            <p className="text-sm font-medium text-[var(--text-primary)]">Prize Pool</p>
+                            <p className="text-sm text-[var(--text-secondary)]">$10,000</p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <Calendar className="w-5 h-5 text-[var(--text-secondary)]" />
+                          <div>
+                            <p className="text-sm font-medium text-[var(--text-primary)]">Start Date</p>
+                            <p className="text-sm text-[var(--text-secondary)]">Dec 15, 2024</p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <Users className="w-5 h-5 text-[var(--text-secondary)]" />
+                          <div>
+                            <p className="text-sm font-medium text-[var(--text-primary)]">Participants</p>
+                            <p className="text-sm text-[var(--text-secondary)]">32 teams</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {selectedActivity.type === 'match' && (
+                    <div className="bg-[var(--overlay-hover)] rounded-xl p-6">
+                      <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-4">Match Details</h3>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div className="flex items-center gap-3">
+                          <Target className="w-5 h-5 text-[var(--text-secondary)]" />
+                          <div>
+                            <p className="text-sm font-medium text-[var(--text-primary)]">Teams</p>
+                            <p className="text-sm text-[var(--text-secondary)]">Team Alpha vs Team Beta</p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <Zap className="w-5 h-5 text-[var(--text-secondary)]" />
+                          <div>
+                            <p className="text-sm font-medium text-[var(--text-primary)]">Format</p>
+                            <p className="text-sm text-[var(--text-secondary)]">Best of 3</p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <Clock className="w-5 h-5 text-[var(--text-secondary)]" />
+                          <div>
+                            <p className="text-sm font-medium text-[var(--text-primary)]">Duration</p>
+                            <p className="text-sm text-[var(--text-secondary)]">~2 hours</p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <Eye className="w-5 h-5 text-[var(--text-secondary)]" />
+                          <div>
+                            <p className="text-sm font-medium text-[var(--text-primary)]">Viewers</p>
+                            <p className="text-sm text-[var(--text-secondary)]">1,247</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {selectedActivity.type === 'user' && (
+                    <div className="bg-[var(--overlay-hover)] rounded-xl p-6">
+                      <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-4">User Information</h3>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div className="flex items-center gap-3">
+                          <Shield className="w-5 h-5 text-[var(--text-secondary)]" />
+                          <div>
+                            <p className="text-sm font-medium text-[var(--text-primary)]">Account Status</p>
+                            <p className="text-sm text-[var(--text-secondary)]">Premium Member</p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <Star className="w-5 h-5 text-[var(--text-secondary)]" />
+                          <div>
+                            <p className="text-sm font-medium text-[var(--text-primary)]">ELO Rating</p>
+                            <p className="text-sm text-[var(--text-secondary)]">2,450</p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <Trophy className="w-5 h-5 text-[var(--text-secondary)]" />
+                          <div>
+                            <p className="text-sm font-medium text-[var(--text-primary)]">Tournaments Won</p>
+                            <p className="text-sm text-[var(--text-secondary)]">12</p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <Users className="w-5 h-5 text-[var(--text-secondary)]" />
+                          <div>
+                            <p className="text-sm font-medium text-[var(--text-primary)]">Team</p>
+                            <p className="text-sm text-[var(--text-secondary)]">Team Alpha</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {selectedActivity.type === 'team' && (
+                    <div className="bg-[var(--overlay-hover)] rounded-xl p-6">
+                      <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-4">Team Information</h3>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div className="flex items-center gap-3">
+                          <Users className="w-5 h-5 text-[var(--text-secondary)]" />
+                          <div>
+                            <p className="text-sm font-medium text-[var(--text-primary)]">Members</p>
+                            <p className="text-sm text-[var(--text-secondary)]">5 players</p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <Trophy className="w-5 h-5 text-[var(--text-secondary)]" />
+                          <div>
+                            <p className="text-sm font-medium text-[var(--text-primary)]">Achievements</p>
+                            <p className="text-sm text-[var(--text-secondary)]">8 tournaments won</p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <Star className="w-5 h-5 text-[var(--text-secondary)]" />
+                          <div>
+                            <p className="text-sm font-medium text-[var(--text-primary)]">Average ELO</p>
+                            <p className="text-sm text-[var(--text-secondary)]">2,380</p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <TrendingUp className="w-5 h-5 text-[var(--text-secondary)]" />
+                          <div>
+                            <p className="text-sm font-medium text-[var(--text-primary)]">Win Rate</p>
+                            <p className="text-sm text-[var(--text-secondary)]">78%</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* User Communication Section */}
+                  <div className="bg-[var(--overlay-hover)] rounded-xl p-6">
+                    <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-4">Contact User</h3>
+                    <div className="space-y-4">
+                      <div className="flex items-center gap-3 mb-4">
+                        <div className="w-10 h-10 bg-gradient-oxymore rounded-xl flex items-center justify-center">
+                          <span className="font-bold text-white">{selectedActivity.user[0]}</span>
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium text-[var(--text-primary)]">{selectedActivity.user}</p>
+                          <p className="text-xs text-[var(--text-secondary)]">Online • Last active 5 min ago</p>
+                        </div>
+                      </div>
+
+                      <div className="space-y-3">
+                        <div>
+                          <label className="text-sm font-medium text-[var(--text-primary)] mb-2 block">Message</label>
+                          <textarea
+                            className="w-full p-3 bg-[var(--overlay-active)] border border-[var(--border-color)] rounded-lg text-[var(--text-primary)] placeholder-[var(--text-muted)] resize-none"
+                            rows={3}
+                            placeholder="Write a message to this user..."
+                          />
+                        </div>
+
+                        <div className="flex flex-wrap gap-2">
+                          <button className="flex items-center gap-2 px-4 py-2 bg-gradient-oxymore text-white rounded-lg font-medium hover:opacity-90 transition-opacity">
+                            <MessageCircle className="w-4 h-4" />
+                            Send Message
+                          </button>
+                          <button className="flex items-center gap-2 px-4 py-2 bg-[var(--overlay-hover)] text-[var(--text-primary)] rounded-lg font-medium hover:bg-[var(--overlay-active)] transition-colors">
+                            <Zap className="w-4 h-4" />
+                            Send Notification
+                          </button>
+                          <button className="flex items-center gap-2 px-4 py-2 bg-[var(--overlay-hover)] text-[var(--text-primary)] rounded-lg font-medium hover:bg-[var(--overlay-active)] transition-colors">
+                            <Eye className="w-4 h-4" />
+                            View Profile
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Quick Actions */}
+                  <div className="flex flex-wrap gap-3">
+                    <button className="flex items-center gap-2 px-4 py-2 bg-[var(--overlay-hover)] text-[var(--text-primary)] rounded-lg font-medium hover:bg-[var(--overlay-active)] transition-colors">
+                      <Bookmark className="w-4 h-4" />
+                      Save Activity
+                    </button>
+                    <button className="flex items-center gap-2 px-4 py-2 bg-[var(--overlay-hover)] text-[var(--text-primary)] rounded-lg font-medium hover:bg-[var(--overlay-active)] transition-colors">
+                      <Share2 className="w-4 h-4" />
+                      Share
+                    </button>
+                    <button className="flex items-center gap-2 px-4 py-2 bg-[var(--overlay-hover)] text-[var(--text-primary)] rounded-lg font-medium hover:bg-[var(--overlay-active)] transition-colors">
+                      <Flag className="w-4 h-4" />
+                      Report
+                    </button>
+                  </div>
                 </div>
               </div>
             </motion.div>
