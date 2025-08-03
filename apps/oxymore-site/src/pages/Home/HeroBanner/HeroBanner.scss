@@ -44,6 +44,10 @@
         margin-bottom: 100px;
         text-align: left;
 
+        @media (max-width: 1900px) {
+            margin-bottom: rem-calc(20);
+        }
+
         .tag {
             display: inline-flex;
             justify-content: center;
@@ -126,10 +130,14 @@
         align-items: flex-start;
         margin-bottom: rem-calc(100);
 
+        @media (max-width: 1900px) {
+            margin-bottom: rem-calc(20);
+        }
+
         @media (max-width: 1024px) {
             width: 100%;
             flex-direction: row;
-            gap: rem-calc(20);
+            gap: rem-calc(0);
             margin-bottom: rem-calc(40);
         }
 
@@ -318,7 +326,7 @@
                 background: $color-white;
                 border-radius: rem-calc(31);
                 transition: width 0.3s ease;
-                
+
                 &.progress-dynamic {
                     width: var(--progress-width, 0%);
                 }
