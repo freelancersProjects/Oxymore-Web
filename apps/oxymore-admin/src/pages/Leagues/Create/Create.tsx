@@ -4,14 +4,27 @@ import { ArrowLeft, Trophy, Upload } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { apiService } from '../../../api/apiService';
 import { Badge, LeagueFormData } from '../../../types';
+import Dropdown, { DropdownOption } from '../../../components/Dropdown/Dropdown';
 
 const Create = () => {
   const navigate = useNavigate();
-  const { register, handleSubmit, formState: { errors } } = useForm<LeagueFormData>();
+  const { register, handleSubmit, formState: { errors }, watch, setValue } = useForm<LeagueFormData>();
   const [badges, setBadges] = useState<Badge[]>([]);
   const [loading, setLoading] = useState(false);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+
+  // Dropdown options for badges
+  const badgeOptions: DropdownOption[] = badges.map(badge => ({
+    value: badge.id_badge,
+    label: badge.badge_name
+  }));
+
+  // Dropdown options for entry type
+  const entryTypeOptions: DropdownOption[] = [
+    { value: 'inscription', label: 'Inscription' },
+    { value: 'promotion', label: 'Promotion' }
+  ];
 
   // Récupérer les badges
   useEffect(() => {
@@ -106,14 +119,13 @@ const Create = () => {
 
             <div>
               <label className="label-base" htmlFor="entry_type">Entry Type</label>
-              <select
-                {...register('entry_type')}
-                id="entry_type"
-                className="input-base w-full"
-              >
-                                 <option value="inscription">Inscription</option>
-                 <option value="promotion">Promotion</option>
-              </select>
+              <Dropdown
+                options={entryTypeOptions}
+                value={watch('entry_type') || ''}
+                onChange={(value) => setValue('entry_type', value)}
+                placeholder="Select entry type"
+                className="w-full"
+              />
             </div>
 
             <div>
@@ -228,18 +240,13 @@ const Create = () => {
 
             <div>
               <label className="label-base" htmlFor="id_badge_champion">Champion Badge</label>
-              <select
-                {...register('id_badge_champion')}
-                id="id_badge_champion"
-                className="input-base w-full"
-              >
-                <option value="">Select a badge (optional)</option>
-                {badges.map((badge) => (
-                  <option key={badge.id_badge} value={badge.id_badge}>
-                    {badge.badge_name}
-                  </option>
-                ))}
-              </select>
+              <Dropdown
+                options={badgeOptions}
+                value={watch('id_badge_champion') || ''}
+                onChange={(value) => setValue('id_badge_champion', value)}
+                placeholder="Select a badge (optional)"
+                className="w-full"
+              />
             </div>
           </div>
         </div>

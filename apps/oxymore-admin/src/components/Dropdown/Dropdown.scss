@@ -1,0 +1,162 @@
+.dropdown-container {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.dropdown-button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--overlay-hover);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+
+  &:hover:not(:disabled) {
+    background: var(--overlay-active);
+    border-color: var(--border-color);
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.5);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.dropdown-content {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: 8px;
+  background: var(--card-background);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  z-index: 50;
+  max-height: 240px;
+  overflow-y: auto;
+}
+
+.dropdown-option {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px;
+  text-align: left;
+  transition: all 0.15s ease;
+  cursor: pointer;
+  border: none;
+  background: none;
+
+  &:hover {
+    background: var(--overlay-hover);
+  }
+
+  &.selected {
+    background: rgba(139, 92, 246, 0.1);
+    color: #8b5cf6;
+  }
+}
+
+.dropdown-option-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  flex: 1;
+}
+
+.dropdown-option-icon {
+  flex-shrink: 0;
+  color: var(--text-secondary);
+}
+
+.dropdown-option-label {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dropdown-chevron {
+  flex-shrink: 0;
+  color: var(--text-secondary);
+  transition: transform 0.2s ease;
+
+  &.open {
+    transform: rotate(180deg);
+  }
+}
+
+.dropdown-check {
+  flex-shrink: 0;
+  color: #8b5cf6;
+}
+
+// Sizes
+.dropdown-sm {
+  .dropdown-button {
+    padding: 6px 12px;
+    font-size: 14px;
+  }
+
+  .dropdown-chevron,
+  .dropdown-check {
+    width: 12px;
+    height: 12px;
+  }
+}
+
+.dropdown-md {
+  .dropdown-button {
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+
+  .dropdown-chevron,
+  .dropdown-check {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.dropdown-lg {
+  .dropdown-button {
+    padding: 12px 16px;
+    font-size: 16px;
+  }
+
+  .dropdown-chevron,
+  .dropdown-check {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+// Scrollbar styling for dropdown content
+.dropdown-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.dropdown-content::-webkit-scrollbar-track {
+  background: var(--overlay-hover);
+}
+
+.dropdown-content::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 3px;
+}
+
+.dropdown-content::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}

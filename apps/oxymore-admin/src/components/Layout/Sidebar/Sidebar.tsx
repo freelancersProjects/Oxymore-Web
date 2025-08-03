@@ -2,7 +2,7 @@
 import { Link, useLocation } from 'react-router-dom';
 import Logo from '../../../../public/logo.png';
 import LogoPuple from '../../../../public/logo-purple.png';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   LayoutDashboard,
   Users,
@@ -69,11 +69,17 @@ const useThemeDetector = () => {
 
 const NavLink = ({ item }: { item: NavItem }) => {
   const location = useLocation();
-  const { isCollapsed } = useSidebar();
+  const { isCollapsed, isMobile, closeMobileMenu } = useSidebar();
   const isActive = location.pathname === item.path;
 
+  const handleClick = () => {
+    if (isMobile) {
+      closeMobileMenu();
+    }
+  };
+
   return (
-    <Link to={item.path} className="flex">
+    <Link to={item.path} className="flex" onClick={handleClick}>
       <motion.div
         whileHover={{ x: 5 }}
         whileTap={{ scale: 0.98 }}
@@ -85,14 +91,14 @@ const NavLink = ({ item }: { item: NavItem }) => {
       >
         <div className="flex items-center gap-3">
           <item.icon className={`w-5 h-5 ${isActive ? 'text-white' : 'text-[var(--text-secondary)] group-hover:text-[var(--text-primary)]'}`} />
-          {!isCollapsed && (
+          {(!isCollapsed || isMobile) && (
             <span className={`font-medium ${isActive ? 'text-white' : 'group-hover:text-[var(--text-primary)]'}`}>
               {item.label}
             </span>
           )}
         </div>
 
-        {!isCollapsed && (
+        {(!isCollapsed || isMobile) && (
           <div className="flex items-center gap-2">
             {item.badge && (
               <span className={`px-2 py-1 text-xs font-semibold rounded-lg ${
@@ -112,13 +118,16 @@ const NavLink = ({ item }: { item: NavItem }) => {
 };
 
 const Sidebar = () => {
-  const { isCollapsed } = useSidebar();
+  const { isCollapsed, isMobile, isMobileMenuOpen, closeMobileMenu } = useSidebar();
   const { logout } = useAuth();
   const { stats, loading } = useStats();
   const currentTheme = useThemeDetector();
 
   const handleLogout = () => {
     logout();
+    if (isMobile) {
+      closeMobileMenu();
+    }
   };
 
   const formatNumber = (num: number): string => {
@@ -145,9 +154,9 @@ const Sidebar = () => {
     { label: 'Activity', icon: Activity, path: '/activity' }
   ];
 
-  return (
+  const sidebarContent = (
     <aside className={`h-screen bg-[var(--card-background)] border-r border-[var(--border-color)] flex flex-col overflow-hidden transition-all duration-300 ${
-      isCollapsed ? 'w-[72px]' : 'w-70'
+      isMobile ? 'w-full' : isCollapsed ? 'w-[72px]' : 'w-70'
     }`}>
       <div className="p-6 border-b border-[var(--border-color)]">
         <Link to="/dashboard">
@@ -156,7 +165,7 @@ const Sidebar = () => {
             className="flex items-center gap-3"
           >
             <motion.img
-              key={currentTheme} // Force re-render quand le thème change
+              key={currentTheme}
               src={currentTheme === 'light' ? LogoPuple : Logo}
               alt="Oxymore Logo"
               className="w-12 h-13 transition-all duration-300"
@@ -167,7 +176,7 @@ const Sidebar = () => {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.2 }}
             />
-            {!isCollapsed && (
+            {(!isCollapsed || isMobile) && (
               <h1 className="text-[var(--text-primary)] text-xl font-bold">
                 Oxymore <span className="text-sm text-oxymore-purple-light">Admin</span>
               </h1>
@@ -177,7 +186,7 @@ const Sidebar = () => {
       </div>
 
       <div className="flex-1 overflow-y-auto">
-        {!isCollapsed && (
+        {(!isCollapsed || isMobile) && (
           <div className="p-4 border-b border-[var(--border-color)]">
             <div className="grid grid-cols-2 gap-3">
               <div className="bg-[var(--overlay-hover)] p-3 rounded-xl">
@@ -203,7 +212,7 @@ const Sidebar = () => {
         )}
 
         <div className="p-4 space-y-2">
-          {!isCollapsed && (
+          {(!isCollapsed || isMobile) && (
             <h2 className="text-sm font-semibold text-[var(--text-secondary)] px-3 mb-3">MAIN MENU</h2>
           )}
           {mainNav.map((item) => (
@@ -212,7 +221,7 @@ const Sidebar = () => {
         </div>
 
         <div className="p-4 space-y-2">
-          {!isCollapsed && (
+          {(!isCollapsed || isMobile) && (
             <h2 className="text-sm font-semibold text-[var(--text-secondary)] px-3 mb-3">ANALYTICS</h2>
           )}
           {statsNav.map((item) => (
@@ -235,13 +244,47 @@ const Sidebar = () => {
           className="flex w-full items-center gap-3 p-3 text-red-400 hover:bg-red-500/10 rounded-xl transition-colors"
         >
           <LogOut className="w-5 h-5" />
-          {!isCollapsed && (
+          {(!isCollapsed || isMobile) && (
             <span className="font-medium">Logout</span>
           )}
         </motion.button>
       </div>
     </aside>
   );
+
+  // Version mobile avec overlay
+  if (isMobile) {
+    return (
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <>
+            {/* Overlay */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={closeMobileMenu}
+              className="fixed inset-0 bg-black/50 z-40"
+            />
+
+            {/* Sidebar */}
+            <motion.div
+              initial={{ x: '-100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '-100%' }}
+              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+              className="fixed left-0 top-0 z-50 h-full"
+            >
+              {sidebarContent}
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+    );
+  }
+
+  // Version desktop
+  return sidebarContent;
 };
 
 export default Sidebar;
