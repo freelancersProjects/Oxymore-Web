@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
   getAllTournamentMaps,
   createTournamentMap,
+  getTournamentMapsByTournamentId,
   deleteTournamentMap,
 } from "../controllers/tournamentMapController";
 
@@ -41,6 +42,25 @@ router.get("/", getAllTournamentMaps);
  *         description: Lien ajouté
  */
 router.post("/", createTournamentMap);
+
+/**
+ * @openapi
+ * /api/tournament-maps/{id}:
+ *   get:
+ *     tags:
+ *       - TournamentMaps
+ *     summary: Récupère les maps d'un tournoi
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Liste des maps du tournoi
+ */
+router.get("/:id", getTournamentMapsByTournamentId);
 
 /**
  * @openapi

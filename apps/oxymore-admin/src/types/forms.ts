@@ -30,6 +30,7 @@ export interface TournamentFormData {
   image_url?: string;
   id_league: string;
   id_badge_winner?: string;
+  selected_maps: string[];
 }
 
 export interface BadgeFormData {

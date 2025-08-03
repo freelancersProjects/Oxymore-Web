@@ -15,7 +15,7 @@ import {
   Shield
 } from 'lucide-react';
 import { apiService } from '../../api/apiService';
-import { Tournament } from '../../types/tournament';
+import { Tournament } from '../../types';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import Loader from '../../components/Loader/Loader';
@@ -26,6 +26,7 @@ const TournamentDetails = () => {
   const [tournament, setTournament] = useState<Tournament | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   useEffect(() => {
     if (id) {
@@ -80,6 +81,18 @@ const TournamentDetails = () => {
         return <CheckCircle className="w-4 h-4" />;
       default:
         return <Clock className="w-4 h-4" />;
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!tournament) return;
+
+    try {
+      await apiService.delete(`/tournaments/${tournament.id_tournament}`);
+      navigate('/tournaments');
+    } catch (err) {
+      console.error('Error deleting tournament:', err);
+      setError('Une erreur est survenue lors de la suppression du tournoi');
     }
   };
 
@@ -145,8 +158,8 @@ const TournamentDetails = () => {
             <ArrowLeft className="w-5 h-5 text-[var(--text-primary)]" />
           </button>
           <div>
-            <h1 className="text-2xl font-bold text-primary">{tournament.name}</h1>
-            <p className="text-secondary mt-1">{tournament.game} • {tournament.type}</p>
+            <h1 className="text-2xl font-bold text-primary">{tournament.tournament_name}</h1>
+            <p className="text-secondary mt-1">{tournament.type} • {tournament.structure}</p>
           </div>
         </div>
         <div className="flex items-center gap-3">
@@ -154,14 +167,20 @@ const TournamentDetails = () => {
             {getStatusIcon(status)}
             {status}
           </span>
-          <button className="button-secondary px-4 py-2 rounded-xl flex items-center gap-2">
-            <Edit className="w-4 h-4" />
-            Edit
-          </button>
-          <button className="button-danger px-4 py-2 rounded-xl flex items-center gap-2">
-            <Trash2 className="w-4 h-4" />
-            Delete
-          </button>
+                     <button
+             onClick={() => navigate(`/tournaments/edit/${tournament.id_tournament}`)}
+             className="button-secondary px-4 py-2 rounded-xl flex items-center gap-2"
+           >
+             <Edit className="w-4 h-4" />
+             Edit
+           </button>
+           <button
+                             onClick={() => setShowDeleteConfirm(true)}
+             className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-xl flex items-center gap-2 transition-colors"
+           >
+             <Trash2 className="w-4 h-4" />
+             Delete
+           </button>
         </div>
       </div>
 
@@ -174,7 +193,7 @@ const TournamentDetails = () => {
             </div>
             <div>
               <p className="text-sm text-secondary">Participants</p>
-              <p className="text-xl font-bold text-primary">{tournament.participants_count}</p>
+              <p className="text-xl font-bold text-primary">{tournament.max_participant || 'N/A'}</p>
             </div>
           </div>
         </div>
@@ -186,7 +205,7 @@ const TournamentDetails = () => {
             </div>
             <div>
               <p className="text-sm text-secondary">Prize Pool</p>
-              <p className="text-xl font-bold text-primary">€{tournament.prize_pool.toLocaleString()}</p>
+              <p className="text-xl font-bold text-primary">€{(tournament.cash_prize || 0).toLocaleString()}</p>
             </div>
           </div>
         </div>
@@ -232,11 +251,11 @@ const TournamentDetails = () => {
           <div className="card-base p-6">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold text-primary">Participants</h2>
-              <span className="text-sm text-secondary">{tournament.participants_count} registered</span>
+              <span className="text-sm text-secondary">{tournament.max_participant || 0} registered</span>
             </div>
             <div className="space-y-3">
               {/* Mock participants - replace with real data */}
-              {Array.from({ length: Math.min(5, tournament.participants_count) }, (_, i) => (
+              {Array.from({ length: Math.min(5, tournament.max_participant || 0) }, (_, i) => (
                 <div key={i} className="flex items-center justify-between p-3 bg-[var(--overlay-hover)] rounded-xl">
                   <div className="flex items-center gap-3">
                     <div className="w-8 h-8 rounded-lg bg-gradient-oxymore flex items-center justify-center">
@@ -253,9 +272,9 @@ const TournamentDetails = () => {
                   </div>
                 </div>
               ))}
-              {tournament.participants_count > 5 && (
+              {(tournament.max_participant || 0) > 5 && (
                 <div className="text-center py-3">
-                  <p className="text-secondary text-sm">+{tournament.participants_count - 5} more participants</p>
+                  <p className="text-secondary text-sm">+{(tournament.max_participant || 0) - 5} more participants</p>
                 </div>
               )}
             </div>
@@ -324,7 +343,7 @@ const TournamentDetails = () => {
                   </div>
                   <span className="font-medium text-primary">1st Place</span>
                 </div>
-                <span className="font-bold text-primary">€{(tournament.prize_pool * 0.5).toLocaleString()}</span>
+                <span className="font-bold text-primary">€{((tournament.cash_prize || 0) * 0.5).toLocaleString()}</span>
               </div>
               <div className="flex items-center justify-between p-3 bg-[var(--overlay-hover)] rounded-xl">
                 <div className="flex items-center gap-3">
@@ -333,7 +352,7 @@ const TournamentDetails = () => {
                   </div>
                   <span className="font-medium text-primary">2nd Place</span>
                 </div>
-                <span className="font-bold text-primary">€{(tournament.prize_pool * 0.3).toLocaleString()}</span>
+                <span className="font-bold text-primary">€{((tournament.cash_prize || 0) * 0.3).toLocaleString()}</span>
               </div>
               <div className="flex items-center justify-between p-3 bg-[var(--overlay-hover)] rounded-xl">
                 <div className="flex items-center gap-3">
@@ -342,12 +361,41 @@ const TournamentDetails = () => {
                   </div>
                   <span className="font-medium text-primary">3rd Place</span>
                 </div>
-                <span className="font-bold text-primary">€{(tournament.prize_pool * 0.2).toLocaleString()}</span>
+                <span className="font-bold text-primary">€{((tournament.cash_prize || 0) * 0.2).toLocaleString()}</span>
               </div>
             </div>
           </div>
         </div>
       </div>
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteConfirm && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-[var(--card-background)] rounded-xl p-6 max-w-md w-full mx-4">
+            <h3 className="text-lg font-semibold text-primary mb-4">Confirm Deletion</h3>
+            <p className="text-secondary mb-6">
+              Are you sure you want to delete the tournament "{tournament?.tournament_name}"? This action cannot be undone.
+            </p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setShowDeleteConfirm(false)}
+                className="flex-1 button-secondary px-4 py-2 rounded-xl"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  setShowDeleteConfirm(false);
+                  handleDelete();
+                }}
+                className="flex-1 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-xl"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

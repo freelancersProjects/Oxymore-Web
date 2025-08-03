@@ -1,7 +1,9 @@
 import { Router } from "express";
 import {
   getAllTournaments,
+  getTournamentById,
   createTournament,
+  updateTournament,
   deleteTournament,
 } from "../controllers/tournamentController";
 
@@ -19,6 +21,27 @@ const router = Router();
  *         description: Liste des tournois
  */
 router.get("/", getAllTournaments);
+
+/**
+ * @openapi
+ * /api/tournaments/{id}:
+ *   get:
+ *     tags:
+ *       - Tournaments
+ *     summary: Récupère un tournoi par son ID
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Détails du tournoi
+ *       404:
+ *         description: Tournoi non trouvé
+ */
+router.get("/:id", getTournamentById);
 
 /**
  * @openapi
@@ -45,6 +68,36 @@ router.post("/", createTournament);
 /**
  * @openapi
  * /api/tournaments/{id}:
+ *   put:
+ *     tags:
+ *       - Tournaments
+ *     summary: Met à jour un tournoi
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/x-www-form-urlencoded:
+ *           schema:
+ *             $ref: '#/components/schemas/TournamentInput'
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/TournamentInput'
+ *     responses:
+ *       200:
+ *         description: Tournoi mis à jour
+ *       404:
+ *         description: Tournoi non trouvé
+ */
+router.put("/:id", updateTournament);
+
+/**
+ * @openapi
+ * /api/tournaments/{id}:
  *   delete:
  *     tags:
  *       - Tournaments
@@ -58,6 +111,8 @@ router.post("/", createTournament);
  *     responses:
  *       204:
  *         description: Tournoi supprimé
+ *       404:
+ *         description: Tournoi non trouvé
  */
 router.delete("/:id", deleteTournament);
 
