@@ -19,6 +19,8 @@ app.use(
       "http://localhost:5174",
       "http://localhost:5175",
       "https://oxymore-web-oxymore-admin.vercel.app",
+      "https://oxymore-web-oxymore-app.vercel.app",
+      "https://oxymore-web-oxymore-site.vercel.app",
     ],
     credentials: true,
   })
