@@ -3,9 +3,8 @@ import "./Button.scss";
 
 export interface ButtonProps {
   children: React.ReactNode;
-  variant?: "primary" | "secondary";
+  variant?: "primary" | "secondary" | "outline" | "neon" | "glass";
   size?: "small" | "medium" | "large";
-  outline?: boolean;
   disabled?: boolean;
   onClick?: () => void;
 }
@@ -14,7 +13,6 @@ const OXMButton: React.FC<ButtonProps> = ({
   children,
   variant = "primary",
   size = "medium",
-  outline = false,
   disabled = false,
   onClick,
 }) => {
@@ -22,7 +20,6 @@ const OXMButton: React.FC<ButtonProps> = ({
     "oxm-button",
     `oxm-button--${variant}`,
     `oxm-button--${size}`,
-    outline ? "oxm-button--outline" : "",
   ]
     .filter(Boolean)
     .join(" ");
