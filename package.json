@@ -6,24 +6,31 @@
     "packages/*"
   ],
   "scripts": {
-    "dev:site": "npm run dev --workspace=oxymore-site",
-    "dev:app": "npm run dev --workspace=oxymore-app",
-    "dev:back": "npm run dev --prefix back",
     "dev:admin": "npm run dev --workspace=oxymore-admin",
+    "dev:app": "npm run dev --workspace=oxymore-app",
+    "dev:site": "npm run dev --workspace=oxymore-site",
+    "dev:back": "npm run dev --prefix back",
     "build": "npm run build --workspace=@oxymore/ui",
-    "build:site": "npm run build --workspace=oxymore-site",
-    "build:app": "npm run build --workspace=oxymore-app",
     "build:admin": "npm run build --workspace=oxymore-admin",
-    "lint:site": "npm run lint --workspace=oxymore-site",
+    "build:app": "npm run build --workspace=oxymore-app",
+    "build:site": "npm run build --workspace=oxymore-site",
+    "lint:admin": "npm run lint --workspace=oxymore-admin",
     "lint:app": "npm run lint --workspace=oxymore-app",
+    "lint:site": "npm run lint --workspace=oxymore-site",
     "lint:back": "npm run lint --prefix back",
-    "lint:admin": "npm run lint --workspace=oxymore-admin"
+    "lint:scss:site": "npm run lint:scss --workspace=oxymore-site",
+    "lint:scss:app": "npm run lint:scss --workspace=oxymore-app",
+    "lint:scss:all": "npm run lint:scss:site && npm run lint:scss:app"
   },
   "devDependencies": {
+    "@stylistic/stylelint-plugin": "^4.0.0",
     "@types/express": "^5.0.3",
     "@types/node": "^24.0.1",
     "nodemon": "^3.1.10",
     "sass-embedded": "^1.89.2",
+    "stylelint": "^16.2.1",
+    "stylelint-config-standard-scss": "^13.1.0",
+    "stylelint-scss": "^6.1.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
   },

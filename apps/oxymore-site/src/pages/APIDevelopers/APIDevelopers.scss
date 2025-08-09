@@ -1,4 +1,4 @@
-@import "../../styles/global.scss";
+@import "../../styles/global";
 
 .api-dev {
     background: $color-background;
@@ -36,14 +36,13 @@
             z-index: 2;
 
             h1 {
-                font-family: "Orbitron", sans-serif;
+                font-family: Orbitron, sans-serif;
                 font-size: rem-calc(56);
                 line-height: 1.2;
                 margin: rem-calc(20) 0 rem-calc(30);
 
                 span {
                     background: linear-gradient(135deg, $color-purple, $color-blue);
-                    -webkit-background-clip: text;
                     background-clip: text;
                     -webkit-text-fill-color: transparent;
                 }
@@ -69,7 +68,7 @@
                 width: 100%;
                 max-width: rem-calc(950);
                 border-radius: rem-calc(20);
-                box-shadow: 0 rem-calc(25) rem-calc(50) rgba(0, 0, 0, 0.3),
+                box-shadow: 0 rem-calc(25) rem-calc(50) rgb(0 0 0 / 30%),
                     0 0 rem-calc(80) rgba($color-purple, 0.2);
                 border: 1px solid rgba($color-white, 0.1);
             }
@@ -80,7 +79,6 @@
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: rem-calc(80);
-        align-items: center;
         padding-top: rem-calc(60);
         padding-bottom: rem-calc(60);
         align-items: center;
@@ -117,7 +115,7 @@
             .visual-placeholder {
                 width: 100%;
                 height: rem-calc(400);
-                background: rgba(18, 18, 38, 0.5);
+                background: rgb(18 18 38 / 50%);
                 border: 1px solid rgba($color-white, 0.1);
                 border-radius: rem-calc(20);
                 display: flex;
@@ -142,7 +140,7 @@
 
                 &::before {
                     content: "Visual Content";
-                    font-family: "Orbitron", sans-serif;
+                    font-family: Orbitron, sans-serif;
                     color: rgba($color-white, 0.2);
                     display: none;
                 }
@@ -184,10 +182,7 @@
         &::before {
             content: "";
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            inset: 0;
             background: linear-gradient(180deg, rgba($color-background, 1) 0%, transparent 20%, transparent 80%, rgba($color-background, 1) 100%);
             z-index: -1;
             pointer-events: none;
@@ -202,7 +197,7 @@
         }
 
         h2 {
-            font-family: "Orbitron", sans-serif;
+            font-family: Orbitron, sans-serif;
             font-size: rem-calc(42);
             margin: rem-calc(20) 0 rem-calc(25);
         }
@@ -239,7 +234,7 @@
                 }
 
                 &:hover {
-                    transform: translateY(-8px);
+                    transform: translateY(rem-calc(-8));
                     background: rgba($color-white, 0.08);
                     border-color: rgba($color-blue, 0.7);
 
@@ -261,7 +256,7 @@
                 }
 
                 h3 {
-                    font-family: "Orbitron", sans-serif;
+                    font-family: Orbitron, sans-serif;
                     font-size: rem-calc(22);
                     margin-bottom: rem-calc(10);
                     position: relative;
@@ -280,7 +275,7 @@
         }
     }
 
-    @media (max-width: 1024px) {
+    @media (width <= 1024px) {
         &__hero {
             flex-direction: column;
             text-align: center;
@@ -396,7 +391,7 @@
         }
     }
 
-    @media (max-width: 768px) {
+    @media (width <= 768px) {
         &__hero,
         &__section,
         &__use-cases {
@@ -500,7 +495,7 @@
         }
     }
 
-    @media (max-width: 480px) {
+    @media (width <= 480px) {
         &__hero,
         &__section,
         &__use-cases {

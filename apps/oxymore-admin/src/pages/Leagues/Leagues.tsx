@@ -58,24 +58,24 @@ const Leagues = () => {
   const totalPrizePool = leagues.length * 5000; // Estimation pour l'exemple
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 md:space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-[var(--text-primary)]">Leagues</h1>
+          <h1 className="text-xl md:text-2xl font-bold text-[var(--text-primary)]">Leagues</h1>
           <p className="text-[var(--text-secondary)] mt-1">Manage and monitor competitive leagues</p>
         </div>
         <button
           onClick={() => navigate('/leagues/create')}
-          className="button-primary px-4 py-2 rounded-xl flex items-center gap-2"
+          className="button-primary px-4 py-2 rounded-xl flex items-center gap-2 text-sm md:text-base"
         >
-          <Plus className="w-5 h-5" />
+          <Plus className="w-4 h-4 md:w-5 md:h-5" />
           <span>Create League</span>
         </button>
       </div>
 
       {/* Stats Overview */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
         <div className="stat-card">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-purple-500/10 flex items-center justify-center">
@@ -138,8 +138,8 @@ const Leagues = () => {
       </div>
 
       {/* Filters & Tabs */}
-      <div className="card-base p-6">
-        <div className="flex flex-col md:flex-row gap-4 mb-6">
+      <div className="card-base p-4 md:p-6">
+        <div className="flex flex-col sm:flex-row gap-4 mb-4 md:mb-6">
           <div className="flex-1 relative">
             <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-secondary)]" />
             <input
@@ -148,10 +148,10 @@ const Leagues = () => {
               className="input-base w-full pl-10"
             />
           </div>
-          <div className="flex gap-2">
+          <div className="flex gap-2 flex-shrink-0">
             <button
               onClick={() => setActiveTab('all')}
-              className={`px-4 py-2 rounded-xl transition-colors ${
+              className={`px-3 md:px-4 py-2 rounded-xl transition-colors text-sm md:text-base ${
                 activeTab === 'all' ? 'bg-oxymore-purple text-white' : 'button-secondary'
               }`}
             >
@@ -159,7 +159,7 @@ const Leagues = () => {
             </button>
             <button
               onClick={() => setActiveTab('active')}
-              className={`px-4 py-2 rounded-xl transition-colors ${
+              className={`px-3 md:px-4 py-2 rounded-xl transition-colors text-sm md:text-base ${
                 activeTab === 'active' ? 'bg-oxymore-purple text-white' : 'button-secondary'
               }`}
             >
@@ -167,7 +167,7 @@ const Leagues = () => {
             </button>
             <button
               onClick={() => setActiveTab('upcoming')}
-              className={`px-4 py-2 rounded-xl transition-colors ${
+              className={`px-3 md:px-4 py-2 rounded-xl transition-colors text-sm md:text-base ${
                 activeTab === 'upcoming' ? 'bg-oxymore-purple text-white' : 'button-secondary'
               }`}
             >
@@ -201,57 +201,57 @@ const Leagues = () => {
               <div
                 key={league.id_league}
                 onClick={() => navigate(`/leagues/${league.id_league}`)}
-                className="p-6 bg-[var(--card-background)] rounded-xl border border-[var(--border-color)] hover:border-oxymore-purple transition-colors cursor-pointer"
+                className="p-4 md:p-6 bg-[var(--card-background)] rounded-xl border border-[var(--border-color)] hover:border-oxymore-purple transition-colors cursor-pointer"
               >
-                <div className="flex items-start gap-6">
-                  <div className="w-16 h-16 rounded-xl bg-gradient-oxymore flex items-center justify-center flex-shrink-0">
-                    <Trophy className="w-8 h-8 text-white" />
+                <div className="flex items-start gap-4 md:gap-6">
+                  <div className="w-12 h-12 md:w-16 md:h-16 rounded-xl bg-gradient-oxymore flex items-center justify-center flex-shrink-0">
+                    <Trophy className="w-6 h-6 md:w-8 md:h-8 text-white" />
                   </div>
-                  <div className="flex-1">
-                    <div className="flex items-start justify-between">
-                      <div>
-                        <h3 className="text-lg font-semibold text-[var(--text-primary)]">{league.league_name}</h3>
-                        <div className="flex items-center gap-4 mt-2">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+                      <div className="flex-1 min-w-0">
+                        <h3 className="text-base md:text-lg font-semibold text-[var(--text-primary)] truncate">{league.league_name}</h3>
+                        <div className="flex flex-col sm:flex-row sm:items-center gap-2 md:gap-4 mt-2">
                           <div className="flex items-center gap-2">
                             <Users className="w-4 h-4 text-[var(--text-secondary)]" />
-                            <span className="text-[var(--text-secondary)]">
+                            <span className="text-[var(--text-secondary)] text-sm">
                               {league.max_teams || 0} teams max
                             </span>
                           </div>
                           <div className="flex items-center gap-2">
                             <Trophy className="w-4 h-4 text-[var(--text-secondary)]" />
-                            <span className="text-[var(--text-secondary)]">Prize Pool</span>
+                            <span className="text-[var(--text-secondary)] text-sm">Prize Pool</span>
                           </div>
                           <div className="flex items-center gap-2">
                             <Calendar className="w-4 h-4 text-[var(--text-secondary)]" />
-                            <span className="text-[var(--text-secondary)]">
+                            <span className="text-[var(--text-secondary)] text-sm">
                               {league.end_date ? new Date(league.end_date).toLocaleDateString() : 'No end date'}
                             </span>
                           </div>
                         </div>
                       </div>
                       <div className="flex items-center gap-3">
-                        <div className={`px-3 py-1 ${statusColor} rounded-full text-sm font-medium`}>
+                        <div className={`px-3 py-1 ${statusColor} rounded-full text-xs md:text-sm font-medium`}>
                           {statusText}
                         </div>
-                        <ChevronRight className="w-5 h-5 text-[var(--text-secondary)]" />
+                        <ChevronRight className="w-4 h-4 md:w-5 md:h-5 text-[var(--text-secondary)]" />
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-3 gap-6 mt-6">
-                      <div className="p-4 rounded-xl bg-[var(--overlay-hover)]">
-                        <p className="text-[var(--text-secondary)] text-sm">Entry Type</p>
-                        <p className="text-[var(--text-primary)] font-medium mt-1 capitalize">{league.entry_type || 'N/A'}</p>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-6 mt-4 md:mt-6">
+                      <div className="p-3 md:p-4 rounded-xl bg-[var(--overlay-hover)]">
+                        <p className="text-[var(--text-secondary)] text-xs md:text-sm">Entry Type</p>
+                        <p className="text-[var(--text-primary)] font-medium mt-1 capitalize text-sm md:text-base">{league.entry_type || 'N/A'}</p>
                       </div>
-                      <div className="p-4 rounded-xl bg-[var(--overlay-hover)]">
-                        <p className="text-[var(--text-secondary)] text-sm">Start Date</p>
-                        <p className="text-[var(--text-primary)] font-medium mt-1">
+                      <div className="p-3 md:p-4 rounded-xl bg-[var(--overlay-hover)]">
+                        <p className="text-[var(--text-secondary)] text-xs md:text-sm">Start Date</p>
+                        <p className="text-[var(--text-primary)] font-medium mt-1 text-sm md:text-base">
                           {league.start_date ? new Date(league.start_date).toLocaleDateString() : 'Not set'}
                         </p>
                       </div>
-                      <div className="p-4 rounded-xl bg-[var(--overlay-hover)]">
-                        <p className="text-[var(--text-secondary)] text-sm">Promotion/Relegation</p>
-                        <p className="text-[var(--text-primary)] font-medium mt-1">
+                      <div className="p-3 md:p-4 rounded-xl bg-[var(--overlay-hover)]">
+                        <p className="text-[var(--text-secondary)] text-xs md:text-sm">Promotion/Relegation</p>
+                        <p className="text-[var(--text-primary)] font-medium mt-1 text-sm md:text-base">
                           {league.promotion_slots || 0} up / {league.relegation_slots || 0} down
                         </p>
                       </div>
@@ -271,57 +271,57 @@ const Leagues = () => {
               <div
                 key={league.id_league}
                 onClick={() => navigate(`/leagues/${league.id_league}`)}
-                className="p-6 bg-[var(--card-background)] rounded-xl border border-[var(--border-color)] hover:border-oxymore-purple transition-colors cursor-pointer"
+                className="p-4 md:p-6 bg-[var(--card-background)] rounded-xl border border-[var(--border-color)] hover:border-oxymore-purple transition-colors cursor-pointer"
               >
-                <div className="flex items-start gap-6">
-                  <div className="w-16 h-16 rounded-xl bg-gradient-oxymore flex items-center justify-center flex-shrink-0">
-                    <Trophy className="w-8 h-8 text-white" />
+                <div className="flex items-start gap-4 md:gap-6">
+                  <div className="w-12 h-12 md:w-16 md:h-16 rounded-xl bg-gradient-oxymore flex items-center justify-center flex-shrink-0">
+                    <Trophy className="w-6 h-6 md:w-8 md:h-8 text-white" />
                   </div>
-                  <div className="flex-1">
-                    <div className="flex items-start justify-between">
-                      <div>
-                        <h3 className="text-lg font-semibold text-[var(--text-primary)]">{league.league_name}</h3>
-                        <div className="flex items-center gap-4 mt-2">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+                      <div className="flex-1 min-w-0">
+                        <h3 className="text-base md:text-lg font-semibold text-[var(--text-primary)] truncate">{league.league_name}</h3>
+                        <div className="flex flex-col sm:flex-row sm:items-center gap-2 md:gap-4 mt-2">
                           <div className="flex items-center gap-2">
                             <Users className="w-4 h-4 text-[var(--text-secondary)]" />
-                            <span className="text-[var(--text-secondary)]">
+                            <span className="text-[var(--text-secondary)] text-sm">
                               {league.max_teams || 0} teams max
                             </span>
                           </div>
                           <div className="flex items-center gap-2">
                             <Trophy className="w-4 h-4 text-[var(--text-secondary)]" />
-                            <span className="text-[var(--text-secondary)]">Prize Pool</span>
+                            <span className="text-[var(--text-secondary)] text-sm">Prize Pool</span>
                           </div>
                           <div className="flex items-center gap-2">
                             <Calendar className="w-4 h-4 text-[var(--text-secondary)]" />
-                            <span className="text-[var(--text-secondary)]">
+                            <span className="text-[var(--text-secondary)] text-sm">
                               {league.end_date ? new Date(league.end_date).toLocaleDateString() : 'No end date'}
                             </span>
                           </div>
                         </div>
                       </div>
                       <div className="flex items-center gap-3">
-                        <div className="px-3 py-1 bg-green-500/10 text-green-500 rounded-full text-sm font-medium">
+                        <div className="px-3 py-1 bg-green-500/10 text-green-500 rounded-full text-xs md:text-sm font-medium">
                           LIVE
                         </div>
-                        <ChevronRight className="w-5 h-5 text-[var(--text-secondary)]" />
+                        <ChevronRight className="w-4 h-4 md:w-5 md:h-5 text-[var(--text-secondary)]" />
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-3 gap-6 mt-6">
-                      <div className="p-4 rounded-xl bg-[var(--overlay-hover)]">
-                        <p className="text-[var(--text-secondary)] text-sm">Entry Type</p>
-                        <p className="text-[var(--text-primary)] font-medium mt-1 capitalize">{league.entry_type || 'N/A'}</p>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-6 mt-4 md:mt-6">
+                      <div className="p-3 md:p-4 rounded-xl bg-[var(--overlay-hover)]">
+                        <p className="text-[var(--text-secondary)] text-xs md:text-sm">Entry Type</p>
+                        <p className="text-[var(--text-primary)] font-medium mt-1 capitalize text-sm md:text-base">{league.entry_type || 'N/A'}</p>
                       </div>
-                      <div className="p-4 rounded-xl bg-[var(--overlay-hover)]">
-                        <p className="text-[var(--text-secondary)] text-sm">Start Date</p>
-                        <p className="text-[var(--text-primary)] font-medium mt-1">
+                      <div className="p-3 md:p-4 rounded-xl bg-[var(--overlay-hover)]">
+                        <p className="text-[var(--text-secondary)] text-xs md:text-sm">Start Date</p>
+                        <p className="text-[var(--text-primary)] font-medium mt-1 text-sm md:text-base">
                           {league.start_date ? new Date(league.start_date).toLocaleDateString() : 'Not set'}
                         </p>
                       </div>
-                      <div className="p-4 rounded-xl bg-[var(--overlay-hover)]">
-                        <p className="text-[var(--text-secondary)] text-sm">Promotion/Relegation</p>
-                        <p className="text-[var(--text-primary)] font-medium mt-1">
+                      <div className="p-3 md:p-4 rounded-xl bg-[var(--overlay-hover)]">
+                        <p className="text-[var(--text-secondary)] text-xs md:text-sm">Promotion/Relegation</p>
+                        <p className="text-[var(--text-primary)] font-medium mt-1 text-sm md:text-base">
                           {league.promotion_slots || 0} up / {league.relegation_slots || 0} down
                         </p>
                       </div>
@@ -340,59 +340,59 @@ const Leagues = () => {
               <div
                 key={league.id_league}
                 onClick={() => navigate(`/leagues/${league.id_league}`)}
-                className="p-6 bg-[var(--card-background)] rounded-xl border border-[var(--border-color)] hover:border-oxymore-purple transition-colors cursor-pointer"
+                className="p-4 md:p-6 bg-[var(--card-background)] rounded-xl border border-[var(--border-color)] hover:border-oxymore-purple transition-colors cursor-pointer"
               >
-                <div className="flex items-start gap-6">
-                  <div className="w-16 h-16 rounded-xl bg-gradient-oxymore flex items-center justify-center flex-shrink-0">
-                    <Trophy className="w-8 h-8 text-white" />
+                <div className="flex items-start gap-4 md:gap-6">
+                  <div className="w-12 h-12 md:w-16 md:h-16 rounded-xl bg-gradient-oxymore flex items-center justify-center flex-shrink-0">
+                    <Trophy className="w-6 h-6 md:w-8 md:h-8 text-white" />
                   </div>
-                  <div className="flex-1">
-                    <div className="flex items-start justify-between">
-                      <div>
-                        <h3 className="text-lg font-semibold text-[var(--text-primary)]">{league.league_name}</h3>
-                        <div className="flex items-center gap-4 mt-2">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+                      <div className="flex-1 min-w-0">
+                        <h3 className="text-base md:text-lg font-semibold text-[var(--text-primary)] truncate">{league.league_name}</h3>
+                        <div className="flex flex-col sm:flex-row sm:items-center gap-2 md:gap-4 mt-2">
                           <div className="flex items-center gap-2">
                             <Users className="w-4 h-4 text-[var(--text-secondary)]" />
-                            <span className="text-[var(--text-secondary)]">
+                            <span className="text-[var(--text-secondary)] text-sm">
                               {league.max_teams || 0} slots
                             </span>
                           </div>
                           <div className="flex items-center gap-2">
                             <Trophy className="w-4 h-4 text-[var(--text-secondary)]" />
-                            <span className="text-[var(--text-secondary)]">Prize Pool</span>
+                            <span className="text-[var(--text-secondary)] text-sm">Prize Pool</span>
                           </div>
                           <div className="flex items-center gap-2">
                             <Calendar className="w-4 h-4 text-[var(--text-secondary)]" />
-                            <span className="text-[var(--text-secondary)]">
+                            <span className="text-[var(--text-secondary)] text-sm">
                               Starts {league.start_date ? new Date(league.start_date).toLocaleDateString() : 'TBD'}
                             </span>
                           </div>
                         </div>
                       </div>
                       <div className="flex items-center gap-3">
-                        <div className="px-3 py-1 bg-blue-500/10 text-blue-500 rounded-full text-sm font-medium">
+                        <div className="px-3 py-1 bg-blue-500/10 text-blue-500 rounded-full text-xs md:text-sm font-medium">
                           UPCOMING
                         </div>
-                        <ChevronRight className="w-5 h-5 text-[var(--text-secondary)]" />
+                        <ChevronRight className="w-4 h-4 md:w-5 md:h-5 text-[var(--text-secondary)]" />
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-3 gap-6 mt-6">
-                      <div className="p-4 rounded-xl bg-[var(--overlay-hover)]">
-                        <p className="text-[var(--text-secondary)] text-sm">Entry Type</p>
-                        <p className="text-[var(--text-primary)] font-medium mt-1 capitalize">{league.entry_type || 'N/A'}</p>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-6 mt-4 md:mt-6">
+                      <div className="p-3 md:p-4 rounded-xl bg-[var(--overlay-hover)]">
+                        <p className="text-[var(--text-secondary)] text-xs md:text-sm">Entry Type</p>
+                        <p className="text-[var(--text-primary)] font-medium mt-1 capitalize text-sm md:text-base">{league.entry_type || 'N/A'}</p>
                       </div>
-                      <div className="p-4 rounded-xl bg-[var(--overlay-hover)]">
-                        <p className="text-[var(--text-secondary)] text-sm">Start Date</p>
-                        <p className="text-[var(--text-primary)] font-medium mt-1">
+                      <div className="p-3 md:p-4 rounded-xl bg-[var(--overlay-hover)]">
+                        <p className="text-[var(--text-secondary)] text-xs md:text-sm">Start Date</p>
+                        <p className="text-[var(--text-primary)] font-medium mt-1 text-sm md:text-base">
                           {league.start_date ? new Date(league.start_date).toLocaleDateString() : 'Not set'}
                         </p>
                       </div>
-                      <div className="p-4 rounded-xl bg-[var(--overlay-hover)]">
-                        <p className="text-[var(--text-secondary)] text-sm">Status</p>
+                      <div className="p-3 md:p-4 rounded-xl bg-[var(--overlay-hover)]">
+                        <p className="text-[var(--text-secondary)] text-xs md:text-sm">Status</p>
                         <div className="flex items-center gap-2 mt-1">
                           <Clock className="w-4 h-4 text-blue-500" />
-                          <span className="text-blue-500 font-medium">Registration Open</span>
+                          <span className="text-blue-500 font-medium text-sm md:text-base">Registration Open</span>
                         </div>
                       </div>
                     </div>

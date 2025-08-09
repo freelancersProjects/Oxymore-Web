@@ -1,8 +1,8 @@
-@import "../../styles/global.scss";
+@import "../../styles/global";
 
 .about {
   opacity: 0;
-  transform: translateY(30px);
+  transform: translateY(rem-calc(30));
   transition: opacity 0.8s ease, transform 0.8s ease;
   background-color: $color-gray-darkest;
   position: relative;
@@ -21,7 +21,7 @@
     padding: rem-calc(80) 10% rem-calc(60) 15%;
     position: relative;
     overflow: hidden;
-    background-image: linear-gradient(rgba(10, 10, 30, 0.65), rgba(10, 10, 30, 0.65)), url('../../assets/images/quadrillage.png');
+    background-image: linear-gradient(rgb(10 10 30 / 65%), rgb(10 10 30 / 65%)), url('../../assets/images/quadrillage.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -29,10 +29,7 @@
     &::before {
       content: '';
       position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
+      inset: 0;
       background: linear-gradient(135deg, rgba($color-purple, 0.1) 0%, rgba($color-blue, 0.1) 100%);
       z-index: -1;
     }
@@ -43,7 +40,7 @@
       bottom: 0;
       left: 0;
       right: 0;
-      height: 200px;
+      height: rem-calc(200);
       background: linear-gradient(to bottom, transparent, $color-gray-darkest);
       z-index: 1;
     }
@@ -54,11 +51,10 @@
       z-index: 2;
 
       h1 {
-        margin: rem-calc(20) 0 rem-calc(20);
+        margin: rem-calc(20) 0;
         font-size: rem-calc(48);
         line-height: 1.2;
         background: linear-gradient(135deg, $color-white 0%, rgba($color-white, 0.8) 100%);
-        -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
       }
@@ -79,9 +75,9 @@
 
         .stat-item {
           opacity: 0;
-          transform: translateY(20px);
+  transform: translateY(rem-calc(20));
           animation: fadeInUp 0.6s ease forwards;
-          
+
           &.stat-delay-0 { animation-delay: 0s; }
           &.stat-delay-1 { animation-delay: 0.2s; }
           &.stat-delay-2 { animation-delay: 0.4s; }
@@ -94,7 +90,6 @@
             color: $color-white;
             margin-bottom: rem-calc(8);
             background: linear-gradient(135deg, $color-blue 0%, $color-purple 100%);
-            -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
           }
@@ -123,12 +118,12 @@
         background: rgba($color-white, 0.05);
         backdrop-filter: blur(rem-calc(20));
         border: 1px solid rgba($color-white, 0.1);
-        box-shadow: 0 rem-calc(20) rem-calc(40) rgba(0, 0, 0, 0.1);
+        box-shadow: 0 rem-calc(20) rem-calc(40) rgb(0 0 0 / 10%);
         transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         animation: float 6s ease-in-out infinite;
 
-        &:hover {
-          transform: translateY(-15px) scale(1.08);
+          &:hover {
+            transform: translateY(rem-calc(-15)) scale(1.08);
           background: rgba($color-white, 0.15);
           border-color: rgba($color-blue, 0.5);
           box-shadow: 0 rem-calc(30) rem-calc(60) rgba($color-blue, 0.2);
@@ -153,7 +148,7 @@
           }
 
           h4 {
-            font-family: "Orbitron", sans-serif;
+            font-family: Orbitron, sans-serif;
             font-size: rem-calc(18);
             color: $color-white;
             margin-bottom: rem-calc(8);
@@ -220,7 +215,6 @@
           font-size: rem-calc(42);
           margin-bottom: rem-calc(25);
           background: linear-gradient(135deg, $color-white 0%, rgba($color-white, 0.8) 100%);
-          -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
           background-clip: text;
         }
@@ -331,7 +325,6 @@
       font-size: rem-calc(42);
       margin: rem-calc(25) 0 rem-calc(50);
       background: linear-gradient(135deg, $color-white 0%, rgba($color-white, 0.8) 100%);
-      -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
@@ -351,10 +344,10 @@
         border: 1px solid rgba($color-white, 0.1);
         transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         opacity: 0;
-        transform: translateY(30px);
+          transform: translateY(rem-calc(30));
         animation: fadeInUp 0.6s ease forwards;
         cursor: pointer;
-        
+
         &.value-delay-0 { animation-delay: 0s; }
         &.value-delay-1 { animation-delay: 0.1s; }
         &.value-delay-2 { animation-delay: 0.2s; }
@@ -363,7 +356,7 @@
         &.value-delay-5 { animation-delay: 0.5s; }
 
         &:hover {
-          transform: translateY(-12px);
+          transform: translateY(rem-calc(-12));
           background: rgba($color-white, 0.12);
           border-color: rgba($color-blue, 0.4);
           box-shadow: 0 rem-calc(25) rem-calc(50) rgba($color-blue, 0.15);
@@ -424,7 +417,6 @@
       font-size: rem-calc(42);
       margin: rem-calc(25) 0 rem-calc(15);
       background: linear-gradient(135deg, $color-white 0%, rgba($color-white, 0.8) 100%);
-      -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
@@ -446,10 +438,10 @@
 
       .team-member {
         opacity: 0;
-        transform: translateY(30px);
+          transform: translateY(rem-calc(30));
         animation: fadeInUp 0.6s ease forwards;
         transition: transform 0.3s ease;
-        
+
         &.team-delay-0 { animation-delay: 0s; }
         &.team-delay-1 { animation-delay: 0.15s; }
         &.team-delay-2 { animation-delay: 0.3s; }
@@ -458,7 +450,7 @@
         &.team-delay-5 { animation-delay: 0.75s; }
 
         &:hover {
-          transform: translateY(-8px);
+          transform: translateY(rem-calc(-8));
         }
 
         .member-image {
@@ -490,18 +482,15 @@
 
           .member-overlay {
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(10, 10, 20, 0.92);
+            inset: 0;
+            background: rgb(10 10 20 / 92%);
             display: flex;
             align-items: center;
             justify-content: center;
             opacity: 0;
             transition: opacity 0.3s ease;
             border-radius: rem-calc(20);
-            box-shadow: 0 8px 32px 0 rgba(21, 147, 206, 0.12);
+            box-shadow: 0 8px 32px 0 rgb(21 147 206 / 12%);
 
             .social-links {
               display: flex;
@@ -582,7 +571,6 @@
           margin: rem-calc(25) 0 rem-calc(40);
           text-align: center;
           background: linear-gradient(135deg, $color-white 0%, rgba($color-white, 0.8) 100%);
-          -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
           background-clip: text;
         }
@@ -642,7 +630,7 @@
 
             .timeline-content {
               h4 {
-                font-family: "Orbitron", sans-serif;
+                font-family: Orbitron, sans-serif;
                 font-size: rem-calc(20);
                 color: $color-white;
                 margin-bottom: rem-calc(10);
@@ -664,7 +652,7 @@
 
   // CTA Section
   &__cta {
-    padding: rem-calc(80) rem-calc(20) rem-calc(80) rem-calc(20);
+    padding: rem-calc(80) rem-calc(20);
     background: linear-gradient(135deg, rgba($color-purple, 0.1) 0%, rgba($color-blue, 0.1) 100%);
     display: grid;
     grid-template-columns: 1.2fr 1fr;
@@ -682,15 +670,16 @@
       justify-content: center;
       padding-left: 15vw;
       padding-right: 0;
+
       h2 {
         font-size: rem-calc(42);
         margin-bottom: rem-calc(20);
         background: linear-gradient(135deg, $color-white 0%, rgba($color-white, 0.8) 100%);
-        -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
         text-align: left;
       }
+
       p {
         font-size: rem-calc(18);
         line-height: 1.7;
@@ -698,10 +687,12 @@
         margin-bottom: rem-calc(30);
         text-align: left;
       }
+
       .cta-buttons {
         display: flex;
         gap: rem-calc(20);
         align-items: center;
+
         .cta-link {
           color: $color-white;
           text-decoration: none;
@@ -710,6 +701,7 @@
           border: 2px solid rgba($color-white, 0.3);
           border-radius: rem-calc(30);
           transition: all 0.3s ease;
+
           &:hover {
             border-color: $color-white;
             background: rgba($color-white, 0.1);
@@ -718,20 +710,24 @@
         }
       }
     }
+
     .cta-visual {
       display: flex;
       justify-content: flex-end;
       align-items: center;
       padding-right: 15vw;
+
       .cta-graphic {
         position: relative;
         width: rem-calc(300);
         height: rem-calc(300);
+
         .graphic-element {
           position: absolute;
           border-radius: 50%;
           background: linear-gradient(135deg, $color-blue 0%, $color-purple 100%);
           animation: pulse 2s ease-in-out infinite;
+
           &.element-1 {
             width: rem-calc(100);
             height: rem-calc(100);
@@ -739,6 +735,7 @@
             left: 20%;
             animation-delay: 0s;
           }
+
           &.element-2 {
             width: rem-calc(150);
             height: rem-calc(150);
@@ -746,6 +743,7 @@
             right: 10%;
             animation-delay: 0.5s;
           }
+
           &.element-3 {
             width: rem-calc(80);
             height: rem-calc(80);
@@ -763,7 +761,7 @@
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(30px);
+          transform: translateY(rem-calc(30));
   }
 
   to {
@@ -773,14 +771,13 @@
 }
 
 @keyframes float {
-
   0%,
   100% {
-    transform: translateY(0px);
+    transform: translateY(0);
   }
 
   50% {
-    transform: translateY(-20px);
+    transform: translateY(rem-calc(-20));
   }
 }
 
@@ -795,7 +792,6 @@
 }
 
 @keyframes pulse {
-
   0%,
   100% {
     transform: scale(1);
@@ -809,7 +805,7 @@
 }
 
 // Responsive Design
-@media (max-width: 1024px) {
+@media (width <= 1024px) {
   .about {
     &__hero {
       flex-direction: column;
@@ -841,6 +837,7 @@
     &__cta {
       grid-template-columns: 1fr;
       gap: rem-calc(50);
+
       .cta-content, .cta-visual {
         padding-left: 5vw;
         padding-right: 5vw;
@@ -848,12 +845,15 @@
         text-align: center;
         justify-content: center;
       }
+
       .cta-content {
         align-items: center;
+
         h2, p {
           text-align: center;
         }
       }
+
       .cta-visual {
         justify-content: center;
       }
@@ -861,7 +861,7 @@
   }
 }
 
-@media (max-width: 768px) {
+@media (width <= 768px) {
   .about {
     &__hero {
       padding: rem-calc(60) 5% rem-calc(30);

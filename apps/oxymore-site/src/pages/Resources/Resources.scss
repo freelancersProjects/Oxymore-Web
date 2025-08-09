@@ -1,4 +1,4 @@
-@import "../../styles/global.scss";
+@import "../../styles/global";
 
 body, .resources-bg-animated {
   overflow-x: hidden !important;
@@ -18,36 +18,36 @@ body, .resources-bg-animated {
   z-index: 1;
   overflow-x: hidden;
 
-  @media (max-width: 768px) {
+  @media (width <= 768px) {
     margin: rem-calc(120) auto rem-calc(60);
     padding: 0 rem-calc(16);
   }
 
-  @media (max-width: 480px) {
+  @media (width <= 480px) {
     margin: rem-calc(100) auto rem-calc(40);
     padding: 0 rem-calc(12);
   }
 
   h1 {
-    font-family: "Orbitron", sans-serif;
+    font-family: Orbitron, sans-serif;
     font-size: rem-calc(54);
     font-weight: 700;
     color: $color-white;
     margin-bottom: rem-calc(20);
 
-    @media (max-width: 768px) {
+    @media (width <= 768px) {
       font-size: rem-calc(42);
       margin-bottom: rem-calc(16);
     }
 
-    @media (max-width: 480px) {
+    @media (width <= 480px) {
       font-size: rem-calc(32);
       margin-bottom: rem-calc(12);
     }
   }
 
   .resources-subtitle {
-    font-family: "Outfit", sans-serif;
+    font-family: Outfit, sans-serif;
     font-size: rem-calc(20);
     color: rgba($color-white, 0.7);
     margin-bottom: rem-calc(80);
@@ -55,13 +55,13 @@ body, .resources-bg-animated {
     margin-left: auto;
     margin-right: auto;
 
-    @media (max-width: 768px) {
+    @media (width <= 768px) {
       font-size: rem-calc(18);
       margin-bottom: rem-calc(60);
       padding: 0 rem-calc(16);
     }
 
-    @media (max-width: 480px) {
+    @media (width <= 480px) {
       font-size: rem-calc(16);
       margin-bottom: rem-calc(40);
       padding: 0 rem-calc(8);
@@ -75,24 +75,24 @@ body, .resources-bg-animated {
     margin: 0 auto;
     max-width: 1200px;
 
-    @media (max-width: 1100px) {
+    @media (width <= 1100px) {
       grid-template-columns: repeat(2, 1fr);
       gap: rem-calc(24);
     }
 
-    @media (max-width: 700px) {
+    @media (width <= 700px) {
       grid-template-columns: 1fr;
       gap: rem-calc(20);
     }
 
-    @media (max-width: 480px) {
+    @media (width <= 480px) {
       gap: rem-calc(16);
     }
 
     .resource-card:last-child:nth-child(3n + 1) {
       grid-column: 2 / 3;
 
-      @media (max-width: 700px) {
+      @media (width <= 700px) {
         grid-column: 1 / 2;
       }
     }
@@ -104,7 +104,7 @@ body, .resources-bg-animated {
     border-radius: rem-calc(28);
     box-shadow: 0 2px 16px 0 rgba($color-blue, 0.10);
     backdrop-filter: blur(rem-calc(14));
-    padding: rem-calc(38) rem-calc(28) rem-calc(32) rem-calc(28);
+    padding: rem-calc(38) rem-calc(28) rem-calc(32);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -112,23 +112,23 @@ body, .resources-bg-animated {
     position: relative;
     z-index: 2;
 
-    @media (max-width: 768px) {
-      padding: rem-calc(24) rem-calc(20) rem-calc(20) rem-calc(20);
+    @media (width <= 768px) {
+      padding: rem-calc(24) rem-calc(20) rem-calc(20);
       border-radius: rem-calc(20);
     }
 
-    @media (max-width: 480px) {
-      padding: rem-calc(20) rem-calc(16) rem-calc(16) rem-calc(16);
+    @media (width <= 480px) {
+      padding: rem-calc(20) rem-calc(16) rem-calc(16);
       border-radius: rem-calc(16);
     }
 
     &:hover {
       box-shadow: 0 8px 32px 0 rgba($color-blue, 0.22), 0 0 24px 0 $color-purple;
       border: 1.5px solid $color-blue;
-      transform: translateY(-8px) scale(1.025);
+      transform: translateY(rem-calc(-8)) scale(1.025);
 
-      @media (max-width: 768px) {
-        transform: translateY(-4px) scale(1.02);
+      @media (width <= 768px) {
+        transform: translateY(rem-calc(-4)) scale(1.02);
       }
     }
 
@@ -140,47 +140,47 @@ body, .resources-bg-animated {
       align-items: center;
       justify-content: center;
 
-      @media (max-width: 768px) {
+      @media (width <= 768px) {
         font-size: rem-calc(48);
         margin-bottom: rem-calc(16);
       }
 
-      @media (max-width: 480px) {
+      @media (width <= 480px) {
         font-size: rem-calc(40);
         margin-bottom: rem-calc(12);
       }
     }
 
     h2 {
-      font-family: "Orbitron", sans-serif;
+      font-family: Orbitron, sans-serif;
       font-size: rem-calc(24);
       color: $color-white;
       margin-bottom: rem-calc(10);
       font-weight: 700;
 
-      @media (max-width: 768px) {
+      @media (width <= 768px) {
         font-size: rem-calc(20);
       }
 
-      @media (max-width: 480px) {
+      @media (width <= 480px) {
         font-size: rem-calc(18);
       }
     }
 
     p {
-      font-family: "Outfit", sans-serif;
+      font-family: Outfit, sans-serif;
       font-size: rem-calc(16);
       color: rgba($color-white, 0.85);
       margin-bottom: rem-calc(22);
       min-height: rem-calc(48);
 
-      @media (max-width: 768px) {
+      @media (width <= 768px) {
         font-size: rem-calc(14);
         min-height: rem-calc(40);
         margin-bottom: rem-calc(16);
       }
 
-      @media (max-width: 480px) {
+      @media (width <= 480px) {
         font-size: rem-calc(13);
         min-height: rem-calc(36);
         margin-bottom: rem-calc(12);

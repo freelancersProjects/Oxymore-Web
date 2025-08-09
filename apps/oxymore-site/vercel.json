@@ -1,9 +1,10 @@
 {
   "cleanUrls": true,
+  "buildCommand": "cd ../../ && npm run build && cd apps/oxymore-site && npm run build",
   "rewrites": [
     {
       "source": "/(.*)",
-      "destination": "/index.html"
+      "destination": "/"
     }
   ]
 }

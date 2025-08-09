@@ -1,19 +1,68 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import { ArrowLeft, Trophy } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import { Trophy, ArrowLeft } from 'lucide-react';
 import { apiService } from '../../../api/apiService';
-import { League, TournamentFormData } from '../../../types';
+import { League } from '../../../types/league';
+import Dropdown, { DropdownOption } from '../../../components/Dropdown/Dropdown';
+
+interface TournamentFormData {
+  tournament_name: string;
+  type: string;
+  format: string;
+  structure: string;
+  id_league: string;
+  description?: string;
+  start_date: string;
+  end_date: string;
+  check_in_date?: string;
+  min_participant: number;
+  max_participant: number;
+  entry_fee: number;
+  cash_prize: number;
+  is_premium?: boolean;
+  image_url?: string;
+  id_badge_winner?: string;
+}
 
 const Create = () => {
   const navigate = useNavigate();
-  const { register, handleSubmit, formState: { errors } } = useForm<TournamentFormData>();
   const [leagues, setLeagues] = useState<League[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetchLeagues();
-  }, []);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch,
+    setValue
+  } = useForm<TournamentFormData>();
+
+  // Dropdown options
+  const typeOptions: DropdownOption[] = [
+    { value: 'ligue', label: 'Ligue' },
+    { value: 'major', label: 'Major' },
+    { value: 'open', label: 'Open' }
+  ];
+
+  const formatOptions: DropdownOption[] = [
+    { value: 'BO1', label: 'Best of 1' },
+    { value: 'BO3', label: 'Best of 3' },
+    { value: 'BO5', label: 'Best of 5' }
+  ];
+
+  const structureOptions: DropdownOption[] = [
+    { value: 'single_elimination', label: 'Single Elimination' },
+    { value: 'double_elimination', label: 'Double Elimination' },
+    { value: 'round_robin', label: 'Round Robin' },
+    { value: 'swiss', label: 'Swiss System' },
+    { value: 'group_stage', label: 'Group Stage + Playoffs' }
+  ];
+
+  const leagueOptions: DropdownOption[] = leagues.map(league => ({
+    value: league.id_league,
+    label: league.league_name
+  }));
 
   const fetchLeagues = async () => {
     try {
@@ -27,6 +76,10 @@ const Create = () => {
     }
   };
 
+  useEffect(() => {
+    fetchLeagues();
+  }, []);
+
   const onSubmit = async (data: TournamentFormData) => {
     try {
       await apiService.post('/tournaments', data);
@@ -39,19 +92,19 @@ const Create = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <Link
-            to="/tournaments"
-            className="p-2 hover:bg-[var(--overlay-hover)] rounded-lg transition-colors"
-          >
-            <ArrowLeft className="w-5 h-5 text-[var(--text-primary)]" />
-          </Link>
-          <h1 className="text-2xl font-bold text-[var(--text-primary)]">Create Tournament</h1>
+      <div className="flex items-center gap-4">
+        <button
+          onClick={() => navigate('/tournaments')}
+          className="p-2 hover:bg-[var(--overlay-hover)] rounded-xl transition-colors"
+        >
+          <ArrowLeft className="w-5 h-5" />
+        </button>
+        <div>
+          <h1 className="text-2xl font-bold text-primary">Create Tournament</h1>
+          <p className="text-secondary mt-1">Create a new tournament</p>
         </div>
       </div>
 
-      {/* Form */}
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         {/* Basic Information */}
         <div className="card-base p-6">
@@ -64,84 +117,57 @@ const Create = () => {
                 type="text"
                 id="tournament_name"
                 className="input-base w-full"
-                placeholder="e.g. Summer Championship 2024"
+                placeholder="Enter tournament name"
               />
               {errors.tournament_name && <p className="text-red-400 text-sm mt-1">{errors.tournament_name.message}</p>}
             </div>
 
             <div>
-              <label className="label-base" htmlFor="organized_by">Organized By</label>
-              <input
-                {...register('organized_by')}
-                type="text"
-                id="organized_by"
-                className="input-base w-full"
-                placeholder="e.g. Oxymore Gaming"
-              />
-            </div>
-
-            <div>
               <label className="label-base" htmlFor="type">Tournament Type *</label>
-              <select
-                {...register('type', { required: 'Tournament type is required' })}
-                id="type"
-                className="input-base w-full"
-              >
-                <option value="">Select type</option>
-                <option value="ligue">Ligue</option>
-                <option value="major">Major</option>
-                <option value="open">Open</option>
-              </select>
+              <Dropdown
+                options={typeOptions}
+                value={watch('type') || ''}
+                onChange={(value) => setValue('type', value)}
+                placeholder="Select type"
+                className="w-full"
+              />
               {errors.type && <p className="text-red-400 text-sm mt-1">{errors.type.message}</p>}
             </div>
 
             <div>
               <label className="label-base" htmlFor="format">Match Format *</label>
-              <select
-                {...register('format', { required: 'Match format is required' })}
-                id="format"
-                className="input-base w-full"
-              >
-                <option value="">Select format</option>
-                <option value="BO1">Best of 1</option>
-                <option value="BO3">Best of 3</option>
-                <option value="BO5">Best of 5</option>
-              </select>
+              <Dropdown
+                options={formatOptions}
+                value={watch('format') || ''}
+                onChange={(value) => setValue('format', value)}
+                placeholder="Select format"
+                className="w-full"
+              />
               {errors.format && <p className="text-red-400 text-sm mt-1">{errors.format.message}</p>}
             </div>
 
             <div>
               <label className="label-base" htmlFor="structure">Tournament Structure *</label>
-              <select
-                {...register('structure', { required: 'Tournament structure is required' })}
-                id="structure"
-                className="input-base w-full"
-              >
-                <option value="">Select structure</option>
-                <option value="single_elimination">Single Elimination</option>
-                <option value="double_elimination">Double Elimination</option>
-                <option value="round_robin">Round Robin</option>
-                <option value="swiss">Swiss System</option>
-                <option value="group_stage">Group Stage + Playoffs</option>
-              </select>
+              <Dropdown
+                options={structureOptions}
+                value={watch('structure') || ''}
+                onChange={(value) => setValue('structure', value)}
+                placeholder="Select structure"
+                className="w-full"
+              />
               {errors.structure && <p className="text-red-400 text-sm mt-1">{errors.structure.message}</p>}
             </div>
 
             <div>
               <label className="label-base" htmlFor="id_league">League *</label>
-              <select
-                {...register('id_league', { required: 'League is required' })}
-                id="id_league"
-                className="input-base w-full"
+              <Dropdown
+                options={leagueOptions}
+                value={watch('id_league') || ''}
+                onChange={(value) => setValue('id_league', value)}
+                placeholder={loading ? 'Loading leagues...' : 'Select league'}
                 disabled={loading}
-              >
-                <option value="">{loading ? 'Loading leagues...' : 'Select league'}</option>
-                {leagues.map((league) => (
-                  <option key={league.id_league} value={league.id_league}>
-                    {league.league_name}
-                  </option>
-                ))}
-              </select>
+                className="w-full"
+              />
               {errors.id_league && <p className="text-red-400 text-sm mt-1">{errors.id_league.message}</p>}
             </div>
           </div>

@@ -112,9 +112,9 @@ const UserDetails = () => {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 md:space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div className="flex items-center gap-4">
           <Link
             to="/users"
@@ -122,7 +122,7 @@ const UserDetails = () => {
           >
             <ArrowLeft className="w-5 h-5 text-[var(--text-primary)]" />
           </Link>
-          <h1 className="text-2xl font-bold text-[var(--text-primary)]">
+          <h1 className="text-xl md:text-2xl font-bold text-[var(--text-primary)]">
             Détails de l'utilisateur
           </h1>
         </div>
@@ -135,7 +135,7 @@ const UserDetails = () => {
       </div>
 
       {/* Banner & Avatar */}
-      <div className="relative rounded-2xl overflow-hidden bg-[var(--overlay-hover)] h-48">
+      <div className="relative rounded-2xl overflow-hidden bg-[var(--overlay-hover)] h-32 md:h-48">
         {user.banner_url ? (
           <img
             src={user.banner_url}
@@ -145,9 +145,9 @@ const UserDetails = () => {
         ) : (
           <div className="w-full h-full bg-gradient-oxymore opacity-20" />
         )}
-        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-black/80 to-transparent" />
-        <div className="absolute -bottom-6 left-8 ring-8 ring-[var(--background)] rounded-2xl overflow-hidden">
-          <div className="w-24 h-24 bg-[var(--overlay-hover)]">
+        <div className="absolute bottom-0 left-0 right-0 h-16 md:h-24 bg-gradient-to-t from-black/80 to-transparent" />
+        <div className="absolute -bottom-4 md:-bottom-6 left-4 md:left-8 ring-4 md:ring-8 ring-[var(--background)] rounded-xl md:rounded-2xl overflow-hidden">
+          <div className="w-16 h-16 md:w-24 md:h-24 bg-[var(--overlay-hover)]">
             {user.avatar_url ? (
               <img
                 src={user.avatar_url}
@@ -156,7 +156,7 @@ const UserDetails = () => {
               />
             ) : (
               <div className="w-full h-full flex items-center justify-center">
-                <UserIcon className="w-12 h-12 text-[var(--text-secondary)]" />
+                <UserIcon className="w-8 h-8 md:w-12 md:h-12 text-[var(--text-secondary)]" />
               </div>
             )}
           </div>
@@ -164,20 +164,20 @@ const UserDetails = () => {
       </div>
 
       {/* Content */}
-      <div className="grid grid-cols-3 gap-6 pt-10">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6 pt-6 md:pt-10">
         {/* Colonne principale */}
-        <div className="col-span-2 space-y-6">
+        <div className="lg:col-span-2 space-y-4 md:space-y-6">
           {/* Informations de base */}
-          <div className="bg-[var(--card-background)] rounded-2xl p-6 space-y-4">
-            <div className="flex items-start justify-between">
+          <div className="bg-[var(--card-background)] rounded-2xl p-4 md:p-6 space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
               <div>
-                <h2 className="text-2xl font-bold text-[var(--text-primary)] flex items-center gap-2">
+                <h2 className="text-xl md:text-2xl font-bold text-[var(--text-primary)] flex items-center gap-2">
                   {user.username}
                   {isViewingAdmin && (
-                    <Shield className="w-5 h-5 text-purple-400" />
+                    <Shield className="w-4 h-4 md:w-5 md:h-5 text-purple-400" />
                   )}
                 </h2>
-                <p className="text-[var(--text-secondary)]">
+                <p className="text-[var(--text-secondary)] text-sm md:text-base">
                   {user.first_name} {user.last_name}
                 </p>
               </div>
@@ -192,9 +192,9 @@ const UserDetails = () => {
               )}
             </div>
             {user.bio && (
-              <p className="text-[var(--text-primary)]">{user.bio}</p>
+              <p className="text-[var(--text-primary)] text-sm md:text-base">{user.bio}</p>
             )}
-            <div className="flex items-center gap-6 text-sm">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-3 md:gap-6 text-sm">
               <div className="flex items-center gap-2 text-[var(--text-secondary)]">
                 <Calendar className="w-4 h-4" />
                 <span>
@@ -212,43 +212,43 @@ const UserDetails = () => {
           </div>
 
           {/* Statistiques */}
-          <div className="bg-[var(--card-background)] rounded-2xl p-6">
+          <div className="bg-[var(--card-background)] rounded-2xl p-4 md:p-6">
             <h3 className="text-lg font-bold text-[var(--text-primary)] mb-4">
               Statistiques
             </h3>
-            <div className="grid grid-cols-3 gap-4">
-              <div className="bg-[var(--overlay-hover)] rounded-xl p-4">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4">
+              <div className="bg-[var(--overlay-hover)] rounded-xl p-3 md:p-4">
                 <div className="flex items-center gap-3 mb-2">
                   <div className="w-8 h-8 rounded-lg bg-blue-500/20 flex items-center justify-center">
                     <Trophy className="w-5 h-5 text-blue-500" />
                   </div>
-                  <span className="text-[var(--text-secondary)]">ELO</span>
+                  <span className="text-[var(--text-secondary)] text-sm">ELO</span>
                 </div>
-                <p className="text-2xl font-bold text-[var(--text-primary)]">
+                <p className="text-xl md:text-2xl font-bold text-[var(--text-primary)]">
                   {user.elo || "-"}
                 </p>
               </div>
               {user.wallet !== undefined && (
-                <div className="bg-[var(--overlay-hover)] rounded-xl p-4">
+                <div className="bg-[var(--overlay-hover)] rounded-xl p-3 md:p-4">
                   <div className="flex items-center gap-3 mb-2">
                     <div className="w-8 h-8 rounded-lg bg-green-500/20 flex items-center justify-center">
                       <Wallet className="w-5 h-5 text-green-500" />
                     </div>
-                    <span className="text-[var(--text-secondary)]">Wallet</span>
+                    <span className="text-[var(--text-secondary)] text-sm">Wallet</span>
                   </div>
-                  <p className="text-2xl font-bold text-[var(--text-primary)]">
+                  <p className="text-xl md:text-2xl font-bold text-[var(--text-primary)]">
                     {formatWallet(user.wallet)}
                   </p>
                 </div>
               )}
-              <div className="bg-[var(--overlay-hover)] rounded-xl p-4">
+              <div className="bg-[var(--overlay-hover)] rounded-xl p-3 md:p-4">
                 <div className="flex items-center gap-3 mb-2">
                   <div className="w-8 h-8 rounded-lg bg-purple-500/20 flex items-center justify-center">
                     <MessageSquare className="w-5 h-5 text-purple-500" />
                   </div>
-                  <span className="text-[var(--text-secondary)]">Chat</span>
+                  <span className="text-[var(--text-secondary)] text-sm">Chat</span>
                 </div>
-                <p className="text-[var(--text-primary)]">
+                <p className="text-[var(--text-primary)] text-sm md:text-base">
                   {user.team_chat_is_muted ? "Muté" : "Actif"}
                 </p>
               </div>
@@ -257,104 +257,104 @@ const UserDetails = () => {
         </div>
 
         {/* Sidebar */}
-        <div className="space-y-6">
+        <div className="space-y-4 md:space-y-6">
           {/* Liens */}
-          <div className="bg-[var(--card-background)] rounded-2xl p-6">
+          <div className="bg-[var(--card-background)] rounded-2xl p-4 md:p-6">
             <h3 className="text-lg font-bold text-[var(--text-primary)] mb-4">
               Liens
             </h3>
-            <div className="space-y-4">
+            <div className="space-y-3 md:space-y-4">
               <div className="flex items-center gap-3 text-[var(--text-secondary)]">
                 <Star className="w-5 h-5" />
-                <div>
-                  <span>Faceit</span>
+                <div className="min-w-0 flex-1">
+                  <span className="text-sm">Faceit</span>
                   {user.faceit_id ? (
                     <a
                       href={user.faceit_id}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="ml-2 hover:text-[var(--text-primary)] transition-colors"
+                      className="ml-2 hover:text-[var(--text-primary)] transition-colors text-sm truncate block"
                     >
                       {user.faceit_id.replace(/^https?:\/\/(www\.)?/, "")}
                     </a>
                   ) : (
-                    <span className="ml-2">-</span>
+                    <span className="ml-2 text-sm">-</span>
                   )}
                 </div>
               </div>
 
               <div className="flex items-center gap-3 text-[var(--text-secondary)]">
                 <LinkIcon className="w-5 h-5" />
-                <div>
-                  <span>Steam</span>
+                <div className="min-w-0 flex-1">
+                  <span className="text-sm">Steam</span>
                   {user.steam_link ? (
                     <a
                       href={user.steam_link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="ml-2 hover:text-[var(--text-primary)] transition-colors"
+                      className="ml-2 hover:text-[var(--text-primary)] transition-colors text-sm truncate block"
                     >
                       {user.steam_link.replace(/^https?:\/\/(www\.)?/, "")}
                     </a>
                   ) : (
-                    <span className="ml-2">-</span>
+                    <span className="ml-2 text-sm">-</span>
                   )}
                 </div>
               </div>
 
               <div className="flex items-center gap-3 text-[var(--text-secondary)]">
                 <Twitter className="w-5 h-5 text-blue-400" />
-                <div>
-                  <span>Twitter</span>
+                <div className="min-w-0 flex-1">
+                  <span className="text-sm">Twitter</span>
                   {user.twitter_url ? (
                     <a
                       href={user.twitter_url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="ml-2 hover:text-[var(--text-primary)] transition-colors"
+                      className="ml-2 hover:text-[var(--text-primary)] transition-colors text-sm truncate block"
                     >
                       {user.twitter_url.replace(/^https?:\/\/(www\.)?/, "")}
                     </a>
                   ) : (
-                    <span className="ml-2">-</span>
+                    <span className="ml-2 text-sm">-</span>
                   )}
                 </div>
               </div>
 
               <div className="flex items-center gap-3 text-[var(--text-secondary)]">
                 <Twitch className="w-5 h-5 text-purple-500" />
-                <div>
-                  <span>Twitch</span>
+                <div className="min-w-0 flex-1">
+                  <span className="text-sm">Twitch</span>
                   {user.twitch_link ? (
                     <a
                       href={user.twitch_link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="ml-2 hover:text-[var(--text-primary)] transition-colors"
+                      className="ml-2 hover:text-[var(--text-primary)] transition-colors text-sm truncate block"
                     >
                       {user.twitch_link.replace(/^https?:\/\/(www\.)?/, "")}
                     </a>
                   ) : (
-                    <span className="ml-2">-</span>
+                    <span className="ml-2 text-sm">-</span>
                   )}
                 </div>
               </div>
 
               <div className="flex items-center gap-3 text-[var(--text-secondary)]">
                 <Youtube className="w-5 h-5 text-red-500" />
-                <div>
-                  <span>YouTube</span>
+                <div className="min-w-0 flex-1">
+                  <span className="text-sm">YouTube</span>
                   {user.youtube_link ? (
                     <a
                       href={user.youtube_link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="ml-2 hover:text-[var(--text-primary)] transition-colors"
+                      className="ml-2 hover:text-[var(--text-primary)] transition-colors text-sm truncate block"
                     >
                       {user.youtube_link.replace(/^https?:\/\/(www\.)?/, "")}
                     </a>
                   ) : (
-                    <span className="ml-2">-</span>
+                    <span className="ml-2 text-sm">-</span>
                   )}
                 </div>
               </div>
@@ -362,14 +362,14 @@ const UserDetails = () => {
           </div>
 
           {/* Actions */}
-          <div className="bg-[var(--card-background)] rounded-2xl p-6">
+          <div className="bg-[var(--card-background)] rounded-2xl p-4 md:p-6">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-bold text-[var(--text-primary)]">
                 Actions
               </h3>
               {!canModifyUser() && (
-                <div className="flex items-center gap-1 text-[var(--text-muted)] text-sm">
-                  <Lock className="w-4 h-4" />
+                <div className="flex items-center gap-1 text-[var(--text-muted)] text-xs md:text-sm">
+                  <Lock className="w-3 h-3 md:w-4 md:h-4" />
                   <span>Lecture seule</span>
                 </div>
               )}
@@ -385,7 +385,7 @@ const UserDetails = () => {
                 disabled={canModifyUser()}
               >
                 <button
-                  className={`w-full px-4 py-2 rounded-lg transition-colors ${
+                  className={`w-full px-4 py-2 rounded-lg transition-colors text-sm md:text-base ${
                     canModifyUser()
                       ? "bg-red-500/20 text-red-500 hover:bg-red-500/30"
                       : "bg-[var(--overlay-hover)] text-[var(--text-muted)] cursor-not-allowed"
@@ -406,7 +406,7 @@ const UserDetails = () => {
                 disabled={canModifyUser()}
               >
                 <button
-                  className={`w-full px-4 py-2 rounded-lg transition-colors ${
+                  className={`w-full px-4 py-2 rounded-lg transition-colors text-sm md:text-base ${
                     canModifyUser()
                       ? "bg-[var(--overlay-hover)] text-[var(--text-primary)] hover:bg-[var(--overlay-active)]"
                       : "bg-[var(--overlay-hover)] text-[var(--text-muted)] cursor-not-allowed"
@@ -429,7 +429,7 @@ const UserDetails = () => {
                 disabled={canModifyUser()}
               >
                 <button
-                  className={`w-full px-4 py-2 rounded-lg transition-colors ${
+                  className={`w-full px-4 py-2 rounded-lg transition-colors text-sm md:text-base ${
                     canModifyUser()
                       ? "bg-[var(--overlay-hover)] text-[var(--text-primary)] hover:bg-[var(--overlay-active)]"
                       : "bg-[var(--overlay-hover)] text-[var(--text-muted)] cursor-not-allowed"

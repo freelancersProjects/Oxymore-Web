@@ -18,6 +18,7 @@ import userSanctionRoutes from "./routes/userSanction";
 import groupRoutes from "./routes/group";
 import groupMemberRoutes from "./routes/groupMember";
 import leagueRoutes from "./routes/league";
+import leagueTeamRoutes from "./routes/leagueTeam";
 import mapRoutes from "./routes/map";
 import mapPickbanRoutes from "./routes/mapPickban";
 import matchRoutes from "./routes/match";
@@ -31,6 +32,7 @@ import teamChatRoutes from "./routes/teamChat";
 import teamMemberRoutes from "./routes/teamMember";
 import teamSubscriptionRoutes from "./routes/teamSubscription";
 import tournamentRoutes from "./routes/tournament";
+import tournamentTeamRoutes from "./routes/tournamentTeam";
 import tournamentMapRoutes from "./routes/tournamentMap";
 
 export const registerRoutes = (app: Express) => {
@@ -53,6 +55,7 @@ export const registerRoutes = (app: Express) => {
   app.use("/api/groups", groupRoutes);
   app.use("/api/group-members", groupMemberRoutes);
   app.use("/api/leagues", leagueRoutes);
+  app.use("/api/league-teams", leagueTeamRoutes);
   app.use("/api/maps", mapRoutes);
   app.use("/api/map-pickbans", mapPickbanRoutes);
   app.use("/api/matches", matchRoutes);
@@ -66,6 +69,7 @@ export const registerRoutes = (app: Express) => {
   app.use("/api/team-members", teamMemberRoutes);
   app.use("/api/team-subscriptions", teamSubscriptionRoutes);
   app.use("/api/tournaments", tournamentRoutes);
+  app.use("/api/tournament-teams", tournamentTeamRoutes);
   app.use("/api/tournament-maps", tournamentMapRoutes);
 
 
