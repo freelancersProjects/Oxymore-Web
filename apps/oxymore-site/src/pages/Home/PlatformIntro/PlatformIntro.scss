@@ -1,8 +1,8 @@
-@import "../../../styles/global.scss";
+@import "../../../styles/global";
 
 .platform-intro {
     text-align: center;
-    margin: rem-calc(80) auto rem-calc(40) auto;
+    margin: rem-calc(80) auto rem-calc(40);
     max-width: rem-calc(1266);
     padding: 0 rem-calc(20);
 
@@ -11,7 +11,7 @@
     }
 
     h2 {
-        font-family: "Orbitron", sans-serif;
+        font-family: Orbitron, sans-serif;
         font-size: rem-calc(35);
         font-weight: 600;
         color: $color-white;

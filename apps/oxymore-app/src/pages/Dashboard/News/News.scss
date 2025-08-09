@@ -1,4 +1,4 @@
-@import "../../../styles/global.scss";
+@import "../../../styles/global";
 
 .news-layout {
     display: flex;
@@ -90,8 +90,8 @@
     .news-box {
         padding: rem-calc(15);
         border-radius: rem-calc(20);
-        background: rgba(255, 255, 255, 0.05);
-        border: 0.5px solid rgba(255, 255, 255, 0.5);
+        background: rgb(255 255 255 / 5%);
+        border: 0.5px solid rgb(255 255 255 / 50%);
 
         h4 {
             font-size: rem-calc(14);
@@ -101,9 +101,9 @@
         }
 
         p {
-            font-family: "Outfit", sans-serif;
+            font-family: Outfit, sans-serif;
             font-size: rem-calc(12);
-            color: rgba(255, 255, 255, 0.8);
+            color: rgb(255 255 255 / 80%);
             line-height: rem-calc(18);
         }
 

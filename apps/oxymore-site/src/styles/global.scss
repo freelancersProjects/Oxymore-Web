@@ -1,15 +1,14 @@
-$color-purple: #500CAD;
-$color-white: #ffffff;
+$color-purple: #500cad;
+$color-white: #fff;
 $color-background: #121212;
-$color-gray: #B0B0B0;
-$color-gray-light: #E0E0E0;
-$color-gray-dark: #333333;
-$color-gray-darker: #1A1A1A;
-$color-gray-medium: #888888;
-$color-gray-darkest: #0A0A1E;
-$color-black: #000000;
-$color-blue: #1593CE;
-
+$color-gray: #b0b0b0;
+$color-gray-light: #e0e0e0;
+$color-gray-dark: #333;
+$color-gray-darker: #1a1a1a;
+$color-gray-medium: #888;
+$color-gray-darkest: #0a0a1e;
+$color-black: #000;
+$color-blue: #1593ce;
 $base-font-size: 10;
 
 @function rem-calc($px) {
@@ -17,7 +16,7 @@ $base-font-size: 10;
 }
 
 h1 {
-    font-family: "Orbitron", sans-serif;
+    font-family: Orbitron, sans-serif;
     font-size: rem-calc(42);
     font-weight: 600;
     color: $color-white;
@@ -29,9 +28,9 @@ a {
 }
 
 .orbitron {
-    font-family: "Orbitron", sans-serif;
+    font-family: Orbitron, sans-serif;
 }
 
 .outfit {
-    font-family: "Outfit", sans-serif;
+    font-family: Outfit, sans-serif;
 }

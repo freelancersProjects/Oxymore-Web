@@ -1,8 +1,8 @@
-@import "../../styles/global.scss";
+@import "../../styles/global";
 
 .container-dashboarda-app
 {
-    min-height: calc(100vh - 70px);
+  min-height: calc(100vh - #{rem-calc(70)});
 }
 
 .dashboard-tabs {

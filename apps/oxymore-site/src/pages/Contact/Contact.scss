@@ -1,4 +1,4 @@
-@import "../../styles/global.scss";
+@import "../../styles/global";
 
 .contact-page {
     max-width: 1800px;
@@ -7,7 +7,7 @@
     text-align: center;
 
     h1 {
-        font-family: "Orbitron", sans-serif;
+        font-family: Orbitron, sans-serif;
         font-size: rem-calc(60);
         font-weight: 600;
         color: $color-white;
@@ -15,7 +15,7 @@
     }
 
     p {
-        font-family: "Outfit", sans-serif;
+        font-family: Outfit, sans-serif;
         font-size: rem-calc(18);
         color: rgba($color-white, 0.7);
         margin-bottom: rem-calc(70);
@@ -27,7 +27,7 @@
         gap: rem-calc(40);
         align-items: flex-start;
 
-        @media (max-width: 1000px) {
+        @media (width <= 1000px) {
             grid-template-columns: 1fr;
         }
     }
@@ -42,14 +42,14 @@
         flex-direction: column;
         gap: rem-calc(25);
         padding: rem-calc(40) rem-calc(30);
-        background: rgba(255, 255, 255, 0.05);
-        border: 0.5px solid rgba(255, 255, 255, 0.5);
+        background: rgb(255 255 255 / 5%);
+        border: 0.5px solid rgb(255 255 255 / 50%);
         border-radius: rem-calc(30);
         backdrop-filter: blur(77px);
         text-align: left;
 
         h3 {
-            font-family: "Orbitron", sans-serif;
+            font-family: Orbitron, sans-serif;
             font-size: rem-calc(30);
             font-weight: 600;
             color: $color-white;
@@ -62,7 +62,7 @@
             gap: rem-calc(20);
 
             label {
-                font-family: "Outfit", sans-serif;
+                font-family: Outfit, sans-serif;
                 font-size: rem-calc(18);
                 font-weight: 400;
                 color: $color-white;
@@ -73,10 +73,10 @@
                 display: flex;
                 padding: rem-calc(20);
                 border-radius: rem-calc(13);
-                border: 0.5px solid rgba(255, 255, 255, 0.5);
+                border: 0.5px solid rgb(255 255 255 / 50%);
                 background: transparent;
                 color: $color-white;
-                font-family: "Outfit", sans-serif;
+                font-family: Outfit, sans-serif;
                 font-size: rem-calc(16);
 
                 &::placeholder {
@@ -106,14 +106,14 @@
         .contact__box {
             flex: 1;
             padding: rem-calc(40) rem-calc(30);
-            background: rgba(255, 255, 255, 0.05);
-            border: 0.5px solid rgba(255, 255, 255, 0.5);
+            background: rgb(255 255 255 / 5%);
+            border: 0.5px solid rgb(255 255 255 / 50%);
             border-radius: rem-calc(30);
             backdrop-filter: blur(77px);
             text-align: left;
 
             h3 {
-                font-family: "Orbitron", sans-serif;
+                font-family: Orbitron, sans-serif;
                 font-size: rem-calc(30);
                 font-weight: 600;
                 color: $color-white;
@@ -121,7 +121,7 @@
             }
 
             p {
-                font-family: "Outfit", sans-serif;
+                font-family: Outfit, sans-serif;
                 font-size: rem-calc(18);
                 color: $color-white;
                 margin: rem-calc(6) 0;
@@ -145,12 +145,12 @@
                         width: rem-calc(54);
                         height: rem-calc(54);
                         border-radius: 50%;
-                        border: 0.2px solid rgba(255, 255, 255, 0.50);
+                        border: 0.2px solid rgb(255 255 255 / 50%);
                         background: lighten($color-background, 5%);
                         color: $color-white;
                         font-size: rem-calc(22);
                         transition: background 0.2s, color 0.2s;
-                        box-shadow: 0 rem-calc(2) rem-calc(8) rgba(0, 0, 0, 0.10);
+                        box-shadow: 0 rem-calc(2) rem-calc(8) rgb(0 0 0 / 10%);
 
                         &:hover {
                                 background: $color-blue;

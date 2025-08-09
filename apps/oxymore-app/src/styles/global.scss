@@ -2,21 +2,36 @@
 @use "sass:math";
 
 $color-purple: #500CAD;
-$color-white: #ffffff;
+$color-white: #fff;
 $color-background: #121212;
 $color-gray: #B0B0B0;
 $color-gray-light: #E0E0E0;
-$color-gray-dark: #333333;
+$color-gray-dark: #333;
 $color-gray-darker: #1A1A1A;
-$color-gray-medium: #888888;
+$color-gray-medium: #888;
 $color-gray-darkest: #0A0A1E;
-$color-black: #000000;
+$color-black: #000;
 $color-blue: #1593CE;
 $color-red: #F00;
 $color-primary: #6D28D9;
 $color-purple-light: #8B5CF6;
 $color-danger: #ff4747;
 $color-secondary: #23223a;
+$color-yellow: #FACC15;
+$color-green: #4ADE80;
+$color-gray-ccc: #CCC;
+$color-gray-eee: #EEE;
+$color-purple-accent: #6C47FF;
+$color-pink: #EC4899;
+$color-gray-71717a: #71717A;
+$color-gray-a1a1aa: #A1A1AA;
+$color-purple-9333ea: #9333EA;
+$color-purple-7b36d9: #7B36D9;
+$color-deep-bg-start: #18182A;
+$color-deep-bg-end: #1A1333;
+$color-white-soft: #BDBFFF;
+$color-red-dark: #E03A3A;
+$color-red-soft: #F87171;
 $base-font-size: 10;
 
 @function rem-calc($px) {
@@ -28,7 +43,7 @@ $base-font-size: 10;
 }
 
 h1 {
-    font-family: "Orbitron", sans-serif;
+    font-family: Orbitron, sans-serif;
     font-size: rem-calc(42);
     font-weight: 600;
     color: $color-white;
@@ -43,11 +58,11 @@ td {
 }
 
 .orbitron {
-    font-family: "Orbitron", sans-serif;
+    font-family: Orbitron, sans-serif;
 }
 
 .outfit {
-    font-family: "Outfit", sans-serif;
+    font-family: Outfit, sans-serif;
 }
 
 .purple {
@@ -81,13 +96,16 @@ td {
   width: rem-calc(10);
   background: $color-gray-darkest;
 }
+
 ::-webkit-scrollbar-thumb {
   background: linear-gradient(135deg, $color-purple 0%, $color-blue 100%);
   border-radius: rem-calc(8);
 }
+
 ::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(135deg, lighten($color-purple, 10%) 0%, lighten($color-blue, 10%) 100%);
 }
+
 ::-webkit-scrollbar-corner {
   background: $color-gray-darkest;
 }

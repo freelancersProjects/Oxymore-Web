@@ -1,8 +1,8 @@
-@import "../../../styles/global.scss";
+@import "../../../styles/global";
 
 .tournaments {
     text-align: center;
-    margin: rem-calc(120) auto rem-calc(40) auto;
+    margin: rem-calc(120) auto rem-calc(40);
 
     h1 {
         color: $color-white;
@@ -24,7 +24,7 @@
     max-width: rem-calc(700);
     padding: rem-calc(30);
     border-radius: rem-calc(30);
-    border: 0.5px solid rgba($color-white, 0.2);
+    border: rem-calc(0.5) solid rgba($color-white, 0.2);
     background: rgba($color-white, 0.05);
     backdrop-filter: blur(rem-calc(77));
     text-align: left;
@@ -58,7 +58,7 @@
 
         hr {
             border: none;
-            border-top: 1px solid rgba($color-white, 0.2);
+            border-top: rem-calc(1) solid rgba($color-white, 0.2);
             margin: rem-calc(10) 0;
         }
 
@@ -72,7 +72,7 @@
         .tournament-card__button {
             width: 100%;
             padding: rem-calc(15);
-            border: 0.5px solid $color-white;
+            border: rem-calc(0.5) solid $color-white;
             border-radius: rem-calc(13);
             background: rgba($color-white, 0.05);
             color: $color-white;
