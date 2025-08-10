@@ -175,7 +175,7 @@ const Dashboard = (): React.JSX.Element => {
           },
           {
             title: 'Total Prize Pool',
-            value: loading ? '...' : formatPrice(stats.totalTournaments * 5000), // Estimation
+            value: loading ? '...' : formatPrice(stats.totalCashPrize),
             change: '-5%',
             trend: 'down',
             icon: DollarSign,

@@ -19,6 +19,7 @@ import UserDetails from './pages/Users/UserDetails';
 import Tournaments from './pages/Tournaments/Tournaments';
 import TournamentDetails from './pages/Tournaments/TournamentDetails';
 import CreateTournament from './pages/Tournaments/Create/Create';
+import EditTournament from './pages/Tournaments/Edit/Edit';
 import Teams from './pages/Teams/Teams';
 import TeamDetails from './pages/Teams/TeamDetails';
 import Leagues from './pages/Leagues/Leagues';
@@ -64,8 +65,9 @@ const App = () => {
                             <Route path="users" element={<Users />} />
                             <Route path="users/:id" element={<UserDetails />} />
                             <Route path="tournaments" element={<Tournaments />} />
-                            <Route path="tournaments/:id" element={<TournamentDetails />} />
                             <Route path="tournaments/create" element={<CreateTournament />} />
+                            <Route path="tournaments/edit/:id" element={<EditTournament />} />
+                            <Route path="tournaments/:id" element={<TournamentDetails />} />
                             <Route path="teams" element={<Teams />} />
                             <Route path="teams/:id" element={<TeamDetails />} />
                             <Route path="leagues" element={<Leagues />} />

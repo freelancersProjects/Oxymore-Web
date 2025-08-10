@@ -19,7 +19,26 @@ export const createTournamentMap = async (req: Request, res: Response) => {
   res.status(201).json(newMap);
 };
 
+export const getTournamentMapsByTournamentId = async (req: Request, res: Response) => {
+  try {
+    const maps = await TournamentMapService.getTournamentMapsByTournamentId(req.params.id);
+    res.json(maps);
+  } catch (error: any) {
+    console.error('Error fetching tournament maps:', error);
+    res.status(500).json({ message: 'Internal server error', error: error.message });
+  }
+};
+
 export const deleteTournamentMap = async (req: Request, res: Response) => {
-  await TournamentMapService.deleteTournamentMap(req.params.id);
-  res.status(204).send();
+  try {
+    const deleted = await TournamentMapService.deleteTournamentMapsByTournamentId(req.params.id);
+    if (!deleted) {
+      res.status(404).json({ message: "Tournament maps not found" });
+      return;
+    }
+    res.status(204).send();
+  } catch (error: any) {
+    console.error('Error deleting tournament maps:', error);
+    res.status(500).json({ message: 'Internal server error', error: error.message });
+  }
 };

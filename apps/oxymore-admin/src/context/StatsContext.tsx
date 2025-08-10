@@ -8,6 +8,7 @@ interface Stats {
   totalLeagues: number;
   activeMatches: number;
   activeUsers: number;
+  totalCashPrize: number;
 }
 
 interface User {
@@ -25,6 +26,7 @@ interface Tournament {
   status: string;
   startDate: string;
   endDate: string;
+  cash_prize?: number;
 }
 
 interface Team {
@@ -56,7 +58,8 @@ export const StatsProvider = ({ children }: { children: ReactNode }) => {
     totalTeams: 0,
     totalLeagues: 0,
     activeMatches: 0,
-    activeUsers: 0
+    activeUsers: 0,
+    totalCashPrize: 0
   });
   const [loading, setLoading] = useState(true);
 
@@ -77,13 +80,19 @@ export const StatsProvider = ({ children }: { children: ReactNode }) => {
       const teams = teamsResponse || [];
       const leagues = leaguesResponse || [];
 
+      // Calculer le total du cash prize des tournois
+      const totalCashPrize = tournaments.reduce((sum, tournament) => {
+        return sum + (tournament.cash_prize || 0);
+      }, 0);
+
       setStats({
         totalUsers: users.length,
         totalTournaments: tournaments.length,
         totalTeams: teams.length,
         totalLeagues: leagues.length,
         activeMatches: 24, // Pour l'instant, on garde une valeur fixe
-        activeUsers: Math.floor(users.length * 0.1) // 10% des utilisateurs actifs
+        activeUsers: Math.floor(users.length * 0.1), // 10% des utilisateurs actifs
+        totalCashPrize
       });
     } catch (error) {
       console.error('Error fetching stats:', error);
