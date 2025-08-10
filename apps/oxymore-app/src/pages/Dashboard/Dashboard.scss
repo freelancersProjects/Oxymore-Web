@@ -10,3 +10,133 @@
   display: flex;
   justify-content: center;
 }
+
+.dashboard-separator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: rem-calc(40) 0;
+  width: 100%;
+  position: relative;
+
+  .separator-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba($color-white, 0.1) 20%,
+      rgba($color-white, 0.3) 50%,
+      rgba($color-white, 0.1) 80%,
+      transparent 100%
+    );
+    position: relative;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba($color-purple, 0.3) 50%,
+        transparent 100%
+      );
+      animation: glow-pulse 2s ease-in-out infinite;
+    }
+  }
+
+  .expand-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: rem-calc(50);
+    height: rem-calc(50);
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba($color-purple, 0.2) 0%, rgba($color-blue, 0.1) 100%);
+    border: 2px solid rgba($color-white, 0.2);
+    backdrop-filter: blur(10px);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin: 0 rem-calc(20);
+    position: relative;
+    z-index: 2;
+    padding: 0;
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: rem-calc(-2);
+      border-radius: 50%;
+      background: linear-gradient(135deg, $color-purple, $color-blue);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: -1;
+    }
+
+    &:hover {
+      transform: scale(1.1);
+      border-color: rgba($color-blue, 0.6);
+      box-shadow:
+        0 0 rem-calc(15) rgba($color-blue, 0.2),
+        0 0 rem-calc(25) rgba($color-white, 0.1);
+
+      &::before {
+        opacity: 0.2;
+      }
+
+      .expand-icon {
+        color: $color-blue;
+        transform: scale(1.1);
+      }
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
+  }
+
+  .expand-icon {
+    font-size: rem-calc(32);
+    font-weight: 300;
+    color: rgba($color-white, 0.8);
+    transition: all 0.3s ease;
+    font-family: Orbitron, sans-serif;
+    line-height: 1;
+  }
+}
+
+@keyframes glow-pulse {
+  0%, 100% {
+    opacity: 0.3;
+  }
+
+  50% {
+    opacity: 0.8;
+  }
+}
+
+.dashboard-bottom-section {
+  display: flex;
+  gap: rem-calc(24);
+  margin-top: rem-calc(40);
+  width: 100%;
+  align-items: stretch;
+
+  .leaderboard {
+    flex: 1.2;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .community-highlights {
+    flex: 0.8;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+  }
+}

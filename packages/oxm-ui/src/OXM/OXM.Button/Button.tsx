@@ -7,19 +7,22 @@ export interface ButtonProps {
   size?: "small" | "medium" | "large";
   disabled?: boolean;
   onClick?: () => void;
+  className?: string;
 }
 
-const OXMButton: React.FC<ButtonProps> = ({
+const OXMButton = ({
   children,
   variant = "primary",
   size = "medium",
   disabled = false,
   onClick,
-}) => {
+  className = "",
+}: ButtonProps) => {
   const classes = [
     "oxm-button",
     `oxm-button--${variant}`,
     `oxm-button--${size}`,
+    className,
   ]
     .filter(Boolean)
     .join(" ");

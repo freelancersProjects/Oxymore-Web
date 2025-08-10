@@ -10,18 +10,13 @@
   padding: rem-calc(30) rem-calc(20);
   border-radius: rem-calc(30);
   border: 0.5px solid rgb(255 255 255 / 10%);
-  background: linear-gradient(
-    to bottom,
-    rgb(123 54 217 / 8%) 25%,
-    rgb(255 255 255 / 4%) 50%,
-    rgb(255 255 255 / 4%) 100%
-  );
-  backdrop-filter: blur(58.5px);
+  background: linear-gradient(135deg, rgba($color-purple, 0.1) 0%, rgba($color-blue, 0.05) 100%);
+  backdrop-filter: blur(rem-calc(10));
   display: flex;
   flex-direction: column;
   box-shadow: 0 8px 20px rgb(0 0 0 / 30%);
   transition: all 0.3s ease-in-out;
-  overflow-y: auto; // scroll si trop de contenu
+  overflow-y: auto;
   z-index: 10;
 
   &::-webkit-scrollbar {
@@ -288,7 +283,7 @@
     height: 100vh;
     min-width: 0;
     border-radius: 0 rem-calc(18) rem-calc(18) 0;
-    z-index: 1200;
+    z-index: 120;
     box-shadow: rem-calc(2) 0 rem-calc(24) rgb(0 0 0 / 18%);
     background: linear-gradient(120deg, $color-deep-bg-start 0%, $color-deep-bg-end 100%);
     transform: translateX(-100%);

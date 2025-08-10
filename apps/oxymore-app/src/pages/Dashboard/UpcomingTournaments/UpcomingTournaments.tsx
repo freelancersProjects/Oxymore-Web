@@ -60,7 +60,7 @@ const UpcomingTournaments = () => {
               <span>{t.format}</span>
             </div>
             <div className="card-buttons">
-              <OXMButton>Register Now</OXMButton>
+              <OXMButton variant="primary">Register Now</OXMButton>
               <OXMButton variant="secondary">Tournament Details</OXMButton>
             </div>
           </div>
