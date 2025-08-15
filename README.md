@@ -6,10 +6,10 @@ Oxymore est une plateforme eSport moderne et complète qui comprend une applicat
 
 - [🏗️ Architecture du projet](#️-architecture-du-projet)
 - [🚀 Installation et configuration](#-installation-et-configuration)
+- [🐳 Docker (Recommandé)](#-docker-recommandé)
 - [📦 Applications](#-applications)
 - [🔧 Commandes disponibles](#-commandes-disponibles)
 - [🏛️ Packages partagés](#️-packages-partagés)
-- [🐳 Docker](#-docker)
 - [🔌 API et Backend](#-api-et-backend)
 - [🎨 UI Components](#-ui-components)
 
@@ -35,7 +35,7 @@ Oxymore-WebDigit/
 - **Node.js** 18+
 - **npm** 9+
 - **MySQL** 8.0+
-- **Docker** (optionnel)
+- **Docker** (optionnel, mais recommandé)
 
 ### Installation
 
@@ -56,6 +56,85 @@ npm run build
 1. **Backend** : Créer un fichier `.env` dans le dossier `back/`
 2. **Applications** : Configurer les variables d'environnement selon les besoins
 
+## 🐳 Docker (Recommandé)
+
+### 🚀 Démarrage rapide avec Docker
+
+La façon la plus simple de lancer tout l'environnement Oxymore :
+
+```bash
+# Construire et démarrer tous les services
+docker-compose up --build
+
+# Ou en arrière-plan
+docker-compose up --build -d
+```
+
+### Services Docker disponibles
+
+| Service | Port | Description |
+|---------|------|-------------|
+| `admin` | 8080 | Panel d'administration |
+| `app` | 8081 | Application principale |
+| `site` | 8082 | Site web public |
+| `backend` | 3000 | API Backend |
+| `mysql` | 3306 | Base de données MySQL |
+| `redis` | 6379 | Cache Redis |
+| `redis-commander` | 8083 | Interface Redis (debug) |
+
+### Commandes Docker utiles
+
+```bash
+# Démarrer tous les services
+docker-compose up --build
+
+# Démarrer en arrière-plan
+docker-compose up -d
+
+# Arrêter les services
+docker-compose down
+
+# Voir les logs
+docker-compose logs -f
+
+# Voir les logs d'un service spécifique
+docker-compose logs -f backend
+
+# Redémarrer un service
+docker-compose restart backend
+
+# Reconstruire un service
+docker-compose up --build backend
+```
+
+### Avantages de Docker
+
+- ✅ **Installation simple** : Pas besoin d'installer MySQL, Redis, Node.js localement
+- ✅ **Environnement isolé** : Chaque service dans son propre container
+- ✅ **Configuration automatique** : Base de données et Redis configurés automatiquement
+- ✅ **Reproductibilité** : Même environnement sur tous les postes
+- ✅ **Pas de conflits de ports** : Chaque service sur son port dédié
+
+### Variables d'environnement Docker
+
+Les services sont configurés avec les variables suivantes :
+
+```env
+# Backend
+NODE_ENV=production
+DB_HOST=mysql
+DB_PORT=3306
+DB_NAME=oxymore
+DB_USER=oxymore
+DB_PASSWORD=oxymore123
+REDIS_HOST=redis
+REDIS_PORT=6379
+JWT_SECRET=your-super-secret-jwt-key-change-in-production
+
+# Frontend apps
+VITE_API_URL=http://localhost:3000
+```
+
 ## 📦 Applications
 
 ### 🎯 Oxymore App (`apps/oxymore-app/`)
@@ -67,7 +146,7 @@ npm run build
   - Gestion des tournois
   - Système d'authentification
   - Intégration avec l'API
-- **Port** : 5173 (dev)
+- **Port** : 5173 (dev) / 8081 (Docker)
 
 ### 🌐 Oxymore Site (`apps/oxymore-site/`)
 **Site web public et marketing**
@@ -78,7 +157,7 @@ npm run build
   - Documentation API
   - Pages marketing
   - Support multilingue
-- **Port** : 5174 (dev)
+- **Port** : 5174 (dev) / 8082 (Docker)
 
 ### ⚙️ Oxymore Admin (`apps/oxymore-admin/`)
 **Panel d'administration complet**
@@ -90,7 +169,7 @@ npm run build
   - Analytics et statistiques
   - Gestion des badges et équipes
   - Interface responsive avec sidebar
-- **Port** : 5175 (dev)
+- **Port** : 5175 (dev) / 8080 (Docker)
 
 ### 🔧 Backend API (`back/`)
 **API REST + WebSocket**
@@ -102,7 +181,7 @@ npm run build
   - WebSocket pour temps réel
   - Documentation Swagger
   - Gestion des fichiers
-- **Port** : 3000 (dev)
+- **Port** : 3000 (dev/Docker)
 
 ## 🔧 Commandes disponibles
 
@@ -200,31 +279,6 @@ npm run preview      # Prévisualise le playground
 - Interfaces API
 - Types de données métier
 
-## 🐳 Docker
-
-### Services disponibles
-
-| Service | Port | Description |
-|---------|------|-------------|
-| `oxymore-app` | 8080 | Application principale |
-| `oxymore-site` | 8081 | Site web public |
-
-### Commandes Docker
-
-```bash
-# Construire et démarrer tous les services
-docker-compose up --build
-
-# Démarrer en arrière-plan
-docker-compose up -d
-
-# Arrêter les services
-docker-compose down
-
-# Voir les logs
-docker-compose logs -f
-```
-
 ## 🔌 API et Backend
 
 ### Endpoints principaux
@@ -281,6 +335,12 @@ Sans cette étape, les applications `oxymore-app` et `oxymore-site` ne pourront 
 
 ### 2. Ordre de démarrage recommandé
 
+#### Avec Docker (Recommandé)
+```bash
+docker-compose up --build
+```
+
+#### En développement local
 1. **Backend** : `npm run dev:back`
 2. **Package UI** : `npm run build` (si pas déjà fait)
 3. **Applications** : `npm run dev:admin`, `npm run dev:app`, `npm run dev:site`
@@ -288,8 +348,9 @@ Sans cette étape, les applications `oxymore-app` et `oxymore-site` ne pourront 
 ### 3. Ports fixes
 
 - **Backend** : Toujours port 3000
-- **Admin** : Toujours port 5175
-- **App/Site** : 5173/5174 selon l'ordre de démarrage
+- **Admin** : 5175 (dev) / 8080 (Docker)
+- **App** : 5173 (dev) / 8081 (Docker)
+- **Site** : 5174 (dev) / 8082 (Docker)
 
 ### 4. Dépendances partagées
 
@@ -299,6 +360,23 @@ Sans cette étape, les applications `oxymore-app` et `oxymore-site` ne pourront 
 
 ## 🚀 Démarrage rapide
 
+### Option 1 : Docker (Recommandé)
+```bash
+# 1. Cloner le repository
+git clone <repository-url>
+cd Oxymore-WebDigit
+
+# 2. Lancer tout l'environnement
+docker-compose up --build
+
+# 3. Accéder aux applications
+# Admin Panel: http://localhost:8080
+# Main App: http://localhost:8081
+# Marketing Site: http://localhost:8082
+# Backend API: http://localhost:3000
+```
+
+### Option 2 : Développement local
 ```bash
 # 1. Installation
 npm install
@@ -318,7 +396,8 @@ npm run dev:site
 ## 📞 Support
 
 Pour toute question ou problème :
-- Vérifiez que le package UI est bien construit
+- **Avec Docker** : Vérifiez les logs avec `docker-compose logs -f`
+- **En local** : Vérifiez que le package UI est bien construit
 - Consultez les logs du backend
 - Vérifiez la configuration des variables d'environnement
 

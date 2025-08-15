@@ -27,6 +27,9 @@ app.use(
 );
 app.use(express.json());
 
+app.get("/health", (req, res) => {
+  res.status(200).json({ status: "healthy", timestamp: new Date().toISOString() });
+});
 
 const swaggerOptions = {
   definition: {
@@ -61,8 +64,6 @@ const swaggerSpec = swaggerJSDoc(swaggerOptions);
 
 registerRoutes(app);
 
-
-
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
   explorer: true,
   customSiteTitle: "Oxymore API Documentation"
@@ -71,5 +72,6 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
 server.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
   console.log(`API Documentation: http://localhost:${PORT}/api-docs`);
+  console.log(`Health Check: http://localhost:${PORT}/health`);
   console.log(`WebSocket ready on ws://localhost:${PORT}`);
 });
