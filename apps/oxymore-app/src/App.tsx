@@ -9,6 +9,8 @@ import Login from "./pages/Login/Login";
 import OxiaChat from "./pages/OxiaChat/OxiaChat";
 import Register from "./pages/Register/Register";
 import {Teams} from "./pages/Teams/Teams";
+import LeaguePage from "./pages/League/League";
+import TournamentPage from "./pages/Tournament/Tournament";
 import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./context/ProtectedRoute";
 
@@ -65,6 +67,8 @@ export default function App() {
                         <Route path="/teams" element={<Teams />} />
                         <Route path="/friends" element={<Friends />} />
                         <Route path="/oxia" element={<OxiaChat />} />
+                        <Route path="/leagues" element={<LeaguePage />} />
+                        <Route path="/tournaments" element={<TournamentPage />} />
                       </Route>
                     </Routes>
                   </main>
