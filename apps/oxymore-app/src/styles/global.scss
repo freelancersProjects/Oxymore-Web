@@ -19,6 +19,7 @@ $color-danger: #ff4747;
 $color-secondary: #23223a;
 $color-yellow: #FACC15;
 $color-green: #4ADE80;
+$color-bronze: #CD7F32;
 $color-gray-ccc: #CCC;
 $color-gray-eee: #EEE;
 $color-purple-accent: #6C47FF;
@@ -113,7 +114,7 @@ td {
 // For Firefox
 * {
   scrollbar-width: thin;
-  scrollbar-color: $color-purple $color-gray-darkest;
+  scrollbar-color: $color-gray $color-gray-darkest;
 }
 
 html, body, #root {

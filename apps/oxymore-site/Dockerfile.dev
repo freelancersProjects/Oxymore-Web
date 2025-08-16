@@ -1,0 +1,23 @@
+FROM node:20-alpine
+
+WORKDIR /app
+
+# Copy root package files
+COPY package.json package-lock.json ./
+COPY packages ./packages
+
+# Copy the specific app
+COPY apps/oxymore-site ./apps/oxymore-site
+
+# Clear npm cache and install dependencies
+RUN npm cache clean --force
+RUN rm -rf node_modules package-lock.json
+RUN npm install
+
+# Expose port for Vite dev server
+EXPOSE 5175
+
+# Start development server with hot reload
+CMD ["npm", "run", "dev", "--workspace=oxymore-site", "--", "--host", "0.0.0.0", "--port", "5175"]
+
+

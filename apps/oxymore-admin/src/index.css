@@ -7,12 +7,12 @@
 @layer base {
   :root {
     color-scheme: dark;
-    
+
     /* Dark theme colors (default) */
     --dark-background: linear-gradient(135deg, #0A0A0A 0%, #1A1A2E 50%, #16213E 100%);
     --dark-secondary: #1A1A2E;
     --dark-accent: #16213E;
-    
+
     /* Light theme colors */
     --light-background: #F8FAFC;
     --light-secondary: #F1F5F9;
@@ -22,15 +22,15 @@
     --page-background: var(--dark-background);
     --card-background: var(--dark-secondary);
     --accent-background: var(--dark-accent);
-    
+
     /* Text colors */
     --text-primary: #FFFFFF;
     --text-secondary: rgba(255, 255, 255, 0.7);
     --text-muted: rgba(255, 255, 255, 0.5);
-    
+
     /* Border colors */
     --border-color: rgba(255, 255, 255, 0.1);
-    
+
     /* Overlay colors */
     --overlay-hover: rgba(255, 255, 255, 0.05);
     --overlay-active: rgba(255, 255, 255, 0.1);
@@ -41,13 +41,13 @@
     --page-background: var(--light-background);
     --card-background: var(--light-secondary);
     --accent-background: var(--light-accent);
-    
+
     --text-primary: #1E293B;
     --text-secondary: #475569;
     --text-muted: #64748B;
-    
+
     --border-color: rgba(0, 0, 0, 0.1);
-    
+
     --overlay-hover: rgba(0, 0, 0, 0.05);
     --overlay-active: rgba(0, 0, 0, 0.1);
   }
@@ -183,18 +183,17 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
-  
+
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
   }
-  
+
   .glow-purple {
     box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
   }
-  
+
   .glow-blue {
     box-shadow: 0 0 20px rgba(6, 182, 212, 0.3);
   }
-} 
- 
- 
+}
+

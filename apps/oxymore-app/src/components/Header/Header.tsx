@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Header.scss";
-import { FaBell } from "react-icons/fa";
+import { Bell as BellIcon, ChevronRight, ChevronLeft } from 'lucide-react';
 import DrawerNotif from "./DrawerNotif/DrawerNotif";
 import apiService from '../../api/apiService';
+import ProfilePanel from './ProfilePanel/ProfilePanel';
 
 interface HeaderProps {
   isSidebarCollapsed?: boolean;
@@ -10,6 +11,7 @@ interface HeaderProps {
 
 export const Header: React.FC<HeaderProps> = ({ isSidebarCollapsed = false }) => {
   const [notifOpen, setNotifOpen] = useState(false);
+  const [profileCollapsed, setProfileCollapsed] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
   const userId = "1";
 
@@ -22,35 +24,50 @@ export const Header: React.FC<HeaderProps> = ({ isSidebarCollapsed = false }) =>
     }
   };
 
-  React.useEffect(() => {
-    fetchUnreadCount();
-  }, []);
+  useEffect(() => { fetchUnreadCount(); }, []);
+  useEffect(() => { if (!notifOpen) fetchUnreadCount(); }, [notifOpen]);
 
-  React.useEffect(() => {
-    if (!notifOpen) fetchUnreadCount();
-  }, [notifOpen]);
+  const setProfileClass = (collapsed: boolean) => {
+    const root = document.querySelector('.oxm-layout');
+    if (!root) return;
+    if (collapsed) root.classList.add('profile-panel-collapsed');
+    else root.classList.remove('profile-panel-collapsed');
+  };
+
+  const toggleProfile = () => {
+    setProfileCollapsed(prev => {
+      const next = !prev;
+      setProfileClass(next);
+      return next;
+    });
+  };
+
+  const openNotif = () => {
+    setNotifOpen(true);
+  };
 
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 700;
 
   return (
-    <header className={`oxm-header${isSidebarCollapsed ? ' collapsed' : ''}`}>
-      {!isMobile && (
-        <div className="oxm-header__search">
-          <input type="text" placeholder="Search For a Game" />
+    <>
+      <header className={`oxm-header${isSidebarCollapsed ? ' collapsed' : ''}`}>
+        {!isMobile && (
+          <div className="oxm-header__search">
+            <input type="text" placeholder="Search For a Game" />
+          </div>
+        )}
+        <div className="oxm-header__actions">
+          <div className="icon-bell-wrapper" onClick={openNotif}>
+            <BellIcon className="icon-bell" size={24} />
+            {unreadCount > 0 && <span className="notif-badge-header">{unreadCount}</span>}
+          </div>
+          <DrawerNotif open={notifOpen} onClose={() => setNotifOpen(false)} userId={userId} />
         </div>
-      )}
-      <div className="oxm-header__actions">
-        <div className="icon-bell-wrapper" onClick={() => setNotifOpen(true)}>
-          <FaBell className="icon-bell" />
-          {unreadCount > 0 && <span className="notif-badge-header">{unreadCount}</span>}
-        </div>
-        <img
-          className="avatar"
-          src="https://i.pravatar.cc/50"
-          alt="User Avatar"
-        />
-        <DrawerNotif open={notifOpen} onClose={() => setNotifOpen(false)} userId={userId} />
+      </header>
+      <div className="profile-toggle-button" onClick={toggleProfile}>
+        {profileCollapsed ? <ChevronLeft size={20} /> : <ChevronRight size={20} />}
       </div>
-    </header>
+      <ProfilePanel collapsed={profileCollapsed} />
+    </>
   );
 };

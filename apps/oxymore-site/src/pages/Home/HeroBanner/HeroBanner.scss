@@ -44,6 +44,10 @@
         margin-bottom: rem-calc(100);
         text-align: left;
 
+        @media (max-width: 1900px) {
+            margin-bottom: rem-calc(20);
+        }
+
         .tag {
             display: inline-flex;
             justify-content: center;
@@ -126,10 +130,14 @@
         align-items: flex-start;
         margin-bottom: rem-calc(100);
 
+        @media (max-width: 1900px) {
+            margin-bottom: rem-calc(20);
+        }
+
         @media (width <= 1024px) {
             width: 100%;
             flex-direction: row;
-            gap: rem-calc(20);
+            gap: rem-calc(0);
             margin-bottom: rem-calc(40);
         }
 
