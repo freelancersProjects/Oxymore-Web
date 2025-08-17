@@ -48,7 +48,17 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
           // stockées lors de la connexion, si elles existent.
           const storedUser = localStorage.getItem('useroxm');
           if (storedUser) {
-            setUser(JSON.parse(storedUser));
+            const parsedUser = JSON.parse(storedUser);
+            // S'assurer que l'objet a id_user
+            if (parsedUser.id && !parsedUser.id_user) {
+              const mappedUser: User = {
+                ...parsedUser,
+                id_user: parsedUser.id,
+              };
+              setUser(mappedUser);
+            } else {
+              setUser(parsedUser);
+            }
           }
         } catch (error) {
           console.error("Failed to authenticate with token", error);
@@ -61,10 +71,16 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     checkUser();
   }, []);
 
-  const login = ({ user, token }: { user: User; token: string }) => {
+  const login = ({ user, token }: { user: any; token: string }) => {
+    // Mapper l'objet utilisateur pour avoir id_user au lieu de id
+    const mappedUser: User = {
+      ...user,
+      id_user: user.id, // Convertir id en id_user
+    };
+
     localStorage.setItem('token', token);
-    localStorage.setItem('useroxm', JSON.stringify(user));
-    setUser(user);
+    localStorage.setItem('useroxm', JSON.stringify(mappedUser));
+    setUser(mappedUser);
   };
 
   const logout = () => {

@@ -17,6 +17,7 @@ import userFollowingRoutes from "./routes/userFollowing";
 import userSanctionRoutes from "./routes/userSanction";
 import groupRoutes from "./routes/group";
 import groupMemberRoutes from "./routes/groupMember";
+import friendRoutes from "./routes/friend";
 import leagueRoutes from "./routes/league";
 import leagueTeamRoutes from "./routes/leagueTeam";
 import mapRoutes from "./routes/map";
@@ -54,6 +55,7 @@ export const registerRoutes = (app: Express) => {
   app.use("/api/user-sanctions", userSanctionRoutes);
   app.use("/api/groups", groupRoutes);
   app.use("/api/group-members", groupMemberRoutes);
+  app.use("/api/friends", friendRoutes);
   app.use("/api/leagues", leagueRoutes);
   app.use("/api/league-teams", leagueTeamRoutes);
   app.use("/api/maps", mapRoutes);
