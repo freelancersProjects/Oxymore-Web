@@ -3,6 +3,9 @@ import {
   getAllGroups,
   createGroup,
   deleteGroup,
+  getGroupsByUserId,
+  getGroupsOwnedByUserId,
+  createDefaultGroupForUser,
 } from "../controllers/groupController";
 
 const router = Router();
@@ -60,5 +63,62 @@ router.post("/", createGroup);
  *         description: Groupe supprimé
  */
 router.delete("/:id", deleteGroup);
+
+/**
+ * @openapi
+ * /api/groups/user/{userId}:
+ *   get:
+ *     tags:
+ *       - Groups
+ *     summary: Récupère tous les groupes d'un utilisateur
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Liste des groupes de l'utilisateur
+ */
+router.get("/user/:userId", getGroupsByUserId);
+
+/**
+ * @openapi
+ * /api/groups/owned/{userId}:
+ *   get:
+ *     tags:
+ *       - Groups
+ *     summary: Récupère tous les groupes créés par un utilisateur
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Liste des groupes créés par l'utilisateur
+ */
+router.get("/owned/:userId", getGroupsOwnedByUserId);
+
+/**
+ * @openapi
+ * /api/groups/create-default/{userId}:
+ *   post:
+ *     tags:
+ *       - Groups
+ *     summary: Crée un groupe par défaut pour un utilisateur
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       201:
+ *         description: Groupe par défaut créé
+ */
+router.post("/create-default/:userId", createDefaultGroupForUser);
 
 export default router;

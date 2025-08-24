@@ -24,11 +24,13 @@ body {
 
 .oxm-layout {
   display: flex;
-  transition: margin-left 0.2s ease;
+  transition: margin-left 0.2s ease, margin-right 0.2s ease;
+  /* Par défaut, la sidebar profile est fermée */
+  margin-right: var(--profile-panel-collapsed-width);
 }
 
 .oxm-main {
-  width: calc(100vw - var(--sidebar-width-expanded) - var(--profile-panel-width));
+  width: calc(100vw - var(--sidebar-width-expanded) - var(--profile-panel-collapsed-width));
   margin-left: var(--sidebar-width-expanded);
   transition: margin-left 0.2s ease, width 0.2s ease;
   min-width: 0;
@@ -36,30 +38,38 @@ body {
 
 .oxm-layout.sidebar-collapsed .oxm-main {
   margin-left: var(--sidebar-width-collapsed);
-  width: calc(100vw - var(--sidebar-width-collapsed) - var(--profile-panel-width));
-}
-
-.oxm-layout.profile-panel-collapsed .oxm-main {
-  width: calc(100vw - var(--sidebar-width-expanded) - var(--profile-panel-collapsed-width));
-}
-
-.oxm-layout.sidebar-collapsed.profile-panel-collapsed .oxm-main {
-  margin-left: var(--sidebar-width-collapsed);
   width: calc(100vw - var(--sidebar-width-collapsed) - var(--profile-panel-collapsed-width));
 }
 
+.oxm-layout.profile-panel-expanded {
+  margin-right: var(--profile-panel-width);
+}
+
+.oxm-layout.profile-panel-expanded .oxm-main {
+  width: calc(100vw - var(--sidebar-width-expanded) - var(--profile-panel-width));
+}
+
+.oxm-layout.sidebar-collapsed.profile-panel-expanded {
+  margin-right: var(--profile-panel-width);
+}
+
+.oxm-layout.sidebar-collapsed.profile-panel-expanded .oxm-main {
+  margin-left: var(--sidebar-width-collapsed);
+  width: calc(100vw - var(--sidebar-width-collapsed) - var(--profile-panel-width));
+}
+
 .oxm-layout .oxm-header {
-  padding-right: calc(40px + var(--profile-panel-width));
+  padding-right: calc(40px + var(--profile-panel-collapsed-width));
   transition: padding-right 0.2s ease;
 }
 
-.oxm-layout.profile-panel-collapsed .oxm-header {
-  padding-right: calc(40px + var(--profile-panel-collapsed-width));
+.oxm-layout.profile-panel-expanded .oxm-header {
+  padding-right: calc(40px + var(--profile-panel-width));
 }
 
 .profile-toggle-button {
   position: fixed;
-  right: var(--profile-panel-width);
+  right: var(--profile-panel-collapsed-width);
   top: 50%;
   transform: translateY(-50%);
   width: 32px;
@@ -72,7 +82,7 @@ body {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  z-index: 1000;
+  z-index: 1050;
   transition: all 0.3s ease;
   color: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(10px);
@@ -90,13 +100,13 @@ body {
   transform: translateY(-50%) scale(0.98);
 }
 
-.oxm-layout.profile-panel-collapsed .profile-toggle-button {
-  right: var(--profile-panel-collapsed-width);
+.oxm-layout.profile-panel-expanded .profile-toggle-button {
+  right: var(--profile-panel-width);
 }
 
 /* Correction pour éviter l'espace vide quand les deux sidebars sont pliées */
-.oxm-layout.sidebar-collapsed.profile-panel-collapsed .profile-toggle-button {
-  right: var(--profile-panel-collapsed-width);
+.oxm-layout.sidebar-collapsed.profile-panel-expanded .profile-toggle-button {
+  right: var(--profile-panel-width);
 }
 
 @media (max-width: 768px) {

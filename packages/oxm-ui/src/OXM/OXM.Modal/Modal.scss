@@ -2,14 +2,19 @@
 
 .oxm-modal-backdrop {
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
   background: rgb(10 10 20 / 55%);
   backdrop-filter: blur(rem-calc(8));
   display: flex;
   justify-content: center;
   align-items: center;
   animation: oxm-modal-fadeIn 0.2s ease;
-  z-index: 1200;
+  z-index: 9999;
 }
 
 .oxm-modal {
@@ -17,10 +22,27 @@
   border: 1px solid rgb(255 255 255 / 12%);
   border-radius: rem-calc(18);
   padding: rem-calc(24);
-  width: 100%;
+  width: 90%;
   max-width: rem-calc(560);
-  box-shadow: none;
+  min-width: rem-calc(320);
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 rem-calc(20) rem-calc(60) rgb(0 0 0 / 50%);
   animation: oxm-modal-scaleIn 0.22s ease-out;
+  position: relative;
+
+  // Tailles de modal
+  &--small {
+    max-width: rem-calc(400);
+  }
+
+  &--medium {
+    max-width: rem-calc(560);
+  }
+
+  &--large {
+    max-width: rem-calc(800);
+  }
 
   h2 {
     margin-bottom: rem-calc(12);
@@ -38,3 +60,25 @@
 
 @keyframes oxm-modal-fadeIn { from { opacity: 0; } to { opacity: 1; } }
 @keyframes oxm-modal-scaleIn { from { transform: scale(0.98); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+// Responsive design
+@media (max-width: 768px) {
+  .oxm-modal-backdrop {
+    padding: rem-calc(16);
+  }
+  
+  .oxm-modal {
+    width: 100%;
+    max-width: none;
+    min-width: auto;
+    max-height: 85vh;
+    padding: rem-calc(20);
+  }
+}
+
+@media (max-width: 480px) {
+  .oxm-modal {
+    padding: rem-calc(16);
+    max-height: 80vh;
+  }
+}

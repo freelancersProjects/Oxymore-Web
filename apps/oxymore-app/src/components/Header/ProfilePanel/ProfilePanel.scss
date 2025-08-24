@@ -13,7 +13,7 @@
   backdrop-filter: blur(rem-calc(8));
   border-left: 1px solid rgb(255 255 255 / 12%);
   box-shadow: 0 rem-calc(18) rem-calc(40) rgb(0 0 0 / 40%);
-  z-index: 1600;
+  z-index: 100;
   transition: width 0.2s ease;
   padding: rem-calc(14);
   overflow: visible;
@@ -59,7 +59,7 @@
         position: absolute;
         top: -4px;
         left: -4px;
-        background: linear-gradient(135deg, $color-purple, $color-blue);
+        background: $color-purple;
         color: $color-white;
         font-size: rem-calc(10);
         font-weight: 700;
@@ -450,7 +450,49 @@
       background: rgb(255 255 255 / 6%);
       cursor: pointer;
       transition: background .2s ease, border-color .2s ease;
-      &:hover { background: rgb(255 255 255 / 12%); border-color: rgb(255 255 255 / 34%); }
+      position: relative;
+
+      &:hover {
+        background: rgb(255 255 255 / 12%);
+        border-color: rgb(255 255 255 / 34%);
+      }
+
+      &.leader {
+        border: 2px solid $color-yellow;
+        background: rgb(255 255 255 / 8%);
+
+        img {
+          width: 100%;
+          height: 100%;
+          border-radius: 50%;
+          object-fit: cover;
+        }
+
+        .crown-icon {
+          position: absolute;
+          top: rem-calc(-8);
+          right: rem-calc(-4);
+          font-size: rem-calc(12);
+          filter: drop-shadow(0 rem-calc(1) rem-calc(2) rgba(0, 0, 0, 0.5));
+        }
+      }
+
+      &.empty {
+        border: 1px dashed rgb(255 255 255 / 20%);
+        background: rgb(255 255 255 / 6%);
+      }
+
+      &.member {
+        border: 1px solid rgb(255 255 255 / 20%);
+        background: rgb(255 255 255 / 8%);
+
+        img {
+          width: 100%;
+          height: 100%;
+          border-radius: 50%;
+          object-fit: cover;
+        }
+      }
     }
   }
 
@@ -528,6 +570,18 @@
             &.offline { background: $color-gray-medium; }
             &.in-game { background: $color-yellow; }
           }
+        }
+
+        .loading-friends,
+        .no-friends {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 100%;
+          height: rem-calc(36);
+          color: rgba($color-white, 0.6);
+          font-size: rem-calc(12);
+          font-style: italic;
         }
       }
     }
@@ -681,28 +735,7 @@
     }
   }
 
-  .profile-panel__api-access {
-    .api-access-button {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: rem-calc(8);
-      width: 100%;
-      padding: rem-calc(10);
-      border: 1px solid rgb(255 255 255 / 20%);
-      border-radius: rem-calc(8);
-      background: rgb(255 255 255 / 4%);
-      color: $color-white;
-      font-size: rem-calc(13);
-      cursor: pointer;
-      transition: all 0.2s ease;
 
-      &:hover {
-        background: rgb(255 255 255 / 8%);
-        border-color: rgb(255 255 255 / 30%);
-      }
-    }
-  }
 
   .profile-panel__signout {
     .signout-button {
@@ -724,6 +757,17 @@
         background: rgb(239 68 68 / 20%);
         border-color: rgb(239 68 68 / 50%);
       }
+    }
+  }
+
+  .no-friends-message {
+    text-align: center;
+    padding: rem-calc(20);
+    color: rgb(255 255 255 / 60%);
+
+    p {
+      margin: 0;
+      font-size: rem-calc(14);
     }
   }
 }

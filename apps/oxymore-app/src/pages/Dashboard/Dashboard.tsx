@@ -9,8 +9,12 @@ import './Dashboard.scss'
 export const Dashboard = () => {
   return (
     <div className='container-dashboarda-app'>
-        <News />
-        <UpcomingTournaments />
+        <div className="news-section">
+          <News />
+        </div>
+        <div className="tournaments-section">
+          <UpcomingTournaments />
+        </div>
         <div className="dashboard-separator">
           <div className="separator-line"></div>
           <button className="expand-button">

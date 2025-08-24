@@ -17,7 +17,7 @@
   box-shadow: 0 8px 20px rgb(0 0 0 / 30%);
   transition: all 0.3s ease-in-out;
   overflow-y: auto;
-  z-index: 10;
+  z-index: 1000;
 
   &::-webkit-scrollbar {
     width: 6px;
