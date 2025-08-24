@@ -1,36 +1,33 @@
-import React, { useMemo, useRef, useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Plus, Users, User, ChevronDown, ChevronUp, KeyRound, Settings, Shield, LogOut, Search } from 'lucide-react';
-import { OXMModal } from '@oxymore/ui';
-import { useAuth } from '../../../context/AuthContext';
-import apiService from '../../../api/apiService';
-import type { FriendWithUser } from '../../../types/friend';
-import './ProfilePanel.scss';
+import React, { useMemo, useRef, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  Plus,
+  Users,
+  User,
+  ChevronDown,
+  ChevronUp,
+  KeyRound,
+  Settings,
+  Shield,
+  LogOut,
+  Search,
+} from "lucide-react";
+import { OXMModal } from "@oxymore/ui";
+import { useAuth } from "../../../context/AuthContext";
+import apiService from "../../../api/apiService";
+import type { FriendWithUser } from "../../../types/friend";
+import "./ProfilePanel.scss";
 
 export interface FriendItem {
   id: number;
   name: string;
   avatar: string;
-  status: 'online' | 'offline' | 'in-game';
+  status: "online" | "offline" | "in-game";
 }
 
 interface ProfilePanelProps {
   collapsed: boolean;
 }
-
-// Mock data for now
-const MOCK_FRIENDS: FriendItem[] = [
-  { id: 1, name: "AlexThePro", avatar: "https://i.pravatar.cc/32?u=1", status: "online" },
-  { id: 2, name: "CS2Master", avatar: "https://i.pravatar.cc/32?u=2", status: "in-game" },
-  { id: 3, name: "GamingPro", avatar: "https://i.pravatar.cc/32?u=3", status: "offline" },
-  { id: 4, name: "ElitePlayer", avatar: "https://i.pravatar.cc/32?u=4", status: "online" },
-  { id: 5, name: "ProGamer", avatar: "https://i.pravatar.cc/32?u=5", status: "in-game" },
-  { id: 6, name: "GameMaster", avatar: "https://i.pravatar.cc/32?u=6", status: "online" },
-  { id: 7, name: "SniperQueen", avatar: "https://i.pravatar.cc/32?u=7", status: "online" },
-  { id: 8, name: "RushPlayer", avatar: "https://i.pravatar.cc/32?u=8", status: "offline" },
-  { id: 9, name: "TacticalGamer", avatar: "https://i.pravatar.cc/32?u=9", status: "in-game" },
-  { id: 10, name: "AWPKing", avatar: "https://i.pravatar.cc/32?u=10", status: "online" },
-];
 
 const USER_STATS = {
   level: 42,
@@ -40,7 +37,7 @@ const USER_STATS = {
   streak: 5,
   totalFriends: 24,
   onlineFriends: 8,
-  inGameFriends: 3
+  inGameFriends: 3,
 };
 
 const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed }) => {
@@ -55,7 +52,6 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed }) => {
   const [userGroup, setUserGroup] = useState<string | null>(null);
   const [groupMembers, setGroupMembers] = useState<any[]>([]);
 
-  // Load friends and user group when component mounts
   useEffect(() => {
     if (user?.id_user) {
       loadFriends();
@@ -65,10 +61,13 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed }) => {
 
   const loadFriends = async () => {
     try {
+      setLoading(true);
       const data = await apiService.get(`/friends/user/${user?.id_user}`);
       setFriends(data);
     } catch (error) {
-      console.error('Error loading friends:', error);
+      console.error("Error loading friends:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -77,24 +76,24 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed }) => {
       const groups = await apiService.get(`/groups/owned/${user?.id_user}`);
       if (groups && groups.length > 0) {
         setUserGroup(groups[0].id_group);
-        // Charger les membres du groupe
         await loadGroupMembers(groups[0].id_group);
       } else {
-        // Si l'utilisateur n'a pas de groupe, en créer un automatiquement
-        const newGroup = await apiService.post(`/groups/create-default/${user?.id_user}`);
+        const newGroup = await apiService.post(
+          `/groups/create-default/${user?.id_user}`
+        );
         setUserGroup(newGroup.id_group);
-        // Charger les membres du nouveau groupe
         await loadGroupMembers(newGroup.id_group);
       }
     } catch (error) {
-      console.error('Error loading user group:', error);
-      // En cas d'erreur, essayer de créer un groupe par défaut
+      console.error("Error loading user group:", error);
       try {
-        const newGroup = await apiService.post(`/groups/create-default/${user?.id_user}`);
+        const newGroup = await apiService.post(
+          `/groups/create-default/${user?.id_user}`
+        );
         setUserGroup(newGroup.id_group);
         await loadGroupMembers(newGroup.id_group);
       } catch (createError) {
-        console.error('Error creating default group:', createError);
+        console.error("Error creating default group:", createError);
       }
     }
   };
@@ -104,37 +103,40 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed }) => {
       const members = await apiService.get(`/group-members/group/${groupId}`);
       setGroupMembers(members);
     } catch (error) {
-      console.error('Error loading group members:', error);
+      console.error("Error loading group members:", error);
     }
   };
 
-    const handleInviteToGroup = async (friendId: string) => {
+  const handleInviteToGroup = async (friendId: string) => {
     if (!user?.id_user || !userGroup) return;
 
     try {
       setLoading(true);
 
       await apiService.post(`/group-members/${userGroup}/invite/${friendId}`, {
-        role: 'member'
+        role: "member",
       });
 
-      // Recharger les membres du groupe après l'invitation
       await loadGroupMembers(userGroup);
-
-      // Optionnel: afficher un message de succès
-      console.log('Invitation envoyée avec succès');
     } catch (error) {
-      console.error('Error inviting friend to group:', error);
+      console.error("Error inviting friend to group:", error);
     } finally {
       setLoading(false);
     }
   };
 
-  const totalFriends = MOCK_FRIENDS.length;
-  const friendsPreview = useMemo(() => (showMoreFriends ? MOCK_FRIENDS : MOCK_FRIENDS.slice(0, 4)), [showMoreFriends]);
+  const totalFriends = friends.length;
+  const onlineFriends = friends.filter(
+    (friend) =>
+      friend.online_status === "online" || friend.online_status === "in-game"
+  );
+  const friendsPreview = useMemo(
+    () => (showMoreFriends ? friends : friends.slice(0, 4)),
+    [showMoreFriends, friends]
+  );
 
   const filteredFriends = useMemo(() => {
-    return friends.filter(friend =>
+    return friends.filter((friend) =>
       friend.username.toLowerCase().includes(query.toLowerCase())
     );
   }, [friends, query]);
@@ -145,7 +147,7 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed }) => {
 
   const handleLogout = () => {
     logout();
-    navigate('/login');
+    navigate("/login");
   };
 
   if (collapsed) {
@@ -153,18 +155,21 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed }) => {
       <div className="profile-panel collapsed" ref={panelRef}>
         <div className="profile-panel__collapsed">
           <div className="profile-panel__avatar-collapsed">
-            <img src={user?.avatar_url || "https://i.pravatar.cc/48?u=default"} alt="Profile" />
+            <img
+              src={user?.avatar_url || "https://i.pravatar.cc/48?u=default"}
+              alt="Profile"
+            />
             <div className="online-indicator" />
             <div className="level-badge">{USER_STATS.level}</div>
           </div>
 
           <div className="profile-panel__stats-collapsed">
             <div className="stat-item-collapsed">
-              <div className="stat-value">{USER_STATS.onlineFriends}</div>
+              <div className="stat-value">{onlineFriends.length}</div>
               <div className="stat-label">Online</div>
             </div>
             <div className="stat-item-collapsed">
-              <div className="stat-value">{USER_STATS.elo}</div>
+              <div className="stat-value">{user?.elo ?? 0}</div>
               <div className="stat-label">ELO</div>
             </div>
           </div>
@@ -179,7 +184,11 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed }) => {
             <button className="quick-icon" title="Security">
               <Shield size={16} />
             </button>
-            <button className="quick-icon signout" title="Sign Out" onClick={handleLogout}>
+            <button
+              className="quick-icon signout"
+              title="Sign Out"
+              onClick={handleLogout}
+            >
               <LogOut size={16} />
             </button>
           </div>
@@ -189,15 +198,29 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed }) => {
               <div className="online-friends-title">Friends</div>
             </div>
             <div className="online-friends-avatars">
-              {MOCK_FRIENDS.filter(f => f.status === 'online' || f.status === 'in-game').slice(0, 3).map((friend) => (
-                <div key={friend.id} className="friend-avatar-collapsed" title={friend.name}>
-                  <img src={friend.avatar} alt={friend.name} />
-                  <div className={`status-indicator ${friend.status}`} />
-                  <div className="friend-name-tooltip">{friend.name}</div>
+              {onlineFriends.slice(0, 3).map((friend) => (
+                <div
+                  key={friend.id_friend}
+                  className="friend-avatar-collapsed"
+                  title={friend.username}
+                >
+                  <img
+                    src={
+                      friend.avatar_url ||
+                      `https://i.pravatar.cc/32?u=${friend.user_id}`
+                    }
+                    alt={friend.username}
+                  />
+                  <div
+                    className={`status-indicator ${
+                      friend.online_status || "offline"
+                    }`}
+                  />
+                  <div className="friend-name-tooltip">{friend.username}</div>
                 </div>
               ))}
               <div className="more-friends-indicator">
-                <span>+{Math.max(0, USER_STATS.totalFriends - 3)}</span>
+                <span>+{Math.max(0, totalFriends - 3)}</span>
               </div>
             </div>
           </div>
@@ -212,15 +235,21 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed }) => {
         <>
           <div className="profile-panel__header">
             <div className="profile-panel__avatar">
-              <img src={user?.avatar_url || "https://i.pravatar.cc/48?u=default"} alt="Profile" />
+              <img
+                src={user?.avatar_url ?? "https://i.pravatar.cc/48?u=default"}
+                alt="Profile"
+              />
               <div className="online-indicator" />
             </div>
             <div className="profile-panel__identity">
-              <div className="name">{user?.username || "User"}</div>
+              <div className="name">{user?.username ?? "User"}</div>
               <div className="meta">Level {USER_STATS.level} • Premium</div>
-              <div className="elo-badge">ELO {USER_STATS.elo}</div>
+              <div className="elo-badge">ELO {user?.elo || USER_STATS.elo}</div>
             </div>
-            <button className="profile-panel__profile-link" onClick={() => navigate('/profile')}>
+            <button
+              className="profile-panel__profile-link"
+              onClick={() => navigate("/profile")}
+            >
               <User size={14} />
               <span>Profile</span>
             </button>
@@ -250,28 +279,59 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed }) => {
                 <Users size={16} />
                 <span>Your Group</span>
               </div>
-                             <div className="group-avatars">
-                 {/* L'utilisateur actuel (leader avec couronne) */}
-                 <div className="group-avatar leader" title={`${user?.username || 'You'} (Leader)`}>
-                   <img src={user?.avatar_url || "https://i.pravatar.cc/32?u=default"} alt="Leader" />
-                   <div className="crown-icon">👑</div>
-                 </div>
+              <div className="group-avatars">
+                {/* L'utilisateur actuel (leader avec couronne) */}
+                <div
+                  className="group-avatar leader"
+                  title={`${user?.username || "You"} (Leader)`}
+                >
+                  <img
+                    src={
+                      user?.avatar_url || "https://i.pravatar.cc/32?u=default"
+                    }
+                    alt="Leader"
+                  />
+                  <div className="crown-icon">👑</div>
+                </div>
 
-                 {/* Membres du groupe acceptés */}
-                 {groupMembers
-                   .filter(member => member.status === 'accepted' && member.id_user !== user?.id_user)
-                   .slice(0, 4)
-                   .map((member) => (
-                     <div key={member.id_group_member} className="group-avatar member" title={member.username || 'Member'}>
-                       <img
-                         src={member.avatar_url || `https://i.pravatar.cc/32?u=${member.id_user}`}
-                         alt={member.username || 'Member'}
-                       />
-                     </div>
-                   ))}
+                {/* Membres du groupe acceptés */}
+                {groupMembers
+                  .filter(
+                    (member) =>
+                      member.status === "accepted" &&
+                      member.id_user !== user?.id_user
+                  )
+                  .slice(0, 4)
+                  .map((member) => (
+                    <div
+                      key={member.id_group_member}
+                      className="group-avatar member"
+                      title={member.username || "Member"}
+                    >
+                      <img
+                        src={
+                          member.avatar_url ||
+                          `https://i.pravatar.cc/32?u=${member.id_user}`
+                        }
+                        alt={member.username || "Member"}
+                      />
+                    </div>
+                  ))}
 
-                                   {/* Slots vides pour inviter plus d'amis */}
-                  {Array.from({ length: Math.max(0, 4 - groupMembers.filter(m => m.status === 'accepted' && m.id_user !== user?.id_user).length) }, (_, index) => (
+                {/* Slots vides pour inviter plus d'amis */}
+                {Array.from(
+                  {
+                    length: Math.max(
+                      0,
+                      4 -
+                        groupMembers.filter(
+                          (m) =>
+                            m.status === "accepted" &&
+                            m.id_user !== user?.id_user
+                        ).length
+                    ),
+                  },
+                  (_, index) => (
                     <button
                       key={`empty-${index}`}
                       className="group-avatar empty"
@@ -280,42 +340,83 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed }) => {
                     >
                       <Plus size={16} />
                     </button>
-                  ))}
-               </div>
+                  )
+                )}
+              </div>
             </div>
 
             <div className="profile-panel__section profile-panel__friends">
               <div className="section-title">
                 <Users size={16} />
-                <span>Friends ({USER_STATS.totalFriends})</span>
+                <span>Friends ({totalFriends})</span>
                 <div className="friends-summary">
-                  <span className="online-count">{USER_STATS.onlineFriends} online</span>
-                  <span className="in-game-count">{USER_STATS.inGameFriends} in-game</span>
+                  <span className="online-count">
+                    {onlineFriends.length} online
+                  </span>
+                  <span className="in-game-count">
+                    {
+                      friends.filter((f) => f.online_status === "in-game")
+                        .length
+                    }{" "}
+                    in-game
+                  </span>
                 </div>
               </div>
 
               <div className="online-friends-preview">
                 <div className="preview-title">Online Friends</div>
                 <div className="friends-avatars">
-                  {MOCK_FRIENDS.filter(f => f.status === 'online' || f.status === 'in-game').slice(0, 6).map((friend) => (
-                    <div key={friend.id} className="friend-avatar-preview" title={friend.name}>
-                      <img src={friend.avatar} alt={friend.name} />
-                      <div className={`status-indicator ${friend.status}`} />
-                    </div>
-                  ))}
+                  {loading ? (
+                    <div className="loading-friends">Loading...</div>
+                  ) : onlineFriends.length > 0 ? (
+                    onlineFriends.slice(0, 6).map((friend) => (
+                      <div
+                        key={friend.id_friend}
+                        className="friend-avatar-preview"
+                        title={friend.username}
+                      >
+                        <img
+                          src={
+                            friend.avatar_url ||
+                            `https://i.pravatar.cc/32?u=${friend.user_id}`
+                          }
+                          alt={friend.username}
+                        />
+                        <div
+                          className={`status-indicator ${
+                            friend.online_status || "offline"
+                          }`}
+                        />
+                      </div>
+                    ))
+                  ) : (
+                    <div className="no-friends">No friends online</div>
+                  )}
                 </div>
               </div>
 
               <div className="friends-list">
                 {friendsPreview.map((friend) => (
-                  <div key={friend.id} className="friend-item">
+                  <div key={friend.id_friend} className="friend-item">
                     <div className="friend-avatar">
-                      <img src={friend.avatar} alt={friend.name} />
-                      <div className={`status-indicator ${friend.status}`} />
+                      <img
+                        src={
+                          friend.avatar_url ||
+                          `https://i.pravatar.cc/32?u=${friend.user_id}`
+                        }
+                        alt={friend.username}
+                      />
+                      <div
+                        className={`status-indicator ${
+                          friend.online_status || "offline"
+                        }`}
+                      />
                     </div>
                     <div className="friend-info">
-                      <div className="friend-name">{friend.name}</div>
-                      <div className="friend-status">{friend.status}</div>
+                      <div className="friend-name">{friend.username}</div>
+                      <div className="friend-status">
+                        {friend.online_status || "offline"}
+                      </div>
                     </div>
                     <button className="friend-action">
                       <User size={12} />
@@ -346,28 +447,29 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed }) => {
             <div className="profile-panel__section profile-panel__quick-actions">
               <div className="section-title">Quick Actions</div>
               <div className="quick-actions-list">
-                <button className="quick-action">
+                <button
+                  className="quick-action"
+                  onClick={() => navigate("/settings")}
+                >
                   <Settings size={14} />
                   <span>Settings</span>
                 </button>
-                <button className="quick-action">
+                <button
+                  className="quick-action"
+                  onClick={() => navigate("/api-keys")}
+                >
                   <KeyRound size={14} />
                   <span>API Access</span>
                 </button>
-                <button className="quick-action">
+                <button
+                  className="quick-action"
+                  onClick={() => navigate("/security")}
+                >
                   <Shield size={14} />
                   <span>Security</span>
                 </button>
               </div>
             </div>
-
-            <div className="profile-panel__section profile-panel__api-access">
-              <button className="api-access-button">
-                <KeyRound size={14} />
-                <span>API Access</span>
-              </button>
-            </div>
-
             <div className="profile-panel__section profile-panel__signout">
               <button className="signout-button" onClick={handleLogout}>
                 <LogOut size={14} />
@@ -381,7 +483,6 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed }) => {
       <OXMModal
         isOpen={inviteOpen}
         onClose={() => setInviteOpen(false)}
-        title="Invite Friends to Group"
         size="medium"
       >
         <div className="invite-modal-content">
@@ -400,12 +501,24 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed }) => {
             {filteredFriends.map((friend) => (
               <div key={friend.id_friend} className="friend-item-modal">
                 <div className="friend-avatar">
-                  <img src={friend.avatar_url || `https://i.pravatar.cc/32?u=${friend.user_id}`} alt={friend.username} />
-                  <div className={`status-indicator ${friend.online_status || 'offline'}`} />
+                  <img
+                    src={
+                      friend.avatar_url ||
+                      `https://i.pravatar.cc/32?u=${friend.user_id}`
+                    }
+                    alt={friend.username}
+                  />
+                  <div
+                    className={`status-indicator ${
+                      friend.online_status || "offline"
+                    }`}
+                  />
                 </div>
                 <div className="friend-info">
                   <div className="friend-name">{friend.username}</div>
-                  <div className="friend-status">{friend.online_status || 'offline'}</div>
+                  <div className="friend-status">
+                    {friend.online_status || "offline"}
+                  </div>
                 </div>
                 <button
                   className="invite-button"
@@ -413,7 +526,7 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed }) => {
                   disabled={loading}
                 >
                   <Plus size={16} />
-                  {loading ? 'Inviting...' : 'Invite'}
+                  {loading ? "Inviting..." : "Invite"}
                 </button>
               </div>
             ))}
@@ -430,4 +543,3 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed }) => {
 };
 
 export default ProfilePanel;
-

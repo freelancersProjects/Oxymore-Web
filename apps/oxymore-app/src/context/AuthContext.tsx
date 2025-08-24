@@ -42,14 +42,49 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       const token = localStorage.getItem('token');
       if (token) {
         try {
-          // Idéalement, ici on ferait un appel à une route /api/auth/profile
-          // pour valider le token et récupérer les données fraîches.
-          // Pour l'instant, on décode le token pour récupérer les données utilisateur
-          // stockées lors de la connexion, si elles existent.
+          // Récupérer le profil complet depuis l'API
+          const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/profile`, {
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            const userData = data.user;
+
+            // S'assurer que l'objet a id_user
+            if (userData.id && !userData.id_user) {
+              const mappedUser: User = {
+                ...userData,
+                id_user: userData.id,
+              };
+              setUser(mappedUser);
+            } else {
+              setUser(userData);
+            }
+          } else {
+            // Si l'API échoue, essayer avec les données stockées
+            const storedUser = localStorage.getItem('useroxm');
+            if (storedUser) {
+              const parsedUser = JSON.parse(storedUser);
+              if (parsedUser.id && !parsedUser.id_user) {
+                const mappedUser: User = {
+                  ...parsedUser,
+                  id_user: parsedUser.id,
+                };
+                setUser(mappedUser);
+              } else {
+                setUser(parsedUser);
+              }
+            }
+          }
+        } catch (error) {
+          console.error("Failed to authenticate with token", error);
+          // En cas d'erreur, essayer avec les données stockées
           const storedUser = localStorage.getItem('useroxm');
           if (storedUser) {
             const parsedUser = JSON.parse(storedUser);
-            // S'assurer que l'objet a id_user
             if (parsedUser.id && !parsedUser.id_user) {
               const mappedUser: User = {
                 ...parsedUser,
@@ -60,10 +95,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
               setUser(parsedUser);
             }
           }
-        } catch (error) {
-          console.error("Failed to authenticate with token", error);
-          localStorage.removeItem('token');
-          localStorage.removeItem('useroxm');
         }
       }
       setIsLoading(false);

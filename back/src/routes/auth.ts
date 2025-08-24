@@ -1,6 +1,7 @@
 import { Router } from "express";
 import type { Handler } from "express";
-import { register, login } from "../controllers/authController";
+import { register, login, getProfile } from "../controllers/authController";
+import { authenticateToken } from "../middleware/auth";
 
 const router = Router();
 
@@ -68,5 +69,22 @@ router.post("/register", register as Handler);
  *         description: Identifiants invalides
  */
 router.post("/login", login as Handler);
+
+/**
+ * @openapi
+ * /api/auth/profile:
+ *   get:
+ *     tags:
+ *       - Auth
+ *     summary: Récupérer le profil complet de l'utilisateur connecté
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Profil utilisateur récupéré avec succès
+ *       401:
+ *         description: Non autorisé
+ */
+router.get("/profile", authenticateToken, getProfile as Handler);
 
 export default router;

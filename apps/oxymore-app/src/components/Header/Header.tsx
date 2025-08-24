@@ -79,8 +79,6 @@ export const Header: React.FC<HeaderProps> = ({ isSidebarCollapsed = false }) =>
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Logique de recherche ici
-    console.log('Searching for:', searchQuery);
   };
 
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 700;

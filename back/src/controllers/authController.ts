@@ -11,6 +11,54 @@ interface Role extends RowDataPacket {
   description?: string;
 }
 
+export const getProfile = async (req: Request, res: Response) => {
+  try {
+    const userId = (req as any).user?.id;
+
+    if (!userId) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const user = await UserService.getUserById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    let userRole = null;
+
+    if (typeof user.role_id === 'number') {
+      const roleMap: { [key: number]: string } = {
+        1: 'user',
+        2: 'admin'
+      };
+      userRole = { name: roleMap[user.role_id] || 'user' };
+    } else {
+      try {
+        const [roles] = await db.execute<Role[]>(
+          'SELECT r.* FROM roles r WHERE r.id = ?',
+          [user.role_id]
+        );
+        userRole = roles.length > 0 ? roles[0] : null;
+      } catch (error) {
+        console.error("Error fetching role:", error);
+        userRole = { name: 'user' };
+      }
+    }
+
+    const { password_hash: _, ...userProfile } = user;
+
+    res.json({
+      user: {
+        ...userProfile,
+        role: userRole?.name || 'user'
+      }
+    });
+  } catch (error) {
+    console.error("Error in getProfile:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
 export const register = async (req: Request, res: Response) => {
   try {
     const { email, password, username, first_name, last_name } = req.body;
@@ -97,7 +145,7 @@ export const login = async (req: Request, res: Response) => {
 
     // Gérer les anciens role_id numériques et les nouveaux UUIDs
     let userRole = null;
-    
+
     // Si role_id est un nombre (ancien format), mapper vers les rôles
     if (typeof user.role_id === 'number') {
       const roleMap: { [key: number]: string } = {
@@ -133,7 +181,22 @@ export const login = async (req: Request, res: Response) => {
         username: user.username,
         first_name: user.first_name,
         last_name: user.last_name,
-        role: userRole?.name || 'user'
+        role: userRole?.name || 'user',
+        elo: user.elo,
+        is_premium: user.is_premium,
+        avatar_url: user.avatar_url,
+        banner_url: user.banner_url,
+        bio: user.bio,
+        wallet: user.wallet,
+        country_code: user.country_code,
+        discord_link: user.discord_link,
+        faceit_id: user.faceit_id,
+        steam_link: user.steam_link,
+        twitch_link: user.twitch_link,
+        youtube_link: user.youtube_link,
+        verified: user.verified,
+        team_chat_is_muted: user.team_chat_is_muted,
+        created_at: user.created_at
       },
     });
   } catch (error) {

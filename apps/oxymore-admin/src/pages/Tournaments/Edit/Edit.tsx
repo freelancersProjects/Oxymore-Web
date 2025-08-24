@@ -124,7 +124,7 @@ const Edit = () => {
         setSelectedMaps(tournamentMaps);
         setValue('selected_maps', tournamentMaps.map(map => map.id_map));
       } catch (err) {
-        console.log('No maps found for this tournament');
+        console.error('No maps found for this tournament');
         setSelectedMaps([]);
         setValue('selected_maps', []);
       }
@@ -156,14 +156,11 @@ const Edit = () => {
       setSaving(true);
       setError(null);
 
-      // Validation côté client
       if (!data.tournament_name || !data.type || !data.format || !data.structure ||
           !data.start_date || !data.end_date || !data.id_league) {
         setError('Veuillez remplir tous les champs obligatoires');
         return;
       }
-
-      console.log('Updating tournament with data:', data);
 
       await apiService.put(`/tournaments/${id}`, data);
 
@@ -176,10 +173,9 @@ const Edit = () => {
             id_map: mapId
           });
         }
-             }
+      }
 
-       console.log('Navigating to:', `/tournaments/${id}`);
-       navigate(`/tournaments/${id}`, { replace: true });
+      navigate(`/tournaments/${id}`, { replace: true });
     } catch (err: any) {
       setError(err.response?.data?.message || 'Une erreur est survenue lors de la mise à jour du tournoi');
       console.error('Error updating tournament:', err);
