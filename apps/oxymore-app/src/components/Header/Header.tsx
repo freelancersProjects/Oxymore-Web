@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./Header.scss";
-import { Bell as BellIcon, ChevronRight, ChevronLeft } from 'lucide-react';
+import { Bell as BellIcon, ChevronRight, ChevronLeft, Search } from 'lucide-react';
 import DrawerNotif from "./DrawerNotif/DrawerNotif";
 import apiService from '../../api/apiService';
 import ProfilePanel from './ProfilePanel/ProfilePanel';
@@ -11,7 +11,21 @@ interface HeaderProps {
 
 export const Header: React.FC<HeaderProps> = ({ isSidebarCollapsed = false }) => {
   const [notifOpen, setNotifOpen] = useState(false);
-  const [profileCollapsed, setProfileCollapsed] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [profileCollapsed, setProfileCollapsed] = useState(() => {
+    // Charger l'état depuis localStorage, par défaut fermé (true)
+    const saved = localStorage.getItem('profilePanelCollapsed');
+    const isCollapsed = saved ? JSON.parse(saved) : true;
+
+    // Appliquer immédiatement la classe CSS pour éviter le flash
+    const root = document.querySelector('.oxm-layout');
+    if (root && !isCollapsed) {
+      root.classList.add('profile-panel-expanded');
+    }
+
+    return isCollapsed;
+  });
   const [unreadCount, setUnreadCount] = useState(0);
   const userId = "1";
 
@@ -24,20 +38,33 @@ export const Header: React.FC<HeaderProps> = ({ isSidebarCollapsed = false }) =>
     }
   };
 
+  // Gestion du scroll pour la search bar
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      setIsScrolled(scrollTop > 50);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   useEffect(() => { fetchUnreadCount(); }, []);
   useEffect(() => { if (!notifOpen) fetchUnreadCount(); }, [notifOpen]);
 
   const setProfileClass = (collapsed: boolean) => {
     const root = document.querySelector('.oxm-layout');
     if (!root) return;
-    if (collapsed) root.classList.add('profile-panel-collapsed');
-    else root.classList.remove('profile-panel-collapsed');
+    if (collapsed) root.classList.remove('profile-panel-expanded');
+    else root.classList.add('profile-panel-expanded');
   };
 
   const toggleProfile = () => {
-    setProfileCollapsed(prev => {
+    setProfileCollapsed((prev: boolean) => {
       const next = !prev;
       setProfileClass(next);
+      // Sauvegarder dans localStorage
+      localStorage.setItem('profilePanelCollapsed', JSON.stringify(next));
       return next;
     });
   };
@@ -46,14 +73,32 @@ export const Header: React.FC<HeaderProps> = ({ isSidebarCollapsed = false }) =>
     setNotifOpen(true);
   };
 
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Logique de recherche ici
+    console.log('Searching for:', searchQuery);
+  };
+
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 700;
 
   return (
     <>
       <header className={`oxm-header${isSidebarCollapsed ? ' collapsed' : ''}`}>
         {!isMobile && (
-          <div className="oxm-header__search">
-            <input type="text" placeholder="Search For a Game" />
+          <div className={`oxm-header__search${isScrolled ? ' scrolled' : ''}`}>
+            <form onSubmit={handleSearchSubmit} className="search-wrapper">
+              <Search className="search-icon" size={16} />
+              <input
+                type="text"
+                placeholder="Search games, tournaments, players..."
+                value={searchQuery}
+                onChange={handleSearchChange}
+              />
+            </form>
           </div>
         )}
         <div className="oxm-header__actions">

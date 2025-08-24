@@ -3,6 +3,22 @@
 .container-dashboarda-app
 {
   min-height: calc(100vh - #{rem-calc(70)});
+
+  .news-section {
+    animation: slideInFromTop 0.4s ease-out;
+  }
+
+  .tournaments-section {
+    animation: slideInFromTop 0.4s ease-out 0.1s both;
+  }
+
+  .dashboard-separator {
+    animation: slideInFromTop 0.4s ease-out 0.2s both;
+  }
+
+  .dashboard-bottom-section {
+    animation: slideInFromTop 0.4s ease-out 0.3s both;
+  }
 }
 
 .dashboard-tabs {
@@ -116,6 +132,18 @@
 
   50% {
     opacity: 0.8;
+  }
+}
+
+@keyframes slideInFromTop {
+  0% {
+    opacity: 0;
+    transform: translateY(rem-calc(-20));
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
