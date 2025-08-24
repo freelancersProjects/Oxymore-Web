@@ -65,10 +65,13 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed }) => {
 
   const loadFriends = async () => {
     try {
+      setLoading(true);
       const data = await apiService.get(`/friends/user/${user?.id_user}`);
       setFriends(data);
     } catch (error) {
       console.error('Error loading friends:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -130,8 +133,9 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed }) => {
     }
   };
 
-  const totalFriends = MOCK_FRIENDS.length;
-  const friendsPreview = useMemo(() => (showMoreFriends ? MOCK_FRIENDS : MOCK_FRIENDS.slice(0, 4)), [showMoreFriends]);
+  const totalFriends = friends.length;
+  const onlineFriends = friends.filter(friend => friend.online_status === 'online' || friend.online_status === 'in-game');
+  const friendsPreview = useMemo(() => (showMoreFriends ? friends : friends.slice(0, 4)), [showMoreFriends, friends]);
 
   const filteredFriends = useMemo(() => {
     return friends.filter(friend =>
@@ -158,16 +162,16 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed }) => {
             <div className="level-badge">{USER_STATS.level}</div>
           </div>
 
-          <div className="profile-panel__stats-collapsed">
-            <div className="stat-item-collapsed">
-              <div className="stat-value">{USER_STATS.onlineFriends}</div>
-              <div className="stat-label">Online</div>
+                      <div className="profile-panel__stats-collapsed">
+              <div className="stat-item-collapsed">
+                <div className="stat-value">{onlineFriends.length}</div>
+                <div className="stat-label">Online</div>
+              </div>
+              <div className="stat-item-collapsed">
+                <div className="stat-value">{user?.elo || USER_STATS.elo}</div>
+                <div className="stat-label">ELO</div>
+              </div>
             </div>
-            <div className="stat-item-collapsed">
-              <div className="stat-value">{USER_STATS.elo}</div>
-              <div className="stat-label">ELO</div>
-            </div>
-          </div>
 
           <div className="profile-panel__quick-icons">
             <button className="quick-icon" title="Settings">
@@ -189,15 +193,15 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed }) => {
               <div className="online-friends-title">Friends</div>
             </div>
             <div className="online-friends-avatars">
-              {MOCK_FRIENDS.filter(f => f.status === 'online' || f.status === 'in-game').slice(0, 3).map((friend) => (
-                <div key={friend.id} className="friend-avatar-collapsed" title={friend.name}>
-                  <img src={friend.avatar} alt={friend.name} />
-                  <div className={`status-indicator ${friend.status}`} />
-                  <div className="friend-name-tooltip">{friend.name}</div>
+              {onlineFriends.slice(0, 3).map((friend) => (
+                <div key={friend.id_friend} className="friend-avatar-collapsed" title={friend.username}>
+                  <img src={friend.avatar_url || `https://i.pravatar.cc/32?u=${friend.user_id}`} alt={friend.username} />
+                  <div className={`status-indicator ${friend.online_status || 'offline'}`} />
+                  <div className="friend-name-tooltip">{friend.username}</div>
                 </div>
               ))}
               <div className="more-friends-indicator">
-                <span>+{Math.max(0, USER_STATS.totalFriends - 3)}</span>
+                <span>+{Math.max(0, totalFriends - 3)}</span>
               </div>
             </div>
           </div>
@@ -287,35 +291,41 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed }) => {
             <div className="profile-panel__section profile-panel__friends">
               <div className="section-title">
                 <Users size={16} />
-                <span>Friends ({USER_STATS.totalFriends})</span>
+                <span>Friends ({totalFriends})</span>
                 <div className="friends-summary">
-                  <span className="online-count">{USER_STATS.onlineFriends} online</span>
-                  <span className="in-game-count">{USER_STATS.inGameFriends} in-game</span>
+                  <span className="online-count">{onlineFriends.length} online</span>
+                  <span className="in-game-count">{friends.filter(f => f.online_status === 'in-game').length} in-game</span>
                 </div>
               </div>
 
               <div className="online-friends-preview">
                 <div className="preview-title">Online Friends</div>
                 <div className="friends-avatars">
-                  {MOCK_FRIENDS.filter(f => f.status === 'online' || f.status === 'in-game').slice(0, 6).map((friend) => (
-                    <div key={friend.id} className="friend-avatar-preview" title={friend.name}>
-                      <img src={friend.avatar} alt={friend.name} />
-                      <div className={`status-indicator ${friend.status}`} />
-                    </div>
-                  ))}
+                  {loading ? (
+                    <div className="loading-friends">Loading...</div>
+                  ) : onlineFriends.length > 0 ? (
+                    onlineFriends.slice(0, 6).map((friend) => (
+                      <div key={friend.id_friend} className="friend-avatar-preview" title={friend.username}>
+                        <img src={friend.avatar_url || `https://i.pravatar.cc/32?u=${friend.user_id}`} alt={friend.username} />
+                        <div className={`status-indicator ${friend.online_status || 'offline'}`} />
+                      </div>
+                    ))
+                  ) : (
+                    <div className="no-friends">No friends online</div>
+                  )}
                 </div>
               </div>
 
               <div className="friends-list">
                 {friendsPreview.map((friend) => (
-                  <div key={friend.id} className="friend-item">
+                  <div key={friend.id_friend} className="friend-item">
                     <div className="friend-avatar">
-                      <img src={friend.avatar} alt={friend.name} />
-                      <div className={`status-indicator ${friend.status}`} />
+                      <img src={friend.avatar_url || `https://i.pravatar.cc/32?u=${friend.user_id}`} alt={friend.username} />
+                      <div className={`status-indicator ${friend.online_status || 'offline'}`} />
                     </div>
                     <div className="friend-info">
-                      <div className="friend-name">{friend.name}</div>
-                      <div className="friend-status">{friend.status}</div>
+                      <div className="friend-name">{friend.username}</div>
+                      <div className="friend-status">{friend.online_status || 'offline'}</div>
                     </div>
                     <button className="friend-action">
                       <User size={12} />
@@ -346,27 +356,21 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed }) => {
             <div className="profile-panel__section profile-panel__quick-actions">
               <div className="section-title">Quick Actions</div>
               <div className="quick-actions-list">
-                <button className="quick-action">
+                <button className="quick-action" onClick={() => navigate('/settings')}>
                   <Settings size={14} />
                   <span>Settings</span>
                 </button>
-                <button className="quick-action">
+                <button className="quick-action" onClick={() => navigate('/api-keys')}>
                   <KeyRound size={14} />
                   <span>API Access</span>
                 </button>
-                <button className="quick-action">
+                <button className="quick-action" onClick={() => navigate('/security')}>
                   <Shield size={14} />
                   <span>Security</span>
                 </button>
               </div>
             </div>
 
-            <div className="profile-panel__section profile-panel__api-access">
-              <button className="api-access-button">
-                <KeyRound size={14} />
-                <span>API Access</span>
-              </button>
-            </div>
 
             <div className="profile-panel__section profile-panel__signout">
               <button className="signout-button" onClick={handleLogout}>
@@ -381,7 +385,6 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed }) => {
       <OXMModal
         isOpen={inviteOpen}
         onClose={() => setInviteOpen(false)}
-        title="Invite Friends to Group"
         size="medium"
       >
         <div className="invite-modal-content">
