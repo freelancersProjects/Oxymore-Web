@@ -6,38 +6,42 @@ interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   children: React.ReactNode;
-  size?: "small" | "medium" | "large";
+  keyUrl?: string;
+  persistOnRefresh?: boolean;
+  urlValue?: string;
 }
 
-const OXMModal: React.FC<ModalProps> = ({ isOpen, onClose, children, size = "medium" }) => {
+const OXMModal: React.FC<ModalProps> = ({ isOpen, onClose, children, keyUrl, persistOnRefresh = false, urlValue }) => {
   useEffect(() => {
-    const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        onClose();
+    const handlePopState = () => {
+      if (persistOnRefresh && keyUrl && urlValue) {
+        const params = new URLSearchParams(window.location.search);
+        if (params.get(keyUrl) !== urlValue) {
+          onClose();
+        }
       }
     };
 
-    if (isOpen) {
-      document.addEventListener("keydown", handleEscape);
-      document.body.style.overflow = "hidden";
-    }
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, [persistOnRefresh, keyUrl, urlValue, onClose]);
 
-    return () => {
-      document.removeEventListener("keydown", handleEscape);
-      document.body.style.overflow = "unset";
-    };
-  }, [isOpen, onClose]);
+  const handleClose = () => {
+    if (persistOnRefresh && keyUrl) {
+      const url = new URL(window.location.href);
+      url.searchParams.delete(keyUrl);
+      window.history.replaceState({}, '', url.toString());
+    }
+    onClose();
+  };
 
   if (!isOpen) {
     return null;
   }
 
   const content = (
-    <div className="oxm-modal-backdrop" onClick={onClose}>
-      <div
-        className={`oxm-modal oxm-modal--${size}`}
-        onClick={(e) => e.stopPropagation()}
-      >
+    <div className="oxm-modal-backdrop" onClick={handleClose}>
+      <div className="oxm-modal" onClick={(e) => e.stopPropagation()}>
         {children}
       </div>
     </div>

@@ -126,15 +126,13 @@ function generateDts() {
   const distPath = path.join(__dirname, '..', 'dist');
   const dtsPath = path.join(distPath, 'index.d.ts');
 
-  console.log('🔍 Lecture du fichier index.ts...');
   const exports = extractExports(indexPath);
 
   if (exports.length === 0) {
-    console.error('❌ Aucun export trouvé dans index.ts');
+    console.error('Aucun export trouvé dans index.ts');
     return;
   }
 
-  console.log(`📦 ${exports.length} composants trouvés:`);
   exports.forEach(exp => console.log(`  - ${exp.name}`));
 
   // Générer le contenu du fichier .d.ts
@@ -147,9 +145,6 @@ function generateDts() {
 
   // Écrire le fichier index.d.ts
   fs.writeFileSync(dtsPath, dtsContent);
-
-  console.log('✅ index.d.ts généré avec succès !');
-  console.log(`📁 Fichier créé: ${dtsPath}`);
 }
 
 // Exécuter le script
