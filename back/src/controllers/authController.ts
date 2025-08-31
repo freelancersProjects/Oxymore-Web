@@ -45,8 +45,7 @@ export const getProfile = async (req: Request, res: Response) => {
       }
     }
 
-    const { password_hash: _, ...userProfile } = user;
-
+    const userProfile = user;
     res.json({
       user: {
         ...userProfile,

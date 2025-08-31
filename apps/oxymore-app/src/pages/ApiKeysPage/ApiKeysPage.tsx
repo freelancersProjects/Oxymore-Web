@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { OXMButton, OXMToast, OXMModal, OXMTabSwitcher } from "@oxymore/ui";
 import {
   FiZap,
@@ -7,6 +7,7 @@ import {
   FiMessageCircle,
 } from "react-icons/fi";
 import "./ApiKeysPage.scss";
+
 
 interface ApiKey {
   id: number;
@@ -32,6 +33,15 @@ export default function ApiKeysPage() {
   const [modalStep, setModalStep] = useState<"input" | "display">("input");
   const [toasts, setToasts] = useState<Toast[]>([]);
 
+  // Vérifier l'URL au chargement pour ouvrir automatiquement la modal
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("modal") === "apikey") {
+      setIsModalOpen(true);
+      setModalStep("input");
+    }
+  }, []);
+
   const addToast = (message: string, type: Toast['type'] = "success") => {
     const id = Date.now();
     setToasts(prevToasts => [...prevToasts, { id, message, type }]);
@@ -46,10 +56,18 @@ export default function ApiKeysPage() {
     setNewKeyLabel("");
     setNewKey(null);
     setIsModalOpen(true);
+
+    const url = new URL(window.location.href);
+    url.searchParams.set("modal", "apikey");
+    window.history.pushState({}, '', url.toString());
   };
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
+
+    const url = new URL(window.location.href);
+    url.searchParams.delete("modal");
+    window.history.replaceState({}, '', url.toString());
   };
 
   const handleConfirmGenerateKey = () => {
@@ -155,7 +173,13 @@ export default function ApiKeysPage() {
             </table>
           </div>
 
-          <OXMModal isOpen={isModalOpen} onClose={handleCloseModal}>
+          <OXMModal
+            isOpen={isModalOpen}
+            onClose={handleCloseModal}
+            keyUrl="modal"
+            urlValue="apikey"
+            persistOnRefresh={true}
+          >
             {modalStep === "input" ? (
               <>
                 <h2>Generate New API Key</h2>

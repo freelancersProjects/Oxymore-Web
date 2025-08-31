@@ -11,23 +11,23 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: rem-calc(40);
-  gap: rem-calc(30);
+  margin-bottom: rem-calc(32);
+  gap: rem-calc(24);
 
   .header-content {
     .friends-title {
       font-family: Orbitron, sans-serif;
-      font-size: rem-calc(48);
+      font-size: rem-calc(40);
       font-weight: 700;
       background: linear-gradient(135deg, $color-purple 0%, $color-blue 100%);
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      margin-bottom: rem-calc(8);
+      margin-bottom: rem-calc(6);
     }
 
     .friends-subtitle {
       font-family: Outfit, sans-serif;
-      font-size: rem-calc(18);
+      font-size: rem-calc(16);
       color: rgba($color-white, 0.7);
       margin: 0;
     }
@@ -79,20 +79,20 @@
 }
 
 .friends-tabs {
-  margin-bottom: rem-calc(30);
+  margin-bottom: rem-calc(24);
 }
 
 .friends-stats {
   display: flex;
-  gap: rem-calc(20);
-  margin-bottom: rem-calc(40);
+  gap: rem-calc(16);
+  margin-bottom: rem-calc(32);
 
   .stat-card {
     flex: 1;
     background: rgb(255 255 255 / 5%);
     border: 1px solid rgb(255 255 255 / 10%);
-    border-radius: rem-calc(16);
-    padding: rem-calc(20);
+    border-radius: rem-calc(12);
+    padding: rem-calc(16);
     text-align: center;
     transition: all 0.3s ease;
     backdrop-filter: blur(10px);
@@ -105,10 +105,10 @@
 
     .stat-number {
       font-family: Orbitron, sans-serif;
-      font-size: rem-calc(32);
+      font-size: rem-calc(28);
       font-weight: 700;
       color: $color-purple;
-      margin-bottom: rem-calc(8);
+      margin-bottom: rem-calc(6);
     }
 
     .stat-label {
@@ -123,16 +123,16 @@
 
 .friends-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(rem-calc(320), 1fr));
-  gap: rem-calc(24);
-  margin-bottom: rem-calc(40);
+  grid-template-columns: repeat(auto-fill, minmax(rem-calc(280), 1fr));
+  gap: rem-calc(20);
+  margin-bottom: rem-calc(32);
 }
 
 .friend-card {
   background: rgb(255 255 255 / 5%);
   border: 1px solid rgb(255 255 255 / 10%);
-  border-radius: rem-calc(20);
-  padding: rem-calc(24);
+  border-radius: rem-calc(16);
+  padding: rem-calc(16);
   transition: all 0.3s ease;
   backdrop-filter: blur(10px);
   position: relative;
@@ -161,16 +161,16 @@
     }
   }
 
-  .friend-header {
-    display: flex;
-    align-items: center;
-    margin-bottom: rem-calc(20);
-    gap: rem-calc(15);
+      .friend-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: rem-calc(12);
+      gap: rem-calc(12);
 
     .friend-avatar {
       position: relative;
-      width: rem-calc(60);
-      height: rem-calc(60);
+      width: rem-calc(48);
+      height: rem-calc(48);
       background: linear-gradient(135deg, $color-purple, $color-blue);
       border-radius: 50%;
       display: flex;
@@ -179,7 +179,7 @@
       flex-shrink: 0;
 
       .avatar-icon {
-        font-size: rem-calc(28) !important;
+        font-size: rem-calc(22) !important;
         color: $color-white !important;
         filter: drop-shadow(0 2px 4px rgb(0 0 0 / 30%));
       }
@@ -202,10 +202,10 @@
 
       .friend-name {
         font-family: Orbitron, sans-serif;
-        font-size: rem-calc(18);
+        font-size: rem-calc(16);
         font-weight: 600;
         color: $color-white;
-        margin: 0 0 rem-calc(4);
+        margin: 0 0 rem-calc(3);
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -230,7 +230,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: rem-calc(20);
+    margin-bottom: rem-calc(12);
 
     .league-badge {
       background: rgb(255 255 255 / 5%);
@@ -272,13 +272,13 @@
 
     .action-btn {
       flex: 1;
-      height: rem-calc(40);
+      height: rem-calc(36);
       background: rgb(255 255 255 / 5%);
       border: 1px solid rgb(255 255 255 / 20%);
       border-radius: rem-calc(8);
       color: $color-white;
       font-family: Outfit, sans-serif;
-      font-size: rem-calc(14);
+      font-size: rem-calc(13);
       font-weight: 500;
       cursor: pointer;
       transition: all 0.3s ease;
@@ -324,31 +324,31 @@
 
 .empty-state {
   text-align: center;
-  padding: rem-calc(80) rem-calc(20);
+  padding: rem-calc(60) rem-calc(20);
   background: rgb(255 255 255 / 2%);
   border: 1px solid rgb(255 255 255 / 5%);
-  border-radius: rem-calc(20);
+  border-radius: rem-calc(16);
   backdrop-filter: blur(10px);
 
   .empty-icon {
-    font-size: rem-calc(64) !important;
+    font-size: rem-calc(48) !important;
     color: rgba($color-white, 0.3) !important;
-    margin-bottom: rem-calc(20);
+    margin-bottom: rem-calc(16);
     filter: drop-shadow(0 4px 8px rgb(0 0 0 / 30%));
   }
 
   h3 {
     font-family: Orbitron, sans-serif;
-    font-size: rem-calc(24);
+    font-size: rem-calc(20);
     color: $color-white;
-    margin-bottom: rem-calc(12);
+    margin-bottom: rem-calc(10);
   }
 
   p {
     font-family: Outfit, sans-serif;
-    font-size: rem-calc(16);
+    font-size: rem-calc(15);
     color: rgba($color-white, 0.7);
-    margin-bottom: rem-calc(30);
+    margin-bottom: rem-calc(24);
     max-width: rem-calc(400);
     margin-left: auto;
     margin-right: auto;
@@ -426,7 +426,7 @@
   display: flex;
   align-items: center;
   gap: rem-calc(16);
-  margin-bottom: rem-calc(30);
+  margin-bottom: rem-calc(24);
 
   .search-toggle-btn {
     background: none;
@@ -455,14 +455,14 @@
 
     .search-input {
       width: rem-calc(280);
-      height: rem-calc(50);
+      height: rem-calc(44);
       background: rgb(255 255 255 / 5%);
       border: 1px solid rgb(255 255 255 / 20%);
-      border-radius: rem-calc(12);
-      padding: rem-calc(15) rem-calc(45) rem-calc(15) rem-calc(20);
+      border-radius: rem-calc(10);
+      padding: rem-calc(12) rem-calc(40) rem-calc(12) rem-calc(16);
       color: $color-white;
       font-family: Outfit, sans-serif;
-      font-size: rem-calc(16);
+      font-size: rem-calc(15);
       transition: all 0.3s ease;
 
       &::placeholder {
