@@ -9,26 +9,84 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 rem-calc(40);
-  z-index: 140; // au-dessus du contenu
+  z-index: 1000;
   width: calc(100% - rem-calc(250));
   height: rem-calc(95);
 
   &__search {
     flex: 0 0 auto;
+    position: relative;
+    transition: all 0.3s ease;
+
+    .search-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+      transition: all 0.3s ease;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: rem-calc(12);
+      color: rgb(255 255 255 / 40%);
+      font-size: rem-calc(16);
+      pointer-events: none;
+      transition: color 0.3s ease;
+      z-index: 2;
+    }
 
     input {
-      width: rem-calc(300);
-      padding: rem-calc(12) rem-calc(20);
-      border-radius: rem-calc(12);
-      border: 1px solid rgb(255 255 255 / 20%);
-      background: rgb(255 255 255 / 5%);
+      width: rem-calc(280);
+      padding: rem-calc(10) rem-calc(16) rem-calc(10) rem-calc(40);
+      border-radius: rem-calc(20);
+      border: 1px solid rgb(255 255 255 / 8%);
+      background: rgb(255 255 255 / 3%);
       color: $color-white;
-      font-size: rem-calc(16);
+      font-size: rem-calc(14);
       font-family: Outfit, sans-serif;
       outline: none;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
 
       &::placeholder {
-        color: rgb(255 255 255 / 50%);
+        color: rgb(255 255 255 / 40%);
+        font-weight: 400;
+      }
+
+      &:focus {
+        width: rem-calc(320);
+        border-color: rgb(255 255 255 / 20%);
+        background: rgb(255 255 255 / 6%);
+        box-shadow: 0 0 0 rem-calc(3) rgb(139 92 246 / 20%);
+
+        & + .search-icon {
+          color: rgb(139 92 246 / 80%);
+        }
+      }
+
+      &:hover:not(:focus) {
+        border-color: rgb(255 255 255 / 15%);
+        background: rgb(255 255 255 / 4%);
+      }
+    }
+
+    // Animation au scroll
+    &.scrolled {
+      input {
+        width: rem-calc(240);
+        padding: rem-calc(8) rem-calc(14) rem-calc(8) rem-calc(36);
+        font-size: rem-calc(13);
+        border-radius: rem-calc(16);
+        background: rgb(255 255 255 / 2%);
+
+        &:focus {
+          width: rem-calc(280);
+        }
+      }
+
+      .search-icon {
+        font-size: rem-calc(14);
+        left: rem-calc(10);
       }
     }
   }
@@ -45,7 +103,7 @@
       align-items: center;
       cursor: pointer;
       margin-right: rem-calc(18);
-      z-index: 1200; // sous le panneau pour ne pas passer au-dessus
+      z-index: 1200;
 
       .icon-bell { font-size: rem-calc(24); color: $color-white; transition: color 0.2s; }
       &:hover .icon-bell { color: $color-purple-light; }
@@ -80,7 +138,7 @@
   padding: rem-calc(2) rem-calc(7);
   box-shadow: 0 rem-calc(2) rem-calc(8) rgb(80 12 173 / 10%);
   letter-spacing: 1px;
-  z-index: 1200;
+  z-index: 2000;
   display: inline-block;
 }
 

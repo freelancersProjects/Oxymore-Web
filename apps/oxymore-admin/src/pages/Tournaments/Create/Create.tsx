@@ -119,18 +119,14 @@ const Create = () => {
 
   const onSubmit = async (data: TournamentFormData) => {
     try {
-      console.log('Submitting tournament data:', data);
 
-      // Validation côté client
       if (!data.tournament_name || !data.type || !data.format || !data.structure ||
           !data.start_date || !data.end_date || !data.id_league) {
         console.error('Missing required fields');
         return;
       }
 
-      // Create tournament
       const tournamentResponse = await apiService.post<{ id_tournament: string }>('/tournaments', data);
-      console.log('Tournament created:', tournamentResponse);
 
       // Create tournament maps
       if (data.selected_maps && data.selected_maps.length > 0) {

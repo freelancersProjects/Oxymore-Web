@@ -8,6 +8,7 @@ interface User {
   first_name: string;
   last_name: string;
   role: string;
+  elo: number;
 }
 
 interface AuthContextType {
@@ -74,4 +75,4 @@ export const useAuth = () => {
     throw new Error('useAuth must be used within an AuthProvider');
   }
   return context;
-}; 
+};

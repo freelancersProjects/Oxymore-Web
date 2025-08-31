@@ -26,3 +26,21 @@ export const deleteGroup = async (req: Request, res: Response) => {
   await GroupService.deleteGroup(req.params.id);
   res.status(204).send();
 };
+
+export const getGroupsByUserId = async (req: Request, res: Response): Promise<void> => {
+  const { userId } = req.params;
+  const groups = await GroupService.getGroupsByUserId(userId);
+  res.json(groups);
+};
+
+export const getGroupsOwnedByUserId = async (req: Request, res: Response): Promise<void> => {
+  const { userId } = req.params;
+  const groups = await GroupService.getGroupsOwnedByUserId(userId);
+  res.json(groups);
+};
+
+export const createDefaultGroupForUser = async (req: Request, res: Response): Promise<void> => {
+  const { userId } = req.params;
+  const group = await GroupService.createDefaultGroupForUser(userId);
+  res.status(201).json(group);
+};

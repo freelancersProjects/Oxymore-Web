@@ -12,7 +12,17 @@ const handleResponse = async (response: Response) => {
 
 const apiService = {
   get: async (endpoint: string) => {
-    const res = await fetch(`${BASE_URL}${endpoint}`, { method: 'GET' });
+    const token = localStorage.getItem('token');
+    const headers: Record<string, string> = {};
+
+    if (token) {
+      headers.Authorization = `Bearer ${token}`;
+    }
+
+    const res = await fetch(`${BASE_URL}${endpoint}`, {
+      method: 'GET',
+      headers
+    });
     return handleResponse(res);
   },
   post: async (endpoint: string, data?: any) => {
