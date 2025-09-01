@@ -82,7 +82,7 @@ body {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  z-index: 1050;
+  z-index: 998;
   transition: all 0.3s ease;
   color: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(10px);
