@@ -2,24 +2,24 @@ import swaggerJsdoc from 'swagger-jsdoc';
 
 const options = {
   definition: {
-    openapi: '3.0.0',
+    openapi: "3.0.0",
     info: {
-      title: 'Oxymore API Documentation',
-      version: '1.0.0',
-      description: 'Documentation for Oxymore API endpoints',
+      title: "Oxymore API Documentation",
+      version: "1.0.0",
+      description: "Documentation for Oxymore API endpoints",
     },
     servers: [
       {
-        url: 'http://localhost:3000',
-        description: 'Development server',
+        url: "http://localhost:8101",
+        description: "Development server",
       },
     ],
     components: {
       securitySchemes: {
         bearerAuth: {
-          type: 'http',
-          scheme: 'bearer',
-          bearerFormat: 'JWT',
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT",
         },
       },
     },
@@ -29,7 +29,11 @@ const options = {
       },
     ],
   },
-  apis: ['./src/controllers/**/*.ts', './src/models/**/*.ts', '!./src/controllers/admin/**/*.ts'],
+  apis: [
+    "./src/controllers/**/*.ts",
+    "./src/models/**/*.ts",
+    "!./src/controllers/admin/**/*.ts",
+  ],
 };
 
-export const specs = swaggerJsdoc(options); 
+export const specs = swaggerJsdoc(options);

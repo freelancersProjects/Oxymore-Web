@@ -21,6 +21,7 @@ app.use(
       "https://oxymore-web-oxymore-admin.vercel.app",
       "https://oxymore-web-oxymore-app.vercel.app",
       "https://oxymore-web-oxymore-site.vercel.app",
+      "https://mathis.alwaysdata.net"
     ],
     credentials: true,
   })
@@ -31,34 +32,30 @@ app.get("/health", (req, res) => {
   res.status(200).json({ status: "healthy", timestamp: new Date().toISOString() });
 });
 
+const SERVER_URL =
+  process.env.NODE_ENV === "production"
+    ? "https://mathis.alwaysdata.net"
+    : `http://localhost:${PORT}`;
+
 const swaggerOptions = {
   definition: {
     openapi: "3.0.0",
     info: {
       title: "Oxymore API",
       version: "1.0.0",
-      description: "Documentation de l'API Oxymore"
+      description: "Documentation de l'API Oxymore",
     },
-    servers: [
-      { url: `http://localhost:${PORT}` }
-    ],
+    servers: [{ url: SERVER_URL }],
     components: {
       securitySchemes: {
-        bearerAuth: {
-          type: "http",
-          scheme: "bearer",
-          bearerFormat: "JWT"
-        }
-      }
+        bearerAuth: { type: "http", scheme: "bearer", bearerFormat: "JWT" },
+      },
     },
-    security: [
-      {
-        bearerAuth: []
-      }
-    ]
+    security: [{ bearerAuth: [] }],
   },
-  apis: ["./src/routes/*.ts", "./src/models/*.ts"]
+  apis: ["./dist/routes/*.js", "./dist/models/*.js"], // pointer sur dist en prod
 };
+
 
 const swaggerSpec = swaggerJSDoc(swaggerOptions);
 
