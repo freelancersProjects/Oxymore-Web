@@ -78,11 +78,15 @@ td {
   margin-top: rem-calc(20);
 }
 
+.z10000{
+  z-index: 10000;
+}
+
 .toast-container {
   position: fixed;
   top: rem-calc(20);
   right: rem-calc(20);
-  z-index: 1050;
+  z-index: 10000;
   display: flex;
   flex-direction: column;
   gap: rem-calc(15);

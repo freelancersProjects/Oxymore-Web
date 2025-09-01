@@ -103,7 +103,7 @@
       align-items: center;
       cursor: pointer;
       margin-right: rem-calc(18);
-      z-index: 1200;
+      z-index: 1010;
 
       .icon-bell { font-size: rem-calc(24); color: $color-white; transition: color 0.2s; }
       &:hover .icon-bell { color: $color-purple-light; }
@@ -115,7 +115,7 @@
       object-fit: cover;
       box-shadow: 0 rem-calc(2) rem-calc(8) rgb(80 12 173 / 10%);
       transition: box-shadow 0.2s ease-in-out;
-      z-index: 1200; // sous le panneau
+      z-index: 1010; // sous le panneau
 
       &:hover {
         box-shadow: 0 0 0 rem-calc(3) rgb(80 12 173 / 50%);
@@ -138,7 +138,7 @@
   padding: rem-calc(2) rem-calc(7);
   box-shadow: 0 rem-calc(2) rem-calc(8) rgb(80 12 173 / 10%);
   letter-spacing: 1px;
-  z-index: 2000;
+  z-index: 1011;
   display: inline-block;
 }
 
