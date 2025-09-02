@@ -43,17 +43,25 @@ const swaggerOptions = {
     info: {
       title: "Oxymore API",
       version: "1.0.0",
-      description: "Documentation de l'API Oxymore",
+      description: "Oxymore API Documentation",
     },
-    servers: [{ url: SERVER_URL }],
+    servers: [{ url: `http://localhost:${PORT}` }],
     components: {
       securitySchemes: {
-        bearerAuth: { type: "http", scheme: "bearer", bearerFormat: "JWT" },
+        bearerAuth: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT",
+        },
       },
     },
-    security: [{ bearerAuth: [] }],
+    security: [
+      {
+        bearerAuth: [],
+      },
+    ],
   },
-  apis: ["./dist/routes/*.js", "./dist/models/*.js"], // pointer sur dist en prod
+  apis: ["./src/routes/*.ts", "./src/models/*.ts"],
 };
 
 

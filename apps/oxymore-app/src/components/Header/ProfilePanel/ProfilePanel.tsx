@@ -11,6 +11,8 @@ import {
   Shield,
   LogOut,
   Search,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import { OXMModal } from "@oxymore/ui";
 import { useAuth } from "../../../context/AuthContext";
@@ -27,6 +29,7 @@ export interface FriendItem {
 
 interface ProfilePanelProps {
   collapsed: boolean;
+  onToggle: () => void;
 }
 
 const USER_STATS = {
@@ -40,7 +43,7 @@ const USER_STATS = {
   inGameFriends: 3,
 };
 
-const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed }) => {
+const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed, onToggle }) => {
   const panelRef = useRef<HTMLDivElement | null>(null);
   const navigate = useNavigate();
   const { user, logout } = useAuth();
@@ -153,6 +156,14 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed }) => {
   if (collapsed) {
     return (
       <div className="profile-panel collapsed" ref={panelRef}>
+        {/* Flèche de toggle pour la version collapsed */}
+        <button
+          className="profile-panel-toggle"
+          onClick={onToggle}
+        >
+          <ChevronRight size={16} />
+        </button>
+
         <div className="profile-panel__collapsed">
           <div className="profile-panel__avatar-collapsed">
             <img
@@ -231,6 +242,14 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed }) => {
 
   return (
     <div className="profile-panel" ref={panelRef}>
+      {/* Flèche de toggle intégrée au profile panel */}
+      <button
+        className="profile-panel-toggle"
+        onClick={onToggle}
+      >
+        <ChevronLeft size={16} />
+      </button>
+
       {!collapsed && (
         <>
           <div className="profile-panel__header">

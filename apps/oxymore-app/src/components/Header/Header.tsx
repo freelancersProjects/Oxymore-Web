@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./Header.scss";
-import { Bell as BellIcon, ChevronRight, ChevronLeft, Search } from 'lucide-react';
+import { Bell as BellIcon, Search } from 'lucide-react';
 import DrawerNotif from "./DrawerNotif/DrawerNotif";
 import apiService from '../../api/apiService';
 import ProfilePanel from './ProfilePanel/ProfilePanel';
@@ -52,18 +52,17 @@ export const Header: React.FC<HeaderProps> = ({ isSidebarCollapsed = false }) =>
   useEffect(() => { fetchUnreadCount(); }, []);
   useEffect(() => { if (!notifOpen) fetchUnreadCount(); }, [notifOpen]);
 
-  const setProfileClass = (collapsed: boolean) => {
-    const root = document.querySelector('.oxm-layout');
-    if (!root) return;
-    if (collapsed) root.classList.remove('profile-panel-expanded');
-    else root.classList.add('profile-panel-expanded');
-  };
-
   const toggleProfile = () => {
     setProfileCollapsed((prev: boolean) => {
       const next = !prev;
-      setProfileClass(next);
-      // Sauvegarder dans localStorage
+      const root = document.querySelector('.oxm-layout');
+      if (root) {
+        if (next) {
+          root.classList.remove('profile-panel-expanded');
+        } else {
+          root.classList.add('profile-panel-expanded');
+        }
+      }
       localStorage.setItem('profilePanelCollapsed', JSON.stringify(next));
       return next;
     });
@@ -107,10 +106,8 @@ export const Header: React.FC<HeaderProps> = ({ isSidebarCollapsed = false }) =>
           <DrawerNotif open={notifOpen} onClose={() => setNotifOpen(false)} userId={userId} />
         </div>
       </header>
-      <div className="profile-toggle-button" onClick={toggleProfile}>
-        {profileCollapsed ? <ChevronLeft size={20} /> : <ChevronRight size={20} />}
-      </div>
-      <ProfilePanel collapsed={profileCollapsed} />
+
+      <ProfilePanel collapsed={profileCollapsed} onToggle={toggleProfile} />
     </>
   );
 };

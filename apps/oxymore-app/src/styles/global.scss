@@ -3,7 +3,7 @@
 
 $color-purple: #500CAD;
 $color-white: #fff;
-$color-background: #121212;
+$color-background: #0a0a0f;
 $color-gray: #B0B0B0;
 $color-gray-light: #E0E0E0;
 $color-gray-dark: #333;
@@ -35,6 +35,7 @@ $color-red-dark: #E03A3A;
 $color-red-soft: #F87171;
 $base-font-size: 10;
 
+// rem vers px
 @function rem-calc($px) {
   @return math.div($px, $base-font-size) * 1rem;
 }
@@ -86,7 +87,7 @@ td {
   position: fixed;
   top: rem-calc(20);
   right: rem-calc(20);
-  z-index: 10000;
+  z-index: 20000;
   display: flex;
   flex-direction: column;
   gap: rem-calc(15);

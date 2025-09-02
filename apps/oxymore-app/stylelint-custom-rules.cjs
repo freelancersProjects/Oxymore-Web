@@ -27,8 +27,8 @@ module.exports = stylelint.createPlugin(ruleName, (enabled, options = {}) => {
           const shouldFlag = (
             // Tailles importantes (exclure max-width)
             (['width', 'height', 'min-width', 'min-height', 'max-height', 'font-size', 'line-height'].includes(prop) && pxValue >= 8) ||
-            // Espacements significatifs (padding uniquement; margin exclu)
-            (['padding', 'padding-top', 'padding-bottom', 'padding-left', 'padding-right'].includes(prop) && pxValue >= 8) ||
+            // Espacements significatifs (padding et margin)
+            (['padding', 'padding-top', 'padding-bottom', 'padding-left', 'padding-right', 'margin', 'margin-top', 'margin-bottom', 'margin-left', 'margin-right'].includes(prop) && pxValue >= 1) ||
             // Positions importantes
             (['top', 'bottom', 'left', 'right'].includes(prop) && pxValue >= 8) ||
             // Gap et espacements de layout
@@ -41,9 +41,8 @@ module.exports = stylelint.createPlugin(ruleName, (enabled, options = {}) => {
 
           // Ne PAS flagger certaines propriétés
           const shouldIgnore = (
-            // Ignorer toutes les propriétés border*, margin*, max-width, size
+            // Ignorer toutes les propriétés border*, max-width, size
             prop.startsWith('border') ||
-            prop.startsWith('margin') ||
             prop === 'max-width' ||
             prop === 'size' ||
             // Ombres subtiles
