@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import apiService from '../../api/apiService';
+import { OXMButton } from '@oxymore/ui';
 import './Register.scss';
 
 const Register: React.FC = () => {
@@ -22,6 +23,7 @@ const Register: React.FC = () => {
   }>({});
 
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const images = ["/brand_login.png"];
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -75,22 +77,28 @@ const Register: React.FC = () => {
   };
 
   return (
-    <div className="register-container">
-       <div className="register-background">
-        <div className="register-glow-orb register-glow-orb-1"></div>
-        <div className="register-glow-orb register-glow-orb-2"></div>
-        <div className="register-glow-orb register-glow-orb-3"></div>
-      </div>
-      <div className="register-card">
-        <div className="register-header">
-          <div className="register-logo">
-            <img src="/oxymore.svg" alt="Oxymore" />
+    <div className="auth-container">
+      <div className="auth-layout">
+        <div className="auth-left">
+          <div className="auth-background">
+            <div className="auth-particles">
+              <div className="particle"></div>
+              <div className="particle"></div>
+              <div className="particle"></div>
+              <div className="particle"></div>
+              <div className="particle"></div>
+            </div>
           </div>
-          <h1>Create an Account</h1>
-          <p>Join Oxymore and start your journey</p>
-        </div>
+          <div className="auth-card">
+            <div className="auth-header">
+              <div className="auth-logo">
+                <img src="/oxymore.svg" alt="Oxymore" />
+              </div>
+              <h1>Create an Account</h1>
+              <p>Join Oxymore and start your journey</p>
+            </div>
 
-        <form onSubmit={handleSubmit} className="register-form">
+            <form onSubmit={handleSubmit} className="auth-form">
           <div className="form-group">
             <label htmlFor="first_name">First Name</label>
             <input
@@ -166,13 +174,42 @@ const Register: React.FC = () => {
 
           {errors.form && <span className="error-message form-error">{errors.form}</span>}
 
-          <button type="submit" className="register-button">
-            <span>Create Account</span>
-          </button>
-        </form>
+              <OXMButton
+                type="submit"
+                variant="primary"
+                size="large"
+                className="auth-button"
+              >
+                Create Account
+              </OXMButton>
+            </form>
 
-        <div className="register-footer">
-          <p>Already have an account? <Link to="/login" className="signin-link">Sign in</Link></p>
+            <div className="auth-footer">
+              <p>Already have an account? <Link to="/login" className="auth-link">Sign in</Link></p>
+            </div>
+          </div>
+        </div>
+
+        <div className="auth-right">
+          <div className="auth-visual">
+            <div className="visual-content">
+              <div className="visual-title">
+              </div>
+              <div className="visual-image">
+                <div className="image-container">
+                  <img
+                    src={images[0]}
+                    alt="Gaming Experience"
+                  />
+                  <div className="image-overlay"></div>
+                </div>
+              </div>
+            </div>
+            <div className="visual-bg">
+              <div className="bg-gradient"></div>
+              <div className="bg-pattern"></div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

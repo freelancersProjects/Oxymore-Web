@@ -14,80 +14,76 @@
     margin: 0 0 rem-calc(24);
   }
 
-     .highlights-grid {
-     display: flex;
-     flex-direction: column;
-     gap: rem-calc(16);
-     flex: 1;
-     position: relative;
-     overflow: visible;
+  .highlights-grid {
+    display: flex;
+    flex-direction: column;
+    gap: rem-calc(16);
+    flex: 1;
+    position: relative;
+    overflow: visible;
 
-     &::after {
-       content: '';
-       position: absolute;
-       bottom: 0;
-       left: 0;
-       right: 0;
-       height: rem-calc(250);
-       background: linear-gradient(180deg, rgb(18 18 18 / 0%) 0%, $color-background 90%);
-       pointer-events: none;
-       z-index: 1;
-     }
-   }
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: rem-calc(250);
+      background: linear-gradient(180deg, rgb(18 18 18 / 0%) 0%, $color-background 90%);
+      pointer-events: none;
+      z-index: 1;
+    }
+  }
 
-   .view-more-btn {
-     position: absolute;
-     bottom: rem-calc(20);
-     left: 50%;
-     transform: translateX(-50%);
-     background: $color-purple;
-     color: $color-white;
-     border: none;
-     padding: rem-calc(14) rem-calc(28);
-     border-radius: rem-calc(12);
-     font-weight: 600;
-     font-size: rem-calc(16);
-     cursor: pointer;
-     transition: all 0.2s ease;
-     z-index: 2;
-     box-shadow: 0 rem-calc(4) rem-calc(12) rgb(0 0 0 / 30%);
+  .view-more-btn {
+    position: absolute;
+    bottom: rem-calc(20);
+    left: 50%;
+    transform: translateX(-50%);
+    background: $color-purple;
+    color: $color-white;
+    border: none;
+    padding: rem-calc(14) rem-calc(28);
+    border-radius: rem-calc(12);
+    font-weight: 600;
+    font-size: rem-calc(16);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    z-index: 2;
+    box-shadow: 0 rem-calc(4) rem-calc(12) rgb(0 0 0 / 30%);
 
-     &:hover {
-       background: darken($color-purple, 10%);
-     }
-   }
+    &:hover {
+      background: darken($color-purple, 10%);
+    }
+  }
 
-          .highlight-card {
-       display: flex;
-       padding: rem-calc(20) rem-calc(20) rem-calc(25);
-       flex-direction: column;
-       align-items: flex-start;
-       gap: rem-calc(20);
-       align-self: stretch;
-       border-radius: rem-calc(20);
-       border: 0.5px solid rgba($color-white, 0.5);
-       background: linear-gradient(135deg, rgba($color-purple, 0.1) 0%, rgba($color-blue, 0.05) 100%);
-       backdrop-filter: blur(10px);
-       transition: all 0.2s ease;
-       cursor: pointer;
-       flex: 1;
+  .highlight-card {
+    display: flex;
+    padding: rem-calc(20) rem-calc(20) rem-calc(25);
+    flex-direction: column;
+    align-items: flex-start;
+    gap: rem-calc(20);
+    align-self: stretch;
+    border-radius: rem-calc(20);
+    border: 0.5px solid rgba($color-white, 0.5);
+    background: linear-gradient(135deg, rgba($color-purple, 0.1) 0%, rgba($color-blue, 0.05) 100%);
+    backdrop-filter: blur(10px);
+    transition: all 0.2s ease;
+    cursor: pointer;
+    flex: 1;
 
-       &:hover {
-         // Désactivé pour éviter les interactions
-       }
+    .highlight-thumbnail {
+      position: relative;
+      width: 100%;
+      height: rem-calc(280);
+      overflow: hidden;
+      border-radius: rem-calc(12);
 
-              .highlight-thumbnail {
-       position: relative;
-       width: 100%;
-       height: rem-calc(280);
-       overflow: hidden;
-       border-radius: rem-calc(12);
-
-       img {
-         width: 100%;
-         height: 100%;
-         object-fit: cover;
-       }
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
 
       .play-overlay {
         position: absolute;
@@ -112,74 +108,74 @@
       }
     }
 
-         .highlight-content {
-       width: 100%;
+    .highlight-content {
+      width: 100%;
 
-       .highlight-info {
-         margin-bottom: rem-calc(16);
+      .highlight-info {
+        margin-bottom: rem-calc(16);
 
-         .highlight-user {
-           color: $color-blue;
-           font-size: rem-calc(18);
-           font-weight: 600;
-           margin-bottom: rem-calc(10);
-           display: flex;
-           align-items: center;
-           gap: rem-calc(8);
+        .highlight-user {
+          color: $color-blue;
+          font-size: rem-calc(18);
+          font-weight: 600;
+          margin-bottom: rem-calc(10);
+          display: flex;
+          align-items: center;
+          gap: rem-calc(8);
 
-           .author-icon {
-             width: rem-calc(16);
-             height: rem-calc(16);
-             filter: brightness(0) saturate(100%) invert(48%) sepia(79%) saturate(2476%) hue-rotate(190deg) brightness(118%) contrast(119%);
-           }
-         }
+          .author-icon {
+            width: rem-calc(16);
+            height: rem-calc(16);
+            filter: brightness(0) saturate(100%) invert(48%) sepia(79%) saturate(2476%) hue-rotate(190deg) brightness(118%) contrast(119%);
+          }
+        }
 
-         .highlight-title {
-           color: $color-white;
-           font-size: rem-calc(22);
-           font-weight: 600;
-           margin-bottom: rem-calc(16);
-           line-height: 1.3;
-         }
-       }
+        .highlight-title {
+          color: $color-white;
+          font-size: rem-calc(22);
+          font-weight: 600;
+          margin-bottom: rem-calc(16);
+          line-height: 1.3;
+        }
+      }
 
-       .highlight-bottom {
-         display: flex;
-         justify-content: space-between;
-         align-items: center;
-         align-self: stretch;
+      .highlight-bottom {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        align-self: stretch;
 
-         .highlight-tags {
-           color: rgba($color-white, 0.6);
-           font-size: rem-calc(14);
-           font-weight: 500;
-         }
+        .highlight-tags {
+          color: rgba($color-white, 0.6);
+          font-size: rem-calc(14);
+          font-weight: 500;
+        }
 
-         .highlight-metrics {
-           display: flex;
-           gap: rem-calc(16);
+        .highlight-metrics {
+          display: flex;
+          gap: rem-calc(16);
 
-           .metric {
-             display: flex;
-             align-items: center;
-             gap: rem-calc(6);
-             color: rgba($color-white, 0.7);
-             font-size: rem-calc(14);
-             font-weight: 500;
-             transition: color 0.2s ease;
+          .metric {
+            display: flex;
+            align-items: center;
+            gap: rem-calc(6);
+            color: rgba($color-white, 0.7);
+            font-size: rem-calc(14);
+            font-weight: 500;
+            transition: color 0.2s ease;
 
-             &:hover {
-               color: $color-blue;
-             }
+            &:hover {
+              color: $color-blue;
+            }
 
-             svg {
-               color: inherit;
-               transition: color 0.2s ease;
-             }
-           }
-         }
-       }
-     }
+            svg {
+              color: inherit;
+              transition: color 0.2s ease;
+            }
+          }
+        }
+      }
+    }
   }
 
 
