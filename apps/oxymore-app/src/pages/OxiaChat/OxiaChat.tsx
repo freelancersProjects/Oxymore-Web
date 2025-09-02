@@ -416,20 +416,7 @@ const OxiaChat: React.FC = () => {
         setShowDeleteModal={setShowDeleteModal}
         handleDeleteChannel={() => handleDeleteChannel(editChannelId!)}
       />
-      {/* Toast en haut à droite */}
-      <div
-        style={{
-          position: "fixed",
-          top: 32,
-          right: 32,
-          zIndex: 9999,
-          minWidth: 320,
-          maxWidth: 400,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "flex-end",
-        }}
-      >
+      <div className="z10000 oxia-chat-toast">
         <div className="toast-container">
           {toast && (
             <OXMToast

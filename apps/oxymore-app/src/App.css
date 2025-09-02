@@ -75,8 +75,6 @@ body {
   padding-right: calc(40px + var(--profile-panel-width));
 }
 
-
-
 @media (max-width: 768px) {
   .oxm-main {
     margin-left: 0;
