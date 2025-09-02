@@ -43,6 +43,62 @@ const USER_STATS = {
   inGameFriends: 3,
 };
 
+// Couleurs pour les avatars avec initiales
+const AVATAR_COLORS = [
+  '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7',
+  '#DDA0DD', '#98D8C8', '#F7DC6F', '#BB8FCE', '#85C1E9',
+  '#F8C471', '#82E0AA', '#F1948A', '#85C1E9', '#D7BDE2'
+];
+
+// Fonction pour générer un avatar avec initiale
+const generateAvatarWithInitial = (username: string, size: number = 48) => {
+  const initial = username.charAt(0).toUpperCase();
+  const colorIndex = username.charCodeAt(0) % AVATAR_COLORS.length;
+  const backgroundColor = AVATAR_COLORS[colorIndex];
+
+  return (
+    <div
+      className="avatar-with-initial"
+      style={{
+        width: size,
+        height: size,
+        borderRadius: '50%',
+        backgroundColor,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        color: 'white',
+        fontSize: size * 0.4,
+        fontWeight: 'bold',
+        textTransform: 'uppercase'
+      }}
+    >
+      {initial}
+    </div>
+  );
+};
+
+// Composant Avatar réutilisable
+const Avatar: React.FC<{
+  src?: string;
+  username: string;
+  size?: number;
+  className?: string;
+}> = ({ src, username, size = 48, className = "" }) => {
+  if (src) {
+    return (
+      <img
+        src={src}
+        alt={username}
+        className={className}
+        style={{ width: size, height: size, borderRadius: '50%' }}
+      />
+    );
+  }
+
+  return generateAvatarWithInitial(username, size);
+};
+
 const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed, onToggle }) => {
   const panelRef = useRef<HTMLDivElement | null>(null);
   const navigate = useNavigate();
@@ -166,9 +222,10 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed, onToggle }) => {
 
         <div className="profile-panel__collapsed">
           <div className="profile-panel__avatar-collapsed">
-            <img
-              src={user?.avatar_url || "https://i.pravatar.cc/48?u=default"}
-              alt="Profile"
+            <Avatar
+              src={user?.avatar_url}
+              username={user?.username || "User"}
+              size={48}
             />
             <div className="online-indicator" />
             <div className="level-badge">{USER_STATS.level}</div>
@@ -215,12 +272,10 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed, onToggle }) => {
                   className="friend-avatar-collapsed"
                   title={friend.username}
                 >
-                  <img
-                    src={
-                      friend.avatar_url ||
-                      `https://i.pravatar.cc/32?u=${friend.user_id}`
-                    }
-                    alt={friend.username}
+                  <Avatar
+                    src={friend.avatar_url}
+                    username={friend.username}
+                    size={32}
                   />
                   <div
                     className={`status-indicator ${
@@ -254,9 +309,10 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed, onToggle }) => {
         <>
           <div className="profile-panel__header">
             <div className="profile-panel__avatar">
-              <img
-                src={user?.avatar_url ?? "https://i.pravatar.cc/48?u=default"}
-                alt="Profile"
+              <Avatar
+                src={user?.avatar_url}
+                username={user?.username || "User"}
+                size={48}
               />
               <div className="online-indicator" />
             </div>
@@ -304,11 +360,10 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed, onToggle }) => {
                   className="group-avatar leader"
                   title={`${user?.username || "You"} (Leader)`}
                 >
-                  <img
-                    src={
-                      user?.avatar_url || "https://i.pravatar.cc/32?u=default"
-                    }
-                    alt="Leader"
+                  <Avatar
+                    src={user?.avatar_url}
+                    username={user?.username || "User"}
+                    size={32}
                   />
                   <div className="crown-icon">👑</div>
                 </div>
@@ -327,12 +382,10 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed, onToggle }) => {
                       className="group-avatar member"
                       title={member.username || "Member"}
                     >
-                      <img
-                        src={
-                          member.avatar_url ||
-                          `https://i.pravatar.cc/32?u=${member.id_user}`
-                        }
-                        alt={member.username || "Member"}
+                      <Avatar
+                        src={member.avatar_url}
+                        username={member.username || "Member"}
+                        size={32}
                       />
                     </div>
                   ))}
@@ -394,12 +447,10 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed, onToggle }) => {
                         className="friend-avatar-preview"
                         title={friend.username}
                       >
-                        <img
-                          src={
-                            friend.avatar_url ||
-                            `https://i.pravatar.cc/32?u=${friend.user_id}`
-                          }
-                          alt={friend.username}
+                        <Avatar
+                          src={friend.avatar_url}
+                          username={friend.username}
+                          size={32}
                         />
                         <div
                           className={`status-indicator ${
@@ -418,12 +469,10 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed, onToggle }) => {
                 {friendsPreview.map((friend) => (
                   <div key={friend.id_friend} className="friend-item">
                     <div className="friend-avatar">
-                      <img
-                        src={
-                          friend.avatar_url ||
-                          `https://i.pravatar.cc/32?u=${friend.user_id}`
-                        }
-                        alt={friend.username}
+                      <Avatar
+                        src={friend.avatar_url}
+                        username={friend.username}
+                        size={32}
                       />
                       <div
                         className={`status-indicator ${
@@ -520,12 +569,10 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed, onToggle }) => {
             {filteredFriends.map((friend) => (
               <div key={friend.id_friend} className="friend-item-modal">
                 <div className="friend-avatar">
-                  <img
-                    src={
-                      friend.avatar_url ||
-                      `https://i.pravatar.cc/32?u=${friend.user_id}`
-                    }
-                    alt={friend.username}
+                  <Avatar
+                    src={friend.avatar_url}
+                    username={friend.username}
+                    size={32}
                   />
                   <div
                     className={`status-indicator ${
