@@ -34,6 +34,7 @@ import EditBadge from './pages/Badges/Edit/Edit';
 import Settings from './pages/Settings/Settings';
 import Analytics from './pages/Analytics/Analytics';
 import Activity from './pages/Activity/Activity';
+import Calendar from './pages/Calendar/Calendar';
 
 const queryClient = new QueryClient();
 
@@ -81,6 +82,7 @@ const App = () => {
                             <Route path="badges/edit/:id" element={<EditBadge />} />
                             <Route path="analytics" element={<Analytics />} />
                             <Route path="activity" element={<Activity />} />
+                            <Route path="calendar" element={<Calendar />} />
                             <Route path="settings" element={<Settings />} />
                           </Route>
                         </Routes>

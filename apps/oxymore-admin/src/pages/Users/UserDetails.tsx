@@ -21,6 +21,7 @@ import { User, UserRole } from '../../types';
 import { useAuth } from '../../context/AuthContext';
 import Loader from '../../components/Loader/Loader';
 import Tooltip, { getTooltipMessage } from '../../components/Tooltip/Tooltip';
+import ConfirmationModal from '../../components/ConfirmationModal/ConfirmationModal';
 
 const UserDetails = () => {
   const { id } = useParams();
@@ -29,6 +30,8 @@ const UserDetails = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [userRole, setUserRole] = useState<UserRole | null>(null);
+  const [showPremiumModal, setShowPremiumModal] = useState(false);
+  const [isUpdatingPremium, setIsUpdatingPremium] = useState(false);
 
   useEffect(() => {
     fetchUser();
@@ -92,6 +95,37 @@ const UserDetails = () => {
   };
 
   const isViewingAdmin = isUserAdmin();
+
+  // Fonction pour gérer le changement de statut premium
+  const handleTogglePremium = async () => {
+    if (!user) return;
+
+    try {
+      setIsUpdatingPremium(true);
+      const response = await apiService.patch(`/users/${user.id_user}/premium`, {
+        is_premium: !user.is_premium
+      });
+
+      // Mettre à jour l'utilisateur localement
+      setUser(prev => prev ? { ...prev, is_premium: !prev.is_premium } : null);
+
+      // Fermer la modal
+      setShowPremiumModal(false);
+
+      // Optionnel : Rafraîchir les stats pour mettre à jour les tendances
+      try {
+        await apiService.post('/users/stats/refresh', {});
+      } catch (error) {
+        console.error('Error refreshing stats:', error);
+      }
+
+    } catch (error) {
+      console.error('Error toggling premium status:', error);
+      // Ici vous pourriez ajouter une notification d'erreur
+    } finally {
+      setIsUpdatingPremium(false);
+    }
+  };
 
   if (loading) {
     return <Loader />;
@@ -429,6 +463,7 @@ const UserDetails = () => {
                 disabled={canModifyUser()}
               >
                 <button
+                  onClick={() => setShowPremiumModal(true)}
                   className={`w-full px-4 py-2 rounded-lg transition-colors text-sm md:text-base ${
                     canModifyUser()
                       ? "bg-[var(--overlay-hover)] text-[var(--text-primary)] hover:bg-[var(--overlay-active)]"
@@ -450,6 +485,23 @@ const UserDetails = () => {
           </div>
         </div>
       </div>
+
+      {/* Modal de confirmation pour le statut premium */}
+      <ConfirmationModal
+        isOpen={showPremiumModal}
+        onClose={() => setShowPremiumModal(false)}
+        onConfirm={handleTogglePremium}
+        title={user?.is_premium ? "Retirer Premium" : "Donner Premium"}
+        message={
+          user?.is_premium
+            ? `Êtes-vous sûr de vouloir retirer le statut premium de ${user?.username} ? Cette action supprimera tous les avantages premium.`
+            : `Êtes-vous sûr de vouloir donner le statut premium à ${user?.username} ? Cette action donnera accès à tous les avantages premium.`
+        }
+        confirmText={user?.is_premium ? "Retirer Premium" : "Donner Premium"}
+        cancelText="Annuler"
+        type="warning"
+        isLoading={isUpdatingPremium}
+      />
     </div>
   );
 };

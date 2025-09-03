@@ -146,7 +146,8 @@ const Sidebar = () => {
     { label: 'Teams', icon: Shield, path: '/teams', badge: loading ? '...' : stats.totalTeams.toString() },
     { label: 'Leagues', icon: Target, path: '/leagues', badge: loading ? '...' : stats.totalLeagues.toString() },
     { label: 'Matches', icon: Calendar, path: '/matches', badge: 'LIVE', color: 'bg-red-500' },
-    { label: 'Badges', icon: Star, path: '/badges' }
+    { label: 'Badges', icon: Star, path: '/badges' },
+    { label: 'Calendrier', icon: Calendar, path: '/calendar' }
   ];
 
   const statsNav = [
