@@ -15,13 +15,18 @@ import {
   TrendingUp,
   Activity,
   ChevronRight,
-  LogOut
+  LogOut,
+  CheckSquare,
+  FileText,
+  Lock
 } from 'lucide-react';
 import { useSidebar } from '../../../context/SidebarContext';
 import { useAuth } from '../../../context/AuthContext';
 import { useStats } from '../../../context/StatsContext';
 import { NavItem } from '../../../types';
 import { useState, useEffect, useRef } from 'react';
+import LockScreen from '../../LockScreen/LockScreen';
+import { useLockScreen } from '../../../hooks/useLockScreen';
 
 const useThemeDetector = () => {
   const [currentTheme, setCurrentTheme] = useState<'light' | 'dark'>('light');
@@ -70,13 +75,74 @@ const useThemeDetector = () => {
 const NavLink = ({ item }: { item: NavItem }) => {
   const location = useLocation();
   const { isCollapsed, isMobile, closeMobileMenu } = useSidebar();
+  const { isLocked, unlock } = useLockScreen('confluence', true);
   const isActive = location.pathname === item.path;
+  const isConfluence = item.path === '/confluence';
+  const [showLockModal, setShowLockModal] = useState(false);
 
-  const handleClick = () => {
+  const handleClick = (e: React.MouseEvent) => {
+    if (isConfluence && isLocked) {
+      e.preventDefault();
+      setShowLockModal(true);
+      return;
+    }
+
     if (isMobile) {
       closeMobileMenu();
     }
   };
+
+  if (isConfluence && isLocked) {
+    return (
+      <>
+        <div className="flex" onClick={handleClick}>
+          <motion.div
+            whileHover={{ x: 5 }}
+            whileTap={{ scale: 0.98 }}
+            className="flex items-center justify-between p-3 rounded-xl w-full transition-all duration-300 group text-[var(--text-secondary)] hover:bg-[var(--overlay-hover)] hover:shadow-md hover:shadow-black/5 dark:hover:shadow-white/5 cursor-pointer"
+          >
+            <div className="flex items-center gap-3">
+              <Lock className="w-5 h-5 text-[var(--text-secondary)] group-hover:text-[var(--text-primary)]" />
+              {(!isCollapsed || isMobile) && (
+                <span className="font-medium group-hover:text-[var(--text-primary)]">
+                  {item.label}
+                </span>
+              )}
+            </div>
+
+            {(!isCollapsed || isMobile) && (
+              <div className="flex items-center gap-2">
+                {item.badge && (
+                  <span className={`px-2 py-1 text-xs font-semibold rounded-lg ${
+                    item.color || 'bg-[var(--overlay-hover)]'
+                  } ${item.color ? 'text-white' : ''}`}>
+                    {item.badge}
+                  </span>
+                )}
+                <ChevronRight className="w-4 h-4 transition-transform text-[var(--text-muted)] group-hover:translate-x-1 group-hover:text-[var(--text-primary)]" />
+              </div>
+            )}
+          </motion.div>
+        </div>
+
+        {showLockModal && (
+          <LockScreen
+            isLocked={true}
+            onUnlock={() => {
+              unlock();
+              setShowLockModal(false);
+            }}
+            onClose={() => setShowLockModal(false)}
+            password="Eriflamme518@"
+            title="Accès Confluence"
+            description="Veuillez entrer le mot de passe pour accéder à Confluence"
+          >
+            <div></div>
+          </LockScreen>
+        )}
+      </>
+    );
+  }
 
   return (
     <Link to={item.path} className="flex" onClick={handleClick}>
@@ -147,7 +213,9 @@ const Sidebar = () => {
     { label: 'Leagues', icon: Target, path: '/leagues', badge: loading ? '...' : stats.totalLeagues.toString() },
     { label: 'Matches', icon: Calendar, path: '/matches', badge: 'LIVE', color: 'bg-red-500' },
     { label: 'Badges', icon: Star, path: '/badges' },
-    { label: 'Calendrier', icon: Calendar, path: '/calendar' }
+    { label: 'Calendrier', icon: Calendar, path: '/calendar' },
+    { label: 'Jira', icon: CheckSquare, path: '/jira', color: 'bg-gradient-blue' },
+    { label: 'Confluence', icon: FileText, path: '/confluence', color: 'bg-gradient-green' }
   ];
 
   const statsNav = [

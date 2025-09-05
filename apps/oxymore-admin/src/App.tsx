@@ -35,6 +35,8 @@ import Settings from './pages/Settings/Settings';
 import Analytics from './pages/Analytics/Analytics';
 import Activity from './pages/Activity/Activity';
 import Calendar from './pages/Calendar/Calendar';
+import Jira from './pages/Jira/Jira';
+import Confluence from './pages/Confluence/Confluence';
 
 const queryClient = new QueryClient();
 
@@ -61,28 +63,63 @@ const App = () => {
                               </ProtectedRoute>
                             }
                           >
-                            <Route index element={<Navigate to="/dashboard" replace />} />
+                            <Route
+                              index
+                              element={<Navigate to="/dashboard" replace />}
+                            />
                             <Route path="dashboard" element={<Dashboard />} />
                             <Route path="users" element={<Users />} />
                             <Route path="users/:id" element={<UserDetails />} />
-                            <Route path="tournaments" element={<Tournaments />} />
-                            <Route path="tournaments/create" element={<CreateTournament />} />
-                            <Route path="tournaments/edit/:id" element={<EditTournament />} />
-                            <Route path="tournaments/:id" element={<TournamentDetails />} />
+                            <Route
+                              path="tournaments"
+                              element={<Tournaments />}
+                            />
+                            <Route
+                              path="tournaments/create"
+                              element={<CreateTournament />}
+                            />
+                            <Route
+                              path="tournaments/edit/:id"
+                              element={<EditTournament />}
+                            />
+                            <Route
+                              path="tournaments/:id"
+                              element={<TournamentDetails />}
+                            />
                             <Route path="teams" element={<Teams />} />
                             <Route path="teams/:id" element={<TeamDetails />} />
                             <Route path="leagues" element={<Leagues />} />
-                            <Route path="leagues/create" element={<CreateLeague />} />
-                            <Route path="leagues/:id/edit" element={<EditLeague />} />
-                            <Route path="leagues/:id" element={<LeagueDetails />} />
+                            <Route
+                              path="leagues/create"
+                              element={<CreateLeague />}
+                            />
+                            <Route
+                              path="leagues/edit/:id"
+                              element={<EditLeague />}
+                            />
+                            <Route
+                              path="leagues/:id"
+                              element={<LeagueDetails />}
+                            />
                             <Route path="matches" element={<Matches />} />
-                            <Route path="matches/:id" element={<MatchDetails />} />
+                            <Route
+                              path="matches/:id"
+                              element={<MatchDetails />}
+                            />
                             <Route path="badges" element={<Badges />} />
-                            <Route path="badges/create" element={<CreateBadge />} />
-                            <Route path="badges/edit/:id" element={<EditBadge />} />
+                            <Route
+                              path="badges/create"
+                              element={<CreateBadge />}
+                            />
+                            <Route
+                              path="badges/edit/:id"
+                              element={<EditBadge />}
+                            />
                             <Route path="analytics" element={<Analytics />} />
                             <Route path="activity" element={<Activity />} />
                             <Route path="calendar" element={<Calendar />} />
+                            <Route path="jira" element={<Jira />} />
+                            <Route path="confluence" element={<Confluence />} />
                             <Route path="settings" element={<Settings />} />
                           </Route>
                         </Routes>

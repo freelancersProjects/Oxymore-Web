@@ -205,7 +205,7 @@ const UserDetails = () => {
           <div className="bg-[var(--card-background)] rounded-2xl p-4 md:p-6 space-y-4">
             <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
               <div>
-                <h2 className="text-xl md:text-2xl font-bold text-[var(--text-primary)] flex items-center gap-2">
+                <h2 className="text-xl md:text-2xl font-bold text-[var(--text-primary)] flex items-center gap-2 break-words hyphens-auto leading-tight">
                   {user.username}
                   {isViewingAdmin && (
                     <Shield className="w-4 h-4 md:w-5 md:h-5 text-purple-400" />
@@ -226,7 +226,7 @@ const UserDetails = () => {
               )}
             </div>
             {user.bio && (
-              <p className="text-[var(--text-primary)] text-sm md:text-base">{user.bio}</p>
+              <p className="text-[var(--text-primary)] text-sm md:text-base break-words hyphens-auto leading-relaxed">{user.bio}</p>
             )}
             <div className="flex flex-col sm:flex-row sm:items-center gap-3 md:gap-6 text-sm">
               <div className="flex items-center gap-2 text-[var(--text-secondary)]">

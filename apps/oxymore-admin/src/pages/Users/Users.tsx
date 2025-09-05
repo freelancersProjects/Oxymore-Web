@@ -398,11 +398,11 @@ const fetchUserRole = async (userId: string): Promise<UserRole | null> => {
                       <div className="w-10 h-10 rounded-full bg-cover bg-center" style={{
                         backgroundImage: `url(${user.avatar_url || `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.username}`})`
                       }} />
-                      <div>
+                      <div className="min-w-0 flex-1">
                         <div className="flex items-center gap-2">
-                        <p className="text-primary font-medium">{user.username}</p>
+                        <p className="text-primary font-medium break-words hyphens-auto leading-tight">{user.username}</p>
                                 {user.is_premium ? (
-                                  <span className="px-2 py-0.5 text-xs font-medium bg-oxymore-purple rounded-full">
+                                  <span className="px-2 py-0.5 text-xs font-medium bg-oxymore-purple text-white rounded-full">
                                     Premium
                                   </span>
                                 ) : (
@@ -411,7 +411,7 @@ const fetchUserRole = async (userId: string): Promise<UserRole | null> => {
                                   </span>
                                 )}
                         </div>
-                        <p className="text-muted text-sm">{user.email}</p>
+                        <p className="text-muted text-sm break-words hyphens-auto">{user.email}</p>
                       </div>
                     </div>
                   </td>

@@ -400,9 +400,9 @@ const Tournaments = () => {
                         <div className="w-10 h-10 rounded-xl bg-oxymore-purple/10 flex items-center justify-center text-oxymore-purple">
                           <Trophy className="w-5 h-5" />
                         </div>
-                        <div>
-                          <p className="text-primary font-medium">{tournament.tournament_name}</p>
-                          <p className="text-muted text-sm">{tournament.type}</p>
+                        <div className="min-w-0 flex-1">
+                          <p className="text-primary font-medium break-words hyphens-auto leading-tight">{tournament.tournament_name}</p>
+                          <p className="text-muted text-sm break-words hyphens-auto">{tournament.type}</p>
                         </div>
                       </div>
                     </td>
@@ -466,7 +466,7 @@ const Tournaments = () => {
             <h3 className="text-xl font-bold text-primary mb-2">
               Delete Tournament
             </h3>
-            <p className="text-secondary mb-6">
+            <p className="text-secondary mb-6 break-words hyphens-auto leading-relaxed">
               Are you sure you want to delete the tournament "
               {tournaments.find(t => t.id_tournament === showDeleteConfirm)?.tournament_name}"? This action cannot be undone.
             </p>

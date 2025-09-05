@@ -304,6 +304,8 @@ const Calendar = () => {
     // Créer une nouvelle date avec les bonnes valeurs pour éviter les problèmes de fuseau horaire
     const normalizedDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 12, 0, 0, 0);
     setSelectedDate(normalizedDate);
+    setEditingAppointment(null); // Réinitialiser l'état d'édition
+    setActiveTooltipId(null); // Réinitialiser les tooltips
     setShowModal(true);
   };
 
@@ -314,6 +316,7 @@ const Calendar = () => {
     };
     setAppointments(prev => [...prev, newAppointment]);
     setShowModal(false);
+    setActiveTooltipId(null);
   };
 
   const handleEditAppointment = (appointment: Appointment) => {
@@ -341,6 +344,7 @@ const Calendar = () => {
     );
     setShowModal(false);
     setEditingAppointment(null);
+    setActiveTooltipId(null);
   };
 
   const handleDeleteAppointment = (appointment: Appointment) => {
@@ -417,11 +421,11 @@ const Calendar = () => {
 
   const getTypeIcon = (type: string) => {
     switch (type) {
-      case 'meeting': return <MessageSquare className="w-4 h-4" />;
-      case 'tournament': return <Trophy className="w-4 h-4" />;
-      case 'training': return <Target className="w-4 h-4" />;
-      case 'league': return <Shield className="w-4 h-4" />;
-      default: return <Zap className="w-4 h-4" />;
+      case 'meeting': return <MessageSquare className="w-4 h-4 text-white" />;
+      case 'tournament': return <Trophy className="w-4 h-4 text-white" />;
+      case 'training': return <Target className="w-4 h-4 text-white" />;
+      case 'league': return <Shield className="w-4 h-4 text-white" />;
+      default: return <Zap className="w-4 h-4 text-white" />;
     }
   };
 
@@ -625,9 +629,13 @@ const Calendar = () => {
             <div className={`w-6 h-6 rounded-full ${appointment.color} flex items-center justify-center shadow-lg`}>
               {getTypeIcon(appointment.type)}
             </div>
-            <div>
-              <h4 className={`font-bold text-[var(--text-primary)] text-lg ${appointment.isCompleted ? 'line-through opacity-60' : ''}`}>{appointment.title}</h4>
-              <p className="text-sm text-[var(--text-secondary)] capitalize font-medium">{appointment.type}</p>
+            <div className="flex-1 min-w-0">
+              <h4 className={`font-bold text-[var(--text-primary)] text-lg ${appointment.isCompleted ? 'line-through opacity-60' : ''}`}>
+                {appointment.title.length > 20 ? appointment.title.substring(0, 20) + '...' : appointment.title}
+              </h4>
+              <p className="text-sm text-[var(--text-secondary)] capitalize font-medium">
+                {appointment.type.length > 20 ? appointment.type.substring(0, 20) + '...' : appointment.type}
+              </p>
             </div>
           </div>
           <div className="flex gap-2">
@@ -690,7 +698,7 @@ const Calendar = () => {
               </div>
               <div>
                 <span className="text-[var(--text-primary)] font-semibold text-base">Lieu</span>
-                <p className="text-sm text-[var(--text-secondary)] font-medium">{appointment.location}</p>
+                <p className="text-sm text-[var(--text-secondary)] font-medium break-words hyphens-auto leading-relaxed">{appointment.location}</p>
               </div>
             </div>
           )}
@@ -730,7 +738,7 @@ const Calendar = () => {
                 </div>
                 <div className="flex-1">
                   <span className="text-[var(--text-primary)] font-semibold text-base">Description</span>
-                  <p className="text-sm text-[var(--text-secondary)] mt-2 leading-relaxed font-medium">
+                  <p className="text-sm text-[var(--text-secondary)] mt-2 leading-relaxed font-medium break-words hyphens-auto">
                     {appointment.description}
                   </p>
                 </div>
@@ -886,6 +894,8 @@ const Calendar = () => {
                       const dateToUse = selectedDate || new Date();
                       const normalizedDate = new Date(dateToUse.getFullYear(), dateToUse.getMonth(), dateToUse.getDate(), 12, 0, 0, 0);
                       setSelectedDate(normalizedDate);
+                      setEditingAppointment(null); // Réinitialiser l'état d'édition
+                      setActiveTooltipId(null); // Réinitialiser les tooltips
                       setShowModal(true);
                     }}
                     className="bg-gradient-oxymore text-white px-4 py-2 rounded-lg font-semibold flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transition-all duration-300 whitespace-nowrap"
@@ -903,12 +913,12 @@ const Calendar = () => {
                    <Filter className="w-4 h-4 text-[var(--text-secondary)]" />
                    <Dropdown
                       options={[
-                        { value: 'all', label: 'Tous les types', icon: <Grid3X3 className="w-4 h-4" /> },
-                        { value: 'meeting', label: 'Réunions', icon: <MessageSquare className="w-4 h-4" /> },
-                        { value: 'training', label: 'Entraînements', icon: <Target className="w-4 h-4" /> },
-                        { value: 'other', label: 'Autres', icon: <Zap className="w-4 h-4" /> },
-                        { value: 'tournament', label: 'Tous les tournois', icon: <Trophy className="w-4 h-4" /> },
-                        { value: 'league', label: 'Toutes les ligues', icon: <Trophy className="w-4 h-4" /> }
+                        { value: 'all', label: 'Tous les types', icon: <Grid3X3 className="w-4 h-4 text-[var(--text-secondary)]" /> },
+                        { value: 'meeting', label: 'Réunions', icon: <MessageSquare className="w-4 h-4 text-[var(--text-secondary)]" /> },
+                        { value: 'training', label: 'Entraînements', icon: <Target className="w-4 h-4 text-[var(--text-secondary)]" /> },
+                        { value: 'other', label: 'Autres', icon: <Zap className="w-4 h-4 text-[var(--text-secondary)]" /> },
+                        { value: 'tournament', label: 'Tous les tournois', icon: <Trophy className="w-4 h-4 text-[var(--text-secondary)]" /> },
+                        { value: 'league', label: 'Toutes les ligues', icon: <Trophy className="w-4 h-4 text-[var(--text-secondary)]" /> }
                       ]}
                       value={filterType}
                       onChange={setFilterType}
@@ -1180,12 +1190,12 @@ const Calendar = () => {
                             {getTypeIcon(appointment.type)}
                           </div>
                           <div className="flex-1 min-w-0">
-                            <h4 className={`font-semibold text-[var(--text-primary)] text-sm sm:text-base ${appointment.isCompleted ? 'line-through opacity-60' : ''}`}>{appointment.title}</h4>
-                            <p className="text-xs sm:text-sm text-[var(--text-secondary)] mb-1">
+                            <h4 className={`font-semibold text-[var(--text-primary)] text-sm sm:text-base break-words hyphens-auto leading-tight ${appointment.isCompleted ? 'line-through opacity-60' : ''}`}>{appointment.title}</h4>
+                            <p className="text-xs sm:text-sm text-[var(--text-secondary)] mb-1 break-words hyphens-auto">
                               {appointment.startTime} - {appointment.endTime} • {appointment.location}
                             </p>
                             {appointment.description && (
-                              <p className="text-xs text-[var(--text-secondary)] line-clamp-2">
+                              <p className="text-xs text-[var(--text-secondary)] break-words hyphens-auto leading-relaxed">
                                 {appointment.description}
                               </p>
                             )}
@@ -1250,8 +1260,8 @@ const Calendar = () => {
                             {getTypeIcon(appointment.type)}
                           </div>
                           <div className="flex-1 min-w-0">
-                            <h4 className={`font-semibold text-[var(--text-primary)] text-xs sm:text-sm ${appointment.isCompleted ? 'line-through opacity-60' : ''}`}>{appointment.title}</h4>
-                            <p className="text-xs text-[var(--text-secondary)]">
+                            <h4 className={`font-semibold text-[var(--text-primary)] text-xs sm:text-sm break-words hyphens-auto leading-tight ${appointment.isCompleted ? 'line-through opacity-60' : ''}`}>{appointment.title}</h4>
+                            <p className="text-xs text-[var(--text-secondary)] break-words hyphens-auto">
                               {appointment.startTime} - {appointment.endTime}
                             </p>
                           </div>
@@ -1274,9 +1284,9 @@ const Calendar = () => {
                  <div className="space-y-2 sm:space-y-3">
                    <div className="text-xs sm:text-sm font-medium text-[var(--text-primary)] mb-2">Rendez-vous</div>
                    {[
-                     { type: 'meeting', label: 'Réunion', color: 'bg-blue-500', icon: <MessageSquare className="w-3 h-3 sm:w-4 sm:h-4" /> },
-                     { type: 'training', label: 'Entraînement', color: 'bg-green-500', icon: <Target className="w-3 h-3 sm:w-4 sm:h-4" /> },
-                     { type: 'other', label: 'Autre', color: 'bg-gray-500', icon: <Zap className="w-3 h-3 sm:w-4 sm:h-4" /> }
+                     { type: 'meeting', label: 'Réunion', color: 'bg-blue-500', icon: <MessageSquare className="w-3 h-3 sm:w-4 sm:h-4 text-white" /> },
+                     { type: 'training', label: 'Entraînement', color: 'bg-green-500', icon: <Target className="w-3 h-3 sm:w-4 sm:h-4 text-white" /> },
+                     { type: 'other', label: 'Autre', color: 'bg-gray-500', icon: <Zap className="w-3 h-3 sm:w-4 sm:h-4 text-white" /> }
                    ].map(item => (
                      <div key={item.type} className="flex items-center gap-2 sm:gap-3 p-2 rounded-lg hover:bg-[var(--overlay-hover)] transition-colors">
                        <div className={`w-3 h-3 sm:w-4 sm:h-4 rounded ${item.color} flex items-center justify-center`}>
@@ -1288,10 +1298,10 @@ const Calendar = () => {
 
                    <div className="text-xs sm:text-sm font-medium text-[var(--text-primary)] mb-2 mt-3 sm:mt-4">Tournois</div>
                    {[
-                     { type: 'major', label: 'Major', color: 'bg-red-500', icon: <Trophy className="w-3 h-3 sm:w-4 sm:h-4" /> },
-                     { type: 'minor', label: 'Minor', color: 'bg-orange-500', icon: <Trophy className="w-3 h-3 sm:w-4 sm:h-4" /> },
-                     { type: 'league', label: 'Ligue', color: 'bg-blue-500', icon: <Trophy className="w-3 h-3 sm:w-4 sm:h-4" /> },
-                     { type: 'open', label: 'Open', color: 'bg-green-500', icon: <Trophy className="w-3 h-3 sm:w-4 sm:h-4" /> }
+                     { type: 'major', label: 'Major', color: 'bg-red-500', icon: <Trophy className="w-3 h-3 sm:w-4 sm:h-4 text-white" /> },
+                     { type: 'minor', label: 'Minor', color: 'bg-orange-500', icon: <Trophy className="w-3 h-3 sm:w-4 sm:h-4 text-white" /> },
+                     { type: 'league', label: 'Ligue', color: 'bg-blue-500', icon: <Trophy className="w-3 h-3 sm:w-4 sm:h-4 text-white" /> },
+                     { type: 'open', label: 'Open', color: 'bg-green-500', icon: <Trophy className="w-3 h-3 sm:w-4 sm:h-4 text-white" /> }
                    ].map(item => (
                      <div key={item.type} className="flex items-center gap-2 sm:gap-3 p-2 rounded-lg hover:bg-[var(--overlay-hover)] transition-colors">
                        <div className={`w-3 h-3 sm:w-4 sm:h-4 rounded ${item.color} flex items-center justify-center`}>
@@ -1304,7 +1314,7 @@ const Calendar = () => {
                    <div className="text-xs sm:text-sm font-medium text-[var(--text-primary)] mb-2 mt-3 sm:mt-4">Ligues</div>
                    <div className="flex items-center gap-2 sm:gap-3 p-2 rounded-lg hover:bg-[var(--overlay-hover)] transition-colors">
                      <div className="w-3 h-3 sm:w-4 sm:h-4 rounded bg-indigo-500 flex items-center justify-center">
-                       <Shield className="w-3 h-3 sm:w-4 sm:h-4" />
+                       <Shield className="w-3 h-3 sm:w-4 sm:h-4 text-white" />
                      </div>
                      <span className="text-xs sm:text-sm text-[var(--text-secondary)]">Ligues</span>
                    </div>
@@ -1443,7 +1453,11 @@ const Calendar = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-2 sm:p-4"
-            onClick={() => setShowModal(false)}
+            onClick={() => {
+              setShowModal(false);
+              setEditingAppointment(null);
+              setActiveTooltipId(null);
+            }}
           >
             <motion.div
               initial={{ scale: 0.9, opacity: 0 }}
@@ -1459,6 +1473,7 @@ const Calendar = () => {
                 onCancel={() => {
                   setShowModal(false);
                   setEditingAppointment(null);
+                  setActiveTooltipId(null);
                 }}
               />
             </motion.div>
