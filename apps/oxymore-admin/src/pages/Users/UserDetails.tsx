@@ -32,6 +32,16 @@ const UserDetails = () => {
   const [userRole, setUserRole] = useState<UserRole | null>(null);
   const [showPremiumModal, setShowPremiumModal] = useState(false);
   const [isUpdatingPremium, setIsUpdatingPremium] = useState(false);
+  const [showBanModal, setShowBanModal] = useState(false);
+  const [isUpdatingBan, setIsUpdatingBan] = useState(false);
+  const [banReason, setBanReason] = useState('');
+  const [isBanned, setIsBanned] = useState(false);
+  const [currentBan, setCurrentBan] = useState<any>(null);
+  const [isMuted, setIsMuted] = useState(false);
+  const [currentMute, setCurrentMute] = useState<any>(null);
+  const [showMuteModal, setShowMuteModal] = useState(false);
+  const [isUpdatingMute, setIsUpdatingMute] = useState(false);
+  const [muteReason, setMuteReason] = useState('');
 
   useEffect(() => {
     fetchUser();
@@ -58,11 +68,51 @@ const UserDetails = () => {
       // Récupérer le rôle de l'utilisateur
       const role = await fetchUserRole(id);
       setUserRole(role);
+
+      // Récupérer les sanctions de l'utilisateur
+      await fetchUserSanctions(id);
     } catch (err) {
       setError('Une erreur est survenue lors du chargement des données utilisateur');
       console.error('Error fetching user:', err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchUserSanctions = async (userId: string) => {
+    try {
+      const sanctions = await apiService.get<any[]>(`/user-sanctions`);
+      const userSanctions = sanctions.filter(sanction => sanction.id_user === userId);
+      
+      // Vérifier s'il y a un ban actif
+      const activeBan = userSanctions.find(sanction => 
+        sanction.type === 'ban' && 
+        (!sanction.expires_at || new Date(sanction.expires_at) > new Date())
+      );
+      
+      if (activeBan) {
+        setIsBanned(true);
+        setCurrentBan(activeBan);
+      } else {
+        setIsBanned(false);
+        setCurrentBan(null);
+      }
+
+      // Vérifier s'il y a un mute actif
+      const activeMute = userSanctions.find(sanction => 
+        sanction.type === 'mute' && 
+        (!sanction.expires_at || new Date(sanction.expires_at) > new Date())
+      );
+      
+      if (activeMute) {
+        setIsMuted(true);
+        setCurrentMute(activeMute);
+      } else {
+        setIsMuted(false);
+        setCurrentMute(null);
+      }
+    } catch (error) {
+      console.error('Error fetching user sanctions:', error);
     }
   };
 
@@ -72,21 +122,17 @@ const UserDetails = () => {
     return `${numWallet.toFixed(2)} €`;
   };
 
-  // Vérifier si l'utilisateur consulté est admin
   const isUserAdmin = (): boolean => {
     return userRole?.name === 'admin';
   };
 
-  // Vérifier si l'utilisateur connecté peut modifier l'utilisateur consulté
   const canModifyUser = () => {
     if (!currentUser || !user) return false;
 
-    // Si c'est le même utilisateur (mon propre compte), pas de modification
     if (currentUser.id === user.id_user) {
       return false;
     }
 
-    // Si l'utilisateur consulté est admin, pas de modification (protection des admins)
     if (isUserAdmin()) {
       return false;
     }
@@ -96,23 +142,19 @@ const UserDetails = () => {
 
   const isViewingAdmin = isUserAdmin();
 
-  // Fonction pour gérer le changement de statut premium
   const handleTogglePremium = async () => {
     if (!user) return;
 
     try {
       setIsUpdatingPremium(true);
-      const response = await apiService.patch(`/users/${user.id_user}/premium`, {
+      await apiService.patch(`/users/${user.id_user}/premium`, {
         is_premium: !user.is_premium
       });
 
-      // Mettre à jour l'utilisateur localement
       setUser(prev => prev ? { ...prev, is_premium: !prev.is_premium } : null);
 
-      // Fermer la modal
       setShowPremiumModal(false);
 
-      // Optionnel : Rafraîchir les stats pour mettre à jour les tendances
       try {
         await apiService.post('/users/stats/refresh', {});
       } catch (error) {
@@ -121,11 +163,131 @@ const UserDetails = () => {
 
     } catch (error) {
       console.error('Error toggling premium status:', error);
-      // Ici vous pourriez ajouter une notification d'erreur
     } finally {
       setIsUpdatingPremium(false);
     }
   };
+
+  const handleBanUser = async () => {
+    if (!user || !banReason.trim() || !currentUser) return;
+
+    try {
+      setIsUpdatingBan(true);
+      
+      // Créer une sanction de ban
+      await apiService.post('/user-sanctions', {
+        reason: banReason,
+        type: 'ban',
+        id_user: user.id_user,
+        id_admin: currentUser.id
+      });
+
+      setShowBanModal(false);
+      setBanReason('');
+
+      // Rafraîchir les données utilisateur
+      await fetchUser();
+
+      try {
+        await apiService.post('/users/stats/refresh', {});
+      } catch (error) {
+        console.error('Error refreshing stats:', error);
+      }
+
+    } catch (error) {
+      console.error('Error banning user:', error);
+    } finally {
+      setIsUpdatingBan(false);
+    }
+  };
+
+  const handleUnbanUser = async () => {
+    if (!user || !currentBan || !currentUser) return;
+
+    try {
+      setIsUpdatingBan(true);
+      
+      // Supprimer la sanction de ban
+      await apiService.delete(`/user-sanctions/${currentBan.id_user_sanction}`);
+
+      setShowBanModal(false);
+
+      // Rafraîchir les données utilisateur
+      await fetchUser();
+
+      try {
+        await apiService.post('/users/stats/refresh', {});
+      } catch (error) {
+        console.error('Error refreshing stats:', error);
+      }
+
+    } catch (error) {
+      console.error('Error unbanning user:', error);
+    } finally {
+      setIsUpdatingBan(false);
+    }
+  };
+
+  const handleMuteUser = async () => {
+    if (!user || !muteReason.trim() || !currentUser) return;
+
+    try {
+      setIsUpdatingMute(true);
+      
+      // Créer une sanction de mute
+      await apiService.post('/user-sanctions', {
+        reason: muteReason,
+        type: 'mute',
+        id_user: user.id_user,
+        id_admin: currentUser.id
+      });
+
+      setShowMuteModal(false);
+      setMuteReason('');
+
+      // Rafraîchir les données utilisateur
+      await fetchUser();
+
+      try {
+        await apiService.post('/users/stats/refresh', {});
+      } catch (error) {
+        console.error('Error refreshing stats:', error);
+      }
+
+    } catch (error) {
+      console.error('Error muting user:', error);
+    } finally {
+      setIsUpdatingMute(false);
+    }
+  };
+
+  const handleUnmuteUser = async () => {
+    if (!user || !currentMute || !currentUser) return;
+
+    try {
+      setIsUpdatingMute(true);
+      
+      // Supprimer la sanction de mute
+      await apiService.delete(`/user-sanctions/${currentMute.id_user_sanction}`);
+
+      setShowMuteModal(false);
+
+      // Rafraîchir les données utilisateur
+      await fetchUser();
+
+      try {
+        await apiService.post('/users/stats/refresh', {});
+      } catch (error) {
+        console.error('Error refreshing stats:', error);
+      }
+
+    } catch (error) {
+      console.error('Error unmuting user:', error);
+    } finally {
+      setIsUpdatingMute(false);
+    }
+  };
+
 
   if (loading) {
     return <Loader />;
@@ -168,7 +330,6 @@ const UserDetails = () => {
         )}
       </div>
 
-      {/* Banner & Avatar */}
       <div className="relative rounded-2xl overflow-hidden bg-[var(--overlay-hover)] h-32 md:h-48">
         {user.banner_url ? (
           <img
@@ -197,11 +358,8 @@ const UserDetails = () => {
         </div>
       </div>
 
-      {/* Content */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6 pt-6 md:pt-10">
-        {/* Colonne principale */}
         <div className="lg:col-span-2 space-y-4 md:space-y-6">
-          {/* Informations de base */}
           <div className="bg-[var(--card-background)] rounded-2xl p-4 md:p-6 space-y-4">
             <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
               <div>
@@ -215,18 +373,92 @@ const UserDetails = () => {
                   {user.first_name} {user.last_name}
                 </p>
               </div>
-              {user.is_premium ? (
-                <div className="px-3 py-1 bg-oxymore-purple text-white text-sm font-medium rounded-lg">
-                  Premium
-                </div>
-              ) : (
-                <div className="px-3 py-1 bg-green-600 text-white text-sm font-medium rounded-lg">
-                  Free
-                </div>
-              )}
+              <div className="flex gap-2">
+                {user.is_premium ? (
+                  <div className="px-3 py-1 bg-oxymore-purple text-white text-sm font-medium rounded-lg">
+                    Premium
+                  </div>
+                ) : (
+                  <div className="px-3 py-1 bg-green-600 text-white text-sm font-medium rounded-lg">
+                    Free
+                  </div>
+                )}
+                {isBanned && (
+                  <div className="px-3 py-1 bg-red-600 text-white text-sm font-medium rounded-lg">
+                    Banni
+                  </div>
+                )}
+                {isMuted && (
+                  <div className="px-3 py-1 bg-orange-600 text-white text-sm font-medium rounded-lg">
+                    Muté
+                  </div>
+                )}
+              </div>
             </div>
             {user.bio && (
               <p className="text-[var(--text-primary)] text-sm md:text-base break-words hyphens-auto leading-relaxed">{user.bio}</p>
+            )}
+            {isBanned && currentBan && (
+              <div className="mt-4 p-4 bg-red-500/10 border border-red-500/20 rounded-lg">
+                <div className="flex items-center gap-2 mb-2">
+                  <Lock className="w-4 h-4 text-red-500" />
+                  <span className="text-sm font-medium text-red-500">Utilisateur banni</span>
+                </div>
+                <p className="text-sm text-[var(--text-secondary)] mb-2">
+                  <strong>Raison :</strong> {currentBan.reason || 'Aucune raison spécifiée'}
+                </p>
+                <p className="text-xs text-[var(--text-muted)]">
+                  <strong>Banni le :</strong> {new Date(currentBan.created_at).toLocaleDateString('fr-FR', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                  })}
+                </p>
+                {currentBan.expires_at && (
+                  <p className="text-xs text-[var(--text-muted)]">
+                    <strong>Expire le :</strong> {new Date(currentBan.expires_at).toLocaleDateString('fr-FR', {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric',
+                      hour: '2-digit',
+                      minute: '2-digit'
+                    })}
+                  </p>
+                )}
+              </div>
+            )}
+            {isMuted && currentMute && (
+              <div className="mt-4 p-4 bg-orange-500/10 border border-orange-500/20 rounded-lg">
+                <div className="flex items-center gap-2 mb-2">
+                  <MessageSquare className="w-4 h-4 text-orange-500" />
+                  <span className="text-sm font-medium text-orange-500">Utilisateur muté</span>
+                </div>
+                <p className="text-sm text-[var(--text-secondary)] mb-2">
+                  <strong>Raison :</strong> {currentMute.reason || 'Aucune raison spécifiée'}
+                </p>
+                <p className="text-xs text-[var(--text-muted)]">
+                  <strong>Muté le :</strong> {new Date(currentMute.created_at).toLocaleDateString('fr-FR', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                  })}
+                </p>
+                {currentMute.expires_at && (
+                  <p className="text-xs text-[var(--text-muted)]">
+                    <strong>Expire le :</strong> {new Date(currentMute.expires_at).toLocaleDateString('fr-FR', {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric',
+                      hour: '2-digit',
+                      minute: '2-digit'
+                    })}
+                  </p>
+                )}
+              </div>
             )}
             <div className="flex flex-col sm:flex-row sm:items-center gap-3 md:gap-6 text-sm">
               <div className="flex items-center gap-2 text-[var(--text-secondary)]">
@@ -414,19 +646,22 @@ const UserDetails = () => {
                   canModifyUser(),
                   currentUser?.id === user?.id_user,
                   isUserAdmin(),
-                  "Bannir"
+                  isBanned ? "Débannir" : "Bannir"
                 )}
                 disabled={canModifyUser()}
               >
                 <button
+                  onClick={() => setShowBanModal(true)}
                   className={`w-full px-4 py-2 rounded-lg transition-colors text-sm md:text-base ${
                     canModifyUser()
-                      ? "bg-red-500/20 text-red-500 hover:bg-red-500/30"
+                      ? isBanned
+                        ? "bg-green-500/20 text-green-500 hover:bg-green-500/30"
+                        : "bg-red-500/20 text-red-500 hover:bg-red-500/30"
                       : "bg-[var(--overlay-hover)] text-[var(--text-muted)] cursor-not-allowed"
                   }`}
                   disabled={!canModifyUser()}
                 >
-                  Bannir l'utilisateur
+                  {isBanned ? "Débannir l'utilisateur" : "Bannir l'utilisateur"}
                 </button>
               </Tooltip>
 
@@ -435,21 +670,22 @@ const UserDetails = () => {
                   canModifyUser(),
                   currentUser?.id === user?.id_user,
                   isUserAdmin(),
-                  user.team_chat_is_muted ? "Démuter" : "Muter"
+                  isMuted ? "Démuter" : "Muter"
                 )}
                 disabled={canModifyUser()}
               >
                 <button
+                  onClick={() => setShowMuteModal(true)}
                   className={`w-full px-4 py-2 rounded-lg transition-colors text-sm md:text-base ${
                     canModifyUser()
-                      ? "bg-[var(--overlay-hover)] text-[var(--text-primary)] hover:bg-[var(--overlay-active)]"
+                      ? isMuted
+                        ? "bg-green-500/20 text-green-500 hover:bg-green-500/30"
+                        : "bg-orange-500/20 text-orange-500 hover:bg-orange-500/30"
                       : "bg-[var(--overlay-hover)] text-[var(--text-muted)] cursor-not-allowed"
                   }`}
                   disabled={!canModifyUser()}
                 >
-                  {user.team_chat_is_muted
-                    ? "Démuter le chat"
-                    : "Muter le chat"}
+                  {isMuted ? "Démuter l'utilisateur" : "Muter l'utilisateur"}
                 </button>
               </Tooltip>
 
@@ -474,6 +710,7 @@ const UserDetails = () => {
                   {user.is_premium ? "Retirer Premium" : "Donner Premium"}
                 </button>
               </Tooltip>
+
             </div>
             {!canModifyUser() && (
               <p className="text-xs text-[var(--text-muted)] mt-3">
@@ -502,6 +739,83 @@ const UserDetails = () => {
         type="warning"
         isLoading={isUpdatingPremium}
       />
+
+      {/* Modal de confirmation pour bannir/débannir l'utilisateur */}
+      <ConfirmationModal
+        isOpen={showBanModal}
+        onClose={() => {
+          setShowBanModal(false);
+          setBanReason('');
+        }}
+        onConfirm={isBanned ? handleUnbanUser : handleBanUser}
+        title={isBanned ? "Débannir l'utilisateur" : "Bannir l'utilisateur"}
+        message={
+          isBanned
+            ? `Êtes-vous sûr de vouloir débannir ${user?.username} ? Cette action supprimera la sanction de ban.`
+            : `Êtes-vous sûr de vouloir bannir ${user?.username} ? Cette action créera une sanction permanente.`
+        }
+        confirmText={isBanned ? "Débannir" : "Bannir"}
+        cancelText="Annuler"
+        type={isBanned ? "warning" : "danger"}
+        isLoading={isUpdatingBan}
+        customContent={
+          !isBanned && (
+            <div className="mt-4">
+              <label className="block text-sm font-medium text-[var(--text-primary)] mb-2">
+                Raison du ban (requis)
+              </label>
+              <textarea
+                value={banReason}
+                onChange={(e) => setBanReason(e.target.value)}
+                placeholder="Expliquez la raison du ban..."
+                className="w-full px-3 py-2 border border-[var(--border-primary)] rounded-lg bg-[var(--background-secondary)] text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-oxymore-purple focus:border-transparent"
+                rows={3}
+                required
+              />
+            </div>
+          )
+        }
+        disabled={!isBanned && !banReason.trim()}
+      />
+
+      {/* Modal de confirmation pour muter/démuter l'utilisateur */}
+      <ConfirmationModal
+        isOpen={showMuteModal}
+        onClose={() => {
+          setShowMuteModal(false);
+          setMuteReason('');
+        }}
+        onConfirm={isMuted ? handleUnmuteUser : handleMuteUser}
+        title={isMuted ? "Démuter l'utilisateur" : "Muter l'utilisateur"}
+        message={
+          isMuted
+            ? `Êtes-vous sûr de vouloir démuter ${user?.username} ? Cette action supprimera la sanction de mute.`
+            : `Êtes-vous sûr de vouloir muter ${user?.username} ? Cette action créera une sanction de mute.`
+        }
+        confirmText={isMuted ? "Démuter" : "Muter"}
+        cancelText="Annuler"
+        type={isMuted ? "warning" : "info"}
+        isLoading={isUpdatingMute}
+        customContent={
+          !isMuted && (
+            <div className="mt-4">
+              <label className="block text-sm font-medium text-[var(--text-primary)] mb-2">
+                Raison du mute (requis)
+              </label>
+              <textarea
+                value={muteReason}
+                onChange={(e) => setMuteReason(e.target.value)}
+                placeholder="Expliquez la raison du mute..."
+                className="w-full px-3 py-2 border border-[var(--border-primary)] rounded-lg bg-[var(--background-secondary)] text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-oxymore-purple focus:border-transparent"
+                rows={3}
+                required
+              />
+            </div>
+          )
+        }
+        disabled={!isMuted && !muteReason.trim()}
+      />
+
     </div>
   );
 };

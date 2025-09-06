@@ -12,6 +12,8 @@ interface ConfirmationModalProps {
   cancelText?: string;
   type?: 'danger' | 'warning' | 'info';
   isLoading?: boolean;
+  customContent?: React.ReactNode;
+  disabled?: boolean;
 }
 
 const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
@@ -23,7 +25,9 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
   confirmText = 'Confirmer',
   cancelText = 'Annuler',
   type = 'warning',
-  isLoading = false
+  isLoading = false,
+  customContent,
+  disabled = false
 }) => {
   const getTypeStyles = () => {
     switch (type) {
@@ -97,6 +101,9 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
               {message}
             </p>
 
+            {/* Custom Content */}
+            {customContent}
+
             {/* Actions */}
             <div className="flex gap-3 justify-end">
               <motion.button
@@ -112,7 +119,7 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={onConfirm}
-                disabled={isLoading}
+                disabled={isLoading || disabled}
                 className={`px-4 py-2 rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${styles.button}`}
               >
                 {isLoading ? (
