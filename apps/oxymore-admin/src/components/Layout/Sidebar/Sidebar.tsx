@@ -15,7 +15,9 @@ import {
   TrendingUp,
   Activity,
   ChevronRight,
-  LogOut
+  LogOut,
+  CheckSquare,
+  FileText
 } from 'lucide-react';
 import { useSidebar } from '../../../context/SidebarContext';
 import { useAuth } from '../../../context/AuthContext';
@@ -63,6 +65,7 @@ const useThemeDetector = () => {
       mediaQuery.removeEventListener('change', handleSystemThemeChange);
     };
   }, []);
+            console.log(import.meta.env.PASS_SIDEBAR)
 
   return currentTheme;
 };
@@ -77,6 +80,7 @@ const NavLink = ({ item }: { item: NavItem }) => {
       closeMobileMenu();
     }
   };
+
 
   return (
     <Link to={item.path} className="flex" onClick={handleClick}>
@@ -146,7 +150,10 @@ const Sidebar = () => {
     { label: 'Teams', icon: Shield, path: '/teams', badge: loading ? '...' : stats.totalTeams.toString() },
     { label: 'Leagues', icon: Target, path: '/leagues', badge: loading ? '...' : stats.totalLeagues.toString() },
     { label: 'Matches', icon: Calendar, path: '/matches', badge: 'LIVE', color: 'bg-red-500' },
-    { label: 'Badges', icon: Star, path: '/badges' }
+    { label: 'Badges', icon: Star, path: '/badges' },
+    { label: 'Calendrier', icon: Calendar, path: '/calendar' },
+    { label: 'Jira', icon: CheckSquare, path: '/jira', color: 'bg-gradient-blue' },
+    { label: 'Confluence', icon: FileText, path: '/confluence', color: 'bg-gradient-green' }
   ];
 
   const statsNav = [

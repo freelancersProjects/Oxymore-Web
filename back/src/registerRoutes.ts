@@ -73,6 +73,4 @@ export const registerRoutes = (app: Express) => {
   app.use("/api/tournaments", tournamentRoutes);
   app.use("/api/tournament-teams", tournamentTeamRoutes);
   app.use("/api/tournament-maps", tournamentMapRoutes);
-
-
 };

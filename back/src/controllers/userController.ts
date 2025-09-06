@@ -59,3 +59,28 @@ export const deleteUser = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
+export const togglePremiumStatus = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { is_premium } = req.body;
+
+    // Créer un objet de mise à jour compatible avec le type attendu
+    const updateData = { is_premium: Boolean(is_premium) } as any;
+
+    const updatedUser = await UserService.updateUser(id, updateData);
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json({
+      success: true,
+      data: updatedUser,
+      message: `Statut premium ${is_premium ? 'activé' : 'désactivé'} avec succès`
+    });
+  } catch (error) {
+    console.error("Error toggling premium status:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+

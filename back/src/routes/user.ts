@@ -6,7 +6,9 @@ import {
   createUser,
   updateUser,
   deleteUser,
+  togglePremiumStatus,
 } from "../controllers/userController";
+import { getUserStats, refreshUserStats } from "../controllers/userStatsController";
 
 const router = Router();
 
@@ -22,6 +24,32 @@ const router = Router();
  *         description: Liste des utilisateurs
  */
 router.get("/", getAllUsers as Handler);
+
+/**
+ * @openapi
+ * /api/users/stats:
+ *   get:
+ *     tags:
+ *       - Users
+ *     summary: Récupère les statistiques utilisateurs avec comparaison
+ *     responses:
+ *       200:
+ *         description: Statistiques utilisateurs avec tendances
+ */
+router.get("/stats", getUserStats as Handler);
+
+/**
+ * @openapi
+ * /api/users/stats/refresh:
+ *   post:
+ *     tags:
+ *       - Users
+ *     summary: Force la mise à jour des statistiques utilisateurs
+ *     responses:
+ *       200:
+ *         description: Statistiques utilisateurs mises à jour
+ */
+router.post("/stats/refresh", refreshUserStats as Handler);
 
 /**
  * @openapi
@@ -110,5 +138,35 @@ router.put("/:id", updateUser as Handler);
  *         description: Utilisateur non trouvé
  */
 router.delete("/:id", deleteUser as Handler);
+
+/**
+ * @openapi
+ * /api/users/{id}/premium:
+ *   patch:
+ *     tags:
+ *       - Users
+ *     summary: Modifie le statut premium d'un utilisateur
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               is_premium:
+ *                 type: boolean
+ *     responses:
+ *       200:
+ *         description: Statut premium modifié
+ *       404:
+ *         description: Utilisateur non trouvé
+ */
+router.patch("/:id/premium", togglePremiumStatus as Handler);
 
 export default router;
