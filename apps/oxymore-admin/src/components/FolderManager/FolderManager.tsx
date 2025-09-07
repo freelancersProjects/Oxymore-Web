@@ -14,7 +14,7 @@ import {
   Upload,
   Download
 } from 'lucide-react';
-import Dropdown from '../Dropdown/Dropdown';
+import ContextMenu from '../ContextMenu/ContextMenu';
 import ConfirmationModal from '../ConfirmationModal/ConfirmationModal';
 
 interface DocumentItem {
@@ -76,7 +76,12 @@ const FolderManager: React.FC<FolderManagerProps> = ({
 
     const updatedDocuments = [...documents, newItem];
     onDocumentsChange(updatedDocuments);
-    
+
+    // Si c'est un document, on le sélectionne automatiquement
+    if (newItemType === 'document') {
+      onDocumentSelect(newItem);
+    }
+
     setNewItemName('');
     setShowCreateModal(false);
   };
@@ -98,7 +103,7 @@ const FolderManager: React.FC<FolderManagerProps> = ({
 
     const updatedDocuments = updateItem(documents);
     onDocumentsChange(updatedDocuments);
-    
+
     setItemToRename(null);
     setNewItemName('');
     setShowRenameModal(false);
@@ -121,7 +126,7 @@ const FolderManager: React.FC<FolderManagerProps> = ({
 
     const updatedDocuments = removeItem(documents);
     onDocumentsChange(updatedDocuments);
-    
+
     setItemToDelete(null);
     setShowDeleteModal(false);
   };
@@ -143,7 +148,7 @@ const FolderManager: React.FC<FolderManagerProps> = ({
 
   const handleDrop = (e: React.DragEvent, targetItem: DocumentItem) => {
     e.preventDefault();
-    
+
     if (!draggedItem || draggedItem.id === targetItem.id) {
       setDragOverItem(null);
       setDraggedItem(null);
@@ -168,7 +173,7 @@ const FolderManager: React.FC<FolderManagerProps> = ({
 
     const updatedDocuments = moveItem(documents);
     onDocumentsChange(updatedDocuments);
-    
+
     setDragOverItem(null);
     setDraggedItem(null);
   };
@@ -185,7 +190,7 @@ const FolderManager: React.FC<FolderManagerProps> = ({
         lastModified: new Date().toISOString(),
         size: `${(file.size / 1024).toFixed(1)} KB`
       };
-      
+
       const updatedDocuments = [...documents, newDocument];
       onDocumentsChange(updatedDocuments);
     });
@@ -245,9 +250,9 @@ const FolderManager: React.FC<FolderManagerProps> = ({
               <FileText className="w-4 h-4 text-gray-500" />
             </>
           )}
-          
+
           <span className="flex-1 truncate">{item.name}</span>
-          
+
           {item.size && (
             <span className="text-xs text-[var(--text-muted)]">
               {item.size}
@@ -255,27 +260,34 @@ const FolderManager: React.FC<FolderManagerProps> = ({
           )}
 
           <div className="flex items-center gap-1">
-            <Dropdown
+            <ContextMenu
               options={[
-                { value: 'rename', label: 'Renommer', icon: Edit },
-                { value: 'move', label: 'Déplacer', icon: Move },
-                { value: 'delete', label: 'Supprimer', icon: Trash2, className: 'text-red-500' }
-              ]}
-              onSelect={(value) => {
-                switch (value) {
-                  case 'rename':
+                {
+                  value: 'rename',
+                  label: 'Renommer',
+                  icon: <Edit className="w-3 h-3" />,
+                  onClick: () => {
                     setItemToRename(item);
                     setNewItemName(item.name);
                     setShowRenameModal(true);
-                    break;
-                  case 'delete':
+                  }
+                },
+                {
+                  value: 'delete',
+                  label: 'Supprimer',
+                  icon: <Trash2 className="w-3 h-3" />,
+                  className: 'text-red-500',
+                  onClick: () => {
                     setItemToDelete(item);
                     setShowDeleteModal(true);
-                    break;
+                  }
                 }
-              }}
+              ]}
               trigger={
-                <button className="p-1 hover:bg-[var(--overlay-hover)] rounded">
+                <button
+                  className="p-1 hover:bg-[var(--overlay-hover)] rounded"
+                  onClick={(e) => e.stopPropagation()}
+                >
                   <MoreVertical className="w-3 h-3" />
                 </button>
               }
@@ -342,8 +354,8 @@ const FolderManager: React.FC<FolderManagerProps> = ({
 
       {/* Modal de création */}
       {showCreateModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-[var(--card-background)] rounded-2xl p-6 w-full max-w-md">
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-[var(--card-background)] rounded-2xl p-6 w-full max-w-md mx-auto">
             <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-4">
               Créer un nouvel élément
             </h3>
@@ -409,47 +421,73 @@ const FolderManager: React.FC<FolderManagerProps> = ({
       )}
 
       {/* Modal de renommage */}
-      <ConfirmationModal
-        isOpen={showRenameModal}
-        onClose={() => {
-          setShowRenameModal(false);
-          setItemToRename(null);
-          setNewItemName('');
-        }}
-        onConfirm={renameItem}
-        title="Renommer"
-        message={`Renommer "${itemToRename?.name}"`}
-        confirmText="Renommer"
-        cancelText="Annuler"
-        type="info"
-        customContent={
-          <div className="mt-4">
-            <input
-              type="text"
-              value={newItemName}
-              onChange={(e) => setNewItemName(e.target.value)}
-              className="w-full px-3 py-2 bg-[var(--background-secondary)] border border-[var(--border-color)] rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-[var(--text-primary)]"
-              autoFocus
-            />
+      {showRenameModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-[var(--card-background)] rounded-2xl p-6 w-full max-w-md mx-auto">
+            <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-4">Renommer</h3>
+            <p className="text-[var(--text-secondary)] mb-4">
+              Renommer "{itemToRename?.name}"
+            </p>
+            <div className="mb-6">
+              <input
+                type="text"
+                value={newItemName}
+                onChange={(e) => setNewItemName(e.target.value)}
+                className="w-full px-3 py-2 bg-[var(--background-secondary)] border border-[var(--border-color)] rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-[var(--text-primary)]"
+                autoFocus
+              />
+            </div>
+            <div className="flex justify-end gap-3">
+              <button
+                onClick={() => {
+                  setShowRenameModal(false);
+                  setItemToRename(null);
+                  setNewItemName('');
+                }}
+                className="px-4 py-2 text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+              >
+                Annuler
+              </button>
+              <button
+                onClick={renameItem}
+                disabled={!newItemName.trim()}
+                className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              >
+                Renommer
+              </button>
+            </div>
           </div>
-        }
-        disabled={!newItemName.trim()}
-      />
+        </div>
+      )}
 
       {/* Modal de suppression */}
-      <ConfirmationModal
-        isOpen={showDeleteModal}
-        onClose={() => {
-          setShowDeleteModal(false);
-          setItemToDelete(null);
-        }}
-        onConfirm={deleteItem}
-        title="Supprimer"
-        message={`Êtes-vous sûr de vouloir supprimer "${itemToDelete?.name}" ? Cette action est irréversible.`}
-        confirmText="Supprimer"
-        cancelText="Annuler"
-        type="danger"
-      />
+      {showDeleteModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-[var(--card-background)] rounded-2xl p-6 w-full max-w-md mx-auto">
+            <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-4">Supprimer</h3>
+            <p className="text-[var(--text-secondary)] mb-6">
+              Êtes-vous sûr de vouloir supprimer "{itemToDelete?.name}" ? Cette action est irréversible.
+            </p>
+            <div className="flex justify-end gap-3">
+              <button
+                onClick={() => {
+                  setShowDeleteModal(false);
+                  setItemToDelete(null);
+                }}
+                className="px-4 py-2 text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+              >
+                Annuler
+              </button>
+              <button
+                onClick={deleteItem}
+                className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
+              >
+                Supprimer
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -83,13 +83,13 @@ const UserDetails = () => {
     try {
       const sanctions = await apiService.get<any[]>(`/user-sanctions`);
       const userSanctions = sanctions.filter(sanction => sanction.id_user === userId);
-      
+
       // Vérifier s'il y a un ban actif
-      const activeBan = userSanctions.find(sanction => 
-        sanction.type === 'ban' && 
+      const activeBan = userSanctions.find(sanction =>
+        sanction.type === 'ban' &&
         (!sanction.expires_at || new Date(sanction.expires_at) > new Date())
       );
-      
+
       if (activeBan) {
         setIsBanned(true);
         setCurrentBan(activeBan);
@@ -99,11 +99,11 @@ const UserDetails = () => {
       }
 
       // Vérifier s'il y a un mute actif
-      const activeMute = userSanctions.find(sanction => 
-        sanction.type === 'mute' && 
+      const activeMute = userSanctions.find(sanction =>
+        sanction.type === 'mute' &&
         (!sanction.expires_at || new Date(sanction.expires_at) > new Date())
       );
-      
+
       if (activeMute) {
         setIsMuted(true);
         setCurrentMute(activeMute);
@@ -173,7 +173,7 @@ const UserDetails = () => {
 
     try {
       setIsUpdatingBan(true);
-      
+
       // Créer une sanction de ban
       await apiService.post('/user-sanctions', {
         reason: banReason,
@@ -206,7 +206,7 @@ const UserDetails = () => {
 
     try {
       setIsUpdatingBan(true);
-      
+
       // Supprimer la sanction de ban
       await apiService.delete(`/user-sanctions/${currentBan.id_user_sanction}`);
 
@@ -233,7 +233,7 @@ const UserDetails = () => {
 
     try {
       setIsUpdatingMute(true);
-      
+
       // Créer une sanction de mute
       await apiService.post('/user-sanctions', {
         reason: muteReason,
@@ -266,7 +266,7 @@ const UserDetails = () => {
 
     try {
       setIsUpdatingMute(true);
-      
+
       // Supprimer la sanction de mute
       await apiService.delete(`/user-sanctions/${currentMute.id_user_sanction}`);
 

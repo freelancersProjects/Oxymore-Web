@@ -3,7 +3,6 @@ import { motion } from 'framer-motion';
 import {
   Plus,
   Save,
-  Eye,
   Edit,
   Trash2,
   Search,
@@ -13,13 +12,10 @@ import {
   Tag,
   CheckSquare,
   Folder,
-  Upload,
   Download,
-  Settings,
-  Share
+  Settings
 } from 'lucide-react';
 import Dropdown from '../../components/Dropdown/Dropdown';
-import ConfirmationModal from '../../components/ConfirmationModal/ConfirmationModal';
 import RichTextEditor from '../../components/RichTextEditor/RichTextEditor';
 import JiraTicket from '../../components/JiraTicket/JiraTicket';
 import FolderManager from '../../components/FolderManager/FolderManager';
@@ -178,8 +174,8 @@ const Confluence = () => {
     if (currentDocument) {
       const ticketReference = `<a href="#" class="jira-reference" data-ticket-id="${ticket.id}">#${ticket.id}</a>`;
       const updatedContent = currentDocument.content + ' ' + ticketReference;
-      setCurrentDocument(prev => prev ? { 
-        ...prev, 
+      setCurrentDocument(prev => prev ? {
+        ...prev,
         content: updatedContent,
         jiraReferences: [...(prev.jiraReferences || []), ticket.id]
       } : null);
@@ -245,7 +241,7 @@ const Confluence = () => {
     }
   };
 
-  const handleFolderDocumentsChange = (folderDocuments: any[]) => {
+  const handleFolderDocumentsChange = () => {
     // Cette fonction sera utilisée par le FolderManager
     // Pour l'instant, on ne l'implémente pas complètement
   };
@@ -262,32 +258,14 @@ const Confluence = () => {
     return labels[category as keyof typeof labels] || category;
   };
 
-  const getStatusColor = (status: string) => {
-    const colors = {
-      'À faire': 'text-blue-500 bg-blue-500/10',
-      'En cours': 'text-orange-500 bg-orange-500/10',
-      'Terminé': 'text-green-500 bg-green-500/10'
-    };
-    return colors[status as keyof typeof colors] || 'text-gray-500 bg-gray-500/10';
-  };
-
-  const getPriorityColor = (priority: string) => {
-    const colors = {
-      'Urgente': 'text-red-500',
-      'Haute': 'text-orange-500',
-      'Moyenne': 'text-yellow-500',
-      'Basse': 'text-green-500'
-    };
-    return colors[priority as keyof typeof colors] || 'text-gray-500';
-  };
 
   return (
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-primary">Confluence</h1>
-          <p className="text-secondary mt-1">Documentation et base de connaissances</p>
+          <h1 className="text-2xl font-bold text-[var(--text-primary)]">Confluence</h1>
+          <p className="text-[var(--text-secondary)] mt-1">Documentation et base de connaissances</p>
         </div>
 
         <div className="flex items-center gap-3">
@@ -377,7 +355,7 @@ const Confluence = () => {
         {/* Panneau latéral */}
         <div className="lg:col-span-1">
           <div className="card-base p-4">
-            <h3 className="font-semibold text-primary mb-4 flex items-center gap-2">
+            <h3 className="font-semibold text-[var(--text-primary)] mb-4 flex items-center gap-2">
               {viewMode === 'folder' ? (
                 <>
                   <Folder className="w-5 h-5" />
@@ -430,18 +408,18 @@ const Confluence = () => {
                     <div className="flex items-start justify-between">
                       <div className="flex-1 min-w-0">
                         <h4 className={`font-medium truncate ${
-                          currentDocument?.id === doc.id ? 'text-white' : 'text-primary'
+                          currentDocument?.id === doc.id ? 'text-white' : 'text-[var(--text-primary)]'
                         }`}>
                           {doc.title}
                         </h4>
                         <p className={`text-xs mt-1 ${
-                          currentDocument?.id === doc.id ? 'text-white/80' : 'text-secondary'
+                          currentDocument?.id === doc.id ? 'text-white/80' : 'text-[var(--text-secondary)]'
                         }`}>
                           {getCategoryLabel(doc.category)}
                         </p>
                         <div className="flex items-center gap-2 mt-2">
                           <span className={`text-xs ${
-                            currentDocument?.id === doc.id ? 'text-white/70' : 'text-muted'
+                            currentDocument?.id === doc.id ? 'text-white/70' : 'text-[var(--text-muted)]'
                           }`}>
                             {new Date(doc.updatedAt).toLocaleDateString('fr-FR')}
                           </span>
@@ -540,7 +518,7 @@ const Confluence = () => {
                   )}
                 </div>
 
-                <div className="flex items-center gap-4 text-sm text-secondary">
+                <div className="flex items-center gap-4 text-sm text-[var(--text-secondary)]">
                   <div className="flex items-center gap-2">
                     <User className="w-4 h-4" />
                     {currentDocument.author}
@@ -574,7 +552,19 @@ const Confluence = () => {
                 ) : (
                   <div
                     className="prose prose-sm max-w-none min-h-[500px] p-4 bg-[var(--hover-background)] rounded-lg"
-                    dangerouslySetInnerHTML={{ __html: currentDocument.content }}
+                    style={{
+                      fontSize: '14px',
+                      lineHeight: '1.6'
+                    }}
+                    dangerouslySetInnerHTML={{
+                      __html: currentDocument.content.replace(
+                        /<h1>/g, '<h1 style="font-size: 2rem; font-weight: bold; margin: 1rem 0;">'
+                      ).replace(
+                        /<h2>/g, '<h2 style="font-size: 1.5rem; font-weight: bold; margin: 0.8rem 0;">'
+                      ).replace(
+                        /<h3>/g, '<h3 style="font-size: 1.25rem; font-weight: bold; margin: 0.6rem 0;">'
+                      )
+                    }}
                   />
                 )}
               </div>
@@ -584,7 +574,7 @@ const Confluence = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {/* Tags */}
                   <div>
-                    <h4 className="font-medium text-primary mb-2 flex items-center gap-2">
+                    <h4 className="font-medium text-[var(--text-primary)] mb-2 flex items-center gap-2">
                       <Tag className="w-4 h-4" />
                       Tags
                     </h4>
@@ -592,7 +582,7 @@ const Confluence = () => {
                       {currentDocument.tags.map((tag, index) => (
                         <span
                           key={index}
-                          className="px-2 py-1 bg-[var(--overlay-hover)] text-xs rounded-full text-secondary"
+                          className="px-2 py-1 bg-[var(--overlay-hover)] text-xs rounded-full text-[var(--text-secondary)]"
                         >
                           {tag}
                         </span>
@@ -603,7 +593,7 @@ const Confluence = () => {
                   {/* Références Jira */}
                   {currentDocument.jiraReferences && currentDocument.jiraReferences.length > 0 && (
                     <div>
-                      <h4 className="font-medium text-primary mb-2 flex items-center gap-2">
+                      <h4 className="font-medium text-[var(--text-primary)] mb-2 flex items-center gap-2">
                         <CheckSquare className="w-4 h-4" />
                         Tickets Jira référencés
                       </h4>
@@ -625,8 +615,8 @@ const Confluence = () => {
           ) : (
             <div className="card-base p-6 text-center">
               <FileText className="w-16 h-16 text-muted mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-primary mb-2">Aucun document sélectionné</h3>
-              <p className="text-secondary mb-4">
+              <h3 className="text-lg font-medium text-[var(--text-primary)] mb-2">Aucun document sélectionné</h3>
+              <p className="text-[var(--text-secondary)] mb-4">
                 Sélectionnez un document dans la liste ou créez-en un nouveau pour commencer.
               </p>
               <motion.button
@@ -652,10 +642,10 @@ const Confluence = () => {
 
       {/* Modal de création */}
       {showCreateModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-[var(--card-background)] rounded-2xl p-6 w-full max-w-md">
-            <h3 className="text-lg font-semibold text-primary mb-4">Créer un nouveau document</h3>
-            <p className="text-secondary mb-6">
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-[var(--card-background)] rounded-2xl p-6 w-full max-w-md mx-auto">
+            <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-4">Créer un nouveau document</h3>
+            <p className="text-[var(--text-secondary)] mb-6">
               Choisissez une catégorie pour votre nouveau document.
             </p>
             <div className="space-y-3">
@@ -677,8 +667,8 @@ const Confluence = () => {
                       <category.icon className="w-5 h-5 text-white" />
                     </div>
                     <div>
-                      <h4 className="font-medium text-primary">{category.label}</h4>
-                      <p className="text-sm text-secondary">
+                      <h4 className="font-medium text-[var(--text-primary)]">{category.label}</h4>
+                      <p className="text-sm text-[var(--text-secondary)]">
                         {category.value === 'documentation' && 'Documentation technique et guides'}
                         {category.value === 'meeting-notes' && 'Notes et comptes-rendus de réunions'}
                         {category.value === 'procedures' && 'Procédures et processus'}
@@ -694,7 +684,7 @@ const Confluence = () => {
             <div className="flex justify-end gap-3 mt-6">
               <button
                 onClick={() => setShowCreateModal(false)}
-                className="px-4 py-2 text-secondary hover:text-primary"
+                className="px-4 py-2 text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
               >
                 Annuler
               </button>
@@ -704,19 +694,33 @@ const Confluence = () => {
       )}
 
       {/* Modal de suppression */}
-      <ConfirmationModal
-        isOpen={showDeleteModal}
-        onClose={() => {
-          setShowDeleteModal(false);
-          setDocumentToDelete(null);
-        }}
-        onConfirm={confirmDelete}
-        title="Supprimer le document"
-        message={`Êtes-vous sûr de vouloir supprimer le document "${documentToDelete?.title}" ? Cette action est irréversible.`}
-        confirmText="Supprimer"
-        cancelText="Annuler"
-        type="danger"
-      />
+      {showDeleteModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-[var(--card-background)] rounded-2xl p-6 w-full max-w-md mx-auto">
+            <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-4">Supprimer le document</h3>
+            <p className="text-[var(--text-secondary)] mb-6">
+              Êtes-vous sûr de vouloir supprimer le document "{documentToDelete?.title}" ? Cette action est irréversible.
+            </p>
+            <div className="flex justify-end gap-3">
+              <button
+                onClick={() => {
+                  setShowDeleteModal(false);
+                  setDocumentToDelete(null);
+                }}
+                className="px-4 py-2 text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+              >
+                Annuler
+              </button>
+              <button
+                onClick={confirmDelete}
+                className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
+              >
+                Supprimer
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

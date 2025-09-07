@@ -94,6 +94,18 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({
       attributes: {
         class: `prose prose-sm max-w-none focus:outline-none ${className}`,
         placeholder,
+        style: `
+          .ProseMirror h1 { font-size: 2rem; font-weight: bold; margin: 1rem 0; }
+          .ProseMirror h2 { font-size: 1.5rem; font-weight: bold; margin: 0.8rem 0; }
+          .ProseMirror h3 { font-size: 1.25rem; font-weight: bold; margin: 0.6rem 0; }
+          .ProseMirror p { margin: 0.5rem 0; }
+          .ProseMirror ul, .ProseMirror ol { margin: 0.5rem 0; padding-left: 1.5rem; }
+          .ProseMirror blockquote { border-left: 4px solid #e5e7eb; padding-left: 1rem; margin: 1rem 0; font-style: italic; }
+          .ProseMirror code { background-color: #f3f4f6; padding: 0.2rem 0.4rem; border-radius: 0.25rem; font-family: monospace; }
+          .ProseMirror table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+          .ProseMirror th, .ProseMirror td { border: 1px solid #d1d5db; padding: 0.5rem; text-align: left; }
+          .ProseMirror th { background-color: #f9fafb; font-weight: bold; }
+        `
       },
     },
   });

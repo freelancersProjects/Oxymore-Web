@@ -41,3 +41,6 @@ export const useLockScreen = (pageKey: string, defaultLocked: boolean = true): U
 
   return { isLocked, unlock, lock };
 };
+
+
+
