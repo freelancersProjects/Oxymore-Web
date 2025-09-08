@@ -25,9 +25,12 @@ interface TodoModalProps {
   onClose: () => void;
   onSave: (todo: Omit<Todo, 'id' | 'createdAt' | 'updatedAt'>) => void;
   editingTodo?: Todo | null;
+  adminUsers?: any[];
+  userRoles?: Record<string, any>;
+  isUserAdmin?: (user: any) => boolean;
 }
 
-const TodoModal = ({ isOpen, onClose, onSave, editingTodo }: TodoModalProps) => {
+const TodoModal = ({ isOpen, onClose, onSave, editingTodo, adminUsers = [], userRoles = {}, isUserAdmin }: TodoModalProps) => {
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -40,12 +43,12 @@ const TodoModal = ({ isOpen, onClose, onSave, editingTodo }: TodoModalProps) => 
 
   const [newTag, setNewTag] = useState('');
 
-  // Utilisateurs mock
-  const users = [
-    { id: '1', name: 'Mathis B.', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=mathis' },
-    { id: '2', name: 'Alex D.', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=alex' },
-    { id: '3', name: 'Sarah L.', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=sarah' }
-  ];
+  // Utiliser les vrais admins
+  const users = adminUsers.map(user => ({
+    id: user.id_user,
+    name: user.username,
+    avatar: user.avatar_url || `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.username}`
+  }));
 
   useEffect(() => {
     if (editingTodo) {
@@ -224,7 +227,12 @@ const TodoModal = ({ isOpen, onClose, onSave, editingTodo }: TodoModalProps) => 
                 <Dropdown
                   options={[
                     { value: '', label: 'Non assigné' },
-                    ...users.map(user => ({ value: user.id, label: user.name }))
+                    ...users.map(user => ({
+                      value: user.id,
+                      label: user.name,
+                      disabled: isUserAdmin ? isUserAdmin(user) : false,
+                      tooltip: isUserAdmin && isUserAdmin(user) ? 'Vous ne pouvez pas assigner cette tâche à un admin' : undefined
+                    }))
                   ]}
                   value={formData.assignee}
                   onChange={(value) => setFormData(prev => ({ ...prev, assignee: value }))}

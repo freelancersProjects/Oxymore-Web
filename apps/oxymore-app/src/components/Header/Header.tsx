@@ -107,7 +107,18 @@ export const Header: React.FC<HeaderProps> = ({ isSidebarCollapsed = false }) =>
         </div>
       </header>
 
-      <ProfilePanel collapsed={profileCollapsed} onToggle={toggleProfile} />
+      <ProfilePanel
+        collapsed={profileCollapsed}
+        onToggle={toggleProfile}
+        onNotificationClick={openNotif}
+        unreadCount={unreadCount}
+      />
+
+      {/* Bouton de notification flottant quand le profile panel est ouvert */}
+      <div className="floating-notification-btn" onClick={openNotif}>
+        <BellIcon className="icon-bell" size={20} />
+        {unreadCount > 0 && <span className="notif-badge-header">{unreadCount}</span>}
+      </div>
     </>
   );
 };

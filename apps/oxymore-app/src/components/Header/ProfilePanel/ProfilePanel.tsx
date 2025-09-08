@@ -13,6 +13,7 @@ import {
   Search,
   ChevronLeft,
   ChevronRight,
+  Bell,
 } from "lucide-react";
 import { OXMModal } from "@oxymore/ui";
 import { useAuth } from "../../../context/AuthContext";
@@ -30,6 +31,8 @@ export interface FriendItem {
 interface ProfilePanelProps {
   collapsed: boolean;
   onToggle: () => void;
+  onNotificationClick?: () => void;
+  unreadCount?: number;
 }
 
 const USER_STATS = {
@@ -99,7 +102,7 @@ const Avatar: React.FC<{
   return generateAvatarWithInitial(username, size);
 };
 
-const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed, onToggle }) => {
+const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed, onToggle, onNotificationClick, unreadCount = 0 }) => {
   const panelRef = useRef<HTMLDivElement | null>(null);
   const navigate = useNavigate();
   const { user, logout } = useAuth();
@@ -515,6 +518,18 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed, onToggle }) => {
             <div className="profile-panel__section profile-panel__quick-actions">
               <div className="section-title">Quick Actions</div>
               <div className="quick-actions-list">
+                {onNotificationClick && (
+                  <button
+                    className="quick-action notification-action"
+                    onClick={onNotificationClick}
+                  >
+                    <Bell size={14} />
+                    <span>Notifications</span>
+                    {unreadCount > 0 && (
+                      <span className="notification-badge">{unreadCount}</span>
+                    )}
+                  </button>
+                )}
                 <button
                   className="quick-action"
                   onClick={() => navigate("/settings")}

@@ -213,7 +213,7 @@ export const getCalendarStats = async (req: Request, res: Response): Promise<Res
 export const addComment = async (req: Request, res: Response): Promise<Response> => {
   try {
     const { id } = req.params;
-    const { comment, is_internal = false } = req.body;
+    const { comment } = req.body;
     const userId = (req as any).user?.id_user;
 
     if (!userId) {
@@ -258,7 +258,7 @@ export const addComment = async (req: Request, res: Response): Promise<Response>
 // Marquer un rendez-vous comme favori
 export const toggleFavorite = async (req: Request, res: Response): Promise<Response> => {
   try {
-    const { id } = req.params;
+    const { id: appointmentId } = req.params;
     const userId = (req as any).user?.id_user;
 
     if (!userId) {

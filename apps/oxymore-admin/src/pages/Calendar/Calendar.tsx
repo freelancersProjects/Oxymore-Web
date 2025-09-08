@@ -387,7 +387,6 @@ const Calendar = () => {
 
     allAppointments.forEach(appointment => {
       const monthKey = `${appointment.date.getFullYear()}-${String(appointment.date.getMonth() + 1).padStart(2, '0')}`;
-      const monthName = monthNames[appointment.date.getMonth()];
 
       if (!stats[monthKey]) {
         stats[monthKey] = {
@@ -429,25 +428,13 @@ const Calendar = () => {
     }
   };
 
-  // Fonction utilitaire pour les couleurs de type
-  const getTypeColorUtil = (type: string) => {
-    switch (type) {
-      case 'meeting': return 'bg-blue-500';
-      case 'tournament': return 'bg-purple-500';
-      case 'training': return 'bg-green-500';
-      case 'league': return 'bg-indigo-500';
-      case 'other': return 'bg-gray-500';
-      default: return 'bg-gray-500';
-    }
-  };
-
      // Composant Tooltip réutilisable avec portail pour la vue mois
    const AppointmentTooltip = ({ appointment, isMonthView = false }: { appointment: Appointment; isMonthView?: boolean }) => {
      const [isVisible, setIsVisible] = useState(false);
      const [position, setPosition] = useState({ top: 0, left: 0 });
      const triggerRef = useRef<HTMLDivElement>(null);
      const tooltipRef = useRef<HTMLDivElement>(null);
-     const hideTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+     const hideTimeoutRef = useRef<number | null>(null);
      const isHoveringTooltip = useRef(false);
 
            const updatePosition = () => {

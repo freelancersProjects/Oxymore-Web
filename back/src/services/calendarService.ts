@@ -1,5 +1,5 @@
 import { db } from '../config/database';
-import { CalendarAppointment, CreateAppointmentData, UpdateAppointmentData, CalendarFilters, CalendarStats } from '../interfaces/calendarInterfaces';
+import { CreateAppointmentData, UpdateAppointmentData, CalendarFilters } from '../interfaces/calendarInterfaces';
 
 export class CalendarService {
   // Récupérer tous les types de rendez-vous (simplifié)

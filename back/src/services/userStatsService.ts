@@ -1,5 +1,4 @@
 import { db } from "../config/db";
-import { User } from "../interfaces/userInterfaces";
 
 export interface UserStats {
   totalUsers: number;
