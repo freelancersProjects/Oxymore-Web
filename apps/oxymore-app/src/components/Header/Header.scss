@@ -116,63 +116,6 @@
     }
   }
 
-    .floating-notification-btn {
-      position: fixed;
-      top: rem-calc(20);
-      right: rem-calc(400);
-      z-index: 1001; // Au-dessus du profile panel (1000)
-    background: rgba(20, 20, 30, 0.95);
-    border-radius: rem-calc(12);
-    padding: rem-calc(12);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(rem-calc(10));
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    cursor: pointer;
-    transition: all 0.3s ease;
-    opacity: 0;
-    pointer-events: none;
-    transform: translateY(rem-calc(-10));
-
-    &:hover {
-      background: rgba(30, 30, 40, 0.95);
-      transform: translateY(rem-calc(-5));
-    }
-
-    .icon-bell {
-      font-size: rem-calc(20);
-      color: $color-white;
-      transition: color 0.2s;
-    }
-
-    &:hover .icon-bell {
-      color: $color-purple-light;
-    }
-
-    // Affiche le bouton quand le profile panel est ouvert
-    .oxm-layout.profile-panel-expanded & {
-      opacity: 1;
-      pointer-events: auto;
-      transform: translateY(0);
-    }
-
-      // Badge de notification sur le bouton flottant
-      .notif-badge-header {
-        position: absolute;
-        top: rem-calc(-6);
-        right: rem-calc(-8);
-        background: linear-gradient(90deg, $color-purple 0%, $color-purple 100%);
-        color: $color-white;
-        font-size: rem-calc(12);
-        font-weight: 700;
-        border-radius: rem-calc(15);
-        padding: rem-calc(2) rem-calc(7);
-        box-shadow: 0 rem-calc(2) rem-calc(8) rgb(80 12 173 / 10%);
-        letter-spacing: 1px;
-        z-index: 1003; // Au-dessus du bouton flottant (1001)
-        display: inline-block;
-      }
-  }
-
   .avatar {
       width: rem-calc(54);
       border-radius: 50%;

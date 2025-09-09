@@ -215,14 +215,9 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed, onToggle, onNoti
   if (collapsed) {
     return (
       <div className="profile-panel collapsed" ref={panelRef}>
-        {/* Flèche de toggle pour la version collapsed */}
-        <button
-          className="profile-panel-toggle"
-          onClick={onToggle}
-        >
+        <button className="profile-panel-toggle" onClick={onToggle}>
           <ChevronRight size={16} />
         </button>
-
         <div className="profile-panel__collapsed">
           <div className="profile-panel__avatar-collapsed">
             <Avatar
@@ -264,11 +259,79 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed, onToggle, onNoti
             </button>
           </div>
 
+          {/* Section Groupe */}
+          <div className="profile-panel__group-collapsed">
+            <div className="group-header">
+              <div className="group-title">Group</div>
+            </div>
+            <div className="group-avatars-collapsed">
+              {/* L'utilisateur actuel (leader avec couronne) */}
+              <div
+                className="group-avatar-collapsed leader"
+                title={`${user?.username || "You"} (Leader)`}
+              >
+                <Avatar
+                  src={user?.avatar_url}
+                  username={user?.username || "User"}
+                  size={28}
+                />
+                <div className="crown-icon">👑</div>
+              </div>
+              {/* Membres du groupe acceptés */}
+              {groupMembers
+                .filter(
+                  (member) =>
+                    member.status === "accepted" &&
+                    member.id_user !== user?.id_user
+                )
+                .slice(0, 4)
+                .map((member) => (
+                  <div
+                    key={member.id_group_member}
+                    className="group-avatar-collapsed member"
+                    title={member.username || "Member"}
+                  >
+                    <Avatar
+                      src={member.avatar_url}
+                      username={member.username || "Member"}
+                      size={28}
+                    />
+                  </div>
+                ))}
+              {Array.from(
+                {
+                  length: Math.max(
+                    0,
+                    5 -
+                      (1 + groupMembers.filter(
+                        (m) =>
+                          m.status === "accepted" &&
+                          m.id_user !== user?.id_user
+                      ).slice(0, 4).length)
+                  ),
+                },
+                (_, index) => (
+                  <button
+                    key={`empty-${index}`}
+                    className="group-avatar-collapsed empty"
+                    aria-label="Invite a friend"
+                    onClick={() => setInviteOpen(true)}
+                    title="Inviter un ami"
+                  >
+                    <Plus size={14} />
+                  </button>
+                )
+              )}
+            </div>
+          </div>
+
           <div className="profile-panel__online-friends-collapsed">
             <div className="online-friends-header">
               <div className="online-friends-title">Friends</div>
             </div>
             <div className="online-friends-avatars">
+              
+              <div className="online-friends-avatars">
               {onlineFriends.slice(0, 3).map((friend) => (
                 <div
                   key={friend.id_friend}
@@ -291,6 +354,7 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed, onToggle, onNoti
               <div className="more-friends-indicator">
                 <span>+{Math.max(0, totalFriends - 3)}</span>
               </div>
+            </div>
             </div>
           </div>
         </div>
@@ -378,7 +442,7 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed, onToggle, onNoti
                       member.status === "accepted" &&
                       member.id_user !== user?.id_user
                   )
-                  .slice(0, 4)
+                  .slice(0, 4) // max 4 membres pour avoir 5 slots au total
                   .map((member) => (
                     <div
                       key={member.id_group_member}
@@ -393,17 +457,17 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed, onToggle, onNoti
                     </div>
                   ))}
 
-                {/* Slots vides pour inviter plus d'amis */}
+                {/* Boutons + pour compléter à 5 slots */}
                 {Array.from(
                   {
                     length: Math.max(
                       0,
-                      4 -
-                        groupMembers.filter(
+                      5 -
+                        (1 + groupMembers.filter(
                           (m) =>
                             m.status === "accepted" &&
                             m.id_user !== user?.id_user
-                        ).length
+                        ).slice(0, 4).length)
                     ),
                   },
                   (_, index) => (
@@ -441,29 +505,16 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed, onToggle, onNoti
               <div className="online-friends-preview">
                 <div className="preview-title">Online Friends</div>
                 <div className="friends-avatars">
-                  {loading ? (
-                    <div className="loading-friends">Loading...</div>
-                  ) : onlineFriends.length > 0 ? (
-                    onlineFriends.slice(0, 6).map((friend) => (
-                      <div
-                        key={friend.id_friend}
-                        className="friend-avatar-preview"
-                        title={friend.username}
-                      >
-                        <Avatar
-                          src={friend.avatar_url}
-                          username={friend.username}
-                          size={32}
-                        />
-                        <div
-                          className={`status-indicator ${
-                            friend.online_status || "offline"
-                          }`}
-                        />
-                      </div>
-                    ))
-                  ) : (
-                    <div className="no-friends">No friends online</div>
+                  {onlineFriends.slice(0, 4).map((friend) => (
+                    <div key={friend.id_friend} className="friend-avatar-preview" title={friend.username}>
+                      <Avatar src={friend.avatar_url} username={friend.username} size={36} />
+                      <div className={`status-indicator ${friend.online_status || "offline"}`} />
+                    </div>
+                  ))}
+                  {onlineFriends.length > 4 && (
+                    <div className="more-friends-indicator">
+                      <span>+{onlineFriends.length - 4}</span>
+                    </div>
                   )}
                 </div>
               </div>
