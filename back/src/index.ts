@@ -32,10 +32,6 @@ app.get("/health", (req, res) => {
   res.status(200).json({ status: "healthy", timestamp: new Date().toISOString() });
 });
 
-const SERVER_URL =
-  process.env.NODE_ENV === "production"
-    ? "https://mathis.alwaysdata.net"
-    : `http://localhost:${PORT}`;
 
 const swaggerOptions = {
   definition: {

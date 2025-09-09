@@ -5,8 +5,6 @@ import {
   Shield,
   Ban,
   Edit,
-  ArrowUpRight,
-  ArrowDownRight,
   History as HistoryIcon,
   X
 } from 'lucide-react';
@@ -19,6 +17,8 @@ import { CustomCheckbox } from '../../components/CustomCheckbox/CustomCheckbox';
 import Loader from '../../components/Loader/Loader';
 import { useAuth } from '../../context/AuthContext';
 import Tooltip, { getTooltipMessage } from '../../components/Tooltip/Tooltip';
+import { useUserStats } from '../../hooks/useUserStats';
+import UserStats from '../../components/UserStats/UserStats';
 
 const Users = () => {
   const navigate = useNavigate();
@@ -32,19 +32,14 @@ const Users = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [showFilters, setShowFilters] = useState(false);
   const [userRoles, setUserRoles] = useState<Record<string, UserRole>>({});
-  const [previousStats] = useState(() => {
-    const saved = localStorage.getItem('users_previous_stats');
-    return saved ? JSON.parse(saved) : {
-      totalUsers: 0,
-      verifiedUsers: 0,
-      premiumUsers: 0
-    };
-  });
   const [filters, setFilters] = useState({
     isVerified: null as boolean | null,
     isPremium: null as boolean | null,
     isAdmin: null as boolean | null
   });
+
+  // Utiliser le hook personnalisé pour les statistiques
+  const { statsData, isRefreshing: isRefreshingStats, refreshStats } = useUserStats();
 
 const fetchUserRole = async (userId: string): Promise<UserRole | null> => {
   try {
@@ -105,16 +100,6 @@ const fetchUserRole = async (userId: string): Promise<UserRole | null> => {
       setLoading(true);
       setError(null);
       const data = await apiService.get<User[]>('/users');
-
-      // Calculer les stats actuelles
-      const currentStats = {
-        totalUsers: data.length,
-        verifiedUsers: data.filter(user => user.verified).length,
-        premiumUsers: data.filter(user => user.is_premium).length
-      };
-
-      // Sauvegarder les stats actuelles pour le prochain calcul
-      localStorage.setItem('users_previous_stats', JSON.stringify(currentStats));
 
       setUsers(data);
       setFilteredUsers(data);
@@ -214,44 +199,11 @@ const fetchUserRole = async (userId: string): Promise<UserRole | null> => {
     });
   };
 
-  const calculatePercentageChange = (current: number, previous: number): { value: number; trend: 'up' | 'down' | 'neutral' } => {
-    if (previous === 0) {
-      return { value: current > 0 ? 100 : 0, trend: current > 0 ? 'up' : 'neutral' };
-    }
 
-    const change = ((current - previous) / previous) * 100;
-    return {
-      value: Math.abs(change),
-      trend: change > 0 ? 'up' : change < 0 ? 'down' : 'neutral'
-    };
-  };
 
-  const stats = [
-    {
-      title: 'Total Users',
-      value: users.length.toString(),
-      change: calculatePercentageChange(users.length, previousStats.totalUsers),
-      color: 'bg-gradient-blue'
-    },
-    {
-      title: 'Verified Users',
-      value: users.filter(user => user.verified).length.toString(),
-      change: calculatePercentageChange(
-        users.filter(user => user.verified).length,
-        previousStats.verifiedUsers
-      ),
-      color: 'bg-gradient-purple'
-    },
-    {
-      title: 'Premium Users',
-      value: users.filter(user => user.is_premium).length.toString(),
-      change: calculatePercentageChange(
-        users.filter(user => user.is_premium).length,
-        previousStats.premiumUsers
-      ),
-      color: 'bg-gradient-oxymore'
-    }
-  ];
+
+
+
 
   if (loading) {
     return (
@@ -294,30 +246,11 @@ const fetchUserRole = async (userId: string): Promise<UserRole | null> => {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {stats.map((stat, index) => (
-          <div key={index} className="stat-card">
-          <div className="flex items-center justify-between">
-            <div>
-                <p className="stat-label">{stat.title}</p>
-                <h3 className="stat-value">{stat.value}</h3>
-            </div>
-              <div className={`flex items-center gap-1 ${
-              stat.change.trend === 'up' ? 'stat-trend-up' :
-              stat.change.trend === 'down' ? 'stat-trend-down' :
-              'text-gray-400'
-            }`}>
-              {stat.change.trend === 'up' ? <ArrowUpRight className="w-4 h-4" /> :
-               stat.change.trend === 'down' ? <ArrowDownRight className="w-4 h-4" /> :
-               null}
-              <span className="text-sm font-medium">
-                {stat.change.value === 0 ? '0' : `${stat.change.value.toFixed(1)}%`}
-              </span>
-            </div>
-            </div>
-          </div>
-        ))}
-      </div>
+      <UserStats
+        statsData={statsData}
+        isRefreshing={isRefreshingStats}
+        onRefresh={refreshStats}
+      />
 
       {/* Search & Filters */}
       <div className="flex items-center gap-4">
@@ -465,11 +398,11 @@ const fetchUserRole = async (userId: string): Promise<UserRole | null> => {
                       <div className="w-10 h-10 rounded-full bg-cover bg-center" style={{
                         backgroundImage: `url(${user.avatar_url || `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.username}`})`
                       }} />
-                      <div>
+                      <div className="min-w-0 flex-1">
                         <div className="flex items-center gap-2">
-                        <p className="text-primary font-medium">{user.username}</p>
+                        <p className="text-primary font-medium break-words hyphens-auto leading-tight">{user.username}</p>
                                 {user.is_premium ? (
-                                  <span className="px-2 py-0.5 text-xs font-medium bg-oxymore-purple rounded-full">
+                                  <span className="px-2 py-0.5 text-xs font-medium bg-oxymore-purple text-white rounded-full">
                                     Premium
                                   </span>
                                 ) : (
@@ -478,7 +411,7 @@ const fetchUserRole = async (userId: string): Promise<UserRole | null> => {
                                   </span>
                                 )}
                         </div>
-                        <p className="text-muted text-sm">{user.email}</p>
+                        <p className="text-muted text-sm break-words hyphens-auto">{user.email}</p>
                       </div>
                     </div>
                   </td>

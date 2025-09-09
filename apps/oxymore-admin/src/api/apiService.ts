@@ -45,4 +45,4 @@ export const apiService = {
   delete: async <T>(endpoint: string): Promise<T> => {
     return api.delete(endpoint);
   }
-}; 
+};

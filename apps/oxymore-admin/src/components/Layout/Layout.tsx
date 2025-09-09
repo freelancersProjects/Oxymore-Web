@@ -11,22 +11,22 @@ const Layout = () => {
     <StatsProvider>
       <div className="min-h-screen" style={{ backgroundImage: 'var(--page-background)' }}>
         <div className="flex h-screen">
-          {/* Sidebar - Hidden on mobile, shown as overlay */}
-          {!isMobile && <Sidebar />}
+          {/* Sidebar - Fixed width, pushes content */}
+          {!isMobile && (
+            <div className={`transition-all duration-300 ${
+              isCollapsed ? 'w-18' : 'w-70'
+            }`}>
+              <Sidebar />
+            </div>
+          )}
 
-          {/* Main Content */}
-          <div className="flex-1 flex flex-col overflow-hidden">
+          {/* Main Content - Takes remaining space */}
+          <div className="flex-1 flex flex-col overflow-hidden min-w-0">
             {/* Header */}
             <Header />
 
             {/* Page Content */}
-            <main className={`flex-1 overflow-y-auto transition-all duration-300 ${
-              isMobile
-                ? 'ml-0'
-                : isCollapsed
-                  ? 'ml-18'
-                  : 'ml-70'
-            }`}>
+            <main className="flex-1 overflow-y-auto">
               <div className="p-4 md:p-6">
                 <Outlet />
               </div>
@@ -34,7 +34,7 @@ const Layout = () => {
           </div>
         </div>
 
-        {/* Mobile Sidebar */}
+        {/* Mobile Sidebar - Overlay */}
         {isMobile && <Sidebar />}
       </div>
     </StatsProvider>

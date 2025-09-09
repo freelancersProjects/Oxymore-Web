@@ -15,6 +15,7 @@ import { useAuth } from '../../../context/AuthContext';
 import { useSidebar } from '../../../context/SidebarContext';
 import { useTheme } from '../../../context/ThemeContext';
 import ShortcutsModal from './ShortcutsModal';
+import SearchBar from '../../SearchBar/SearchBar';
 
 const notifications = [
   { title: 'New Tournament Registration', desc: 'Team_Alpha joined CS2 Major', time: '2 min ago' },
@@ -124,14 +125,7 @@ const Header = () => {
           <div className="flex items-center gap-4 flex-1 max-w-2xl">
             {/* Search */}
             <div className="flex-1">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--text-secondary)]" />
-                <input
-                  type="text"
-                  placeholder="Search anything... (⌘ K)"
-                  className="w-full bg-[var(--overlay-hover)] border border-[var(--border-color)] rounded-xl pl-10 pr-4 py-2 text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-oxymore-purple/50"
-                />
-              </div>
+              <SearchBar placeholder="Search anything... (⌘ K)" />
             </div>
 
             {/* Quick Actions */}
@@ -155,21 +149,7 @@ const Header = () => {
             exit={{ opacity: 0, width: 0 }}
             className="flex-1"
           >
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--text-secondary)]" />
-              <input
-                type="text"
-                placeholder="Search anything..."
-                className="w-full bg-[var(--overlay-hover)] border border-[var(--border-color)] rounded-xl pl-10 pr-10 py-2 text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-oxymore-purple/50"
-                autoFocus
-              />
-              <button
-                onClick={() => setShowMobileSearch(false)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 p-1"
-              >
-                <X className="w-4 h-4 text-[var(--text-secondary)]" />
-              </button>
-            </div>
+            <SearchBar placeholder="Search anything..." />
           </motion.div>
         )}
 
