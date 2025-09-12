@@ -434,7 +434,7 @@ const Calendar = () => {
      const [position, setPosition] = useState({ top: 0, left: 0 });
      const triggerRef = useRef<HTMLDivElement>(null);
      const tooltipRef = useRef<HTMLDivElement>(null);
-     const hideTimeoutRef = useRef<number | null>(null);
+     const hideTimeoutRef = useRef<NodeJS.Timeout | null>(null);
      const isHoveringTooltip = useRef(false);
 
            const updatePosition = () => {
@@ -506,10 +506,8 @@ const Calendar = () => {
       };
 
      const hideTooltip = () => {
-       // Ne pas cacher si on survole la tooltip elle-même
        if (!isHoveringTooltip.current) {
          hideTimeoutRef.current = setTimeout(() => {
-           // Vérifier que c'est toujours le bon tooltip avant de le cacher
            if (activeTooltipId === appointment.id) {
              setIsVisible(false);
              setActiveTooltipId(null);

@@ -1,15 +1,11 @@
 import { useState, useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
 import {
   Calendar,
   User,
-  Clock,
   ChevronLeft,
   ChevronRight,
-  Filter,
   SortAsc,
-  SortDesc,
-  MoreVertical
+  SortDesc
 } from 'lucide-react';
 import Dropdown from '../Dropdown/Dropdown';
 
@@ -34,10 +30,9 @@ interface Todo {
 interface GanttChartProps {
   todos: Todo[];
   onUpdateTodo: (todo: Todo) => void;
-  adminUsers?: any[];
 }
 
-const GanttChart = ({ todos, onUpdateTodo, adminUsers = [] }: GanttChartProps) => {
+const GanttChart = ({ todos, onUpdateTodo }: GanttChartProps) => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [viewMode, setViewMode] = useState<'month' | 'week' | 'day'>('month');
   const [sortBy, setSortBy] = useState<'title' | 'assignee' | 'dueDate' | 'priority'>('dueDate');
@@ -45,7 +40,6 @@ const GanttChart = ({ todos, onUpdateTodo, adminUsers = [] }: GanttChartProps) =
   const [filterStatus, setFilterStatus] = useState<string>('all');
   const [draggedTask, setDraggedTask] = useState<Todo | null>(null);
   const [dragStart, setDragStart] = useState<{ x: number; y: number } | null>(null);
-  const [isResizing, setIsResizing] = useState<'start' | 'end' | null>(null);
 
   const timelineRef = useRef<HTMLDivElement>(null);
   const [timelineWidth, setTimelineWidth] = useState(0);
@@ -193,9 +187,8 @@ const GanttChart = ({ todos, onUpdateTodo, adminUsers = [] }: GanttChartProps) =
   }, [draggedTask, dragStart, timelineWidth]);
 
   // Gérer le resize des tâches
-  const handleResizeStart = (e: React.MouseEvent, todo: Todo, type: 'start' | 'end') => {
+  const handleResizeStart = (e: React.MouseEvent, todo: Todo) => {
     e.stopPropagation();
-    setIsResizing(type);
     setDraggedTask(todo);
     setDragStart({ x: e.clientX, y: e.clientY });
   };
@@ -376,7 +369,7 @@ const GanttChart = ({ todos, onUpdateTodo, adminUsers = [] }: GanttChartProps) =
 
             {/* Lignes de la timeline */}
             <div className="relative">
-              {filteredTodos.map((todo, index) => {
+              {filteredTodos.map((todo) => {
                 const position = getTaskPosition(todo);
                 return (
                   <div
@@ -408,11 +401,11 @@ const GanttChart = ({ todos, onUpdateTodo, adminUsers = [] }: GanttChartProps) =
                       {/* Handles de resize */}
                       <div
                         className="absolute left-0 top-0 w-2 h-full cursor-ew-resize opacity-0 group-hover/task:opacity-100 transition-opacity bg-white/30 rounded-l-lg"
-                        onMouseDown={(e) => handleResizeStart(e, todo, 'start')}
+                        onMouseDown={(e) => handleResizeStart(e, todo)}
                       />
                       <div
                         className="absolute right-0 top-0 w-2 h-full cursor-ew-resize opacity-0 group-hover/task:opacity-100 transition-opacity bg-white/30 rounded-r-lg"
-                        onMouseDown={(e) => handleResizeStart(e, todo, 'end')}
+                        onMouseDown={(e) => handleResizeStart(e, todo)}
                       />
                     </div>
                   </div>

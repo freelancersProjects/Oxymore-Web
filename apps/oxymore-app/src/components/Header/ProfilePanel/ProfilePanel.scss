@@ -13,7 +13,7 @@
   backdrop-filter: blur(rem-calc(8));
   border-left: 1px solid rgb(255 255 255 / 12%);
   box-shadow: 0 rem-calc(18) rem-calc(40) rgb(0 0 0 / 40%);
-  z-index: 1000;
+  z-index: 450;
   transition: width 0.2s ease;
   padding: rem-calc(14);
   overflow: visible;
@@ -148,43 +148,108 @@
     }
   }
 
-  .profile-panel__quick-icons {
-    display: flex;
-    flex-direction: column;
-    gap: rem-calc(8);
-    align-items: center;
-
-    .quick-icon {
-      width: rem-calc(36);
-      height: rem-calc(36);
-      border-radius: 50%;
+    .profile-panel__quick-icons {
       display: flex;
+      flex-direction: column;
+      gap: rem-calc(8);
       align-items: center;
-      justify-content: center;
-      background: rgb(255 255 255 / 6%);
-      border: 1px solid rgb(255 255 255 / 15%);
-      color: $color-white;
-      cursor: pointer;
-      transition: all 0.2s ease;
 
-      &:hover {
-        background: rgb(255 255 255 / 12%);
-        border-color: rgb(255 255 255 / 25%);
-        transform: scale(1.1);
-      }
-
-      &.signout {
-        background: rgb(239 68 68 / 10%);
-        border-color: rgb(239 68 68 / 30%);
-        color: $color-danger;
+      .quick-icon {
+        width: rem-calc(36);
+        height: rem-calc(36);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgb(255 255 255 / 6%);
+        border: 1px solid rgb(255 255 255 / 15%);
+        color: $color-white;
+        cursor: pointer;
+        transition: all 0.2s ease;
 
         &:hover {
-          background: rgb(239 68 68 / 20%);
-          border-color: rgb(239 68 68 / 50%);
+          background: rgb(255 255 255 / 12%);
+          border-color: rgb(255 255 255 / 25%);
+          transform: scale(1.1);
+        }
+
+        &.signout {
+          background: rgb(239 68 68 / 10%);
+          border-color: rgb(239 68 68 / 30%);
+          color: $color-danger;
+
+          &:hover {
+            background: rgb(239 68 68 / 20%);
+            border-color: rgb(239 68 68 / 50%);
+          }
         }
       }
     }
-  }
+
+    .profile-panel__online-friends-collapsed {
+      margin-top: rem-calc(16);
+      padding: rem-calc(12) rem-calc(6);
+      width: 100%;
+      background: rgba($color-white, 0.05);
+      border-radius: rem-calc(10);
+      border: 1px solid rgba($color-white, 0.1);
+      position: relative;
+
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: $color-purple;
+        border-radius: rem-calc(10) rem-calc(10) 0 0;
+      }
+
+      .online-friends-header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: rem-calc(10);
+        position: relative;
+
+        .online-friends-title {
+          font-size: rem-calc(11);
+          color: $color-white;
+          font-weight: 600;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+        }
+      }
+
+      .friends-count-circle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: rem-calc(8);
+
+        span {
+          width: rem-calc(28);
+          height: rem-calc(28);
+          border-radius: 50%;
+          background: rgb(255 255 255 / 6%);
+          border: 1px dashed rgb(255 255 255 / 20%);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: $color-white;
+          font-size: rem-calc(12);
+          font-weight: 600;
+          transition: all 0.2s ease;
+          cursor: pointer;
+
+          &:hover {
+            background: rgb(255 255 255 / 12%);
+            border-color: rgb(255 255 255 / 34%);
+          }
+        }
+      }
+    }
 
   .profile-panel__group-collapsed {
     margin-top: rem-calc(16);
@@ -294,169 +359,6 @@
       }
     }
 
-    .profile-panel__online-friends-collapsed {
-      margin-top: rem-calc(16);
-      padding: rem-calc(12) rem-calc(6);
-      width: 100%;
-      background: rgba($color-white, 0.05);
-      border-radius: rem-calc(10);
-      border: 1px solid rgba($color-white, 0.1);
-      position: relative;
-
-      &::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 2px;
-        background: $color-purple;
-        border-radius: rem-calc(10) rem-calc(10) 0 0;
-      }
-
-      .online-friends-header {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: rem-calc(10);
-        position: relative;
-
-        .online-count-badge {
-          position: absolute;
-          top: rem-calc(-8);
-          right: rem-calc(-8);
-          background: linear-gradient(135deg, $color-purple, $color-blue);
-          color: $color-white;
-          font-size: rem-calc(9);
-          font-weight: 700;
-          padding: rem-calc(2) rem-calc(4);
-          border-radius: rem-calc(6);
-          min-width: rem-calc(16);
-          text-align: center;
-          border: 1px solid rgba($color-white, 0.2);
-        }
-
-        .online-friends-title {
-          font-size: rem-calc(11);
-          color: $color-white;
-          font-weight: 600;
-          text-transform: uppercase;
-          letter-spacing: 0.5px;
-        }
-      }
-
-      .online-friends-avatars {
-        display: flex;
-        flex-direction: column;
-        gap: rem-calc(8);
-        align-items: center;
-
-        .friend-avatar-collapsed {
-          position: relative;
-          width: rem-calc(36);
-          height: rem-calc(36);
-          cursor: pointer;
-          transition: all 0.3s ease;
-
-          &:hover {
-            transform: scale(1.15);
-
-            .friend-name-tooltip {
-              opacity: 1;
-              transform: translateY(0);
-            }
-          }
-
-          img {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid rgba($color-white, 0.3);
-            box-shadow: 0 rem-calc(2) rem-calc(8) rgb(0 0 0 / 30%);
-          }
-
-          .status-indicator {
-            position: absolute;
-            bottom: rem-calc(-2);
-            right: rem-calc(-2);
-            width: rem-calc(12);
-            height: rem-calc(12);
-            border-radius: 50%;
-            border: 2px solid rgb(12 14 22);
-            box-shadow: 0 rem-calc(1) rem-calc(3) rgb(0 0 0 / 30%);
-
-            &.online {
-              background: $color-green;
-              box-shadow: 0 0 rem-calc(6) rgb(16 185 129 / 40%);
-            }
-
-            &.offline {
-              background: $color-gray-medium;
-            }
-
-            &.in-game {
-              background: $color-yellow;
-              box-shadow: 0 0 rem-calc(6) rgb(245 158 11 / 40%);
-            }
-          }
-
-          .friend-name-tooltip {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%) translateY(rem-calc(10));
-            background: rgba($color-black, 0.9);
-            color: $color-white;
-            padding: rem-calc(4) rem-calc(8);
-            border-radius: rem-calc(6);
-            font-size: rem-calc(10);
-            font-weight: 500;
-            white-space: nowrap;
-            opacity: 0;
-            transition: all 0.3s ease;
-            pointer-events: none;
-            z-index: 10;
-            backdrop-filter: blur(10px);
-
-            &::before {
-              content: '';
-              position: absolute;
-              top: rem-calc(-4);
-              left: 50%;
-              transform: translateX(-50%);
-              border-left: rem-calc(4) solid transparent;
-              border-right: rem-calc(4) solid transparent;
-              border-bottom: rem-calc(4) solid rgba($color-black, 0.9);
-            }
-          }
-        }
-
-        .more-friends-indicator {
-          width: rem-calc(36);
-          height: rem-calc(36);
-          border-radius: 50%;
-          background: linear-gradient(135deg, rgba($color-purple, 0.2), rgba($color-blue, 0.2));
-          border: 2px dashed rgba($color-white, 0.3);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          cursor: pointer;
-          transition: all 0.3s ease;
-
-          span {
-            color: $color-white;
-            font-size: rem-calc(10);
-            font-weight: 600;
-          }
-
-          &:hover {
-            background: linear-gradient(135deg, rgba($color-purple, 0.3), rgba($color-blue, 0.3));
-            border-color: rgba($color-white, 0.5);
-            transform: scale(1.1);
-          }
-        }
-      }
-    }
   }
 
   &__scroll {
@@ -617,7 +519,7 @@
       &::-webkit-scrollbar-thumb {
         background: rgba($color-white, 0.3);
         border-radius: rem-calc(2);
-        
+
         &:hover {
           background: rgba($color-white, 0.5);
         }

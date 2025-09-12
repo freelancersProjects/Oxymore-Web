@@ -17,9 +17,9 @@ import {
 import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd';
 import React from 'react';
 import TodoModal from '../../components/TodoModal/TodoModal';
-import GanttChart from '../../components/GanttChart/GanttChart';
 import Dropdown from '../../components/Dropdown/Dropdown';
 import ConfirmationModal from '../../components/ConfirmationModal/ConfirmationModal';
+import Loader from '../../components/Loader/Loader';
 import { kanbanApi, KanbanBoard} from '../../services/kanbanApi';
 import { apiService } from '../../api/apiService';
 import './Jira.css';
@@ -75,7 +75,6 @@ const Jira = () => {
   const [todoToDelete, setTodoToDelete] = useState<Todo | null>(null);
   const [kanbanToDelete, setKanbanToDelete] = useState<Kanban | null>(null);
   const [allUsers, setAllUsers] = useState<any[]>([]);
-  const [userRoles, setUserRoles] = useState<Record<string, any>>({});
   const [stats, setStats] = useState({
     total: 0,
     completed: 0,
@@ -133,11 +132,6 @@ const Jira = () => {
     }
   };
 
-  // Fonction pour vérifier si un user est admin
-  const isUserAdmin = (user: any): boolean => {
-    const userRole = userRoles[user.id_user];
-    return userRole?.name === 'admin';
-  };
 
   // Charger les Kanbans et les users depuis l'API
   useEffect(() => {
@@ -152,20 +146,18 @@ const Jira = () => {
         setKanbans(kanbansData);
 
         // Récupérer les rôles de tous les users
-        const rolesPromises = usersData.map((user: any) => fetchUserRole(user.id_user));
+        const rolesPromises = (usersData as any[]).map((user: any) => fetchUserRole(user.id_user));
         const rolesResults = await Promise.allSettled(rolesPromises);
 
         const newUserRoles: Record<string, any> = {};
-        rolesResults.forEach((result, index) => {
+        rolesResults.forEach((result: any, index: number) => {
           if (result.status === 'fulfilled' && result.value) {
-            newUserRoles[usersData[index].id_user] = result.value;
+            newUserRoles[(usersData as any[])[index].id_user] = result.value;
           }
         });
 
-        setUserRoles(newUserRoles);
-
         // Filtrer et stocker seulement les admins
-        const adminUsers = usersData.filter((user: any) => {
+        const adminUsers = (usersData as any[]).filter((user: any) => {
           const userRole = newUserRoles[user.id_user];
           return userRole?.name === 'admin';
         });
@@ -446,37 +438,6 @@ const Jira = () => {
     setShowCreateModal(true);
   };
 
-  // Gestion de la mise à jour des tâches depuis le Gantt
-  const handleUpdateTodoFromGantt = async (updatedTodo: Todo) => {
-    try {
-      // Créer ou récupérer les tags
-      const tagIds: string[] = [];
-      for (const tagName of updatedTodo.tags) {
-        const tagId = await createOrGetTag(tagName);
-        if (tagId) {
-          tagIds.push(tagId);
-        }
-      }
-
-      // Mettre à jour le ticket via l'API
-      await kanbanApi.updateTicket(updatedTodo.id, {
-        title: updatedTodo.title,
-        description: updatedTodo.description,
-        status: updatedTodo.status,
-        priority: updatedTodo.priority,
-        due_date: updatedTodo.dueDate,
-        assignee_id: updatedTodo.assignee?.id,
-        tag_ids: tagIds
-      });
-
-      // Mettre à jour localement
-      setTodos(prev => prev.map(todo =>
-        todo.id === updatedTodo.id ? updatedTodo : todo
-      ));
-    } catch (error) {
-      console.error('Erreur lors de la mise à jour du ticket:', error);
-    }
-  };
 
   const handleDeleteTodo = (todo: Todo) => {
     setTodoToDelete(todo);
@@ -510,11 +471,12 @@ const Jira = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-96">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
-          <p className="text-gray-600">Chargement des Kanbans...</p>
+      <div className="space-y-6">
+        <div>
+          <h1 className="text-2xl font-bold text-primary">Jira</h1>
+          <p className="text-secondary mt-1">Gestion des tâches et projets</p>
         </div>
+        <Loader />
       </div>
     );
   }
@@ -542,7 +504,10 @@ const Jira = () => {
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            onClick={() => setShowCreateModal(true)}
+            onClick={() => {
+              setEditingTodo(null);
+              setShowCreateModal(true);
+            }}
             className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-2 rounded-lg font-semibold flex items-center gap-2 shadow-lg hover:shadow-xl transition-all duration-300"
           >
             <Plus className="w-4 h-4" />
@@ -884,8 +849,6 @@ const Jira = () => {
         onSave={handleSaveTodo}
         editingTodo={editingTodo}
         adminUsers={allUsers}
-        userRoles={userRoles}
-        isUserAdmin={isUserAdmin}
       />
 
       {/* Modal de suppression */}

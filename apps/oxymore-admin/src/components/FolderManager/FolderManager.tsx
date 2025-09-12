@@ -8,14 +8,11 @@ import {
   MoreVertical,
   Edit,
   Trash2,
-  Move,
   ChevronRight,
   ChevronDown,
   Upload,
-  Download
 } from 'lucide-react';
 import ContextMenu from '../ContextMenu/ContextMenu';
-import ConfirmationModal from '../ConfirmationModal/ConfirmationModal';
 
 interface DocumentItem {
   id: string;
@@ -218,80 +215,84 @@ const FolderManager: React.FC<FolderManagerProps> = ({
               : 'hover:bg-[var(--overlay-hover)]'
           }`}
           style={{ paddingLeft: `${level * 20 + 8}px` }}
-          onClick={() => {
-            if (item.type === 'folder') {
-              toggleFolder(item.id);
-            } else {
-              onDocumentSelect(item);
-            }
-          }}
-          draggable
-          onDragStart={(e) => handleDragStart(e, item)}
-          onDragOver={(e) => handleDragOver(e, item)}
-          onDragLeave={handleDragLeave}
-          onDrop={(e) => handleDrop(e, item)}
         >
-          {item.type === 'folder' ? (
-            <>
-              {isExpanded ? (
-                <ChevronDown className="w-4 h-4" />
-              ) : (
-                <ChevronRight className="w-4 h-4" />
-              )}
-              {isExpanded ? (
-                <FolderOpen className="w-4 h-4 text-blue-500" />
-              ) : (
-                <Folder className="w-4 h-4 text-blue-500" />
-              )}
-            </>
-          ) : (
-            <>
-              <div className="w-4 h-4" />
-              <FileText className="w-4 h-4 text-gray-500" />
-            </>
-          )}
-
-          <span className="flex-1 truncate">{item.name}</span>
-
-          {item.size && (
-            <span className="text-xs text-[var(--text-muted)]">
-              {item.size}
-            </span>
-          )}
-
-          <div className="flex items-center gap-1">
-            <ContextMenu
-              options={[
-                {
-                  value: 'rename',
-                  label: 'Renommer',
-                  icon: <Edit className="w-3 h-3" />,
-                  onClick: () => {
-                    setItemToRename(item);
-                    setNewItemName(item.name);
-                    setShowRenameModal(true);
-                  }
-                },
-                {
-                  value: 'delete',
-                  label: 'Supprimer',
-                  icon: <Trash2 className="w-3 h-3" />,
-                  className: 'text-red-500',
-                  onClick: () => {
-                    setItemToDelete(item);
-                    setShowDeleteModal(true);
-                  }
-                }
-              ]}
-              trigger={
-                <button
-                  className="p-1 hover:bg-[var(--overlay-hover)] rounded"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <MoreVertical className="w-3 h-3" />
-                </button>
+          <div
+            onClick={() => {
+              if (item.type === 'folder') {
+                toggleFolder(item.id);
+              } else {
+                onDocumentSelect(item);
               }
-            />
+            }}
+            draggable
+            onDragStart={(e: React.DragEvent) => handleDragStart(e, item)}
+            onDragOver={(e: React.DragEvent) => handleDragOver(e, item)}
+            onDragLeave={handleDragLeave}
+            onDrop={(e: React.DragEvent) => handleDrop(e, item)}
+            className="flex items-center w-full"
+          >
+            {item.type === 'folder' ? (
+              <>
+                {isExpanded ? (
+                  <ChevronDown className="w-4 h-4" />
+                ) : (
+                  <ChevronRight className="w-4 h-4" />
+                )}
+                {isExpanded ? (
+                  <FolderOpen className="w-4 h-4 text-blue-500" />
+                ) : (
+                  <Folder className="w-4 h-4 text-blue-500" />
+                )}
+              </>
+            ) : (
+              <>
+                <div className="w-4 h-4" />
+                <FileText className="w-4 h-4 text-gray-500" />
+              </>
+            )}
+
+            <span className="flex-1 truncate">{item.name}</span>
+
+            {item.size && (
+              <span className="text-xs text-[var(--text-muted)]">
+                {item.size}
+              </span>
+            )}
+
+            <div className="flex items-center gap-1">
+              <ContextMenu
+                options={[
+                  {
+                    value: 'rename',
+                    label: 'Renommer',
+                    icon: <Edit className="w-3 h-3" />,
+                    onClick: () => {
+                      setItemToRename(item);
+                      setNewItemName(item.name);
+                      setShowRenameModal(true);
+                    }
+                  },
+                  {
+                    value: 'delete',
+                    label: 'Supprimer',
+                    icon: <Trash2 className="w-3 h-3" />,
+                    className: 'text-red-500',
+                    onClick: () => {
+                      setItemToDelete(item);
+                      setShowDeleteModal(true);
+                    }
+                  }
+                ]}
+                trigger={
+                  <button
+                    className="p-1 hover:bg-[var(--overlay-hover)] rounded"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <MoreVertical className="w-3 h-3" />
+                  </button>
+                }
+              />
+            </div>
           </div>
         </motion.div>
 

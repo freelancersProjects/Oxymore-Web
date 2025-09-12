@@ -329,36 +329,12 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed, onToggle, onNoti
             <div className="online-friends-header">
               <div className="online-friends-title">Friends</div>
             </div>
-            <div className="online-friends-avatars">
-              
-              <div className="online-friends-avatars">
-              {onlineFriends.slice(0, 3).map((friend) => (
-                <div
-                  key={friend.id_friend}
-                  className="friend-avatar-collapsed"
-                  title={friend.username}
-                >
-                  <Avatar
-                    src={friend.avatar_url}
-                    username={friend.username}
-                    size={32}
-                  />
-                  <div
-                    className={`status-indicator ${
-                      friend.online_status || "offline"
-                    }`}
-                  />
-                  <div className="friend-name-tooltip">{friend.username}</div>
-                </div>
-              ))}
-              <div className="more-friends-indicator">
-                <span>+{Math.max(0, totalFriends - 3)}</span>
-              </div>
-            </div>
+            <div className="friends-count-circle">
+              <span>+{totalFriends}</span>
             </div>
           </div>
+          </div>
         </div>
-      </div>
     );
   }
 

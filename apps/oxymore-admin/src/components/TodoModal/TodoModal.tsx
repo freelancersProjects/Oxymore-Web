@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Calendar, User, Tag, AlertCircle, Circle } from 'lucide-react';
+import { X } from 'lucide-react';
 import Dropdown from '../Dropdown/Dropdown';
 
 interface Todo {
@@ -26,11 +26,10 @@ interface TodoModalProps {
   onSave: (todo: Omit<Todo, 'id' | 'createdAt' | 'updatedAt'>) => void;
   editingTodo?: Todo | null;
   adminUsers?: any[];
-  userRoles?: Record<string, any>;
   isUserAdmin?: (user: any) => boolean;
 }
 
-const TodoModal = ({ isOpen, onClose, onSave, editingTodo, adminUsers = [], userRoles = {}, isUserAdmin }: TodoModalProps) => {
+const TodoModal = ({ isOpen, onClose, onSave, editingTodo, adminUsers = [], isUserAdmin }: TodoModalProps) => {
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -51,28 +50,30 @@ const TodoModal = ({ isOpen, onClose, onSave, editingTodo, adminUsers = [], user
   }));
 
   useEffect(() => {
-    if (editingTodo) {
-      setFormData({
-        title: editingTodo.title,
-        description: editingTodo.description || '',
-        status: editingTodo.status,
-        priority: editingTodo.priority,
-        assignee: editingTodo.assignee?.id || '',
-        tags: editingTodo.tags,
-        dueDate: editingTodo.dueDate || ''
-      });
-    } else {
-      setFormData({
-        title: '',
-        description: '',
-        status: 'todo',
-        priority: 'medium',
-        assignee: '',
-        tags: [],
-        dueDate: ''
-      });
+    if (isOpen) {
+      if (editingTodo) {
+        setFormData({
+          title: editingTodo.title,
+          description: editingTodo.description || '',
+          status: editingTodo.status,
+          priority: editingTodo.priority,
+          assignee: editingTodo.assignee?.id || '',
+          tags: editingTodo.tags,
+          dueDate: editingTodo.dueDate || ''
+        });
+      } else {
+        setFormData({
+          title: '',
+          description: '',
+          status: 'todo',
+          priority: 'medium',
+          assignee: '',
+          tags: [],
+          dueDate: ''
+        });
+      }
     }
-  }, [editingTodo]);
+  }, [isOpen, editingTodo]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -111,16 +112,6 @@ const TodoModal = ({ isOpen, onClose, onSave, editingTodo, adminUsers = [], user
       ...prev,
       tags: prev.tags.filter(tag => tag !== tagToRemove)
     }));
-  };
-
-  const getPriorityColor = (priority: Todo['priority']) => {
-    const colors = {
-      low: 'text-green-400 bg-green-400/10',
-      medium: 'text-yellow-400 bg-yellow-400/10',
-      high: 'text-orange-400 bg-orange-400/10',
-      urgent: 'text-red-400 bg-red-400/10'
-    };
-    return colors[priority];
   };
 
   if (!isOpen) return null;

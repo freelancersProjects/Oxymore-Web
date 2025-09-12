@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, Users, Trophy, Shield, Target, Calendar, Star, FileText, CheckSquare, ArrowRight, Command } from 'lucide-react';
-import { Link } from 'react-router-dom';
 
 interface SearchResult {
   id: string;

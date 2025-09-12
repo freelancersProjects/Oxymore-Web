@@ -8,7 +8,7 @@ interface UserStatsProps {
   className?: string;
 }
 
-const UserStats = ({ statsData, isRefreshing, onRefresh, className = '' }: UserStatsProps) => {
+const UserStats = ({ statsData, className = '' }: UserStatsProps) => {
   const stats = [
     {
       title: 'Total Users',
