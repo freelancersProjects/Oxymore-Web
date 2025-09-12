@@ -6,7 +6,11 @@ export default defineConfig({
   plugins: [react()],
   server: {
     port: 5175,
-    host: true
+    host: true,
+    allowedHosts: [
+      "localhost",
+      "6fd69811d15f.ngrok-free.app"
+    ]
   },
   resolve: {
     alias: {
@@ -21,6 +25,5 @@ export default defineConfig({
       '@oxm-ui': path.resolve(__dirname, '../../packages/oxm-ui/src')
     }
   }
-}) 
- 
- 
+})
+

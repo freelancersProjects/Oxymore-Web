@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react';
 import { useEditor, EditorContent } from '@tiptap/react';
+import type { Editor } from '@tiptap/core';
 import StarterKit from '@tiptap/starter-kit';
 import Image from '@tiptap/extension-image';
 import Link from '@tiptap/extension-link';
@@ -40,6 +41,10 @@ interface RichTextEditorProps {
   onChange: (content: string) => void;
   placeholder?: string;
   className?: string;
+}
+
+interface EditorContentProps {
+  editor: Editor | null;
 }
 
 const RichTextEditor: React.FC<RichTextEditorProps> = ({
@@ -381,7 +386,7 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({
 
       {/* Zone d'édition */}
       <div className="min-h-[400px] p-4">
-        <EditorContent editor={editor} />
+        {React.createElement(EditorContent as React.ComponentType<EditorContentProps>, { editor })}
       </div>
     </div>
   );

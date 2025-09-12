@@ -1,8 +1,7 @@
 @import '../../../styles/global';
 
-// Force le z-index du drawer pour qu'il passe au-dessus du profile panel
-.drawer-notif {
-  z-index: 1001 !important; // Au-dessus du profile panel (1000)
+.oxm-drawer {
+  z-index: 4000 !important;
 }
 
 .drawer-notif-header {

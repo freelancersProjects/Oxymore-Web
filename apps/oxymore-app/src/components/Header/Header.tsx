@@ -113,12 +113,6 @@ export const Header: React.FC<HeaderProps> = ({ isSidebarCollapsed = false }) =>
         onNotificationClick={openNotif}
         unreadCount={unreadCount}
       />
-
-      {/* Bouton de notification flottant quand le profile panel est ouvert */}
-      <div className="floating-notification-btn" onClick={openNotif}>
-        <BellIcon className="icon-bell" size={20} />
-        {unreadCount > 0 && <span className="notif-badge-header">{unreadCount}</span>}
-      </div>
     </>
   );
 };
