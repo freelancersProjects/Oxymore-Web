@@ -13,6 +13,7 @@ import {
   Edit,
   BarChart3,
   FolderPlus,
+  BarChart,
 } from 'lucide-react';
 import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd';
 import React from 'react';
@@ -20,6 +21,7 @@ import TodoModal from '../../components/TodoModal/TodoModal';
 import Dropdown from '../../components/Dropdown/Dropdown';
 import ConfirmationModal from '../../components/ConfirmationModal/ConfirmationModal';
 import Loader from '../../components/Loader/Loader';
+import GanttChart from '../../components/GanttChart/GanttChart';
 import { kanbanApi, KanbanBoard} from '../../services/kanbanApi';
 import { apiService } from '../../api/apiService';
 import './Jira.css';
@@ -82,6 +84,7 @@ const Jira = () => {
     overdue: 0
   });
   const [loading, setLoading] = useState(true);
+  const [viewMode, setViewMode] = useState<'kanban' | 'gantt'>('kanban');
 
   // Colonnes du kanban
   const columns: Column[] = [
@@ -517,32 +520,34 @@ const Jira = () => {
       </div>
 
       {/* Switch Vue Kanban/Gantt */}
-      {/* <div className="flex items-center justify-between mb-6">
+      <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-4">
           <div className="flex bg-[var(--overlay-hover)] rounded-lg p-1">
             <button
               onClick={() => setViewMode('kanban')}
-              className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
+              className={`px-4 py-2 text-sm font-medium rounded-md transition-colors flex items-center gap-2 ${
                 viewMode === 'kanban'
                   ? 'bg-oxymore-purple text-white'
                   : 'text-secondary hover:text-primary'
               }`}
             >
+              <BarChart3 className="w-4 h-4" />
               Vue Kanban
             </button>
             <button
               onClick={() => setViewMode('gantt')}
-              className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
+              className={`px-4 py-2 text-sm font-medium rounded-md transition-colors flex items-center gap-2 ${
                 viewMode === 'gantt'
                   ? 'bg-oxymore-purple text-white'
                   : 'text-secondary hover:text-primary'
               }`}
             >
+              <BarChart className="w-4 h-4" />
               Diagramme de Gantt
             </button>
           </div>
         </div>
-      </div> */}
+      </div>
 
       {/* Onglets Kanban */}
       <div className="flex items-center gap-2 overflow-x-auto pb-2">
@@ -684,6 +689,7 @@ const Jira = () => {
 
       {/* Contenu principal selon le mode */}
       {currentKanbanId ? (
+        viewMode === 'kanban' ? (
           <DragDropContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
           <div className="kanban-container grid grid-cols-1 lg:grid-cols-3 gap-6">
           {columns.map((column) => (
@@ -691,7 +697,7 @@ const Jira = () => {
               key={column.id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="card-base p-4"
+              className="card-base p-4 kanban-column"
             >
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
@@ -709,11 +715,15 @@ const Jira = () => {
                   <div
                     ref={provided.innerRef}
                     {...provided.droppableProps}
-                    className={`min-h-[400px] space-y-3 transition-all duration-200 ${
+                    className={`flex flex-col min-h-[400px] space-y-3 transition-all duration-200 column-content ${
                       snapshot.isDraggingOver
                         ? 'bg-blue-50/50 border-2 border-dashed border-blue-300 rounded-lg'
                         : ''
                     }`}
+                    style={{
+                      minHeight: '100%',
+                      height: 'auto'
+                    }}
                   >
                     {todosByStatus[column.status as keyof typeof todosByStatus].map((todo, index) => (
                       <Draggable
@@ -817,6 +827,12 @@ const Jira = () => {
           ))}
           </div>
         </DragDropContext>
+        ) : (
+          <GanttChart
+            todos={todos}
+            onUpdateTodo={handleSaveTodo}
+          />
+        )
       ) : (
         <div className="card-base p-12 text-center">
           <div className="w-20 h-20 bg-gradient-to-r from-green-500/20 to-emerald-600/20 rounded-full flex items-center justify-center mx-auto mb-6">

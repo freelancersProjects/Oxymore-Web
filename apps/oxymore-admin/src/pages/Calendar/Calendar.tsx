@@ -58,13 +58,58 @@ const Calendar = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [activeTab, setActiveTab] = useState<'calendar' | 'stats'>('calendar');
 
-  // Fonction pour récupérer les tournois
-  const fetchTournaments = async () => {
+  // Fonction pour normaliser les dates et éviter les problèmes de fuseau horaire
+  const normalizeDate = (dateString: string): Date => {
+    const [year, month, day] = dateString.split('-').map(Number);
+    return new Date(year, month - 1, day, 12, 0, 0, 0);
+  };
+
+  // Fonction pour convertir une date locale en string YYYY-MM-DD sans décalage de fuseau horaire
+  const dateToLocalString = (date: Date): string => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
+  const getTypeColorUtil = (type: string) => {
+    switch (type) {
+      case 'meeting': return '#3b82f6'; // blue-500
+      case 'tournament': return '#8b5cf6'; // purple-500
+      case 'training': return '#10b981'; // green-500
+      case 'other': return '#6b7280'; // gray-500
+      case 'league': return '#f59e0b'; // amber-500
+      default: return '#6366f1'; // indigo-500
+    }
+  };
+
+  // Fonction pour récupérer les événements du calendrier
+  const fetchCalendarEvents = async () => {
     try {
-      const data = await apiService.get<Tournament[]>('/tournaments');
-      setTournaments(data);
+      const data = await apiService.get<any[]>('/calendar');
+      const calendarAppointments: Appointment[] = data.map((event: any) => ({
+        id: event.id,
+        title: event.title,
+        description: event.description,
+        date: normalizeDate(event.date),
+        startTime: event.start_time,
+        endTime: event.end_time,
+        location: event.location,
+        attendees: event.attendees,
+        type: event.calendar_type as any,
+        color: event.color,
+        isCompleted: event.is_completed
+      }));
+
+      // Remplacer tous les événements calendrier (garder seulement tournois/ligues)
+      setAppointments(prev => {
+        const tournamentLeagueEvents = prev.filter(app =>
+          app.id.startsWith('tournament-') || app.id.startsWith('league-')
+        );
+        return [...tournamentLeagueEvents, ...calendarAppointments];
+      });
     } catch (error) {
-      console.error('Error fetching tournaments:', error);
+      console.error('Error fetching calendar events:', error);
     }
   };
 
@@ -75,6 +120,16 @@ const Calendar = () => {
       setLeagues(data);
     } catch (error) {
       console.error('Error fetching leagues:', error);
+    }
+  };
+
+  // Fonction pour récupérer les tournois
+  const fetchTournaments = async () => {
+    try {
+      const data = await apiService.get<Tournament[]>('/tournaments');
+      setTournaments(data);
+    } catch (error) {
+      console.error('Error fetching tournaments:', error);
     }
   };
 
@@ -160,7 +215,7 @@ const Calendar = () => {
           location: 'Ligue',
           attendees: [`Max: ${league.max_teams || 'N/A'} équipes`],
           type: 'league' as const,
-          color: 'bg-indigo-500',
+          color: '#6366f1', // indigo-500
           isCompleted: startDate < now // Automatiquement marqué comme fait si la date est passée
         });
       }
@@ -187,7 +242,7 @@ const Calendar = () => {
             location: 'Ligue',
             attendees: [`Max: ${league.max_teams || 'N/A'} équipes`],
             type: 'league' as const,
-            color: 'bg-indigo-500',
+            color: '#6366f1', // indigo-500
             isCompleted: endDate < now // Automatiquement marqué comme fait si la date est passée
           });
         }
@@ -200,24 +255,27 @@ const Calendar = () => {
   // Fonction pour obtenir la couleur selon le type de tournoi
   const getTournamentColor = (type: string): string => {
     switch (type.toLowerCase()) {
-      case 'major': return 'bg-red-500';
-      case 'minor': return 'bg-orange-500';
-      case 'league': return 'bg-blue-500';
-      case 'open': return 'bg-green-500';
-      default: return 'bg-purple-500';
+      case 'major': return '#ef4444'; // red-500
+      case 'minor': return '#f97316'; // orange-500
+      case 'league': return '#3b82f6'; // blue-500
+      case 'open': return '#10b981'; // green-500
+      default: return '#8b5cf6'; // purple-500
     }
   };
 
-  // Récupérer les tournois et ligues au chargement
+  // Récupérer les tournois, ligues et événements calendrier au chargement
   useEffect(() => {
     fetchTournaments();
     fetchLeagues();
+    fetchCalendarEvents();
   }, []);
 
-  // Combiner les rendez-vous manuels, les tournois et les ligues
+  // Combiner les rendez-vous du calendrier, les tournois et les ligues
   const allAppointments = useMemo(() => {
     const tournamentAppointments = convertTournamentsToAppointments(tournaments);
     const leagueAppointments = convertLeaguesToAppointments(leagues);
+
+    // Les événements calendrier sont déjà dans le state appointments
     return [...appointments, ...tournamentAppointments, ...leagueAppointments];
   }, [appointments, tournaments, leagues]);
 
@@ -309,14 +367,47 @@ const Calendar = () => {
     setShowModal(true);
   };
 
-  const handleCreateAppointment = (formData: Omit<Appointment, 'id'>) => {
-    const newAppointment: Appointment = {
-      ...formData,
-      id: Date.now().toString()
-    };
-    setAppointments(prev => [...prev, newAppointment]);
-    setShowModal(false);
-    setActiveTooltipId(null);
+  const handleCreateAppointment = async (formData: Omit<Appointment, 'id'>) => {
+    try {
+      const appointmentData = {
+        title: formData.title,
+        description: formData.description,
+        date: dateToLocalString(formData.date),
+        start_time: formData.startTime,
+        end_time: formData.endTime,
+        location: formData.location,
+        calendar_type: formData.type,
+        attendees: formData.attendees,
+        color: getTypeColorUtil(formData.type),
+        is_completed: formData.isCompleted || false
+      };
+
+      const response = await apiService.post<any>('/calendar', appointmentData);
+
+      const newAppointment: Appointment = {
+        id: response.id,
+        title: response.title,
+        description: response.description,
+        date: new Date(response.date),
+        startTime: response.start_time,
+        endTime: response.end_time,
+        location: response.location,
+        attendees: response.attendees,
+        type: response.calendar_type as any,
+        color: response.color,
+        isCompleted: response.is_completed
+      };
+
+      setAppointments(prev => [...prev, newAppointment]);
+      setShowModal(false);
+      setActiveTooltipId(null);
+
+      // Recharger les événements pour avoir la version complète
+      await fetchCalendarEvents();
+    } catch (error) {
+      console.error('Error creating appointment:', error);
+      alert('Erreur lors de la création du rendez-vous');
+    }
   };
 
   const handleEditAppointment = (appointment: Appointment) => {
@@ -338,16 +429,64 @@ const Calendar = () => {
     setShowModal(true);
   };
 
-  const handleUpdateAppointment = (formData: Appointment) => {
-    setAppointments(prev =>
-      prev.map(app => app.id === formData.id ? formData : app)
-    );
-    setShowModal(false);
-    setEditingAppointment(null);
-    setActiveTooltipId(null);
+  const handleUpdateAppointment = async (formData: Appointment) => {
+    try {
+      // Si c'est un événement de tournoi/ligue, ne pas permettre la modification via API
+      if (formData.id.startsWith('tournament-') || formData.id.startsWith('league-')) {
+        setAppointments(prev =>
+          prev.map(app => app.id === formData.id ? formData : app)
+        );
+        setShowModal(false);
+        setEditingAppointment(null);
+        setActiveTooltipId(null);
+        return;
+      }
+
+      const appointmentData = {
+        title: formData.title,
+        description: formData.description,
+        date: dateToLocalString(formData.date),
+        start_time: formData.startTime,
+        end_time: formData.endTime,
+        location: formData.location,
+        calendar_type: formData.type,
+        attendees: formData.attendees,
+        color: getTypeColorUtil(formData.type),
+        is_completed: formData.isCompleted || false
+      };
+
+      const response = await apiService.put<any>(`/calendar/${formData.id}`, appointmentData);
+
+      const updatedAppointment: Appointment = {
+        id: response.id,
+        title: response.title,
+        description: response.description,
+        date: new Date(response.date),
+        startTime: response.start_time,
+        endTime: response.end_time,
+        location: response.location,
+        attendees: response.attendees,
+        type: response.calendar_type as any,
+        color: response.color,
+        isCompleted: response.is_completed
+      };
+
+      setAppointments(prev =>
+        prev.map(app => app.id === formData.id ? updatedAppointment : app)
+      );
+      setShowModal(false);
+      setEditingAppointment(null);
+      setActiveTooltipId(null);
+
+      // Recharger les événements pour avoir la version complète
+      await fetchCalendarEvents();
+    } catch (error) {
+      console.error('Error updating appointment:', error);
+      alert('Erreur lors de la modification du rendez-vous');
+    }
   };
 
-  const handleDeleteAppointment = (appointment: Appointment) => {
+  const handleDeleteAppointment = async (appointment: Appointment) => {
     // Si c'est un tournoi ou une ligue, ne pas permettre la suppression depuis le calendrier
     if (appointment.id.startsWith('tournament-') || appointment.id.startsWith('league-')) {
       alert('Les tournois et ligues ne peuvent pas être supprimés depuis le calendrier. Veuillez utiliser les pages correspondantes.');
@@ -358,11 +497,21 @@ const Calendar = () => {
     setShowDeleteModal(true);
   };
 
-  const confirmDelete = () => {
+  const confirmDelete = async () => {
     if (deleteAppointment) {
-      setAppointments(prev => prev.filter(app => app.id !== deleteAppointment.id));
-      setShowDeleteModal(false);
-      setDeleteAppointment(null);
+      try {
+        await apiService.delete(`/calendar/${deleteAppointment.id}`);
+        setAppointments(prev => prev.filter(app => app.id !== deleteAppointment.id));
+        setShowDeleteModal(false);
+        setDeleteAppointment(null);
+        setActiveTooltipId(null);
+
+        // Recharger les événements pour avoir la version complète
+        await fetchCalendarEvents();
+      } catch (error) {
+        console.error('Error deleting appointment:', error);
+        alert('Erreur lors de la suppression du rendez-vous');
+      }
     }
   };
 
@@ -611,7 +760,10 @@ const Calendar = () => {
         {/* Header avec actions */}
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
-            <div className={`w-6 h-6 rounded-full ${appointment.color} flex items-center justify-center shadow-lg`}>
+            <div
+              className="w-6 h-6 rounded-full flex items-center justify-center shadow-lg"
+              style={{ backgroundColor: appointment.color }}
+            >
               {getTypeIcon(appointment.type)}
             </div>
             <div className="flex-1 min-w-0">
@@ -1114,10 +1266,11 @@ const Calendar = () => {
                           </div>
                           <div className="space-y-1">
                             {getAppointmentsForDate(date).slice(0, 2).map(appointment => (
-                              <motion.div
+                                <motion.div
                                 key={appointment.id}
                                 whileHover={{ scale: 1.05 }}
-                                className={`${appointment.color} text-white text-xs p-1 rounded truncate cursor-pointer relative group`}
+                                className="text-white text-xs p-1 rounded truncate cursor-pointer relative group"
+                                style={{ backgroundColor: appointment.color }}
                                 onClick={(e) => {
                                   e.stopPropagation();
                                   handleEditAppointment(appointment);
@@ -1171,7 +1324,10 @@ const Calendar = () => {
                         className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-3 sm:p-4 bg-[var(--overlay-hover)] rounded-lg border border-[var(--border-color)] hover:border-oxymore-purple/50 transition-all duration-200 relative group cursor-pointer"
                       >
                         <div className="flex items-center gap-3 sm:gap-4 flex-1">
-                          <div className={`w-3 h-3 rounded-full ${appointment.color} flex items-center justify-center flex-shrink-0`}>
+                          <div
+                            className="w-3 h-3 rounded-full flex items-center justify-center flex-shrink-0"
+                            style={{ backgroundColor: appointment.color }}
+                          >
                             {getTypeIcon(appointment.type)}
                           </div>
                           <div className="flex-1 min-w-0">
@@ -1241,7 +1397,10 @@ const Calendar = () => {
                         className="p-2 sm:p-3 bg-[var(--overlay-hover)] rounded-lg border border-[var(--border-color)] hover:border-oxymore-purple/50 transition-all duration-200 relative group"
                       >
                         <div className="flex items-center gap-2 sm:gap-3">
-                          <div className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full ${appointment.color} flex items-center justify-center flex-shrink-0`}>
+                          <div
+                            className="w-2 h-2 sm:w-3 sm:h-3 rounded-full flex items-center justify-center flex-shrink-0"
+                            style={{ backgroundColor: appointment.color }}
+                          >
                             {getTypeIcon(appointment.type)}
                           </div>
                           <div className="flex-1 min-w-0">
@@ -1269,12 +1428,15 @@ const Calendar = () => {
                  <div className="space-y-2 sm:space-y-3">
                    <div className="text-xs sm:text-sm font-medium text-[var(--text-primary)] mb-2">Rendez-vous</div>
                    {[
-                     { type: 'meeting', label: 'Réunion', color: 'bg-blue-500', icon: <MessageSquare className="w-3 h-3 sm:w-4 sm:h-4 text-white" /> },
-                     { type: 'training', label: 'Entraînement', color: 'bg-green-500', icon: <Target className="w-3 h-3 sm:w-4 sm:h-4 text-white" /> },
-                     { type: 'other', label: 'Autre', color: 'bg-gray-500', icon: <Zap className="w-3 h-3 sm:w-4 sm:h-4 text-white" /> }
+                     { type: 'meeting', label: 'Réunion', color: '#3b82f6', icon: <MessageSquare className="w-3 h-3 sm:w-4 sm:h-4 text-white" /> },
+                     { type: 'training', label: 'Entraînement', color: '#10b981', icon: <Target className="w-3 h-3 sm:w-4 sm:h-4 text-white" /> },
+                     { type: 'other', label: 'Autre', color: '#6b7280', icon: <Zap className="w-3 h-3 sm:w-4 sm:h-4 text-white" /> }
                    ].map(item => (
                      <div key={item.type} className="flex items-center gap-2 sm:gap-3 p-2 rounded-lg hover:bg-[var(--overlay-hover)] transition-colors">
-                       <div className={`w-3 h-3 sm:w-4 sm:h-4 rounded ${item.color} flex items-center justify-center`}>
+                       <div
+                         className="w-3 h-3 sm:w-4 sm:h-4 rounded flex items-center justify-center"
+                         style={{ backgroundColor: item.color }}
+                       >
                          {item.icon}
                        </div>
                        <span className="text-xs sm:text-sm text-[var(--text-secondary)]">{item.label}</span>
@@ -1283,13 +1445,16 @@ const Calendar = () => {
 
                    <div className="text-xs sm:text-sm font-medium text-[var(--text-primary)] mb-2 mt-3 sm:mt-4">Tournois</div>
                    {[
-                     { type: 'major', label: 'Major', color: 'bg-red-500', icon: <Trophy className="w-3 h-3 sm:w-4 sm:h-4 text-white" /> },
-                     { type: 'minor', label: 'Minor', color: 'bg-orange-500', icon: <Trophy className="w-3 h-3 sm:w-4 sm:h-4 text-white" /> },
-                     { type: 'league', label: 'Ligue', color: 'bg-blue-500', icon: <Trophy className="w-3 h-3 sm:w-4 sm:h-4 text-white" /> },
-                     { type: 'open', label: 'Open', color: 'bg-green-500', icon: <Trophy className="w-3 h-3 sm:w-4 sm:h-4 text-white" /> }
+                     { type: 'major', label: 'Major', color: '#ef4444', icon: <Trophy className="w-3 h-3 sm:w-4 sm:h-4 text-white" /> },
+                     { type: 'minor', label: 'Minor', color: '#f97316', icon: <Trophy className="w-3 h-3 sm:w-4 sm:h-4 text-white" /> },
+                     { type: 'league', label: 'Ligue', color: '#3b82f6', icon: <Trophy className="w-3 h-3 sm:w-4 sm:h-4 text-white" /> },
+                     { type: 'open', label: 'Open', color: '#10b981', icon: <Trophy className="w-3 h-3 sm:w-4 sm:h-4 text-white" /> }
                    ].map(item => (
                      <div key={item.type} className="flex items-center gap-2 sm:gap-3 p-2 rounded-lg hover:bg-[var(--overlay-hover)] transition-colors">
-                       <div className={`w-3 h-3 sm:w-4 sm:h-4 rounded ${item.color} flex items-center justify-center`}>
+                       <div
+                         className="w-3 h-3 sm:w-4 sm:h-4 rounded flex items-center justify-center"
+                         style={{ backgroundColor: item.color }}
+                       >
                          {item.icon}
                        </div>
                        <span className="text-xs sm:text-sm text-[var(--text-secondary)]">{item.label}</span>
@@ -1298,7 +1463,10 @@ const Calendar = () => {
 
                    <div className="text-xs sm:text-sm font-medium text-[var(--text-primary)] mb-2 mt-3 sm:mt-4">Ligues</div>
                    <div className="flex items-center gap-2 sm:gap-3 p-2 rounded-lg hover:bg-[var(--overlay-hover)] transition-colors">
-                     <div className="w-3 h-3 sm:w-4 sm:h-4 rounded bg-indigo-500 flex items-center justify-center">
+                     <div
+                       className="w-3 h-3 sm:w-4 sm:h-4 rounded flex items-center justify-center"
+                       style={{ backgroundColor: '#6366f1' }}
+                     >
                        <Shield className="w-3 h-3 sm:w-4 sm:h-4 text-white" />
                      </div>
                      <span className="text-xs sm:text-sm text-[var(--text-secondary)]">Ligues</span>
@@ -1547,22 +1715,27 @@ const AppointmentForm: React.FC<AppointmentFormProps> = ({
 
   const [newAttendee, setNewAttendee] = useState('');
 
-  const getTypeColorUtil = (type: string) => {
-    switch (type) {
-      case 'meeting': return 'bg-blue-500';
-      case 'tournament': return 'bg-purple-500';
-      case 'training': return 'bg-green-500';
-      default: return 'bg-gray-500';
-    }
+  // Fonction locale pour normaliser les dates dans le formulaire
+  const normalizeDateLocal = (dateString: string): Date => {
+    const [year, month, day] = dateString.split('-').map(Number);
+    return new Date(year, month - 1, day, 12, 0, 0, 0);
+  };
+
+  // Fonction locale pour convertir une date en string YYYY-MM-DD dans le formulaire
+  const dateToLocalStringLocal = (date: Date): string => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-         const appointmentData: Appointment = {
-       id: appointment?.id || '',
-       ...formData,
-       color: getTypeColorUtil(formData.type)
-     };
+    const appointmentData: Appointment = {
+      id: appointment?.id || '',
+      ...formData,
+      color: '#6366f1' // Couleur par défaut
+    };
     onSubmit(appointmentData);
   };
 
@@ -1635,8 +1808,8 @@ const AppointmentForm: React.FC<AppointmentFormProps> = ({
           </label>
           <input
             type="date"
-            value={formData.date && !isNaN(formData.date.getTime()) ? formData.date.toISOString().split('T')[0] : new Date().toISOString().split('T')[0]}
-            onChange={(e) => setFormData(prev => ({ ...prev, date: new Date(e.target.value) }))}
+            value={formData.date && !isNaN(formData.date.getTime()) ? dateToLocalStringLocal(formData.date) : dateToLocalStringLocal(new Date())}
+            onChange={(e) => setFormData(prev => ({ ...prev, date: normalizeDateLocal(e.target.value) }))}
             className="w-full p-3 bg-[var(--overlay-hover)] border border-[var(--border-color)] rounded-lg text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-oxymore-purple"
             required
           />

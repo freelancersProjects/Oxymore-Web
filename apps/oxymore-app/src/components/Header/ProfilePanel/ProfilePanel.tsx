@@ -216,7 +216,7 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed, onToggle, onNoti
     return (
       <div className="profile-panel collapsed" ref={panelRef}>
         <button className="profile-panel-toggle" onClick={onToggle}>
-          <ChevronRight size={16} />
+          <ChevronLeft size={16} />
         </button>
         <div className="profile-panel__collapsed">
           <div className="profile-panel__avatar-collapsed">
@@ -345,7 +345,7 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed, onToggle, onNoti
         className="profile-panel-toggle"
         onClick={onToggle}
       >
-        <ChevronLeft size={16} />
+        <ChevronRight size={16} />
       </button>
 
       {!collapsed && (

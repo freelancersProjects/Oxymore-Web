@@ -20,6 +20,7 @@ import ScrollToTop from "./components/ScrollToTop/ScrollToTop";
 
 import { updateBodyClass, shouldHideSidebar, shouldHideHeader, isOxiaPage } from "./config/layoutConfig";
 import Friends from "./pages/Friends/Friends";
+import Messages from "./pages/Messages/Messages";
 
 const LayoutManager: React.FC<{
   children: (layout: { hideSidebar: boolean; hideHeader: boolean; isOxia: boolean }) => React.ReactNode;
@@ -66,6 +67,7 @@ export default function App() {
                         <Route path="/highlights" element={<Highlights />} />
                         <Route path="/teams" element={<Teams />} />
                         <Route path="/friends" element={<Friends />} />
+                        <Route path="/messages" element={<Messages />} />
                         <Route path="/oxia" element={<OxiaChat />} />
                         <Route path="/leagues" element={<LeaguePage />} />
                         <Route path="/tournaments" element={<TournamentPage />} />

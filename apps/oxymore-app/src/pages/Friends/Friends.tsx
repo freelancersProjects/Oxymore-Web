@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from "react";
-import { OXMButton, OXMTabSwitcher, OXMGlowOrb, OXMModal } from "@oxymore/ui";
+import { OXMButton } from "@oxymore/ui";
 import {
   Person as PersonIcon,
   Message as MessageIcon,
@@ -9,7 +9,9 @@ import {
   Close as CloseIcon,
   Search as SearchIcon,
   Check as CheckIcon,
-  Clear as ClearIcon
+  Clear as ClearIcon,
+  ViewList as ListIcon,
+  ViewModule as CardIcon
 } from "@mui/icons-material";
 import { Heart } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
@@ -22,6 +24,8 @@ const Friends = () => {
   const [activeTab, setActiveTab] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [showSearch, setShowSearch] = useState(false);
+  const [viewMode, setViewMode] = useState<"card" | "list">("card");
+  const [searchAnimation, setSearchAnimation] = useState(false);
 
   const [showAddFriendModal, setShowAddFriendModal] = useState(false);
   const [userSearchQuery, setUserSearchQuery] = useState("");
@@ -89,7 +93,31 @@ const Friends = () => {
   });
 
   const handleMessage = (friendId: string) => {
-    console.log(`Open messages with friend ${friendId}`);
+    // Navigate to messages page with friend ID
+    window.location.href = `/messages?friend=${friendId}`;
+  };
+
+  const handleInviteToGame = (friendId: string) => {
+    console.log(`Invite friend ${friendId} to game`);
+  };
+
+  const handleToggleFavorite = async (friendId: string) => {
+    try {
+      await apiService.put(`/friends/${friendId}/toggle-favorite`);
+      // Refresh friends list
+      if (user?.id_user) {
+        const friends = await apiService.get(`/friends/user/${user.id_user}`);
+        setFriends(friends);
+      }
+    } catch (error) {
+      console.error('Error toggling favorite:', error);
+    }
+  };
+
+  const handleToggleSearch = () => {
+    setShowSearch(!showSearch);
+    setSearchAnimation(true);
+    setTimeout(() => setSearchAnimation(false), 300);
   };
 
 
@@ -174,13 +202,13 @@ const Friends = () => {
   const getStatusColor = (status: string) => {
     switch (status) {
       case "online":
-        return "#10B981";
+        return "#4ADE80"; // $color-green
       case "in-game":
-        return "#F59E0B";
+        return "#FACC15"; // $color-yellow
       case "offline":
-        return "#6B7280";
+        return "#888"; // $color-gray-medium
       default:
-        return "#6B7280";
+        return "#888"; // $color-gray-medium
     }
   };
 
@@ -198,16 +226,16 @@ const Friends = () => {
   };
 
   const getEloColor = (elo: number) => {
-    if (elo >= 2000) return "#FFD700"; // Gold
-    if (elo >= 1500) return "#C0C0C0"; // Silver
-    if (elo >= 1000) return "#CD7F32"; // Bronze
-    return "#6B7280"; // Gray
+    if (elo >= 2000) return "#FACC15"; // $color-yellow (Gold)
+    if (elo >= 1500) return "#E0E0E0"; // $color-gray-light (Silver)
+    if (elo >= 1000) return "#CD7F32"; // $color-bronze (Bronze)
+    return "#888"; // $color-gray-medium (Gray)
   };
 
   return (
     <div className="friends-container">
-      <OXMGlowOrb top="10%" left="5%" size="300px" color="#500CAD" />
-      <OXMGlowOrb top="60%" right="10%" size="250px" color="#1593CE" />
+      {/* <OXMGlowOrb top="10%" left="5%" size="300px" color="#500CAD" />
+      <OXMGlowOrb top="60%" right="10%" size="250px" color="#1593CE" /> */}
 
       <div className="friends-header">
         <div className="header-content">
@@ -228,21 +256,44 @@ const Friends = () => {
       </div>
 
       <div className="friends-tabs-search">
-        {!showSearch ? (
-          <>
-            <OXMTabSwitcher
-              tabs={tabs}
-              value={activeTab}
-              onChange={setActiveTab}
-            />
+        <div className="tabs-container">
+          <div className="custom-tabs">
+            {tabs.map((tab) => (
+              <button
+                key={tab.value}
+                className={`tab-button ${activeTab === tab.value ? "active" : ""}`}
+                onClick={() => setActiveTab(tab.value)}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+          <div className="view-controls">
             <button
-              className="search-toggle-btn"
-              onClick={() => setShowSearch(true)}
+              className={`view-toggle-btn ${viewMode === "card" ? "active" : ""}`}
+              onClick={() => setViewMode("card")}
+              title="Card View"
             >
-              <SearchIcon />
+              <CardIcon />
             </button>
-          </>
-        ) : (
+            <button
+              className={`view-toggle-btn ${viewMode === "list" ? "active" : ""}`}
+              onClick={() => setViewMode("list")}
+              title="List View"
+            >
+              <ListIcon />
+            </button>
+            <button
+              className={`search-toggle-btn ${searchAnimation ? "anim" : ""}`}
+              onClick={handleToggleSearch}
+              title="Search Friends"
+            >
+              <SearchIcon className="custom-search-icon" />
+            </button>
+          </div>
+        </div>
+
+        {showSearch && (
           <div className="search-bar-inline">
             <input
               type="text"
@@ -253,7 +304,7 @@ const Friends = () => {
               autoFocus
             />
             <button
-              className="search-toggle-btn"
+              className="search-close-btn"
               onClick={() => {
                 setShowSearch(false);
                 setSearchQuery("");
@@ -280,9 +331,9 @@ const Friends = () => {
         </div>
       </div>
 
-      <div className="friends-grid">
+      <div className={`friends-grid ${viewMode === "list" ? "list-view" : "card-view"}`}>
         {activeTab === 'all' && filteredFriends.map((friend) => (
-          <div key={friend.id_friend} className="friend-card">
+          <div key={friend.id_friend} className={`friend-card ${viewMode === "list" ? "list-item" : ""}`}>
             <div className="friend-header">
               <div className="friend-avatar">
                 <PersonIcon className="avatar-icon" />
@@ -299,6 +350,7 @@ const Friends = () => {
               </div>
               <button
                 className={`favorite-badge ${friend.is_favorite ? "active" : ""}`}
+                onClick={() => handleToggleFavorite(friend.user_id)}
               >
                 <Heart
                   size={24}
@@ -331,7 +383,7 @@ const Friends = () => {
                 <MessageIcon />
                 Message
               </OXMButton>
-              <button className="action-btn invite-btn">
+              <button className="action-btn invite-btn" onClick={() => handleInviteToGame(friend.user_id)}>
                 <GameIcon />
                 Invite to Game
               </button>
@@ -340,7 +392,7 @@ const Friends = () => {
         ))}
 
         {activeTab === 'pending' && pendingRequests.map((request) => (
-          <div key={request.id_friend} className="friend-card pending-request">
+          <div key={request.id_friend} className={`friend-card pending-request ${viewMode === "list" ? "list-item" : ""}`}>
             <div className="friend-header">
               <div className="friend-avatar">
                 <PersonIcon className="avatar-icon" />
@@ -391,7 +443,7 @@ const Friends = () => {
         ))}
 
         {activeTab === 'sent' && sentRequests.map((request) => (
-          <div key={request.id_friend} className="friend-card pending-request">
+          <div key={request.id_friend} className={`friend-card pending-request ${viewMode === "list" ? "list-item" : ""}`}>
             <div className="friend-header">
               <div className="friend-avatar">
                 <PersonIcon className="avatar-icon" />
@@ -510,12 +562,18 @@ const Friends = () => {
        )}
 
       {/* Add Friend Modal */}
-      <OXMModal
-        isOpen={showAddFriendModal}
-        onClose={() => setShowAddFriendModal(false)}
-        title="Add Friend"
-        size="medium"
-      >
+      {showAddFriendModal && (
+        <div className="modal-overlay" onClick={() => setShowAddFriendModal(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <div className="modal-title-section">
+                <h2 className="modal-title orbitron">Find New Friends</h2>
+                <p className="modal-subtitle">Search and connect with players around the world</p>
+              </div>
+              <button className="modal-close" onClick={() => setShowAddFriendModal(false)}>
+                <CloseIcon />
+              </button>
+            </div>
         <div className="add-friend-modal">
           <div className="search-section">
             <div className="search-input-wrapper">
@@ -611,7 +669,9 @@ const Friends = () => {
             )}
           </div>
         </div>
-      </OXMModal>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

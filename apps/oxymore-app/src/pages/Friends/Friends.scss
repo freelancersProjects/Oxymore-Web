@@ -126,6 +126,16 @@
   grid-template-columns: repeat(auto-fill, minmax(rem-calc(280), 1fr));
   gap: rem-calc(20);
   margin-bottom: rem-calc(32);
+
+  &.list-view {
+    grid-template-columns: 1fr;
+    gap: rem-calc(12);
+  }
+
+  &.card-view {
+    grid-template-columns: repeat(auto-fill, minmax(rem-calc(280), 1fr));
+    gap: rem-calc(20);
+  }
 }
 
 .friend-card {
@@ -320,6 +330,57 @@
       margin-top: rem-calc(2);
     }
   }
+
+  &.list-item {
+    display: flex;
+    align-items: center;
+    padding: rem-calc(16) rem-calc(20);
+    gap: rem-calc(16);
+
+    .friend-header {
+      margin-bottom: 0;
+      flex: 1;
+      min-width: 0;
+
+      .friend-avatar {
+        width: rem-calc(50);
+        height: rem-calc(50);
+
+        .avatar-icon {
+          font-size: rem-calc(24) !important;
+        }
+      }
+
+      .friend-info {
+        .friend-name {
+          font-size: rem-calc(18);
+          font-weight: 700;
+        }
+
+        .friend-elo {
+          font-size: rem-calc(16);
+          font-weight: 600;
+        }
+      }
+    }
+
+    .friend-details {
+      margin-bottom: 0;
+      flex: 0 0 auto;
+      min-width: rem-calc(120);
+    }
+
+    .friend-actions {
+      flex: 0 0 auto;
+      gap: rem-calc(8);
+
+      .action-btn {
+        height: rem-calc(40);
+        font-size: rem-calc(14);
+        padding: rem-calc(8) rem-calc(16);
+      }
+    }
+  }
 }
 
 .empty-state {
@@ -362,6 +423,29 @@
 
   50% {
     transform: scale(1.1);
+  }
+}
+
+@keyframes searchPulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
@@ -423,10 +507,156 @@
 }
 
 .friends-tabs-search {
-  display: flex;
-  align-items: center;
-  gap: rem-calc(16);
   margin-bottom: rem-calc(24);
+
+  .tabs-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: rem-calc(16);
+    margin-bottom: rem-calc(16);
+
+    .custom-tabs {
+      display: flex;
+      gap: rem-calc(4);
+      background: rgb(255 255 255 / 5%);
+      border: 1px solid rgb(255 255 255 / 10%);
+      border-radius: rem-calc(12);
+      padding: rem-calc(4);
+      backdrop-filter: blur(10px);
+
+      .tab-button {
+        background: none;
+        border: none;
+        color: rgba($color-white, 0.7);
+        font-family: Outfit, sans-serif;
+        font-size: rem-calc(14);
+        font-weight: 500;
+        padding: rem-calc(10) rem-calc(16);
+        border-radius: rem-calc(8);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        white-space: nowrap;
+
+        &:hover {
+          color: $color-white;
+          background: rgb(255 255 255 / 5%);
+        }
+
+        &.active {
+          background: linear-gradient(135deg, $color-purple 0%, $color-blue 100%);
+          color: $color-white;
+          box-shadow: 0 rem-calc(4) rem-calc(12) rgba($color-purple, 0.3);
+        }
+      }
+    }
+
+    .view-controls {
+      display: flex;
+      align-items: center;
+      gap: rem-calc(8);
+
+      .view-toggle-btn {
+        background: rgb(255 255 255 / 5%);
+        border: 1px solid rgb(255 255 255 / 20%);
+        color: rgba($color-white, 0.6);
+        font-size: rem-calc(20);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: rem-calc(8);
+        border-radius: rem-calc(8);
+        transition: all 0.3s ease;
+        width: rem-calc(40);
+        height: rem-calc(40);
+
+        &:hover {
+          background: rgb(255 255 255 / 8%);
+          color: $color-white;
+          transform: translateY(-2px);
+        }
+
+        &.active {
+          background: linear-gradient(135deg, $color-purple 0%, $color-blue 100%);
+          border-color: $color-purple;
+          color: $color-white;
+          box-shadow: 0 rem-calc(4) rem-calc(12) rgba($color-purple, 0.3);
+          transform: translateY(-2px);
+        }
+
+        svg {
+          font-size: rem-calc(20) !important;
+          transition: transform 0.3s ease;
+        }
+
+        &:hover svg {
+          transform: scale(1.1);
+        }
+      }
+
+      .search-toggle-btn {
+        background: rgb(255 255 255 / 5%);
+        border: 1px solid rgb(255 255 255 / 20%);
+        color: $color-white;
+        font-size: rem-calc(20);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: rem-calc(8);
+        border-radius: rem-calc(8);
+        transition: all 0.3s ease;
+        width: rem-calc(40);
+        height: rem-calc(40);
+        margin-left: rem-calc(8);
+        position: relative;
+        overflow: hidden;
+
+        &::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: linear-gradient(135deg, $color-purple 0%, $color-blue 100%);
+          opacity: 0;
+          transition: opacity 0.3s ease;
+        }
+
+        &:hover {
+          border-color: $color-purple;
+          color: $color-white;
+          transform: translateY(-2px);
+          box-shadow: 0 rem-calc(8) rem-calc(20) rgba($color-purple, 0.3);
+
+          &::before {
+            opacity: 0.1;
+          }
+        }
+
+        &.anim {
+          animation: searchPulse 0.3s ease;
+        }
+
+        .custom-search-icon {
+          font-size: rem-calc(20) !important;
+          transition: transform 0.3s ease;
+          position: relative;
+          z-index: 1;
+        }
+
+        &.anim .custom-search-icon {
+          transform: scale(1.2) rotate(15deg);
+        }
+
+        &:hover .custom-search-icon {
+          transform: scale(1.1);
+        }
+      }
+    }
+  }
 
   .search-toggle-btn {
     background: none;
@@ -452,6 +682,7 @@
     align-items: center;
     gap: rem-calc(8);
     width: 100%;
+    animation: slideDown 0.3s ease;
 
     .search-input {
       width: rem-calc(280);
@@ -521,6 +752,130 @@
 
 .custom-search-icon.anim {
   transform: scale(1.25) rotate(15deg);
+}
+
+.search-close-btn {
+  background: rgb(255 255 255 / 5%);
+  border: 1px solid rgb(255 255 255 / 20%);
+  color: rgba($color-white, 0.6);
+  font-size: rem-calc(20);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: rem-calc(8);
+  border-radius: rem-calc(8);
+  transition: all 0.3s ease;
+  width: rem-calc(40);
+  height: rem-calc(40);
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, $color-red 0%, $color-red-dark 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  &:hover {
+    border-color: $color-red;
+    color: $color-white;
+    transform: translateY(-2px);
+    box-shadow: 0 rem-calc(8) rem-calc(20) rgba($color-red, 0.3);
+
+    &::before {
+      opacity: 0.1;
+    }
+  }
+
+  svg {
+    font-size: rem-calc(20) !important;
+    transition: transform 0.3s ease;
+    position: relative;
+    z-index: 1;
+  }
+
+  &:hover svg {
+    transform: scale(1.1) rotate(90deg);
+  }
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+
+  .modal-content {
+    background: $color-gray-darkest;
+    border: 1px solid rgb(255 255 255 / 10%);
+    border-radius: rem-calc(20);
+    max-width: rem-calc(500);
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 rem-calc(20) rem-calc(40) rgba(0, 0, 0, 0.5);
+
+    .modal-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      padding: rem-calc(24) rem-calc(24) rem-calc(20);
+      border-bottom: 1px solid rgb(255 255 255 / 10%);
+
+      .modal-title-section {
+        flex: 1;
+
+        .modal-title {
+          font-size: rem-calc(24);
+          font-weight: 700;
+          color: $color-white;
+          margin: 0 0 rem-calc(4);
+          background: linear-gradient(135deg, $color-purple 0%, $color-blue 100%);
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+        }
+
+        .modal-subtitle {
+          font-family: Outfit, sans-serif;
+          font-size: rem-calc(14);
+          color: rgba($color-white, 0.7);
+          margin: 0;
+          font-weight: 400;
+        }
+      }
+
+      .modal-close {
+        background: none;
+        border: none;
+        color: rgba($color-white, 0.6);
+        font-size: rem-calc(24);
+        cursor: pointer;
+        padding: rem-calc(4);
+        border-radius: 50%;
+        transition: all 0.3s ease;
+
+        &:hover {
+          color: $color-white;
+          background: rgba($color-white, 0.1);
+        }
+      }
+    }
+  }
 }
 
 @media (width <= 600px) {
