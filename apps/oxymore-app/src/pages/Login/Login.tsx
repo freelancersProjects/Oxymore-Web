@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { FaEye, FaEyeSlash, FaDiscord, FaGoogle, FaSteam } from 'react-icons/fa';
+import { FaEye, FaEyeSlash, FaDiscord, FaGoogle, FaSteam, FaFacebook } from 'react-icons/fa';
 import { useAuth } from '../../context/AuthContext';
 import apiService from '../../api/apiService';
 import { OXMCheckbox, OXMButton } from '@oxymore/ui';
@@ -194,6 +194,10 @@ const Login: React.FC = () => {
               <button className="social-button steam">
                 <FaSteam />
                 <span>Steam</span>
+              </button>
+              <button className="social-button facebook">
+                <FaFacebook />
+                <span>Facebook</span>
               </button>
             </div>
 

@@ -35,7 +35,6 @@ import teamSubscriptionRoutes from "./routes/teamSubscription";
 import tournamentRoutes from "./routes/tournament";
 import tournamentTeamRoutes from "./routes/tournamentTeam";
 import tournamentMapRoutes from "./routes/tournamentMap";
-import privateMessageRoutes from "./routes/privateMessage";
 import kanbanRoutes from "./routes/kanban";
 import calendarRoutes from "./routes/calendar";
 
@@ -76,7 +75,6 @@ export const registerRoutes = (app: Express) => {
   app.use("/api/tournaments", tournamentRoutes);
   app.use("/api/tournament-teams", tournamentTeamRoutes);
   app.use("/api/tournament-maps", tournamentMapRoutes);
-  app.use("/api/private-messages", privateMessageRoutes);
   app.use("/api/kanban", kanbanRoutes);
   app.use("/api/calendar", calendarRoutes);
 };

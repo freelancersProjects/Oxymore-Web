@@ -245,6 +245,130 @@
   margin-top: 1rem;
 }
 
+.auth-divider {
+  display: flex;
+  align-items: center;
+  margin: rem-calc(24) 0;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: rem-calc(14);
+
+  &::before,
+  &::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  span {
+    padding: 0 rem-calc(16);
+    font-size: rem-calc(12);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: rem-calc(1);
+  }
+}
+
+.social-login {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: rem-calc(12);
+  margin-bottom: rem-calc(24);
+}
+
+.social-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: rem-calc(8);
+  padding: rem-calc(16);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: rem-calc(12);
+  background: rgba(255, 255, 255, 0.05);
+  color: $color-white;
+  font-size: rem-calc(14);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg,
+      transparent,
+      rgba(255, 255, 255, 0.1),
+      transparent
+    );
+    transition: left 0.5s ease;
+  }
+
+  &:hover {
+    transform: translateY(rem-calc(-2));
+    box-shadow: 0 rem-calc(8) rem-calc(25) rgba(0, 0, 0, 0.3);
+
+    &::before {
+      left: 100%;
+    }
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  svg {
+    font-size: rem-calc(18);
+    transition: transform 0.3s ease;
+  }
+
+  &:hover svg {
+    transform: scale(1.1);
+  }
+
+  // Discord - Couleur officielle #5865F2
+  &.discord {
+    &:hover {
+      background: rgba(88, 101, 242, 0.2);
+      border-color: rgba(88, 101, 242, 0.5);
+      box-shadow: 0 rem-calc(8) rem-calc(25) rgba(88, 101, 242, 0.3);
+    }
+  }
+
+  // Google - Couleur rouge #EA4335
+  &.google {
+    &:hover {
+      background: rgba(234, 67, 53, 0.2);
+      border-color: rgba(234, 67, 53, 0.5);
+      box-shadow: 0 rem-calc(8) rem-calc(25) rgba(234, 67, 53, 0.3);
+    }
+  }
+
+  // Steam - Couleur officielle #171a21
+  &.steam {
+    &:hover {
+      background: rgba(23, 26, 33, 0.3);
+      border-color: rgba(23, 26, 33, 0.6);
+      box-shadow: 0 rem-calc(8) rem-calc(25) rgba(23, 26, 33, 0.4);
+    }
+  }
+
+  // Facebook - Couleur officielle #1877F2
+  &.facebook {
+    &:hover {
+      background: rgba(24, 119, 242, 0.2);
+      border-color: rgba(24, 119, 242, 0.5);
+      box-shadow: 0 rem-calc(8) rem-calc(25) rgba(24, 119, 242, 0.3);
+    }
+  }
+}
+
 .auth-footer {
   text-align: center;
   padding-top: 1.5rem;
@@ -403,7 +527,17 @@
   }
 
   .social-login {
-    flex-direction: column;
+    grid-template-columns: 1fr;
+    gap: rem-calc(10);
+  }
+
+  .social-button {
+    padding: rem-calc(16);
+    font-size: rem-calc(14);
+
+    svg {
+      font-size: rem-calc(20);
+    }
   }
 
   .form-options {

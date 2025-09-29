@@ -37,5 +37,3 @@ export interface PrivateMessageInput {
   sender_id: string;
   is_read?: boolean;
 }
-
-
