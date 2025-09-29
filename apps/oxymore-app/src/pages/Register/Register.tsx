@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { FaEye, FaEyeSlash, FaDiscord, FaGoogle, FaSteam, FaFacebook } from 'react-icons/fa';
 import apiService from '../../api/apiService';
 import { OXMButton } from '@oxymore/ui';
 import './Register.scss';
@@ -183,6 +183,29 @@ const Register: React.FC = () => {
                 Create Account
               </OXMButton>
             </form>
+
+            <div className="auth-divider">
+              <span>Or continue with</span>
+            </div>
+
+            <div className="social-login">
+              <button className="social-button discord">
+                <FaDiscord />
+                <span>Discord</span>
+              </button>
+              <button className="social-button google">
+                <FaGoogle />
+                <span>Google</span>
+              </button>
+              <button className="social-button steam">
+                <FaSteam />
+                <span>Steam</span>
+              </button>
+              <button className="social-button facebook">
+                <FaFacebook />
+                <span>Facebook</span>
+              </button>
+            </div>
 
             <div className="auth-footer">
               <p>Already have an account? <Link to="/login" className="auth-link">Sign in</Link></p>

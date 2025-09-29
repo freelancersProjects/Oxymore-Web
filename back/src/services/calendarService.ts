@@ -1,4 +1,4 @@
-import { db } from '../config/database';
+import { db } from "../config/db";
 import { CreateAppointmentData, UpdateAppointmentData, CalendarFilters } from '../interfaces/calendarInterfaces';
 
 export class CalendarService {
