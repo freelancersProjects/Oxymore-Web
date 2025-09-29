@@ -1,22 +1,21 @@
-// Interfaces pour le système de calendrier (Backend)
-
 export type AppointmentType = 'meeting' | 'training' | 'tournament' | 'league' | 'other';
 
 export interface CalendarAppointment {
-  id: number;
+  id: string;
   title: string;
-  description?: string;
-  appointment_date: string; // YYYY-MM-DD
-  start_time: string; // HH:MM
-  end_time: string; // HH:MM
-  location?: string;
+  description?: string | null;
+  appointment_date: string;
+  start_time: string;
+  end_time: string;
+  location?: string | null;
   type: AppointmentType;
   is_completed: boolean;
-  created_by: number;
+  created_by: string;
   created_at: string;
   updated_at: string;
+  attendees?: string[];
+  color?: string;
 
-  // Relations (optionnelles selon le contexte)
   created_by_username?: string;
   participants?: CalendarAppointmentParticipant[];
   guests?: CalendarAppointmentGuest[];
@@ -42,7 +41,6 @@ export interface CalendarAppointmentGuest {
   created_at: string;
 }
 
-// Types pour les formulaires
 export interface CreateAppointmentData {
   title: string;
   description?: string;
@@ -51,7 +49,9 @@ export interface CreateAppointmentData {
   end_time: string;
   location?: string;
   type: AppointmentType;
-  participants?: number[]; // IDs des utilisateurs
+  attendees?: string[];
+  color?: string;
+  participants?: number[];
   guests?: {
     name: string;
     email?: string;
@@ -59,11 +59,10 @@ export interface CreateAppointmentData {
 }
 
 export interface UpdateAppointmentData extends Partial<CreateAppointmentData> {
-  id: number;
+  id?: string;
   is_completed?: boolean;
 }
 
-// Types pour les filtres et recherche
 export interface CalendarFilters {
   type?: AppointmentType;
   is_completed?: boolean;
@@ -73,7 +72,6 @@ export interface CalendarFilters {
   created_by?: number;
 }
 
-// Types pour les statistiques
 export interface CalendarStats {
   total_appointments: number;
   completed_appointments: number;

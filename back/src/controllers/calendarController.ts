@@ -3,18 +3,34 @@ import { CalendarService } from '../services/calendarService';
 import { CalendarFilters } from '../interfaces/calendarInterfaces';
 import * as CalendarModel from '../models/calendarModel';
 
+// Fonction pour formater les dates pour l'API
+const formatEventForResponse = (event: any) => {
+  return {
+    ...event,
+    appointment_date: event.appointment_date ?
+      (typeof event.appointment_date === 'string' ? event.appointment_date.split('T')[0] : event.appointment_date)
+      : event.appointment_date,
+    start_time: event.start_time ? event.start_time.substring(0, 5) : event.start_time,
+    end_time: event.end_time ? event.end_time.substring(0, 5) : event.end_time
+  };
+};
+
 // Fonctions pour les routes du calendrier
 export const createCalendarEvent = async (req: Request, res: Response): Promise<void> => {
   try {
     const eventData = req.body;
-    const createdBy = (req as any).user?.id_user || '1'; // Fallback pour les tests
+    const createdBy = (req as any).user?.id_user || 'system';
+
+    if (!eventData.title || !eventData.appointment_date || !eventData.start_time || !eventData.end_time || !eventData.type) {
+      res.status(400).json({
+        success: false,
+        message: 'Titre, date, heures de début et fin, et type sont requis'
+      });
+      return;
+    }
 
     const event = await CalendarModel.createCalendarEvent(eventData, createdBy);
-    res.status(201).json({
-      success: true,
-      data: event,
-      message: 'Événement créé avec succès'
-    });
+    res.status(201).json(formatEventForResponse(event));
   } catch (error) {
     console.error('Error creating calendar event:', error);
     res.status(500).json({
@@ -27,10 +43,8 @@ export const createCalendarEvent = async (req: Request, res: Response): Promise<
 export const getAllCalendarEvents = async (req: Request, res: Response): Promise<void> => {
   try {
     const events = await CalendarModel.getAllCalendarEvents();
-    res.json({
-      success: true,
-      data: events
-    });
+    const formattedEvents = events.map(event => formatEventForResponse(event));
+    res.json(formattedEvents); // Return events directly, not wrapped in success object
   } catch (error) {
     console.error('Error fetching calendar events:', error);
     res.status(500).json({
@@ -55,7 +69,7 @@ export const getCalendarEventById = async (req: Request, res: Response): Promise
 
     res.json({
       success: true,
-      data: event
+      data: formatEventForResponse(event)
     });
   } catch (error) {
     console.error('Error fetching calendar event:', error);
@@ -71,6 +85,9 @@ export const updateCalendarEvent = async (req: Request, res: Response): Promise<
     const { id } = req.params;
     const updateData = req.body;
 
+    console.log('UPDATE - ID:', id);
+    console.log('UPDATE - Data:', updateData);
+
     const event = await CalendarModel.updateCalendarEvent(id, updateData);
     if (!event) {
       res.status(404).json({
@@ -80,11 +97,8 @@ export const updateCalendarEvent = async (req: Request, res: Response): Promise<
       return;
     }
 
-    res.json({
-      success: true,
-      data: event,
-      message: 'Événement mis à jour avec succès'
-    });
+    console.log('UPDATE - Result:', event);
+    res.json(formatEventForResponse(event));
   } catch (error) {
     console.error('Error updating calendar event:', error);
     res.status(500).json({
@@ -133,9 +147,10 @@ export const getCalendarEventsByDateRange = async (req: Request, res: Response):
     }
 
     const events = await CalendarModel.getCalendarEventsByDateRange(startDate as string, endDate as string);
+    const formattedEvents = events.map(event => formatEventForResponse(event));
     res.json({
       success: true,
-      data: events
+      data: formattedEvents
     });
   } catch (error) {
     console.error('Error fetching calendar events by date range:', error);
@@ -150,9 +165,10 @@ export const getCalendarEventsByType = async (req: Request, res: Response): Prom
   try {
     const { type } = req.params;
     const events = await CalendarModel.getCalendarEventsByType(type);
+    const formattedEvents = events.map(event => formatEventForResponse(event));
     res.json({
       success: true,
-      data: events
+      data: formattedEvents
     });
   } catch (error) {
     console.error('Error fetching calendar events by type:', error);
