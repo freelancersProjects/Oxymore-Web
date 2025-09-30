@@ -2,10 +2,20 @@ import { v4 as uuidv4 } from 'uuid';
 import { db } from '../config/db';
 import { CalendarAppointment, CreateAppointmentData, UpdateAppointmentData, CalendarStats } from '../interfaces/calendarInterfaces';
 
-// Fonction utilitaire pour créer une date sans décalage de fuseau horaire
+const getTypeColorUtil = (type: string): string => {
+  switch (type) {
+    case 'meeting': return '#3b82f6';
+    case 'training': return '#10b981';
+    case 'tournament': return '#ef4444';
+    case 'league': return '#8b5cf6';
+    case 'other': return '#6b7280';
+    default: return '#6366f1';
+  }
+};
+
 const createLocalDate = (dateString: string): Date => {
   const [year, month, day] = dateString.split('-').map(Number);
-  return new Date(year, month - 1, day, 0, 0, 0, 0);
+  return new Date(year, month - 1, day, 12, 0, 0, 0);
 };
 
 export const createCalendarEvent = async (eventData: CreateAppointmentData, createdBy: string): Promise<CalendarAppointment> => {
@@ -13,9 +23,9 @@ export const createCalendarEvent = async (eventData: CreateAppointmentData, crea
   const now = new Date();
 
   const event: CalendarAppointment = {
-    id: parseInt(id.replace(/-/g, '').substring(0, 8), 16), // Convert UUID to number
+    id: id,
     title: eventData.title,
-    description: eventData.description,
+    description: eventData.description || null,
     appointment_date: eventData.appointment_date,
     start_time: eventData.start_time.includes(':') && eventData.start_time.split(':').length === 2
       ? `${eventData.start_time}:00`
@@ -23,24 +33,24 @@ export const createCalendarEvent = async (eventData: CreateAppointmentData, crea
     end_time: eventData.end_time.includes(':') && eventData.end_time.split(':').length === 2
       ? `${eventData.end_time}:00`
       : eventData.end_time,
-    location: eventData.location,
+    location: eventData.location || null,
     type: eventData.type,
     is_completed: false,
-    created_by: parseInt(createdBy),
+    created_by: createdBy,
     created_at: now.toISOString(),
     updated_at: now.toISOString()
   };
 
   await db.execute(
     `INSERT INTO calendar_events (
-      id, title, description, appointment_date, start_time, end_time,
-      location, type, is_completed,
+      id, title, description, date, start_time, end_time,
+      location, calendar_type, attendees, color, is_completed,
       created_by, created_at, updated_at
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     [
-      event.id, event.title, event.description, event.appointment_date,
+      id, event.title, event.description, event.appointment_date,
       event.start_time, event.end_time, event.location,
-      event.type, event.is_completed,
+      event.type, JSON.stringify(eventData.attendees || []), getTypeColorUtil(eventData.type), event.is_completed,
       event.created_by, event.created_at, event.updated_at
     ]
   );
@@ -62,21 +72,23 @@ export const getCalendarEventById = async (id: string): Promise<CalendarAppointm
     id: event.id,
     title: event.title,
     description: event.description,
-    appointment_date: event.appointment_date,
+    appointment_date: event.date,
     start_time: event.start_time,
     end_time: event.end_time,
     location: event.location,
-    type: event.type,
+    type: event.calendar_type,
     is_completed: event.is_completed,
     created_by: event.created_by,
     created_at: event.created_at,
-    updated_at: event.updated_at
+    updated_at: event.updated_at,
+    attendees: event.attendees ? JSON.parse(event.attendees) : [],
+    color: event.color || getTypeColorUtil(event.calendar_type)
   };
 };
 
 export const getAllCalendarEvents = async (): Promise<CalendarAppointment[]> => {
   const [rows] = await db.execute(
-    'SELECT * FROM calendar_events ORDER BY appointment_date ASC, start_time ASC'
+    'SELECT * FROM calendar_events ORDER BY date ASC, start_time ASC'
   );
 
   const events = rows as any[];
@@ -84,15 +96,17 @@ export const getAllCalendarEvents = async (): Promise<CalendarAppointment[]> => 
     id: event.id,
     title: event.title,
     description: event.description,
-    appointment_date: event.appointment_date,
+    appointment_date: event.date,
     start_time: event.start_time,
     end_time: event.end_time,
     location: event.location,
-    type: event.type,
+    type: event.calendar_type,
     is_completed: event.is_completed,
     created_by: event.created_by,
     created_at: event.created_at,
-    updated_at: event.updated_at
+    updated_at: event.updated_at,
+    attendees: event.attendees ? JSON.parse(event.attendees) : [],
+    color: event.color || getTypeColorUtil(event.calendar_type)
   }));
 };
 
@@ -111,7 +125,7 @@ export const updateCalendarEvent = async (id: string, eventData: UpdateAppointme
     updateValues.push(eventData.description);
   }
   if (eventData.appointment_date !== undefined) {
-    updateFields.push('appointment_date = ?');
+    updateFields.push('date = ?');
     updateValues.push(eventData.appointment_date);
   }
   if (eventData.start_time !== undefined) {
@@ -133,21 +147,35 @@ export const updateCalendarEvent = async (id: string, eventData: UpdateAppointme
     updateValues.push(eventData.location);
   }
   if (eventData.type !== undefined) {
-    updateFields.push('type = ?');
+    updateFields.push('calendar_type = ?');
     updateValues.push(eventData.type);
   }
   if (eventData.is_completed !== undefined) {
     updateFields.push('is_completed = ?');
     updateValues.push(eventData.is_completed);
   }
+  if (eventData.attendees !== undefined) {
+    updateFields.push('attendees = ?');
+    updateValues.push(JSON.stringify(eventData.attendees));
+  }
+  if (eventData.color !== undefined) {
+    updateFields.push('color = ?');
+    updateValues.push(eventData.color);
+  }
+
+  if (updateFields.length === 0) {
+    return getCalendarEventById(id);
+  }
 
   updateFields.push('updated_at = ?');
   updateValues.push(now.toISOString());
-  updateValues.push(id);
+
+  console.log('SQL:', `UPDATE calendar_events SET ${updateFields.join(', ')} WHERE id = ?`);
+  console.log('Values:', [...updateValues, id]);
 
   await db.execute(
     `UPDATE calendar_events SET ${updateFields.join(', ')} WHERE id = ?`,
-    updateValues
+    [...updateValues, id]
   );
 
   return getCalendarEventById(id);
@@ -164,7 +192,7 @@ export const deleteCalendarEvent = async (id: string): Promise<boolean> => {
 
 export const getCalendarEventsByDateRange = async (startDate: string, endDate: string): Promise<CalendarAppointment[]> => {
   const [rows] = await db.execute(
-    'SELECT * FROM calendar_events WHERE appointment_date BETWEEN ? AND ? ORDER BY appointment_date ASC, start_time ASC',
+    'SELECT * FROM calendar_events WHERE date BETWEEN ? AND ? ORDER BY date ASC, start_time ASC',
     [startDate, endDate]
   );
 
@@ -173,11 +201,11 @@ export const getCalendarEventsByDateRange = async (startDate: string, endDate: s
     id: event.id,
     title: event.title,
     description: event.description,
-    appointment_date: event.appointment_date,
+    appointment_date: event.date, // Map date to appointment_date for interface
     start_time: event.start_time,
     end_time: event.end_time,
     location: event.location,
-    type: event.type,
+    type: event.calendar_type, // Map calendar_type to type for interface
     is_completed: event.is_completed,
     created_by: event.created_by,
     created_at: event.created_at,
@@ -187,7 +215,7 @@ export const getCalendarEventsByDateRange = async (startDate: string, endDate: s
 
 export const getCalendarEventsByType = async (type: string): Promise<CalendarAppointment[]> => {
   const [rows] = await db.execute(
-    'SELECT * FROM calendar_events WHERE type = ? ORDER BY appointment_date ASC, start_time ASC',
+    'SELECT * FROM calendar_events WHERE calendar_type = ? ORDER BY date ASC, start_time ASC',
     [type]
   );
 
@@ -196,11 +224,11 @@ export const getCalendarEventsByType = async (type: string): Promise<CalendarApp
     id: event.id,
     title: event.title,
     description: event.description,
-    appointment_date: event.appointment_date,
+    appointment_date: event.date, // Map date to appointment_date for interface
     start_time: event.start_time,
     end_time: event.end_time,
     location: event.location,
-    type: event.type,
+    type: event.calendar_type, // Map calendar_type to type for interface
     is_completed: event.is_completed,
     created_by: event.created_by,
     created_at: event.created_at,
@@ -211,7 +239,7 @@ export const getCalendarEventsByType = async (type: string): Promise<CalendarApp
 export const getCalendarStats = async (): Promise<CalendarStats> => {
   const [totalRows] = await db.execute('SELECT COUNT(*) as total FROM calendar_events');
   const [completedRows] = await db.execute('SELECT COUNT(*) as completed FROM calendar_events WHERE is_completed = true');
-  const [typeRows] = await db.execute('SELECT type, COUNT(*) as count FROM calendar_events GROUP BY type');
+  const [typeRows] = await db.execute('SELECT calendar_type as type, COUNT(*) as count FROM calendar_events GROUP BY calendar_type');
 
   const total = (totalRows as any[])[0].total;
   const completed = (completedRows as any[])[0].completed;
