@@ -1,0 +1,213 @@
+/* Confluence Styles */
+.confluence-card {
+  transition: all 0.3s ease;
+}
+
+.confluence-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.folder-item {
+  transition: all 0.2s ease;
+}
+
+.folder-item:hover {
+  background: var(--overlay-hover);
+}
+
+.folder-item.drag-over {
+  background: rgba(34, 197, 94, 0.1);
+  border-color: #22c55e;
+}
+
+.file-item {
+  transition: all 0.2s ease;
+}
+
+.file-item:hover {
+  background: var(--overlay-hover);
+}
+
+.file-item.dragging {
+  opacity: 0.5;
+  transform: rotate(5deg);
+}
+
+.star-button {
+  transition: all 0.2s ease;
+}
+
+.star-button:hover {
+  transform: scale(1.1);
+}
+
+.star-button.starred {
+  color: #fbbf24;
+}
+
+.star-button.starred:hover {
+  color: #f59e0b;
+}
+
+.upload-zone {
+  transition: all 0.3s ease;
+}
+
+.upload-zone:hover {
+  border-color: #8b5cf6;
+  background: rgba(139, 92, 246, 0.05);
+}
+
+.upload-zone.drag-over {
+  border-color: #8b5cf6;
+  background: rgba(139, 92, 246, 0.1);
+  transform: scale(1.02);
+}
+
+.category-badge {
+  transition: all 0.2s ease;
+}
+
+.category-badge:hover {
+  transform: scale(1.05);
+}
+
+.action-button {
+  transition: all 0.2s ease;
+}
+
+.action-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.grid-item {
+  transition: all 0.3s ease;
+}
+
+.grid-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.list-item {
+  transition: all 0.2s ease;
+}
+
+.list-item:hover {
+  background: var(--overlay-hover);
+  transform: translateX(4px);
+}
+
+.modal-overlay {
+  backdrop-filter: blur(4px);
+}
+
+.modal-content {
+  animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.folder-icon {
+  transition: all 0.2s ease;
+}
+
+.folder-icon:hover {
+  transform: scale(1.1);
+}
+
+.file-icon {
+  transition: all 0.2s ease;
+}
+
+.file-icon:hover {
+  transform: scale(1.1);
+}
+
+.search-input {
+  transition: all 0.2s ease;
+}
+
+.search-input:focus {
+  transform: scale(1.02);
+}
+
+.dropdown-item {
+  transition: all 0.2s ease;
+}
+
+.dropdown-item:hover {
+  background: var(--overlay-hover);
+  transform: translateX(4px);
+}
+
+.status-indicator {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.progress-bar {
+  transition: width 0.3s ease;
+}
+
+.tooltip {
+  animation: tooltipFadeIn 0.2s ease-out;
+}
+
+@keyframes tooltipFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .grid-item {
+    transform: none;
+  }
+
+  .grid-item:hover {
+    transform: none;
+  }
+
+  .list-item:hover {
+    transform: none;
+  }
+}
+
+/* Dark mode adjustments */
+@media (prefers-color-scheme: dark) {
+  .confluence-card:hover {
+    box-shadow: 0 8px 25px rgba(255, 255, 255, 0.1);
+  }
+
+  .grid-item:hover {
+    box-shadow: 0 8px 25px rgba(255, 255, 255, 0.1);
+  }
+}
+
+

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { OXMDropdown } from '@oxymore/ui';
 import { OXMButton } from '@oxymore/ui';
+import { Grid3X3, List } from 'lucide-react';
 import Pagination from '../../components/Pagination/Pagination';
 import apiService from '../../api/apiService';
 import type { Tournament } from '../../types/tournament';
@@ -16,6 +17,7 @@ const TournamentPage: React.FC = () => {
   const [accessType, setAccessType] = useState('all');
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(6);
+  const [viewMode, setViewMode] = useState<'cards' | 'list'>('cards');
 
   useEffect(() => {
     const fetchTournaments = async () => {
@@ -147,28 +149,42 @@ const TournamentPage: React.FC = () => {
           onChange: (value: string) => setAccessType(value),
           placeholder: "Access Type"
         })}
+
+        {/* Boutons de vue */}
+        <div className="view-toggle">
+          <button
+            className={`view-btn ${viewMode === 'cards' ? 'active' : ''}`}
+            onClick={() => setViewMode('cards')}
+            title="Vue cartes"
+          >
+            <Grid3X3 size={20} />
+          </button>
+          <button
+            className={`view-btn ${viewMode === 'list' ? 'active' : ''}`}
+            onClick={() => setViewMode('list')}
+            title="Vue liste"
+          >
+            <List size={20} />
+          </button>
+        </div>
       </div>
 
       {/* Grille des tournois */}
       {tournaments.length === 0 ? (
         <div className="tournament-empty">Aucun tournoi disponible</div>
       ) : (
-        <div className="tournament-grid">
+        <div className={`tournament-grid ${viewMode === 'list' ? 'list-view' : 'cards-view'}`}>
           {paginatedTournaments.map((tournament) => (
-            <div key={tournament.id_tournament} className="tournament-card">
+            <div key={tournament.id_tournament} className="tournament-cards-view">
               <div className="card-image-container">
                 <img
-                  src={tournament.image_url || "https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=400&q=80"}
+                  src={tournament.image_url || "https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=500&q=80"}
                   alt={tournament.tournament_name}
                   className="card-image"
                 />
-                <div className="views">
-                  <span>{tournament.max_participant || '100'}</span>
+                <div className="tag">
+                  {tournament.type.toUpperCase()} <div className="dot" />
                 </div>
-              </div>
-
-              <div className="tag">
-                {tournament.type.toUpperCase()} <div className="dot" />
               </div>
 
               <div className="title orbitron">{tournament.tournament_name}</div>
@@ -178,6 +194,10 @@ const TournamentPage: React.FC = () => {
               <div className="meta outfit">
                 <span>{formatDate(tournament.start_date)} - {formatDate(tournament.end_date)}</span>
                 <span>{tournament.format}</span>
+              </div>
+
+              <div className="status-info">
+                <span>Status: Ongoing</span>
               </div>
 
               <div className="card-buttons">

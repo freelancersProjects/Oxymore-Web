@@ -23,6 +23,23 @@
   gap: rem-calc(20);
   margin-bottom: rem-calc(40);
 
+  // Animation d'entrée pour les cartes
+  .category-card {
+    animation: tournamentCardSlideIn 0.6s ease-out;
+
+    &:nth-child(1) {
+      animation-delay: 0.1s;
+    }
+
+    &:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    &:nth-child(3) {
+      animation-delay: 0.3s;
+    }
+  }
+
   .category-card {
     border-radius: rem-calc(30);
     border: 0.5px solid rgba(255, 255, 255, 0.5);
@@ -37,11 +54,13 @@
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(10px);
 
     &:hover {
-      transform: translateY(rem-calc(-5));
-      border-color: rgba(255, 255, 255, 0.8);
+      transform: translateY(rem-calc(-10)) scale(1.02);
+      border-color: rgba(255, 255, 255, 0.9);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
     }
 
     .category-image {
@@ -52,9 +71,11 @@
       bottom: 0;
       background-size: cover;
       background-position: center;
-      opacity: 0.3;
+      background-repeat: no-repeat;
+      opacity: 0;
       z-index: 1;
-      transition: opacity 0.3s ease;
+      transition: all 0.4s ease;
+      filter: brightness(0.3) saturate(1.2);
     }
 
     .category-title {
@@ -62,38 +83,97 @@
       font-size: rem-calc(48);
       font-weight: 700;
       position: relative;
-      z-index: 2;
+      z-index: 3;
       text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+      transition: all 0.3s ease;
+    }
+
+    // Effet de brillance au hover
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.1),
+        transparent
+      );
+      transition: left 0.6s ease;
+      z-index: 2;
+    }
+
+    &:hover::before {
+      left: 100%;
+    }
+
+    // Effet de particules au hover
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: all 0.6s ease;
+      z-index: 0;
+    }
+
+    &:hover::after {
+      width: 200px;
+      height: 200px;
     }
 
     &:hover .category-image {
-      opacity: 0.6;
+      opacity: 0.8;
+    }
+
+    // S'assurer que l'image disparaît quand on enlève le hover
+    &:not(:hover) .category-image {
+      opacity: 0;
+    }
+
+    &:hover .category-title {
+      transform: scale(1.05);
+      text-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
     }
 
     &.minor {
       .category-image {
-        background: linear-gradient(135deg, rgba(100, 100, 100, 0.3), rgba(100, 100, 100, 0.1));
+        background-image: url('../../assets/images/tournament-bg-image.webp');
       }
-      &:hover {
-        background: rgba(100, 100, 100, 0.1);
+      &:hover .category-image {
+        background-image:
+          linear-gradient(135deg, rgba(100, 100, 100, 0.4), rgba(100, 100, 100, 0.6)),
+          url('../../assets/images/tournament-bg-image.webp');
       }
     }
 
     &.major {
       .category-image {
-        background: linear-gradient(135deg, rgba($color-primary, 0.3), rgba($color-primary, 0.1));
+        background-image: url('../../assets/images/tournament-bg-image.webp');
       }
-      &:hover {
-        background: rgba($color-primary, 0.1);
+      &:hover .category-image {
+        background-image:
+          linear-gradient(135deg, rgba($color-primary, 0.4), rgba($color-primary, 0.6)),
+          url('../../assets/images/tournament-bg-image.webp');
       }
     }
 
     &.external {
       .category-image {
-        background: linear-gradient(135deg, rgba(255, 165, 0, 0.3), rgba(255, 165, 0, 0.1));
+        background-image: url('../../assets/images/tournament-bg-image.webp');
       }
-      &:hover {
-        background: rgba(255, 165, 0, 0.1);
+      &:hover .category-image {
+        background-image:
+          linear-gradient(135deg, rgba(255, 165, 0, 0.4), rgba(255, 165, 0, 0.6)),
+          url('../../assets/images/tournament-bg-image.webp');
       }
     }
   }
@@ -112,6 +192,39 @@
     flex: 1;
     min-width: rem-calc(200);
   }
+
+  .view-toggle {
+    display: flex;
+    gap: rem-calc(8);
+    margin-left: rem-calc(20);
+
+    .view-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: rem-calc(40);
+      height: rem-calc(40);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: rem-calc(8);
+      color: rgba(255, 255, 255, 0.7);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba($color-purple, 0.3);
+        color: $color-white;
+      }
+
+      &.active {
+        background: rgba($color-purple, 0.2);
+        border-color: $color-purple;
+        color: $color-purple;
+      }
+    }
+  }
 }
 
 .tournament-loading,
@@ -128,95 +241,266 @@
 }
 
 .tournament-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  display: flex;
+  flex-wrap: wrap;
   gap: rem-calc(20);
   width: 100%;
   margin-bottom: rem-calc(40);
+
+  .tournament-card {
+    flex: 0 0 calc(33.333% - 14px);
+    animation: tournamentCardSlideIn 0.6s ease-out;
+
+    &:nth-child(1) { animation-delay: 0.1s; }
+    &:nth-child(2) { animation-delay: 0.2s; }
+    &:nth-child(3) { animation-delay: 0.3s; }
+    &:nth-child(4) { animation-delay: 0.4s; }
+    &:nth-child(5) { animation-delay: 0.5s; }
+    &:nth-child(6) { animation-delay: 0.6s; }
+    &:nth-child(7) { animation-delay: 0.7s; }
+    &:nth-child(8) { animation-delay: 0.8s; }
+    &:nth-child(9) { animation-delay: 0.9s; }
+  }
+
+  // Vue liste
+  &.list-view {
+    flex-direction: column;
+    gap: rem-calc(12);
+
+    .tournament-card {
+      flex: 1;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      height: rem-calc(140);
+      padding: rem-calc(20);
+      border-radius: rem-calc(16);
+
+      .card-image-container {
+        width: rem-calc(200);
+        height: rem-calc(100);
+        margin-bottom: 0;
+        margin-right: rem-calc(20);
+        flex-shrink: 0;
+        border-radius: rem-calc(12);
+      }
+
+      .title {
+        font-size: rem-calc(20);
+        margin-bottom: rem-calc(6);
+        flex: 1;
+      }
+
+      .meta {
+        margin-bottom: rem-calc(6);
+        flex: 1;
+      }
+
+      .status-info {
+        margin-bottom: 0;
+        flex: 1;
+      }
+
+      .card-separator {
+        display: none;
+      }
+
+      .card-buttons {
+        margin-left: auto;
+        width: auto;
+        gap: rem-calc(10);
+        flex-shrink: 0;
+
+        .oxm-button {
+          height: rem-calc(40);
+          font-size: rem-calc(13);
+          padding: 0 rem-calc(20);
+          border-radius: rem-calc(10);
+        }
+      }
+    }
+  }
 }
 
-.tournament-card {
+.tournament-cards-view {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: flex-start;
-  gap: rem-calc(15);
+  gap: rem-calc(16);
   flex: 1;
-  min-width: rem-calc(280);
+  min-width: 0;
   max-width: 100%;
-  border-radius: rem-calc(20);
-  border: 0.5px solid rgba($color-white, 0.5);
-  background: linear-gradient(135deg, rgba($color-purple, 0.1) 0%, rgba($color-blue, 0.05) 100%);
-  padding: rem-calc(15);
+  border-radius: rem-calc(24);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: linear-gradient(135deg, rgba(139, 69, 255, 0.08) 0%, rgba(0, 0, 0, 0.6) 50%, rgba(59, 130, 246, 0.08) 100%);
+  padding: rem-calc(20);
   position: relative;
   box-sizing: border-box;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(20px);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  overflow: hidden;
+
+  // Effet de bordure animée
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, $color-purple, $color-blue, $color-purple);
+    background-size: 200% 100%;
+    opacity: 0;
+    transition: all 0.4s ease;
+    animation: borderGlow 3s ease-in-out infinite;
+  }
+
+  // Effet de brillance au hover
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.1),
+      transparent
+    );
+    transition: left 0.6s ease;
+    z-index: 1;
+  }
+
+  &:hover {
+    transform: translateY(rem-calc(-4));
+    border-color: rgba($color-purple, 0.3);
+    background: linear-gradient(135deg, rgba(139, 69, 255, 0.12) 0%, rgba(0, 0, 0, 0.65) 50%, rgba(59, 130, 246, 0.12) 100%);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  }
+
+  // Animation de la bordure
+  @keyframes borderGlow {
+    0%, 100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
 }
 
 .card-image-container {
   position: relative;
   width: 100%;
-  height: rem-calc(200);
+  height: rem-calc(750);
+  border-radius: rem-calc(16);
+  overflow: hidden;
+  margin-bottom: rem-calc(16);
+  z-index: 2;
 
   .card-image {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: rem-calc(10);
+    transition: transform 0.3s ease;
   }
 
-  .views {
+  .tag {
     position: absolute;
-    bottom: rem-calc(15);
-    right: rem-calc(15);
-    display: flex;
-    padding: rem-calc(8) rem-calc(12) rem-calc(8) rem-calc(10);
-    justify-content: center;
-    align-items: center;
-    gap: rem-calc(6);
-    background: rgba($color-black, 0.7);
-    border-radius: rem-calc(8);
-    font-size: rem-calc(14);
-    color: $color-white;
-    backdrop-filter: blur(10px);
-    font-weight: 500;
+    top: rem-calc(20);
+    left: rem-calc(20);
+    z-index: 3;
+    margin: 0;
+  }
+}
+
+.tournament-card:hover .card-image-container {
+  .card-image {
+    transform: scale(1.02);
   }
 }
 
 .tag {
   display: flex;
-  padding: rem-calc(8) rem-calc(16);
+  padding: rem-calc(10) rem-calc(18);
   justify-content: center;
   align-items: center;
   gap: rem-calc(8);
-  border-radius: rem-calc(15);
-  border: 1px solid $color-blue;
-  background: rgba($color-blue, 0.1);
-  font-size: rem-calc(14);
-  font-weight: 500;
+  border-radius: rem-calc(20);
+  border: 1px solid rgba($color-purple, 0.4);
+  background: linear-gradient(135deg, rgba($color-purple, 0.15), rgba($color-blue, 0.1));
+  font-size: rem-calc(13);
+  font-weight: 600;
   color: $color-white;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  z-index: 2;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 12px rgba($color-purple, 0.2);
 
   .dot {
     width: rem-calc(6);
     height: rem-calc(6);
-    background: $color-white;
+    background: $color-purple;
     border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  &:hover {
+    background: linear-gradient(135deg, rgba($color-purple, 0.2), rgba($color-blue, 0.15));
+    border-color: rgba($color-purple, 0.5);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.1);
   }
 }
 
 .title {
   color: $color-white;
-  font-size: rem-calc(22);
-  font-style: normal;
-  font-weight: 600;
-  line-height: normal;
+  font-size: rem-calc(24);
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: rem-calc(8);
+  transition: color 0.3s ease;
+  z-index: 2;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+
+  &:hover {
+    color: $color-purple;
+  }
 }
 
 .card-separator {
   border: none;
-  border-top: 1px solid rgba($color-white, 0.2);
+  border-top: 1px solid rgba($color-white, 0.1);
   width: 100%;
-  margin: 0;
+  margin: rem-calc(8) 0;
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: rem-calc(60);
+    height: 1px;
+    background: linear-gradient(90deg, transparent, $color-purple, transparent);
+  }
 }
 
 .meta {
@@ -228,6 +512,25 @@
   color: rgba($color-white, 0.8);
   width: 100%;
   font-weight: 500;
+  font-family: 'Outfit', sans-serif;
+  margin-bottom: rem-calc(8);
+  z-index: 2;
+}
+
+.status-info {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  margin-bottom: rem-calc(16);
+  z-index: 2;
+
+  span {
+    font-size: rem-calc(14);
+    color: rgba($color-white, 0.8);
+    font-weight: 500;
+    font-family: 'Outfit', sans-serif;
+  }
 }
 
 .card-buttons {
@@ -246,6 +549,19 @@
 }
 
 // Responsive
+@media (max-width: rem-calc(1400)) {
+  .tournament-grid {
+    gap: rem-calc(20);
+  }
+}
+
+@media (max-width: rem-calc(1200)) {
+  .tournament-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: rem-calc(18);
+  }
+}
+
 @media (max-width: rem-calc(768)) {
   .category-cards {
     grid-template-columns: 1fr;
@@ -263,27 +579,108 @@
 
   .tournament-grid {
     grid-template-columns: 1fr;
+    gap: rem-calc(16);
   }
 
   .tournament-card {
     width: 100%;
     min-width: auto;
+    padding: rem-calc(15);
   }
 
   .card-image-container {
-    height: rem-calc(150);
+    height: rem-calc(600);
+  }
+
+  .title {
+    font-size: rem-calc(20);
   }
 
   .card-buttons {
     flex-direction: column;
-    gap: rem-calc(10);
+    gap: rem-calc(8);
 
     .oxm-button {
       width: 100%;
+      height: rem-calc(34);
     }
   }
 }
 
+@media (max-width: rem-calc(480)) {
+  .tournament-container {
+    padding: rem-calc(16);
+  }
 
+  .tournament-title {
+    font-size: rem-calc(28);
+  }
 
+  .category-cards {
+    gap: rem-calc(12);
 
+    .category-card {
+      height: rem-calc(200);
+      padding: rem-calc(20);
+
+      .category-title {
+        font-size: rem-calc(36);
+      }
+    }
+  }
+
+  .tournament-card {
+    padding: rem-calc(12);
+  }
+
+  .card-image-container {
+    height: rem-calc(500);
+  }
+
+  .title {
+    font-size: rem-calc(18);
+  }
+}
+
+// Animations
+@keyframes tournamentCardSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Effet de gradient animé pour les cartes
+.tournament-card-gradient {
+  background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  background-size: 200% 200%;
+  animation: gradientShift 3s ease-in-out infinite;
+}
+
+@keyframes gradientShift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.category-card:hover .tournament-card-gradient {
+  animation-duration: 1s;
+}
+
+// Responsive adjustments pour les effets hover
+@media (max-width: rem-calc(768)) {
+  .category-card:hover {
+    transform: translateY(rem-calc(-5)) scale(1.01);
+  }
+
+  .category-card .category-image {
+    background-size: cover;
+  }
+}

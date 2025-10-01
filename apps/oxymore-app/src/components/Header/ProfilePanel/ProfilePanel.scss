@@ -414,10 +414,19 @@
         margin-bottom: rem-calc(2);
       }
 
-      .meta {
+      .meta-level {
         color: rgb(255 255 255 / 60%);
         font-size: rem-calc(12);
-        margin-bottom: rem-calc(4);
+        margin: rem-calc(4);
+        display: flex;
+        align-items: center;
+
+        img{
+          width: rem-calc(20);
+          height: rem-calc(20);
+          margin-left: rem-calc(6);
+          object-fit: contain;
+        }
       }
 
       .elo-badge {
