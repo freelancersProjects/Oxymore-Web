@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Home, Trophy, Layers, Play, Users, UserPlus, LogOut, ChevronLeft, Bot, Menu, X, Store, Users2, BookOpen, Crown } from "lucide-react";
 import Logo from "./../../assets/logo.png";
@@ -11,7 +11,23 @@ interface SidebarProps {
 
 export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false, onToggle }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [showScrollIndicator, setShowScrollIndicator] = useState(false);
   const navigate = useNavigate();
+  const navRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const checkScrollable = () => {
+      if (navRef.current) {
+        const { scrollHeight, clientHeight } = navRef.current;
+        setShowScrollIndicator(scrollHeight > clientHeight);
+      }
+    };
+
+    checkScrollable();
+    window.addEventListener('resize', checkScrollable);
+
+    return () => window.removeEventListener('resize', checkScrollable);
+  }, []);
 
   const handleNavClick = () => setMobileOpen(false);
 
@@ -67,6 +83,17 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false, onToggle 
               <img src={Logo} alt="Oxymore Logo" />
             </NavLink>
           </div>
+          <div className="oxm-sidebar__user-plan">
+            <div className="user-info">
+              <div className="user-name">Mathis Boulais</div>
+              <div className="plan-status">
+                <span className="plan-text">Free Plan</span>
+                <NavLink to="/subscription" className="upgrade-link" onClick={handleNavClick}>
+                  Upgrade
+                </NavLink>
+              </div>
+            </div>
+          </div>
           {onToggle && !isCollapsed && (
             <button className="oxm-sidebar__toggle" onClick={onToggle}>
               <ChevronLeft size={16} />
@@ -75,7 +102,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false, onToggle 
         </div>
 
 
-        <nav className="oxm-sidebar__nav">
+        <nav className={`oxm-sidebar__nav ${showScrollIndicator ? 'has-scroll-indicator' : ''}`} ref={navRef}>
           {/* Section Principale */}
           <div className="nav-section">
             <div className="section-label">Principal</div>
@@ -86,13 +113,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false, onToggle 
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/tournaments" onClick={handleNavClick} className="oxm-sidebar-nav-link">
-                  <Trophy size={20} /> <span>Tournaments</span>
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/matchmaking" onClick={handleNavClick} className="oxm-sidebar-nav-link">
-                  <Users2 size={20} /> <span>Matchmaking</span>
+                <NavLink to="/highlights" onClick={handleNavClick} className="oxm-sidebar-nav-link">
+                  <Play size={20} /> <span>Highlights</span>
                 </NavLink>
               </li>
             </ul>
@@ -108,8 +130,13 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false, onToggle 
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/highlights" onClick={handleNavClick} className="oxm-sidebar-nav-link">
-                  <Play size={20} /> <span>Highlights</span>
+                <NavLink to="/tournaments" onClick={handleNavClick} className="oxm-sidebar-nav-link">
+                  <Trophy size={20} /> <span>Tournaments</span>
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/matchmaking" onClick={handleNavClick} className="oxm-sidebar-nav-link">
+                  <Users2 size={20} /> <span>Matchmaking</span>
                 </NavLink>
               </li>
             </ul>
@@ -145,11 +172,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false, onToggle 
               <li>
                 <NavLink to="/game-learning" onClick={handleNavClick} className="oxm-sidebar-nav-link">
                   <BookOpen size={20} /> <span>Apprendre</span>
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/subscription" onClick={handleNavClick} className="oxm-sidebar-nav-link">
-                  <Crown size={20} /> <span>Abonnement</span>
                 </NavLink>
               </li>
             </ul>

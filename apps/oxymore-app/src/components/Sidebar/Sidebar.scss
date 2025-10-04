@@ -5,9 +5,9 @@
   left: 0;
   top: 0;
   height: 100vh;
-  width: rem-calc(260);
-  background: linear-gradient(180deg, rgb(20 20 30) 0%, rgb(15 15 25) 100%);
-  border-right: 1px solid rgb(255 255 255 / 6%);
+  width: rem-calc(280);
+  background: linear-gradient(180deg, rgba(139, 92, 246, 0.15) 0%, rgba(25, 25, 40, 0.8) 30%, rgba(10, 10, 20, 1) 100%);
+  border-right: 1px solid rgba(139, 92, 246, 0.2);
   display: flex;
   flex-direction: column;
   z-index: 1200;
@@ -68,6 +68,53 @@
     }
   }
 
+  &__user-plan {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: rem-calc(8);
+    padding: rem-calc(12);
+    backdrop-filter: blur(8px);
+
+    .user-info {
+      .user-name {
+        font-size: rem-calc(14);
+        font-weight: 600;
+        color: $color-white;
+        margin-bottom: rem-calc(6);
+        font-family: 'Outfit', sans-serif;
+      }
+
+      .plan-status {
+        display: flex;
+        align-items: center;
+        gap: rem-calc(8);
+
+        .plan-text {
+          font-size: rem-calc(11);
+          color: rgba(255, 255, 255, 0.7);
+          font-weight: 500;
+        }
+
+        .upgrade-link {
+          font-size: rem-calc(11);
+          font-weight: 600;
+          color: #fbbf24;
+          text-decoration: none;
+          transition: all 0.3s ease;
+          padding: rem-calc(2) rem-calc(6);
+          border-radius: rem-calc(4);
+          background: rgba(251, 191, 36, 0.1);
+
+          &:hover {
+            color: #f59e0b;
+            background: rgba(251, 191, 36, 0.2);
+            transform: translateY(-1px);
+          }
+        }
+      }
+    }
+  }
+
   &__toggle {
     background: transparent;
     border: none;
@@ -93,6 +140,33 @@
     display: flex;
     flex-direction: column;
     gap: rem-calc(24);
+    position: relative;
+
+    // Masquer la scrollbar
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+
+    &::-webkit-scrollbar {
+      display: none; /* Chrome, Safari, Opera */
+    }
+
+    // Indicateur de scroll
+    &::after {
+      content: '';
+      position: absolute;
+      right: rem-calc(8);
+      top: 50%;
+      transform: translateY(-50%);
+      width: rem-calc(4);
+      height: rem-calc(20);
+      background: linear-gradient(180deg, rgba(139, 92, 246, 0.8) 0%, rgba(139, 92, 246, 0.4) 100%);
+      border-radius: rem-calc(2);
+      opacity: 0.7;
+      animation: scrollIndicator 1.5s infinite ease-in-out;
+      pointer-events: none;
+      z-index: 10;
+      box-shadow: 0 0 rem-calc(6) rgba(139, 92, 246, 0.4);
+    }
 
     .nav-section {
       .section-label {
@@ -215,7 +289,7 @@
 
   &__logout {
     margin-top: auto;
-    padding-top: rem-calc(16);
+    padding: rem-calc(20) rem-calc(16) rem-calc(20) rem-calc(16);
     border-top: 1px solid rgb(255 255 255 / 6%);
     position: sticky;
     bottom: 0;
@@ -228,11 +302,11 @@
       align-items: center;
       gap: rem-calc(14);
       background: transparent;
-      color: rgb(255 255 255 / 60%);
+      color: rgba(255, 255, 255, 0.8);
       font-family: Outfit, sans-serif;
       font-size: rem-calc(16);
       font-weight: 500;
-      padding: rem-calc(14) rem-calc(16);
+      padding: rem-calc(18) rem-calc(20);
       margin: 0 rem-calc(16);
       border-radius: rem-calc(12);
       border: 1px solid transparent;
@@ -249,16 +323,18 @@
 
       svg {
         transition: all 0.3s ease;
+        width: rem-calc(22);
+        height: rem-calc(22);
       }
     }
   }
 
   &__store {
     margin-top: rem-calc(16);
-    padding-top: rem-calc(16);
+    padding: rem-calc(20) rem-calc(16) rem-calc(20) rem-calc(16);
     border-top: 1px solid rgb(255 255 255 / 6%);
     position: sticky;
-    bottom: rem-calc(80);
+    bottom: rem-calc(100);
     background: linear-gradient(180deg, rgba(20, 20, 30, 0.95) 0%, rgba(15, 15, 25, 0.98) 100%);
     backdrop-filter: blur(rem-calc(20));
     z-index: 10;
@@ -273,13 +349,14 @@
       font-family: Outfit, sans-serif;
       font-size: rem-calc(16);
       font-weight: 500;
-      padding: rem-calc(14) rem-calc(16);
+      padding: rem-calc(18) rem-calc(20);
       margin: 0 rem-calc(16);
       border-radius: rem-calc(12);
       cursor: pointer;
       width: calc(100% - 2rem);
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       position: relative;
+      overflow: hidden;
 
       &::before {
         content: '';
@@ -307,6 +384,8 @@
       svg {
         transition: all 0.3s ease;
         color: #22c55e;
+        width: rem-calc(22);
+        height: rem-calc(22);
       }
 
       span {
@@ -318,6 +397,21 @@
 
 // Mode collapsed
 .oxm-sidebar.collapsed {
+  .oxm-sidebar__logo {
+    img {
+      width: rem-calc(32);
+      height: rem-calc(32);
+    }
+
+    span {
+      display: none;
+    }
+  }
+
+  .oxm-sidebar__user-plan {
+    display: none; // Cache complètement le bloc utilisateur en mode collapsed
+  }
+
   .oxm-sidebar__nav {
     .nav-section {
       .section-label {
@@ -356,6 +450,7 @@
       justify-content: center;
       padding: rem-calc(14) rem-calc(8);
       border-radius: rem-calc(12);
+      margin: 0 rem-calc(16);
 
       span {
         display: none;
@@ -369,10 +464,13 @@
   }
 
   .oxm-sidebar__store {
+    bottom: rem-calc(120);
+
     .store-btn {
       justify-content: center;
       padding: rem-calc(14) rem-calc(8);
       border-radius: rem-calc(12);
+      margin: 0 rem-calc(16);
 
       span {
         display: none;
@@ -390,7 +488,7 @@
 @media (max-width: 768px) {
   .oxm-sidebar {
     transform: translateX(-100%);
-    width: rem-calc(260);
+    width: rem-calc(280);
 
     &.open {
       transform: translateX(0);
@@ -445,14 +543,16 @@
   }
 }
 
-@keyframes pulse-red {
+@keyframes scrollIndicator {
   0%, 100% {
-    transform: scale(1);
-    opacity: 1;
+    opacity: 0.5;
+    transform: translateY(-50%) translateY(-6px);
+    box-shadow: 0 0 rem-calc(6) rgba(139, 92, 246, 0.2);
   }
   50% {
-    transform: scale(1.1);
     opacity: 0.8;
+    transform: translateY(-50%) translateY(6px);
+    box-shadow: 0 0 rem-calc(8) rgba(139, 92, 246, 0.6);
   }
 }
 

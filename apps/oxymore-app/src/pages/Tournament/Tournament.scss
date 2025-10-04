@@ -342,7 +342,6 @@
   cursor: pointer;
   overflow: hidden;
 
-  // Effet de bordure animée
   &::before {
     content: '';
     position: absolute;
@@ -357,7 +356,6 @@
     animation: borderGlow 3s ease-in-out infinite;
   }
 
-  // Effet de brillance au hover
   &::after {
     content: '';
     position: absolute;
@@ -396,7 +394,7 @@
 .card-image-container {
   position: relative;
   width: 100%;
-  height: rem-calc(750);
+  max-height: rem-calc(200);
   border-radius: rem-calc(16);
   overflow: hidden;
   margin-bottom: rem-calc(16);

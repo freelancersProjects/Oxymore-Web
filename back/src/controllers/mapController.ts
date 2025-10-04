@@ -7,14 +7,13 @@ export const getAllMaps = async (req: Request, res: Response) => {
 };
 
 export const createMap = async (req: Request, res: Response) => {
-  const { map_name, map_code, image_url } = req.body;
-  if (!map_name || !map_code) {
-    res.status(400).json({ message: "map_name et map_code sont requis" });
+  const { map_name, image_url } = req.body;
+  if (!map_name) {
+    res.status(400).json({ message: "map_name est requis" });
     return;
   }
   const newMap = await MapService.createMap({
     map_name,
-    map_code,
     image_url
   });
   res.status(201).json(newMap);

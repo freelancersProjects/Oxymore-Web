@@ -92,3 +92,8 @@ body {
 .read-the-docs { color: #888; }
 
 .oxm-main--no-margin { margin: 0 !important; padding: 0 !important; }
+
+.oxm-main--full-background {
+  margin: 0 !important;
+  padding: 0 !important;
+}

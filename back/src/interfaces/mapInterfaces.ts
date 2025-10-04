@@ -1,19 +1,16 @@
 export interface Map {
   id_map: string;
   map_name: string;
-  map_code: string;
   image_url?: string;
 }
 
 export interface MapInput {
   map_name: string;
-  map_code: string;
   image_url?: string;
 }
 
 export interface MapUpdate {
   map_name?: string;
-  map_code?: string;
   image_url?: string;
 }
 
