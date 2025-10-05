@@ -36,7 +36,7 @@ interface Appointment {
   startTime: string;
   endTime: string;
   location: string;
-  attendees: string[];
+  attendees?: string[]; // Made optional
   type: 'meeting' | 'tournament' | 'training' | 'other' | 'league';
   color: string;
   isCompleted?: boolean;
@@ -58,8 +58,28 @@ const Calendar = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [activeTab, setActiveTab] = useState<'calendar' | 'stats'>('calendar');
 
+  // Fonction pour normaliser les dates sans problème de fuseau horaire (sans heure spécifique)
+  const normalizeDateSimple = (dateString: string): Date => {
+    // Si c'est une date ISO (avec T), extraire juste la partie date
+    if (dateString.includes('T')) {
+      const datePart = dateString.split('T')[0];
+      const [year, month, day] = datePart.split('-').map(Number);
+      return new Date(year, month - 1, day);
+    }
+    // Si c'est déjà au format YYYY-MM-DD
+    const [year, month, day] = dateString.split('-').map(Number);
+    return new Date(year, month - 1, day);
+  };
+
   // Fonction pour normaliser les dates et éviter les problèmes de fuseau horaire
   const normalizeDate = (dateString: string): Date => {
+    // Si c'est une date ISO (avec T), extraire juste la partie date
+    if (dateString.includes('T')) {
+      const datePart = dateString.split('T')[0];
+      const [year, month, day] = datePart.split('-').map(Number);
+      return new Date(year, month - 1, day, 12, 0, 0, 0);
+    }
+    // Si c'est déjà au format YYYY-MM-DD
     const [year, month, day] = dateString.split('-').map(Number);
     return new Date(year, month - 1, day, 12, 0, 0, 0);
   };
@@ -74,46 +94,61 @@ const Calendar = () => {
 
   const getTypeColorUtil = (type: string) => {
     switch (type) {
-      case 'meeting': return '#3b82f6'; // blue-500
-      case 'tournament': return '#8b5cf6'; // purple-500
-      case 'training': return '#10b981'; // green-500
-      case 'other': return '#6b7280'; // gray-500
-      case 'league': return '#f59e0b'; // amber-500
-      default: return '#6366f1'; // indigo-500
+      case 'meeting': return '#3b82f6';
+      case 'training': return '#10b981';
+      case 'tournament': return '#ef4444';
+      case 'league': return '#8b5cf6';
+      case 'other': return '#6b7280';
+      default: return '#6366f1';
     }
   };
 
-  // Fonction pour récupérer les événements du calendrier
   const fetchCalendarEvents = async () => {
     try {
-      const data = await apiService.get<any[]>('/calendar');
-      const calendarAppointments: Appointment[] = data.map((event: any) => ({
-        id: event.id,
-        title: event.title,
-        description: event.description,
-        date: normalizeDate(event.date),
-        startTime: event.start_time,
-        endTime: event.end_time,
-        location: event.location,
-        attendees: event.attendees,
-        type: event.calendar_type as any,
-        color: event.color,
-        isCompleted: event.is_completed
-      }));
+      const response = await apiService.get<any>('/calendar');
+      const data = response.data || response;
 
-      // Remplacer tous les événements calendrier (garder seulement tournois/ligues)
+      if (!Array.isArray(data)) {
+        console.error('Invalid data format received:', data);
+        return;
+      }
+
+      const calendarAppointments: Appointment[] = data.map((event: any) => {
+        const normalizedDate = normalizeDateSimple(event.appointment_date || event.date);
+        normalizedDate.setDate(normalizedDate.getDate() + 1);
+        if (isNaN(normalizedDate.getTime())) {
+          console.error('Invalid date for event:', event.id, 'date:', event.appointment_date || event.date);
+          return null;
+        }
+
+        const appointment = {
+          id: event.id,
+          title: event.title || 'Sans titre',
+          description: event.description || '',
+          date: normalizedDate,
+          startTime: event.start_time,
+          endTime: event.end_time,
+          location: event.location || '',
+          attendees: event.attendees || [],
+          type: event.type || event.calendar_type,
+          color: getTypeColorUtil(event.type || event.calendar_type),
+          isCompleted: event.is_completed || false
+        };
+        return appointment;
+      }).filter(appointment => appointment !== null);
+
       setAppointments(prev => {
         const tournamentLeagueEvents = prev.filter(app =>
           app.id.startsWith('tournament-') || app.id.startsWith('league-')
         );
-        return [...tournamentLeagueEvents, ...calendarAppointments];
+        const newAppointments = [...tournamentLeagueEvents, ...calendarAppointments];
+        return newAppointments;
       });
     } catch (error) {
       console.error('Error fetching calendar events:', error);
     }
   };
 
-  // Fonction pour récupérer les ligues
   const fetchLeagues = async () => {
     try {
       const data = await apiService.get<League[]>('/leagues');
@@ -123,7 +158,6 @@ const Calendar = () => {
     }
   };
 
-  // Fonction pour récupérer les tournois
   const fetchTournaments = async () => {
     try {
       const data = await apiService.get<Tournament[]>('/tournaments');
@@ -215,7 +249,7 @@ const Calendar = () => {
           location: 'Ligue',
           attendees: [`Max: ${league.max_teams || 'N/A'} équipes`],
           type: 'league' as const,
-          color: '#6366f1', // indigo-500
+          color: getTypeColorUtil('league'), // Utiliser la couleur calculée
           isCompleted: startDate < now // Automatiquement marqué comme fait si la date est passée
         });
       }
@@ -242,7 +276,7 @@ const Calendar = () => {
             location: 'Ligue',
             attendees: [`Max: ${league.max_teams || 'N/A'} équipes`],
             type: 'league' as const,
-            color: '#6366f1', // indigo-500
+            color: getTypeColorUtil('league'), // Utiliser la couleur calculée
             isCompleted: endDate < now // Automatiquement marqué comme fait si la date est passée
           });
         }
@@ -276,7 +310,8 @@ const Calendar = () => {
     const leagueAppointments = convertLeaguesToAppointments(leagues);
 
     // Les événements calendrier sont déjà dans le state appointments
-    return [...appointments, ...tournamentAppointments, ...leagueAppointments];
+    const combined = [...appointments, ...tournamentAppointments, ...leagueAppointments];
+    return combined;
   }, [appointments, tournaments, leagues]);
 
   const monthNames = [
@@ -289,8 +324,9 @@ const Calendar = () => {
   const getDaysInMonth = (date: Date) => {
     const year = date.getFullYear();
     const month = date.getMonth();
-    const firstDay = new Date(year, month, 1);
-    const lastDay = new Date(year, month + 1, 0);
+    const firstDay = normalizeDate(`${year}-${String(month + 1).padStart(2, '0')}-01`);
+    const lastDay = normalizeDate(`${year}-${String(month + 2).padStart(2, '0')}-01`);
+    lastDay.setDate(0); // Dernier jour du mois précédent
     const daysInMonth = lastDay.getDate();
     const startingDay = firstDay.getDay();
 
@@ -299,16 +335,29 @@ const Calendar = () => {
       days.push(null);
     }
     for (let i = 1; i <= daysInMonth; i++) {
-      days.push(new Date(year, month, i));
+      days.push(normalizeDate(`${year}-${String(month + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`));
     }
     return days;
   };
 
   const calendarDays = useMemo(() => getDaysInMonth(currentDate), [currentDate]);
 
+  // Fonction pour comparer deux dates sans problème de fuseau horaire
+  const isSameDate = (date1: Date, date2: Date): boolean => {
+    const year1 = date1.getFullYear();
+    const month1 = date1.getMonth();
+    const day1 = date1.getDate();
+
+    const year2 = date2.getFullYear();
+    const month2 = date2.getMonth();
+    const day2 = date2.getDate();
+
+    return year1 === year2 && month1 === month2 && day1 === day2;
+  };
+
   const getAppointmentsForDate = (date: Date) => {
     return allAppointments.filter(appointment => {
-      const matchesDate = appointment.date.toDateString() === date.toDateString();
+      const matchesDate = isSameDate(appointment.date, date);
       const matchesType = filterType === 'all' || appointment.type === filterType;
       const matchesSearch = searchTerm === '' ||
         appointment.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -360,7 +409,7 @@ const Calendar = () => {
 
   const handleDateClick = (date: Date) => {
     // Créer une nouvelle date avec les bonnes valeurs pour éviter les problèmes de fuseau horaire
-    const normalizedDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 12, 0, 0, 0);
+    const normalizedDate = normalizeDate(dateToLocalString(date));
     setSelectedDate(normalizedDate);
     setEditingAppointment(null); // Réinitialiser l'état d'édition
     setActiveTooltipId(null); // Réinitialiser les tooltips
@@ -372,41 +421,39 @@ const Calendar = () => {
       const appointmentData = {
         title: formData.title,
         description: formData.description,
-        date: dateToLocalString(formData.date),
+        appointment_date: dateToLocalString(formData.date), // Changed from 'date' to 'appointment_date'
         start_time: formData.startTime,
         end_time: formData.endTime,
         location: formData.location,
-        calendar_type: formData.type,
+        type: formData.type, // Changed from 'calendar_type' to 'type'
         attendees: formData.attendees,
         color: getTypeColorUtil(formData.type),
         is_completed: formData.isCompleted || false
       };
 
       const response = await apiService.post<any>('/calendar', appointmentData);
+      const event = response.data || response; // Handle both response formats
 
-      const newAppointment: Appointment = {
-        id: response.id,
-        title: response.title,
-        description: response.description,
-        date: new Date(response.date),
-        startTime: response.start_time,
-        endTime: response.end_time,
-        location: response.location,
-        attendees: response.attendees,
-        type: response.calendar_type as any,
-        color: response.color,
-        isCompleted: response.is_completed
-      };
+              const newAppointment: Appointment = {
+                id: event.id,
+                title: event.title,
+                description: event.description,
+                date: formData.date, // Utiliser directement la date du formulaire
+                startTime: event.start_time,
+                endTime: event.end_time,
+                location: event.location,
+                attendees: event.attendees || [],
+                type: event.type || event.calendar_type,
+                color: getTypeColorUtil(event.type || event.calendar_type),
+                isCompleted: event.is_completed
+              };
 
       setAppointments(prev => [...prev, newAppointment]);
       setShowModal(false);
       setActiveTooltipId(null);
-
-      // Recharger les événements pour avoir la version complète
-      await fetchCalendarEvents();
     } catch (error) {
       console.error('Error creating appointment:', error);
-      alert('Erreur lors de la création du rendez-vous');
+      console.error('Erreur lors de la création du rendez-vous');
     }
   };
 
@@ -431,7 +478,6 @@ const Calendar = () => {
 
   const handleUpdateAppointment = async (formData: Appointment) => {
     try {
-      // Si c'est un événement de tournoi/ligue, ne pas permettre la modification via API
       if (formData.id.startsWith('tournament-') || formData.id.startsWith('league-')) {
         setAppointments(prev =>
           prev.map(app => app.id === formData.id ? formData : app)
@@ -445,30 +491,31 @@ const Calendar = () => {
       const appointmentData = {
         title: formData.title,
         description: formData.description,
-        date: dateToLocalString(formData.date),
+        appointment_date: dateToLocalString(formData.date),
         start_time: formData.startTime,
         end_time: formData.endTime,
         location: formData.location,
-        calendar_type: formData.type,
+        type: formData.type,
         attendees: formData.attendees,
         color: getTypeColorUtil(formData.type),
         is_completed: formData.isCompleted || false
       };
 
       const response = await apiService.put<any>(`/calendar/${formData.id}`, appointmentData);
+      const event = response.data || response;
 
       const updatedAppointment: Appointment = {
-        id: response.id,
-        title: response.title,
-        description: response.description,
-        date: new Date(response.date),
-        startTime: response.start_time,
-        endTime: response.end_time,
-        location: response.location,
-        attendees: response.attendees,
-        type: response.calendar_type as any,
-        color: response.color,
-        isCompleted: response.is_completed
+        id: event.id,
+        title: event.title,
+        description: event.description,
+        date: formData.date, // Utiliser directement la date du formulaire
+        startTime: event.start_time,
+        endTime: event.end_time,
+        location: event.location,
+        attendees: event.attendees || [],
+        type: event.type || event.calendar_type,
+        color: getTypeColorUtil(event.type || event.calendar_type),
+        isCompleted: event.is_completed
       };
 
       setAppointments(prev =>
@@ -477,19 +524,14 @@ const Calendar = () => {
       setShowModal(false);
       setEditingAppointment(null);
       setActiveTooltipId(null);
-
-      // Recharger les événements pour avoir la version complète
-      await fetchCalendarEvents();
     } catch (error) {
       console.error('Error updating appointment:', error);
-      alert('Erreur lors de la modification du rendez-vous');
     }
   };
 
   const handleDeleteAppointment = async (appointment: Appointment) => {
-    // Si c'est un tournoi ou une ligue, ne pas permettre la suppression depuis le calendrier
     if (appointment.id.startsWith('tournament-') || appointment.id.startsWith('league-')) {
-      alert('Les tournois et ligues ne peuvent pas être supprimés depuis le calendrier. Veuillez utiliser les pages correspondantes.');
+      console.error('Les tournois et ligues ne peuvent pas être supprimés depuis le calendrier. Veuillez utiliser les pages correspondantes.');
       return;
     }
 
@@ -505,12 +547,8 @@ const Calendar = () => {
         setShowDeleteModal(false);
         setDeleteAppointment(null);
         setActiveTooltipId(null);
-
-        // Recharger les événements pour avoir la version complète
-        await fetchCalendarEvents();
       } catch (error) {
         console.error('Error deleting appointment:', error);
-        alert('Erreur lors de la suppression du rendez-vous');
       }
     }
   };
@@ -841,22 +879,22 @@ const Calendar = () => {
           )}
 
           {/* Participants */}
-          {appointment.attendees.length > 0 && (
+          {appointment.attendees && appointment.attendees.length > 0 && (
             <div className="flex items-start gap-3 p-3 bg-[var(--overlay-hover)] rounded-lg">
               <div className="p-2 bg-purple-500/20 rounded-lg">
                 <Users className="w-5 h-5 text-purple-500" />
               </div>
               <div className="flex-1">
                 <span className="text-[var(--text-primary)] font-semibold text-base">
-                  {appointment.attendees.length} participant{appointment.attendees.length > 1 ? 's' : ''}
+                  {appointment.attendees && appointment.attendees.length} participant{appointment.attendees && appointment.attendees.length > 1 ? 's' : ''}
                 </span>
                 <div className="flex flex-wrap gap-2 mt-2">
-                  {appointment.attendees.slice(0, 4).map((attendee, idx) => (
+                  {appointment.attendees && appointment.attendees.slice(0, 4).map((attendee, idx) => (
                     <span key={idx} className="text-sm bg-[var(--card-background)] px-3 py-1 rounded-full text-[var(--text-secondary)] border border-[var(--border-color)]">
                       {attendee}
                     </span>
                   ))}
-                  {appointment.attendees.length > 4 && (
+                  {appointment.attendees && appointment.attendees.length > 4 && (
                     <span className="text-sm bg-[var(--card-background)] px-3 py-1 rounded-full text-[var(--text-secondary)] border border-[var(--border-color)]">
                       +{appointment.attendees.length - 4} autres
                     </span>
@@ -1029,7 +1067,7 @@ const Calendar = () => {
                     onClick={() => {
                       // Utiliser la date actuellement sélectionnée ou aujourd'hui par défaut
                       const dateToUse = selectedDate || new Date();
-                      const normalizedDate = new Date(dateToUse.getFullYear(), dateToUse.getMonth(), dateToUse.getDate(), 12, 0, 0, 0);
+                      const normalizedDate = normalizeDate(dateToLocalString(dateToUse));
                       setSelectedDate(normalizedDate);
                       setEditingAppointment(null); // Réinitialiser l'état d'édition
                       setActiveTooltipId(null); // Réinitialiser les tooltips
@@ -1445,14 +1483,14 @@ const Calendar = () => {
 
                    <div className="text-xs sm:text-sm font-medium text-[var(--text-primary)] mb-2 mt-3 sm:mt-4">Tournois</div>
                    {[
-                     { type: 'major', label: 'Major', color: '#ef4444', icon: <Trophy className="w-3 h-3 sm:w-4 sm:h-4 text-white" /> },
-                     { type: 'minor', label: 'Minor', color: '#f97316', icon: <Trophy className="w-3 h-3 sm:w-4 sm:h-4 text-white" /> },
-                     { type: 'league', label: 'Ligue', color: '#3b82f6', icon: <Trophy className="w-3 h-3 sm:w-4 sm:h-4 text-white" /> },
-                     { type: 'open', label: 'Open', color: '#10b981', icon: <Trophy className="w-3 h-3 sm:w-4 sm:h-4 text-white" /> }
+                     { type: 'major', label: 'Major', color: '#ef4444', icon: <Trophy className="w-4 h-4 sm:w-5 sm:h-5 text-white" /> },
+                     { type: 'minor', label: 'Minor', color: '#f97316', icon: <Trophy className="w-4 h-4 sm:w-5 sm:h-5 text-white" /> },
+                     { type: 'league', label: 'Ligue', color: '#3b82f6', icon: <Trophy className="w-4 h-4 sm:w-5 sm:h-5 text-white" /> },
+                     { type: 'open', label: 'Open', color: '#10b981', icon: <Trophy className="w-4 h-4 sm:w-5 sm:h-5 text-white" /> }
                    ].map(item => (
                      <div key={item.type} className="flex items-center gap-2 sm:gap-3 p-2 rounded-lg hover:bg-[var(--overlay-hover)] transition-colors">
                        <div
-                         className="w-3 h-3 sm:w-4 sm:h-4 rounded flex items-center justify-center"
+                         className="w-4 h-4 sm:w-5 sm:h-5 rounded flex items-center justify-center"
                          style={{ backgroundColor: item.color }}
                        >
                          {item.icon}
@@ -1464,10 +1502,10 @@ const Calendar = () => {
                    <div className="text-xs sm:text-sm font-medium text-[var(--text-primary)] mb-2 mt-3 sm:mt-4">Ligues</div>
                    <div className="flex items-center gap-2 sm:gap-3 p-2 rounded-lg hover:bg-[var(--overlay-hover)] transition-colors">
                      <div
-                       className="w-3 h-3 sm:w-4 sm:h-4 rounded flex items-center justify-center"
+                       className="w-4 h-4 sm:w-5 sm:h-5 rounded flex items-center justify-center"
                        style={{ backgroundColor: '#6366f1' }}
                      >
-                       <Shield className="w-3 h-3 sm:w-4 sm:h-4 text-white" />
+                       <Shield className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
                      </div>
                      <span className="text-xs sm:text-sm text-[var(--text-secondary)]">Ligues</span>
                    </div>
@@ -1688,6 +1726,8 @@ const Calendar = () => {
   );
 };
 
+export default Calendar;
+
 // Appointment Form Component
 interface AppointmentFormProps {
   appointment?: Appointment | null;
@@ -1702,21 +1742,13 @@ const AppointmentForm: React.FC<AppointmentFormProps> = ({
   onSubmit,
   onCancel
 }) => {
-  const [formData, setFormData] = useState({
-    title: appointment?.title || '',
-    description: appointment?.description || '',
-    date: appointment?.date || (selectedDate ? new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate(), 12, 0, 0, 0) : new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 12, 0, 0, 0)),
-    startTime: appointment?.startTime || '09:00',
-    endTime: appointment?.endTime || '10:00',
-    location: appointment?.location || '',
-    attendees: appointment?.attendees || [],
-    type: appointment?.type || 'meeting' as const
-  });
-
-  const [newAttendee, setNewAttendee] = useState('');
-
-  // Fonction locale pour normaliser les dates dans le formulaire
+  // Fonction locale pour normaliser les dates sans décalage de fuseau horaire
   const normalizeDateLocal = (dateString: string): Date => {
+    if (dateString.includes('T')) {
+      const datePart = dateString.split('T')[0];
+      const [year, month, day] = datePart.split('-').map(Number);
+      return new Date(year, month - 1, day, 12, 0, 0, 0);
+    }
     const [year, month, day] = dateString.split('-').map(Number);
     return new Date(year, month - 1, day, 12, 0, 0, 0);
   };
@@ -1728,6 +1760,35 @@ const AppointmentForm: React.FC<AppointmentFormProps> = ({
     const day = String(date.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
   };
+
+  const [formData, setFormData] = useState({
+    title: appointment?.title || '',
+    description: appointment?.description || '',
+    date: appointment?.date ? appointment.date : (selectedDate ? selectedDate : new Date()),
+    startTime: appointment?.startTime || '09:00',
+    endTime: appointment?.endTime || '10:00',
+    location: appointment?.location || '',
+    attendees: appointment?.attendees || [], // Provide default empty array
+    type: appointment?.type || 'meeting' as const
+  });
+
+  const [newAttendee, setNewAttendee] = useState('');
+
+  // Mettre à jour le formulaire quand l'appointment change
+  useEffect(() => {
+    if (appointment) {
+      setFormData({
+        title: appointment.title,
+        description: appointment.description,
+        date: appointment.date,
+        startTime: appointment.startTime,
+        endTime: appointment.endTime,
+        location: appointment.location,
+        attendees: appointment.attendees || [],
+        type: appointment.type
+      });
+    }
+  }, [appointment]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -1808,7 +1869,7 @@ const AppointmentForm: React.FC<AppointmentFormProps> = ({
           </label>
           <input
             type="date"
-            value={formData.date && !isNaN(formData.date.getTime()) ? dateToLocalStringLocal(formData.date) : dateToLocalStringLocal(new Date())}
+            value={formData.date && !isNaN(formData.date.getTime()) ? dateToLocalStringLocal(formData.date) : dateToLocalStringLocal(normalizeDateLocal(dateToLocalStringLocal(new Date())))}
             onChange={(e) => setFormData(prev => ({ ...prev, date: normalizeDateLocal(e.target.value) }))}
             className="w-full p-3 bg-[var(--overlay-hover)] border border-[var(--border-color)] rounded-lg text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-oxymore-purple"
             required
@@ -1935,6 +1996,4 @@ const AppointmentForm: React.FC<AppointmentFormProps> = ({
     </form>
   );
 };
-
-export default Calendar;
 
