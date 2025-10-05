@@ -15,12 +15,12 @@
     "build:admin": "npm run build --workspace=oxymore-admin",
     "build:app": "npm run build --workspace=oxymore-app",
     "build:site": "npm run build --workspace=oxymore-site",
-    "lint:admin": "npm run lint --workspace=oxymore-admin",
-    "lint:app": "npm run lint --workspace=oxymore-app",
-    "lint:site": "npm run lint --workspace=oxymore-site",
+    "lint:admin": "npm run lint --workspace=oxymore-admin --fix",
+    "lint:app": "npm run lint --workspace=oxymore-app --fix",
+    "lint:site": "npm run lint --workspace=oxymore-site --fix",
     "lint:back": "npm run lint --prefix back",
-    "lint:scss:site": "npm run lint:scss --workspace=oxymore-site",
-    "lint:scss:app": "npm run lint:scss --workspace=oxymore-app",
+    "lint:scss:site": "npm run lint:scss --workspace=oxymore-site --fix",
+    "lint:scss:app": "npm run lint:scss --workspace=oxymore-app --fix",
     "lint:scss:all": "npm run lint:scss:site && npm run lint:scss:app"
   },
   "devDependencies": {

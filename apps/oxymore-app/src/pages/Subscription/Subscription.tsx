@@ -4,6 +4,7 @@ import { OXMButton } from '@oxymore/ui';
 import CheckIcon from '../../assets/svg/check.svg';
 import CrossIcon from '../../assets/svg/cross.svg';
 import { SUBSCRIPTION_PLANS } from './data';
+import type { SubscriptionFeature } from '../../types/subscription';
 import './Subscription.scss';
 
 const Subscription: React.FC = () => {
@@ -87,7 +88,7 @@ const Subscription: React.FC = () => {
                   <h4 className="section-title">CREDITS</h4>
                   <hr className="section-divider" />
                   <div className="feature-list">
-                    {plan.credits.map((feature, featureIndex) => (
+                    {plan.credits.map((feature: SubscriptionFeature, featureIndex: number) => (
                       <div key={featureIndex} className="feature-item">
                         <div className="feature-info">
                           <span className="feature-name">{feature.name}</span>
@@ -109,7 +110,7 @@ const Subscription: React.FC = () => {
                   <h4 className="section-title">INCLUDED</h4>
                   <hr className="section-divider" />
                   <div className="feature-list">
-                    {plan.included.map((feature, featureIndex) => (
+                    {plan.included.map((feature: SubscriptionFeature, featureIndex: number) => (
                       <div key={featureIndex} className="feature-item">
                         <div className="feature-info">
                           <span className="feature-name">{feature.name}</span>

@@ -1,16 +1,4 @@
-export interface SubscriptionFeature {
-  name: string;
-  value: string;
-  included: boolean;
-}
-
-export interface SubscriptionPlan {
-  name: string;
-  price: string;
-  period: string;
-  credits: SubscriptionFeature[];
-  included: SubscriptionFeature[];
-}
+import type { SubscriptionPlan } from '../../../types/subscription';
 
 export const SUBSCRIPTION_PLANS: SubscriptionPlan[] = [
   {

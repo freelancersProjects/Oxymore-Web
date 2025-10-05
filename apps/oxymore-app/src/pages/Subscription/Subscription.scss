@@ -1,4 +1,4 @@
-@import '../../styles/global.scss';
+@import '../../styles/global';
 
 .subscription-page {
   min-height: 100vh;
@@ -32,7 +32,7 @@
   }
 
   .subscription-subtitle {
-    color: rgba(255, 255, 255, 0.8);
+    color: rgb(255 255 255 / 80%);
     font-family: Outfit, sans-serif;
     font-size: rem-calc(18);
     font-weight: 400;
@@ -45,18 +45,17 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: rem-calc(30);
-  justify-items: stretch;
-  align-items: stretch;
+  place-items: stretch stretch;
 }
 
 .subscription-card {
   width: 100%;
   height: 100%;
-  padding: rem-calc(40) rem-calc(24) rem-calc(24) rem-calc(24);
+  padding: rem-calc(40) rem-calc(24) rem-calc(24);
   align-items: flex-start;
   gap: rem-calc(30);
-  background: linear-gradient(135deg, rgba(139, 69, 255, 0.08) 0%, rgba(0, 0, 0, 0.6) 50%, rgba(59, 130, 246, 0.08) 100%);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: linear-gradient(135deg, rgb(139 69 255 / 8%) 0%, rgb(0 0 0 / 60%) 50%, rgb(59 130 246 / 8%) 100%);
+  border: 1px solid rgb(255 255 255 / 10%);
   border-radius: rem-calc(24);
   backdrop-filter: blur(20px);
   transition: all 0.3s ease;
@@ -65,9 +64,9 @@
 
   &:hover {
     transform: translateY(-4px);
-    box-shadow: 0 rem-calc(20) rem-calc(40) rgba(0, 0, 0, 0.3);
-    border-color: rgba(139, 69, 255, 0.3);
-    background: linear-gradient(135deg, rgba(139, 69, 255, 0.12) 0%, rgba(0, 0, 0, 0.65) 50%, rgba(59, 130, 246, 0.12) 100%);
+    box-shadow: 0 rem-calc(20) rem-calc(40) rgb(0 0 0 / 30%);
+    border-color: rgb(139 69 255 / 30%);
+    background: linear-gradient(135deg, rgb(139 69 255 / 12%) 0%, rgb(0 0 0 / 65%) 50%, rgb(59 130 246 / 12%) 100%);
   }
 
   &::before {
@@ -77,7 +76,7 @@
     left: 0;
     right: 0;
     height: 2px;
-    background: linear-gradient(90deg, rgba(139, 69, 255, 0.8), rgba(59, 130, 246, 0.8), rgba(139, 69, 255, 0.8));
+    background: linear-gradient(90deg, rgb(139 69 255 / 80%), rgb(59 130 246 / 80%), rgb(139 69 255 / 80%));
     background-size: 200% 100%;
     opacity: 0;
     transition: all 0.4s ease;
@@ -116,7 +115,7 @@
     }
 
     .plan-period {
-      color: rgba(255, 255, 255, 0.6);
+      color: rgb(255 255 255 / 60%);
       font-family: Outfit, sans-serif;
       font-size: rem-calc(14);
       font-weight: 400;
@@ -158,7 +157,7 @@
   .section-divider {
     width: 100%;
     height: 1px;
-    background: rgba(255, 255, 255, 0.2);
+    background: rgb(255 255 255 / 20%);
     border: none;
     margin-bottom: rem-calc(16);
   }
@@ -187,7 +186,7 @@
     padding-right: rem-calc(16);
 
     .feature-name {
-      color: rgba(255, 255, 255, 0.7);
+      color: rgb(255 255 255 / 70%);
       font-family: Outfit, sans-serif;
       font-size: rem-calc(13);
       font-weight: 400;
@@ -249,26 +248,26 @@
   cursor: pointer;
   transition: all 0.3s ease;
   opacity: 0.5;
-  box-shadow: 0 rem-calc(1) rem-calc(3) 0 rgba(0, 0, 0, 0.20), 0 rem-calc(1) rem-calc(2) 0 rgba(255, 255, 255, 0.80) inset;
+  box-shadow: 0 rem-calc(1) rem-calc(3) 0 rgb(0 0 0 / 20%), 0 rem-calc(1) rem-calc(2) 0 rgb(255 255 255 / 80%) inset;
   width: 100%;
   margin-top: rem-calc(30);
 
   &:hover {
     opacity: 1;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgb(255 255 255 / 10%);
     transform: translateY(-2px);
   }
 }
 
 // Responsive design
-@media (max-width: 1024px) {
+@media (width <= 1024px) {
   .subscription-plans {
     grid-template-columns: 1fr;
     gap: rem-calc(20);
   }
 }
 
-@media (max-width: 768px) {
+@media (width <= 768px) {
   .subscription-page {
     padding: rem-calc(20) rem-calc(16);
   }
@@ -287,11 +286,11 @@
 
   .subscription-card {
     min-height: rem-calc(500);
-    padding: rem-calc(30) rem-calc(20) rem-calc(20) rem-calc(20);
+    padding: rem-calc(30) rem-calc(20) rem-calc(20);
   }
 }
 
-@media (max-width: 480px) {
+@media (width <= 480px) {
   .subscription-header {
     .subscription-title {
       font-size: rem-calc(28);
@@ -304,7 +303,7 @@
 
   .subscription-card {
     min-height: rem-calc(450);
-    padding: rem-calc(20) rem-calc(16) rem-calc(16) rem-calc(16);
+    padding: rem-calc(20) rem-calc(16) rem-calc(16);
     gap: rem-calc(20);
   }
 

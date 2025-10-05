@@ -42,7 +42,7 @@
   &__icon {
     display: flex;
     align-items: center;
-    color: $color-blue;
+    color: $color-white;
     transition: transform 0.25s;
     svg {
       display: block;
@@ -107,7 +107,7 @@
       }
     }
     .oxm-dropdown__icon {
-      color: $color-purple;
+      color: $color-white;
     }
     .oxm-dropdown__menu {
       border: 1.5px solid rgba($color-purple, 0.13);
@@ -141,7 +141,7 @@
       }
     }
     .oxm-dropdown__icon {
-      color: $color-blue;
+      color: $color-white;
     }
     .oxm-dropdown__menu {
       border: 1.5px solid rgba($color-blue, 0.13);

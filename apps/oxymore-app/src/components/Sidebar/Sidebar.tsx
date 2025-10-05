@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
-import { Home, Trophy, Layers, Play, Users, UserPlus, LogOut, ChevronLeft, Bot, Menu, X, Store, Users2, BookOpen, Crown } from "lucide-react";
+import { NavLink } from "react-router-dom";
+import { Home, Trophy, Layers, Play, Users, UserPlus, LogOut, ChevronLeft, Bot, Menu, X, Store, Users2, BookOpen } from "lucide-react";
 import Logo from "./../../assets/logo.png";
 import "./Sidebar.scss";
 
@@ -12,7 +12,6 @@ interface SidebarProps {
 export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false, onToggle }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [showScrollIndicator, setShowScrollIndicator] = useState(false);
-  const navigate = useNavigate();
   const navRef = useRef<HTMLElement>(null);
 
   useEffect(() => {

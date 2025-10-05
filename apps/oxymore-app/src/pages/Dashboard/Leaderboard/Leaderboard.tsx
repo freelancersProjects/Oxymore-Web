@@ -48,7 +48,7 @@ const Leaderboard = () => {
 
   return (
     <section className="leaderboard">
-      <div className="leaderboard-header">
+      <div className="leaderboard-header-dashboard">
         <h2 className="section-title orbitron">Top 10 Leaderboard</h2>
         <OXMDropdown
           options={regions}

@@ -1,8 +1,8 @@
-@import '../../styles/global.scss';
+@import '../../styles/global';
 
 .league-page {
   min-height: 100vh;
-  background: linear-gradient(135deg, rgba(139, 92, 246, 0.05) 0%, rgba(0, 0, 0, 0.8) 50%, rgba(59, 130, 246, 0.05) 100%);
+  background: linear-gradient(135deg, rgb(139 92 246 / 5%) 0%, rgb(0 0 0 / 80%) 50%, rgb(59 130 246 / 5%) 100%);
   padding: 0;
   margin: 0;
   width: 100%;
@@ -27,15 +27,15 @@
   .loading-spinner {
     width: rem-calc(40);
     height: rem-calc(40);
-    border: 3px solid rgba(139, 92, 246, 0.3);
-    border-top: 3px solid #8B5CF6;
+    border: 3px solid rgb(139 92 246 / 30%);
+    border-top: 3px solid $color-purple-violet;
     border-radius: 50%;
     animation: spin 1s linear infinite;
   }
 
   p {
-    color: rgba(255, 255, 255, 0.7);
-    font-family: 'Outfit', sans-serif;
+    color: rgb(255 255 255 / 70%);
+    font-family: Outfit, sans-serif;
     font-size: rem-calc(16);
   }
 }
@@ -53,7 +53,7 @@
   margin-bottom: rem-calc(30);
   gap: rem-calc(30);
 
-  @media (max-width: 768px) {
+  @media (width <= 768px) {
     flex-direction: column;
     gap: rem-calc(20);
   }
@@ -63,10 +63,10 @@
   flex: 1;
 
   .league-title {
-    font-family: 'Orbitron', monospace;
+    font-family: Orbitron, monospace;
     font-size: rem-calc(42);
     font-weight: 700;
-    color: #FFFFFF;
+    color: $color-white;
     margin-bottom: rem-calc(16);
   }
 
@@ -85,30 +85,30 @@
     flex-direction: column;
     align-items: center;
     padding: rem-calc(16);
-    background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(0, 0, 0, 0.6) 100%);
-    border: 1px solid rgba(139, 92, 246, 0.2);
+    background: linear-gradient(135deg, rgb(139 92 246 / 10%) 0%, rgb(0 0 0 / 60%) 100%);
+    border: 1px solid rgb(139 92 246 / 20%);
     border-radius: rem-calc(10);
     min-width: rem-calc(100);
     transition: all 0.3s ease;
 
     &:hover {
       transform: translateY(-2px);
-      border-color: rgba(139, 92, 246, 0.4);
-      box-shadow: 0 rem-calc(8) rem-calc(25) rgba(139, 92, 246, 0.15);
+      border-color: rgb(139 92 246 / 40%);
+      box-shadow: 0 rem-calc(8) rem-calc(25) rgb(139 92 246 / 15%);
     }
 
     .stat-number {
-      font-family: 'Orbitron', monospace;
+      font-family: Orbitron, monospace;
       font-size: rem-calc(20);
       font-weight: 700;
-      color: #8B5CF6;
+      color: $color-purple-violet;
       margin-bottom: rem-calc(2);
     }
 
     .stat-label {
-      font-family: 'Outfit', sans-serif;
+      font-family: Outfit, sans-serif;
       font-size: rem-calc(11);
-      color: rgba(255, 255, 255, 0.7);
+      color: rgb(255 255 255 / 70%);
       text-align: center;
     }
   }
@@ -116,11 +116,11 @@
 
 // Leaderboard
 .league-leaderboard {
-  background: linear-gradient(135deg, rgba(139, 92, 246, 0.08) 0%, rgba(0, 0, 0, 0.6) 50%, rgba(59, 130, 246, 0.08) 100%);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: linear-gradient(135deg, rgb(139 92 246 / 8%) 0%, rgb(0 0 0 / 60%) 50%, rgb(59 130 246 / 8%) 100%);
+  border: 1px solid rgb(255 255 255 / 10%);
   border-radius: rem-calc(16);
   overflow: hidden;
-  box-shadow: 0 rem-calc(20) rem-calc(40) rgba(0, 0, 0, 0.3);
+  box-shadow: 0 rem-calc(20) rem-calc(40) rgb(0 0 0 / 30%);
 }
 
 .leaderboard-header {
@@ -128,14 +128,14 @@
   grid-template-columns: 80px 1fr 60px 60px 60px 80px 80px 80px 120px;
   gap: rem-calc(16);
   padding: rem-calc(20);
-  background: linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(0, 0, 0, 0.8) 100%);
-  border-bottom: 1px solid rgba(139, 92, 246, 0.2);
+  background: linear-gradient(135deg, rgb(139 92 246 / 15%) 0%, rgb(0 0 0 / 80%) 100%);
+  border-bottom: 1px solid rgb(139 92 246 / 20%);
 
   > div {
-    font-family: 'Orbitron', monospace;
+    font-family: Orbitron, monospace;
     font-size: rem-calc(12);
     font-weight: 600;
-    color: #8B5CF6;
+    color: $color-purple-violet;
     text-transform: uppercase;
     letter-spacing: 0.5px;
   }
@@ -151,16 +151,16 @@
   }
 
   &::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.3);
+    background: rgb(0 0 0 / 30%);
   }
 
   &::-webkit-scrollbar-thumb {
-    background: linear-gradient(135deg, #8B5CF6, #3B82F6);
+    background: linear-gradient(135deg, $color-purple-violet, $color-blue-indigo);
     border-radius: 3px;
   }
 
   &::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(135deg, #7C3AED, #2563EB);
+    background: linear-gradient(135deg, $color-purple-dark-violet, $color-blue-dark);
   }
 }
 
@@ -169,20 +169,20 @@
   grid-template-columns: 80px 1fr 60px 60px 60px 80px 80px 80px 120px;
   gap: rem-calc(16);
   padding: rem-calc(16) rem-calc(20);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgb(255 255 255 / 5%);
   transition: all 0.3s ease;
   cursor: pointer;
 
   &:hover {
-    background: rgba(139, 92, 246, 0.05);
-    border-left: 3px solid #8B5CF6;
+    background: rgb(139 92 246 / 5%);
+    border-left: 3px solid $color-purple-violet;
   }
 
   &.top-three {
-    background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(0, 0, 0, 0.4) 100%);
+    background: linear-gradient(135deg, rgb(139 92 246 / 10%) 0%, rgb(0 0 0 / 40%) 100%);
 
     &:hover {
-      background: linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(0, 0, 0, 0.5) 100%);
+      background: linear-gradient(135deg, rgb(139 92 246 / 15%) 0%, rgb(0 0 0 / 50%) 100%);
     }
   }
 
@@ -204,11 +204,11 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: 'Orbitron', monospace;
+    font-family: Orbitron, monospace;
     font-size: rem-calc(14);
     font-weight: 700;
-    color: #FFFFFF;
-    box-shadow: 0 rem-calc(4) rem-calc(12) rgba(0, 0, 0, 0.3);
+    color: $color-white;
+    box-shadow: 0 rem-calc(4) rem-calc(12) rgb(0 0 0 / 30%);
   }
 }
 
@@ -223,14 +223,14 @@
     height: rem-calc(32);
     border-radius: rem-calc(6);
     object-fit: cover;
-    border: 1px solid rgba(139, 92, 246, 0.3);
+    border: 1px solid rgb(139 92 246 / 30%);
   }
 
   .team-name {
-    font-family: 'Outfit', sans-serif;
+    font-family: Outfit, sans-serif;
     font-size: rem-calc(16);
     font-weight: 600;
-    color: #FFFFFF;
+    color: $color-white;
   }
 }
 
@@ -239,24 +239,24 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Orbitron', monospace;
+  font-family: Orbitron, monospace;
   font-size: rem-calc(14);
   font-weight: 600;
 
   &.wins {
-    color: #10B981;
+    color: $color-green-emerald;
   }
 
   &.losses {
-    color: #EF4444;
+    color: $color-red-error;
   }
 
   &.draws {
-    color: #F59E0B;
+    color: $color-orange;
   }
 
   &.points {
-    color: #8B5CF6;
+    color: $color-purple-violet;
     font-size: rem-calc(16);
   }
 
@@ -268,19 +268,19 @@
       font-weight: 700;
 
       &.positive {
-        background: rgba(16, 185, 129, 0.2);
-        color: #10B981;
+        background: rgb(16 185 129 / 20%);
+        color: $color-green-emerald;
       }
 
       &.negative {
-        background: rgba(239, 68, 68, 0.2);
-        color: #EF4444;
+        background: rgb(239 68 68 / 20%);
+        color: $color-red-error;
       }
     }
   }
 
   &.winrate {
-    color: rgba(255, 255, 255, 0.8);
+    color: rgb(255 255 255 / 80%);
   }
 }
 
@@ -301,23 +301,23 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-family: 'Orbitron', monospace;
+      font-family: Orbitron, monospace;
       font-size: rem-calc(10);
       font-weight: 700;
-      color: #FFFFFF;
+      color: $color-white;
       cursor: pointer;
       transition: all 0.2s ease;
 
       &:hover {
         transform: scale(1.1);
-        box-shadow: 0 rem-calc(2) rem-calc(8) rgba(0, 0, 0, 0.3);
+        box-shadow: 0 rem-calc(2) rem-calc(8) rgb(0 0 0 / 30%);
       }
     }
   }
 }
 
 // Responsive Design
-@media (max-width: 1200px) {
+@media (width <= 1200px) {
   .leaderboard-header,
   .leaderboard-row {
     grid-template-columns: 60px 1fr 50px 50px 50px 60px 60px 60px 100px;
@@ -332,7 +332,7 @@
   }
 }
 
-@media (max-width: 768px) {
+@media (width <= 768px) {
   .league-container {
     padding: rem-calc(16) rem-calc(12);
     padding-top: rem-calc(80);

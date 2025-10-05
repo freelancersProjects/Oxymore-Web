@@ -1,28 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { OXMButton, OXMDropdown } from '@oxymore/ui';
+import { OXMDropdown } from '@oxymore/ui';
+import type { TeamStats } from '../../types/league';
 import './League.scss';
-
-interface TeamMatch {
-  opponent: string;
-  result: 'W' | 'L' | 'D';
-  score: string;
-}
-
-interface TeamStats {
-  id: number;
-  rank: number;
-  teamName: string;
-  teamLogo: string;
-  wins: number;
-  losses: number;
-  draws: number;
-  points: number;
-  winstreak: number;
-  lastFiveMatches: TeamMatch[];
-  gamesPlayed: number;
-  winRate: number;
-}
 
 const League: React.FC = () => {
   const [selectedSeason, setSelectedSeason] = useState('2024');
