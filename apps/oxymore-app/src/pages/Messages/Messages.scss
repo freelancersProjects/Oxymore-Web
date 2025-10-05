@@ -1,14 +1,11 @@
-@import "../../styles/global.scss";
+@import "../../styles/global";
 
 .messages-container {
   height: 100vh;
   background: $color-background;
   overflow: hidden;
   position: fixed;
-  top: 0;
-  left: 280px;
-  right: 0;
-  bottom: 0;
+  inset: 0 0 0 280px;
   z-index: 1;
 }
 
@@ -418,7 +415,7 @@
           .message-content {
             background: $color-purple;
             color: $color-white;
-            border-radius: rem-calc(18) rem-calc(18) rem-calc(4) rem-calc(18);
+            border-radius: rem-calc(18) rem-calc(18) rem-calc(4);
           }
         }
 
@@ -588,8 +585,9 @@
 @keyframes slideDown {
   from {
     opacity: 0;
-    transform: translateY(-10px);
+    transform: translateY(rem-calc(-10));
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -598,7 +596,7 @@
 
 // Sidebar collapsed state
 .oxm-layout.sidebar-collapsed .messages-container {
-  left: 80px;
+  left: rem-calc(80);
 }
 
 // Responsive Design

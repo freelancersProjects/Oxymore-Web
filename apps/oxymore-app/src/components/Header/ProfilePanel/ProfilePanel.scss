@@ -9,10 +9,10 @@
   max-width: 100vw;
   display: flex;
   flex-direction: column;
-  background: rgb(12 14 22 / 96%);
+  background: linear-gradient(180deg, rgb(139 92 246 / 8%) 0%, rgb(12 14 22 / 96%) 100%);
   backdrop-filter: blur(rem-calc(8));
-  border-left: 1px solid rgb(255 255 255 / 12%);
-  box-shadow: 0 rem-calc(18) rem-calc(40) rgb(0 0 0 / 40%);
+  border-left: 1px solid rgb(139 92 246 / 20%);
+  box-shadow: none;
   z-index: 450;
   transition: width 0.2s ease;
   padding: rem-calc(14);
@@ -67,6 +67,7 @@
     overflow-y: auto;
     scrollbar-width: none;
     -ms-overflow-style: none;
+
     &::-webkit-scrollbar {
       display: none;
     }
@@ -298,6 +299,7 @@
       /* Masquer la scrollbar */
       scrollbar-width: none;
       -ms-overflow-style: none;
+
       &::-webkit-scrollbar {
         display: none;
       }
@@ -312,6 +314,7 @@
         justify-content: center;
         cursor: pointer;
         transition: all 0.3s ease;
+
         /* Empêche de dépasser du container au hover */
         will-change: transform;
 
@@ -414,10 +417,19 @@
         margin-bottom: rem-calc(2);
       }
 
-      .meta {
+      .meta-level {
         color: rgb(255 255 255 / 60%);
         font-size: rem-calc(12);
-        margin-bottom: rem-calc(4);
+        margin: rem-calc(4);
+        display: flex;
+        align-items: center;
+
+        img{
+          width: rem-calc(20);
+          height: rem-calc(20);
+          margin-left: rem-calc(6);
+          object-fit: contain;
+        }
       }
 
       .elo-badge {
@@ -858,7 +870,6 @@
         z-index: 1;
       }
 
-      // Style spécial pour le bouton de notification
       &.notification-action {
         &:hover {
           background: rgb(139 92 246 / 15%);
@@ -1047,17 +1058,17 @@
   font-weight: bold;
   text-transform: uppercase;
   color: white;
-  border: 2px solid rgba(255, 255, 255, 0.1);
+  border: 2px solid rgb(255 255 255 / 10%);
 
   &.profile-panel__avatar & {
-    border-color: rgba(255, 255, 255, 0.2);
+    border-color: rgb(255 255 255 / 20%);
   }
 
   &.friend-avatar & {
-    border-color: rgba(255, 255, 255, 0.1);
+    border-color: rgb(255 255 255 / 10%);
   }
 
   &.group-avatar & {
-    border-color: rgba(255, 255, 255, 0.15);
+    border-color: rgb(255 255 255 / 15%);
   }
 }

@@ -1,13 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import { db } from '../config/db';
-
-export interface Role {
-  id: string;
-  name: string;
-  description?: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
+import { Role } from '../interfaces/roleInterfaces';
 
 export const createRole = async (roleData: Omit<Role, 'id' | 'createdAt' | 'updatedAt'>): Promise<Role> => {
   const id = uuidv4();

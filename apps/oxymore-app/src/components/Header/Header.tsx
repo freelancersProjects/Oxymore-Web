@@ -7,9 +7,10 @@ import ProfilePanel from './ProfilePanel/ProfilePanel';
 
 interface HeaderProps {
   isSidebarCollapsed?: boolean;
+  hideProfileSidebar?: boolean;
 }
 
-export const Header: React.FC<HeaderProps> = ({ isSidebarCollapsed = false }) => {
+export const Header: React.FC<HeaderProps> = ({ isSidebarCollapsed = false, hideProfileSidebar = false }) => {
   const [notifOpen, setNotifOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -107,12 +108,14 @@ export const Header: React.FC<HeaderProps> = ({ isSidebarCollapsed = false }) =>
         </div>
       </header>
 
-      <ProfilePanel
-        collapsed={profileCollapsed}
-        onToggle={toggleProfile}
-        onNotificationClick={openNotif}
-        unreadCount={unreadCount}
-      />
+      {!hideProfileSidebar && (
+        <ProfilePanel
+          collapsed={profileCollapsed}
+          onToggle={toggleProfile}
+          onNotificationClick={openNotif}
+          unreadCount={unreadCount}
+        />
+      )}
     </>
   );
 };

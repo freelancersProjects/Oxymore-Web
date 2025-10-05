@@ -1,4 +1,4 @@
-import express, { Request, Response } from 'express';
+import express from 'express';
 import * as calendarController from '../controllers/calendarController';
 
 const router = express.Router();

@@ -37,6 +37,7 @@ import Activity from './pages/Activity/Activity';
 import Calendar from './pages/Calendar/Calendar';
 import Jira from './pages/Jira/Jira';
 import Confluence from './pages/Confluence/Confluence';
+import WebPConverter from './pages/WebPConverter/WebPConverter';
 
 const queryClient = new QueryClient();
 
@@ -120,6 +121,7 @@ const App = () => {
                             <Route path="calendar" element={<Calendar />} />
                             <Route path="jira" element={<Jira />} />
                             <Route path="confluence" element={<Confluence />} />
+                            <Route path="webp-converter" element={<WebPConverter />} />
                             <Route path="settings" element={<Settings />} />
                           </Route>
                         </Routes>

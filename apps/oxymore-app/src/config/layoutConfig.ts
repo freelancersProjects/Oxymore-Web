@@ -6,6 +6,7 @@ export const LAYOUT_CONFIG = {
     '/register',
     '/forgot-password',
     '/reset-password',
+    '/game-selection',
     // '/oxia'
   ],
 
@@ -20,13 +21,19 @@ export const LAYOUT_CONFIG = {
     '/oxia',
     '/highlights',
     '/demo',
-    '/messages'
+    '/messages',
+    '/subscription'
   ],
 
   // Pages qui doivent masquer seulement le footer
   noFooterPages: [
     '/dashboard',
     '/admin'
+  ],
+
+  //Pages qui doivent masquer seulement la sidebar du profile
+  noProfileSidebarPages: [
+    '/subscription'
   ]
 };
 
@@ -53,12 +60,17 @@ export const shouldHideFooter = (pathname: string): boolean => {
          LAYOUT_CONFIG.noFooterPages.some(page => pathname.startsWith(page));
 };
 
+// Fonction utilitaire pour vérifier si une page doit masquer la sidebar du profile
+export const shouldHideProfileSidebar = (pathname: string): boolean => {
+  return LAYOUT_CONFIG.noProfileSidebarPages.some(page => pathname.startsWith(page));
+};
+
 // Fonction pour ajouter une classe CSS au body selon la page
 export const updateBodyClass = (pathname: string): void => {
   const body = document.body;
 
   // Supprimer toutes les classes de layout précédentes
-  body.classList.remove('fullscreen-layout', 'no-sidebar', 'no-header', 'no-footer');
+  body.classList.remove('fullscreen-layout', 'no-sidebar', 'no-header', 'no-footer', 'no-profile-sidebar');
 
   // Ajouter les classes appropriées
   if (isFullscreenPage(pathname)) {
@@ -72,6 +84,9 @@ export const updateBodyClass = (pathname: string): void => {
     }
     if (shouldHideFooter(pathname)) {
       body.classList.add('no-footer');
+    }
+    if (shouldHideProfileSidebar(pathname)) {
+      body.classList.add('no-profile-sidebar');
     }
   }
 };

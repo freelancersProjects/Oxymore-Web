@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import {
   Trophy,
   Search,
@@ -9,6 +10,11 @@ import {
   ArrowDownRight,
   History as HistoryIcon,
   X,
+  Crown,
+  Star,
+  Globe,
+  Users,
+  DollarSign
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { CustomCheckbox } from '../../components/CustomCheckbox/CustomCheckbox';
@@ -17,6 +23,7 @@ import { Tournament, TournamentFilterState } from '../../types';
 import { format } from 'date-fns';
 import Loader from '../../components/Loader/Loader';
 import Tooltip from '../../components/Tooltip/Tooltip';
+import './Tournaments.css';
 
 const Tournaments = () => {
   const [tournaments, setTournaments] = useState<Tournament[]>([]);
@@ -146,6 +153,46 @@ const Tournaments = () => {
     }
   ];
 
+  // Données pour les cartes de tournois
+  const tournamentCards = [
+    {
+      id: 'major',
+      title: 'Major Tournaments',
+      description: 'Tournois majeurs avec les plus gros prix',
+      icon: Crown,
+      color: 'from-red-500 to-red-600',
+      bgColor: 'bg-red-500/10',
+      textColor: 'text-red-400',
+      count: tournaments.filter(t => t.type === 'major').length,
+      totalPrize: tournaments.filter(t => t.type === 'major').reduce((sum, t) => sum + (t.cash_prize || 0), 0),
+      activeCount: tournaments.filter(t => t.type === 'major' && calculateStatus(t.start_date, t.end_date) === 'active').length
+    },
+    {
+      id: 'minor',
+      title: 'Minor Tournaments',
+      description: 'Tournois intermédiaires pour tous les niveaux',
+      icon: Star,
+      color: 'from-orange-500 to-orange-600',
+      bgColor: 'bg-orange-500/10',
+      textColor: 'text-orange-400',
+      count: tournaments.filter(t => t.type === 'minor').length,
+      totalPrize: tournaments.filter(t => t.type === 'minor').reduce((sum, t) => sum + (t.cash_prize || 0), 0),
+      activeCount: tournaments.filter(t => t.type === 'minor' && calculateStatus(t.start_date, t.end_date) === 'active').length
+    },
+    {
+      id: 'external',
+      title: 'External Tournaments',
+      description: 'Tournois externes et partenaires',
+      icon: Globe,
+      color: 'from-blue-500 to-blue-600',
+      bgColor: 'bg-blue-500/10',
+      textColor: 'text-blue-400',
+      count: tournaments.filter(t => t.type === 'external').length,
+      totalPrize: tournaments.filter(t => t.type === 'external').reduce((sum, t) => sum + (t.cash_prize || 0), 0),
+      activeCount: tournaments.filter(t => t.type === 'external' && calculateStatus(t.start_date, t.end_date) === 'active').length
+    }
+  ];
+
   const handleSelectAll = (checked: boolean) => {
     setSelectAll(checked);
     setSelectedTournaments(checked ? filteredTournaments.map(t => t.id_tournament) : []);
@@ -257,6 +304,56 @@ const Tournaments = () => {
           <Trophy className="w-5 h-5" />
           Create Tournament
         </button>
+      </div>
+
+      {/* Tournament Type Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        {tournamentCards.map((card) => (
+          <motion.div
+            key={card.id}
+            whileHover={{ scale: 1.02, y: -5 }}
+            className={`tournament-card ${card.bgColor} relative overflow-hidden rounded-2xl p-6 cursor-pointer transition-all duration-300`}
+            onClick={() => {
+              setFilters(prev => ({ ...prev, type: card.id }));
+              setShowFilters(true);
+            }}
+          >
+            {/* Background Image on Hover */}
+            <div className="tournament-card-bg absolute inset-0 opacity-0 transition-opacity duration-300 bg-cover bg-center bg-no-repeat"></div>
+
+            {/* Content */}
+            <div className="relative z-10">
+              <div className="flex items-center justify-between mb-4">
+                <div className={`p-3 rounded-xl bg-gradient-to-r ${card.color}`}>
+                  <card.icon className="w-6 h-6 text-white" />
+                </div>
+                <div className="text-right">
+                  <div className={`text-2xl font-bold ${card.textColor}`}>{card.count}</div>
+                  <div className="text-sm text-secondary">Tournaments</div>
+                </div>
+              </div>
+
+              <h3 className="text-lg font-semibold text-primary mb-2">{card.title}</h3>
+              <p className="text-secondary text-sm mb-4">{card.description}</p>
+
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-2">
+                    <Users className="w-4 h-4 text-secondary" />
+                    <span className="text-sm text-secondary">{card.activeCount} Active</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <DollarSign className="w-4 h-4 text-secondary" />
+                    <span className="text-sm text-secondary">€{card.totalPrize.toLocaleString()}</span>
+                  </div>
+                </div>
+                <div className={`px-3 py-1 rounded-full text-xs font-medium ${card.textColor} ${card.bgColor}`}>
+                  {card.id.toUpperCase()}
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        ))}
       </div>
 
       {/* Stats */}
@@ -492,4 +589,3 @@ const Tournaments = () => {
 };
 
 export default Tournaments;
-

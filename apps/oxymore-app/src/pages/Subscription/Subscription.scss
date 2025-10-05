@@ -1,0 +1,319 @@
+@import '../../styles/global';
+
+.subscription-page {
+  min-height: 100vh;
+  background: $color-background;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  position: relative;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.subscription-container {
+  max-width: 100%;
+  width: 100%;
+  padding: rem-calc(40) rem-calc(20);
+}
+
+.subscription-header {
+  text-align: left;
+  margin-bottom: rem-calc(60);
+
+  .subscription-title {
+    color: $color-white;
+    font-family: Orbitron, sans-serif;
+    font-size: rem-calc(48);
+    font-weight: 600;
+    margin-bottom: rem-calc(16);
+    line-height: 1.2;
+  }
+
+  .subscription-subtitle {
+    color: rgb(255 255 255 / 80%);
+    font-family: Outfit, sans-serif;
+    font-size: rem-calc(18);
+    font-weight: 400;
+    line-height: 1.6;
+    max-width: rem-calc(600);
+  }
+}
+
+.subscription-plans {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: rem-calc(30);
+  place-items: stretch stretch;
+}
+
+.subscription-card {
+  width: 100%;
+  height: 100%;
+  padding: rem-calc(40) rem-calc(24) rem-calc(24);
+  align-items: flex-start;
+  gap: rem-calc(30);
+  background: linear-gradient(135deg, rgb(139 69 255 / 8%) 0%, rgb(0 0 0 / 60%) 50%, rgb(59 130 246 / 8%) 100%);
+  border: 1px solid rgb(255 255 255 / 10%);
+  border-radius: rem-calc(24);
+  backdrop-filter: blur(20px);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 rem-calc(20) rem-calc(40) rgb(0 0 0 / 30%);
+    border-color: rgb(139 69 255 / 30%);
+    background: linear-gradient(135deg, rgb(139 69 255 / 12%) 0%, rgb(0 0 0 / 65%) 50%, rgb(59 130 246 / 12%) 100%);
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, rgb(139 69 255 / 80%), rgb(59 130 246 / 80%), rgb(139 69 255 / 80%));
+    background-size: 200% 100%;
+    opacity: 0;
+    transition: all 0.4s ease;
+    animation: borderGlow 3s ease-in-out infinite;
+  }
+}
+
+.plan-content {
+  display: block;
+  flex: 1;
+}
+
+.plan-header {
+  width: 100%;
+  text-align: left;
+
+  .plan-name {
+    color: $color-white;
+    font-family: Orbitron, sans-serif;
+    font-size: rem-calc(24);
+    font-weight: 600;
+    margin-bottom: rem-calc(8);
+  }
+
+  .plan-price-container {
+    display: flex;
+    align-items: baseline;
+    gap: rem-calc(4);
+    margin-bottom: rem-calc(20);
+
+    .plan-price {
+      color: $color-white;
+      font-family: Orbitron, sans-serif;
+      font-size: rem-calc(18);
+      font-weight: 600;
+    }
+
+    .plan-period {
+      color: rgb(255 255 255 / 60%);
+      font-family: Outfit, sans-serif;
+      font-size: rem-calc(14);
+      font-weight: 400;
+    }
+  }
+
+  .upgrade-button {
+    width: 100%;
+    padding: rem-calc(16) rem-calc(20);
+    font-size: rem-calc(16);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: rem-calc(30);
+  }
+}
+
+.plan-features {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: rem-calc(24);
+}
+
+.feature-section {
+  width: 100%;
+
+  .section-title {
+    color: $color-white;
+    font-family: Outfit, sans-serif;
+    font-size: rem-calc(14);
+    font-weight: 600;
+    line-height: 110%; /* 15.4px */
+    margin-bottom: rem-calc(8);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .section-divider {
+    width: 100%;
+    height: 1px;
+    background: rgb(255 255 255 / 20%);
+    border: none;
+    margin-bottom: rem-calc(16);
+  }
+}
+
+.feature-list {
+  display: flex;
+  flex-direction: column;
+  gap: rem-calc(8);
+  width: 100%;
+}
+
+.feature-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: rem-calc(4) 0;
+  width: 100%;
+  min-height: rem-calc(40);
+
+  .feature-info {
+    display: flex;
+    flex-direction: column;
+    gap: rem-calc(2);
+    flex: 1;
+    padding-right: rem-calc(16);
+
+    .feature-name {
+      color: rgb(255 255 255 / 70%);
+      font-family: Outfit, sans-serif;
+      font-size: rem-calc(13);
+      font-weight: 400;
+      line-height: 1.4;
+      width: 100%;
+    }
+
+    .feature-value {
+      color: $color-white;
+      font-family: Outfit, sans-serif;
+      font-size: rem-calc(12);
+      font-weight: 500;
+      line-height: 1.4;
+      width: 100%;
+    }
+  }
+
+  .feature-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: rem-calc(20);
+    height: rem-calc(20);
+    flex-shrink: 0;
+
+    .check-icon,
+    .cross-icon {
+      width: rem-calc(16);
+      height: rem-calc(16);
+    }
+
+    .check-icon {
+      filter: brightness(0) saturate(100%) invert(1);
+    }
+
+    .cross-icon {
+      filter: brightness(0) saturate(100%) invert(1);
+      opacity: 0.5;
+    }
+  }
+}
+
+.view-all-features-button {
+  display: flex;
+  padding: rem-calc(16) rem-calc(20);
+  justify-content: center;
+  align-items: center;
+  gap: rem-calc(10);
+  align-self: stretch;
+  border-radius: rem-calc(10);
+  border: 1px solid $color-white;
+  background: transparent;
+  color: $color-white;
+  font-family: Outfit, sans-serif;
+  font-size: rem-calc(14);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  opacity: 0.5;
+  box-shadow: 0 rem-calc(1) rem-calc(3) 0 rgb(0 0 0 / 20%), 0 rem-calc(1) rem-calc(2) 0 rgb(255 255 255 / 80%) inset;
+  width: 100%;
+  margin-top: rem-calc(30);
+
+  &:hover {
+    opacity: 1;
+    background: rgb(255 255 255 / 10%);
+    transform: translateY(-2px);
+  }
+}
+
+// Responsive design
+@media (width <= 1024px) {
+  .subscription-plans {
+    grid-template-columns: 1fr;
+    gap: rem-calc(20);
+  }
+}
+
+@media (width <= 768px) {
+  .subscription-page {
+    padding: rem-calc(20) rem-calc(16);
+  }
+
+  .subscription-header {
+    margin-bottom: rem-calc(40);
+
+    .subscription-title {
+      font-size: rem-calc(36);
+    }
+
+    .subscription-subtitle {
+      font-size: rem-calc(16);
+    }
+  }
+
+  .subscription-card {
+    min-height: rem-calc(500);
+    padding: rem-calc(30) rem-calc(20) rem-calc(20);
+  }
+}
+
+@media (width <= 480px) {
+  .subscription-header {
+    .subscription-title {
+      font-size: rem-calc(28);
+    }
+
+    .subscription-subtitle {
+      font-size: rem-calc(14);
+    }
+  }
+
+  .subscription-card {
+    min-height: rem-calc(450);
+    padding: rem-calc(20) rem-calc(16) rem-calc(16);
+    gap: rem-calc(20);
+  }
+
+  .plan-header {
+    .plan-name {
+      font-size: rem-calc(20);
+    }
+
+    .plan-price {
+      font-size: rem-calc(16);
+    }
+  }
+}

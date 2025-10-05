@@ -10,11 +10,10 @@ export const getAllMaps = async (): Promise<Map[]> => {
 export const createMap = async (data: Omit<Map, "id_map">): Promise<Map> => {
   const id_map = crypto.randomUUID();
   await db.query(
-    "INSERT INTO map (id_map, map_name, map_code, image_url) VALUES (?, ?, ?, ?)",
+    "INSERT INTO map (id_map, map_name, image_url) VALUES (?, ?, ?)",
     [
       id_map,
       data.map_name,
-      data.map_code,
       data.image_url ?? null
     ]
   );

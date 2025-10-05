@@ -37,6 +37,7 @@ import tournamentTeamRoutes from "./routes/tournamentTeam";
 import tournamentMapRoutes from "./routes/tournamentMap";
 import kanbanRoutes from "./routes/kanban";
 import calendarRoutes from "./routes/calendar";
+import gameRoutes from "./routes/game";
 
 export const registerRoutes = (app: Express) => {
   // Routes publiques
@@ -77,4 +78,5 @@ export const registerRoutes = (app: Express) => {
   app.use("/api/tournament-maps", tournamentMapRoutes);
   app.use("/api/kanban", kanbanRoutes);
   app.use("/api/calendar", calendarRoutes);
+  app.use("/api/games", gameRoutes);
 };
