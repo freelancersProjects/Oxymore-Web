@@ -10,7 +10,6 @@
   border-right: 1px solid rgb(139 92 246 / 20%);
   display: flex;
   flex-direction: column;
-  z-index: 1200;
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
   &.collapsed {
@@ -281,15 +280,42 @@
           margin-left: auto;
           letter-spacing: 0.5px;
           box-shadow: 0 2px 8px rgb(139 92 246 / 30%);
-          text-transform: uppercase;
         }
+      }
+    }
+
+    .team-warning {
+      display: flex;
+      align-items: center;
+      gap: rem-calc(6);
+      margin: rem-calc(8) rem-calc(16) 0;
+      padding: rem-calc(6) rem-calc(12);
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      border-radius: rem-calc(6);
+      color: #ef4444;
+      font-size: rem-calc(12);
+      font-weight: 500;
+      animation: pulse-warning 2s infinite;
+
+      svg {
+        width: rem-calc(14);
+        height: rem-calc(14);
+      }
+    }
+
+    @keyframes pulse-warning {
+      0%, 100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.7;
       }
     }
   }
 
   &__logout {
-    margin-top: auto;
-    padding: rem-calc(20) rem-calc(16);
+    padding: rem-calc(10) rem-calc(16);
     border-top: 1px solid rgb(255 255 255 / 6%);
     position: sticky;
     bottom: 0;
@@ -326,15 +352,15 @@
         width: rem-calc(22);
         height: rem-calc(22);
       }
-    }
+      }
   }
 
   &__store {
     margin-top: rem-calc(16);
-    padding: rem-calc(20) rem-calc(16);
+    padding: rem-calc(10) rem-calc(16);
     border-top: 1px solid rgb(255 255 255 / 6%);
     position: sticky;
-    bottom: rem-calc(100);
+    bottom: rem-calc(60);
     background: linear-gradient(180deg, rgb(20 20 30 / 95%) 0%, rgb(15 15 25 / 98%) 100%);
     backdrop-filter: blur(rem-calc(20));
     z-index: 10;
@@ -447,10 +473,14 @@
 
   .oxm-sidebar__logout {
     button {
+      display: flex;
+      align-items: center;
       justify-content: center;
-      padding: rem-calc(14) rem-calc(8);
+      padding: rem-calc(12) rem-calc(8);
       border-radius: rem-calc(12);
-      margin: 0 rem-calc(16);
+      margin: 0;
+      width: rem-calc(48);
+      height: rem-calc(48);
 
       span {
         display: none;
@@ -464,13 +494,17 @@
   }
 
   .oxm-sidebar__store {
-    bottom: rem-calc(120);
+    bottom: rem-calc(60);
 
     .store-btn {
+      display: flex;
+      align-items: center;
       justify-content: center;
-      padding: rem-calc(14) rem-calc(8);
+      padding: rem-calc(12) rem-calc(8);
       border-radius: rem-calc(12);
-      margin: 0 rem-calc(16);
+      margin: 0;
+      width: rem-calc(48);
+      height: rem-calc(48);
 
       span {
         display: none;
@@ -515,7 +549,7 @@
   position: fixed;
   top: rem-calc(20);
   left: rem-calc(20);
-  z-index: 1300;
+  z-index: 1000;
   background: rgb(30 20 50 / 95%);
   border: none;
   border-radius: rem-calc(8);

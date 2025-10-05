@@ -50,7 +50,7 @@ export default function App() {
           {({ hideSidebar, hideHeader, hideProfileSidebar, isOxia }) => {
             const location = useLocation();
             const isLoginPage = location.pathname === '/login' || location.pathname === '/register';
-            const isFullBackgroundPage = location.pathname === '/leagues' || location.pathname === '/subscription';
+            const isFullBackgroundPage = location.pathname === '/leagues' || location.pathname === '/subscription' || location.pathname === '/teams';
             return (
               <div className={`oxm-layout${isSidebarCollapsed ? " sidebar-collapsed" : ""}${isOxia ? " oxia-mode" : ""}`}>
                 {!hideSidebar && (
