@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { NavLink } from "react-router-dom";
-import { Home, Trophy, Layers, Play, Users, UserPlus, LogOut, ChevronLeft, Bot, Menu, X, Store, Users2, BookOpen } from "lucide-react";
+import { Home, Trophy, Layers, Play, Users, UserPlus, LogOut, ChevronLeft, Bot, Menu, X, Store, Users2, BookOpen, AlertTriangle } from "lucide-react";
 import Logo from "./../../assets/logo.png";
 import "./Sidebar.scss";
 
@@ -12,7 +12,27 @@ interface SidebarProps {
 export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false, onToggle }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [showScrollIndicator, setShowScrollIndicator] = useState(false);
+  const [hasTeam, setHasTeam] = useState(false); // Simuler si l'utilisateur a une équipe
   const navRef = useRef<HTMLElement>(null);
+
+  // Charger l'état de la sidebar depuis localStorage
+  useEffect(() => {
+    const savedSidebarState = localStorage.getItem('oxymore-sidebar-collapsed');
+    if (savedSidebarState !== null) {
+      const isCollapsedFromStorage = JSON.parse(savedSidebarState);
+      if (isCollapsedFromStorage !== isCollapsed && onToggle) {
+        onToggle();
+      }
+    }
+  }, []);
+
+  // Sauvegarder l'état de la sidebar dans localStorage
+  const handleToggle = () => {
+    if (onToggle) {
+      onToggle();
+      localStorage.setItem('oxymore-sidebar-collapsed', JSON.stringify(!isCollapsed));
+    }
+  };
 
   useEffect(() => {
     const checkScrollable = () => {
@@ -64,7 +84,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false, onToggle 
           if (isCollapsed) {
             const target = e.target as HTMLElement;
             if (target.closest("button") || target.closest("a")) return;
-            if (onToggle) onToggle();
+            if (onToggle) handleToggle();
           }
         }}
       >
@@ -94,7 +114,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false, onToggle 
             </div>
           </div>
           {onToggle && !isCollapsed && (
-            <button className="oxm-sidebar__toggle" onClick={onToggle}>
+            <button className="oxm-sidebar__toggle" onClick={handleToggle}>
               <ChevronLeft size={16} />
             </button>
           )}
@@ -149,6 +169,12 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false, onToggle 
                 <NavLink to="/teams" onClick={handleNavClick} className="oxm-sidebar-nav-link">
                   <Users size={20} /> <span>Teams</span>
                 </NavLink>
+                {!hasTeam && !isCollapsed && (
+                  <div className="team-warning">
+                    <AlertTriangle size={14} />
+                    <span>Pas d'équipe</span>
+                  </div>
+                )}
               </li>
               <li>
                 <NavLink to="/friends" onClick={handleNavClick} className="oxm-sidebar-nav-link">

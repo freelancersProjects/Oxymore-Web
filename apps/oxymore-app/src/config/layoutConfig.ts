@@ -6,7 +6,7 @@ export const LAYOUT_CONFIG = {
     '/register',
     '/forgot-password',
     '/reset-password',
-    '/game-selection',
+    '/game-selection'
     // '/oxia'
   ],
 

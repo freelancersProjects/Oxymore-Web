@@ -21,9 +21,11 @@ import {
   Filter,
   Grid3X3,
   CalendarDays,
-  Shield
+  Shield,
+  Video
 } from 'lucide-react';
 import Dropdown from '../../components/Dropdown/Dropdown';
+import VideoCall from '../../components/VideoCall/VideoCall';
 import { apiService } from '../../api/apiService';
 import { Tournament } from '../../types/tournament';
 import { League } from '../../types/league';
@@ -37,6 +39,7 @@ interface Appointment {
   endTime: string;
   location: string;
   attendees?: string[]; // Made optional
+  participants?: string[]; // Added for video call compatibility
   type: 'meeting' | 'tournament' | 'training' | 'other' | 'league';
   color: string;
   isCompleted?: boolean;
@@ -57,6 +60,8 @@ const Calendar = () => {
   const [filterType, setFilterType] = useState<string>('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [activeTab, setActiveTab] = useState<'calendar' | 'stats'>('calendar');
+  const [showVideoCall, setShowVideoCall] = useState(false);
+  const [videoCallAppointment, setVideoCallAppointment] = useState<Appointment | null>(null);
 
   // Fonction pour normaliser les dates sans problème de fuseau horaire (sans heure spécifique)
   const normalizeDateSimple = (dateString: string): Date => {
@@ -539,6 +544,16 @@ const Calendar = () => {
     setShowDeleteModal(true);
   };
 
+  const handleStartVideoCall = (appointment: Appointment) => {
+    setVideoCallAppointment(appointment);
+    setShowVideoCall(true);
+  };
+
+  const handleCloseVideoCall = () => {
+    setShowVideoCall(false);
+    setVideoCallAppointment(null);
+  };
+
   const confirmDelete = async () => {
     if (deleteAppointment) {
       try {
@@ -814,6 +829,19 @@ const Calendar = () => {
             </div>
           </div>
           <div className="flex gap-2">
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleStartVideoCall(appointment);
+                handleTooltipActionClick(e);
+              }}
+              className="p-2.5 hover:bg-green-500/10 rounded-lg transition-colors border border-green-500/20"
+              title="Appel vidéo"
+            >
+              <Video className="w-4 h-4 text-green-500" />
+            </motion.button>
             <motion.button
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
@@ -1722,6 +1750,15 @@ const Calendar = () => {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Video Call Component */}
+      {videoCallAppointment && (
+        <VideoCall
+          appointment={videoCallAppointment}
+          isOpen={showVideoCall}
+          onClose={handleCloseVideoCall}
+        />
+      )}
     </div>
   );
 };

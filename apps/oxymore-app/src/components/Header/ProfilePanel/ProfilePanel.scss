@@ -13,7 +13,7 @@
   backdrop-filter: blur(rem-calc(8));
   border-left: 1px solid rgb(139 92 246 / 20%);
   box-shadow: none;
-  z-index: 450;
+  z-index: 600;
   transition: width 0.2s ease;
   padding: rem-calc(14);
   overflow: visible;
@@ -77,6 +77,12 @@
     position: relative;
     width: rem-calc(48);
     height: rem-calc(48);
+    cursor: pointer;
+    transition: transform 0.3s ease;
+
+    &:hover {
+      transform: scale(1.05);
+    }
 
     img {
       width: 100%;
@@ -388,6 +394,12 @@
 
     .profile-panel__avatar {
       position: relative;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+
+      &:hover {
+        transform: scale(1.05);
+      }
 
       img {
         width: rem-calc(48);
