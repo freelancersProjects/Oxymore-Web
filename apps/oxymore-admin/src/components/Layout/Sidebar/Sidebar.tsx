@@ -18,7 +18,6 @@ import {
   LogOut,
   CheckSquare,
   FileText,
-  Lock,
   Zap
 } from 'lucide-react';
 import { useSidebar } from '../../../context/SidebarContext';
@@ -77,7 +76,7 @@ const NavLink = ({ item }: { item: NavItem }) => {
   const { isCollapsed, isMobile, closeMobileMenu } = useSidebar();
   const isActive = location.pathname === item.path;
 
-  const handleClick = (e: React.MouseEvent) => {
+  const handleClick = () => {
     if (isMobile) {
       closeMobileMenu();
     }

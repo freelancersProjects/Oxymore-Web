@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect, useRef } from 'react';
+import { motion } from 'framer-motion';
 import {
   Plus,
   Save,
@@ -10,22 +10,14 @@ import {
   Calendar,
   User,
   Tag,
-  CheckSquare,
   Folder,
   Download,
   Settings,
   Upload,
   File,
   FolderPlus,
-  MoreVertical,
-  Copy,
-  Move,
-  Share,
-  Eye,
-  EyeOff,
   Star,
-  Archive,
-  RefreshCw
+
 } from 'lucide-react';
 import Dropdown from '../../components/Dropdown/Dropdown';
 import RichTextEditor from '../../components/RichTextEditor/RichTextEditor';
@@ -42,7 +34,7 @@ interface ConfluenceDocument {
   updatedAt: string;
   isPublished: boolean;
   category: 'documentation' | 'meeting-notes' | 'procedures' | 'knowledge-base' | 'reunion' | 'formation';
-  folderId?: string;
+  folderId?: string | null;
   jiraReferences?: string[];
   type: 'document' | 'file';
   fileSize?: number;
@@ -72,7 +64,7 @@ interface UploadedFile {
   size: number;
   type: string;
   url: string;
-  folderId?: string;
+  folderId?: string | null;
   uploadedAt: string;
 }
 
@@ -170,7 +162,7 @@ const Confluence: React.FC = () => {
 
     if (searchQuery) {
       filtered = filtered.filter(item =>
-        item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (item.type === 'document' ? (item as ConfluenceDocument).title : (item as UploadedFile).name).toLowerCase().includes(searchQuery.toLowerCase()) ||
         (item.type === 'document' && (item as ConfluenceDocument).content.toLowerCase().includes(searchQuery.toLowerCase())) ||
         (item.type === 'document' && (item as ConfluenceDocument).tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase())))
       );
@@ -264,8 +256,8 @@ const Confluence: React.FC = () => {
       if (itemToDelete.type === 'document') {
         setDocuments(prev => prev.filter(doc => doc.id !== itemToDelete.id));
         if (currentDocument?.id === itemToDelete.id) {
-          setCurrentDocument(null);
-          setIsEditing(false);
+        setCurrentDocument(null);
+        setIsEditing(false);
         }
       } else {
         setUploadedFiles(prev => prev.filter(file => file.id !== itemToDelete.id));
@@ -354,45 +346,45 @@ const Confluence: React.FC = () => {
   return (
     <div className="min-h-screen bg-[var(--background)] p-4">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
+      {/* Header */}
         <div className="mb-8">
-          <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <div className="p-3 bg-gradient-to-r from-green-500/20 to-emerald-600/20 rounded-xl">
                 <FileText className="w-8 h-8 text-green-500" />
               </div>
-              <div>
+        <div>
                 <h1 className="text-3xl font-bold text-[var(--text-primary)]">Confluence</h1>
                 <p className="text-[var(--text-secondary)]">Gestion de documents et fichiers</p>
               </div>
-            </div>
+        </div>
 
-            <div className="flex items-center gap-3">
-              {/* Bouton de changement de vue */}
+        <div className="flex items-center gap-3">
+          {/* Bouton de changement de vue */}
               <div className="flex bg-[var(--card-background)] rounded-lg p-1 border border-[var(--border-color)]">
-                <button
+            <button
                   onClick={() => setViewMode('grid')}
                   className={`px-3 py-2 rounded-md text-sm transition-colors flex items-center gap-2 ${
                     viewMode === 'grid'
                       ? 'bg-green-500 text-white'
-                      : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
-                  }`}
-                >
+                  : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+              }`}
+            >
                   <Folder className="w-4 h-4" />
                   Grille
-                </button>
-                <button
-                  onClick={() => setViewMode('list')}
+            </button>
+            <button
+              onClick={() => setViewMode('list')}
                   className={`px-3 py-2 rounded-md text-sm transition-colors flex items-center gap-2 ${
-                    viewMode === 'list'
+                viewMode === 'list'
                       ? 'bg-green-500 text-white'
-                      : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
-                  }`}
-                >
+                  : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+              }`}
+            >
                   <FileText className="w-4 h-4" />
-                  Liste
-                </button>
-              </div>
+              Liste
+            </button>
+          </div>
 
               {/* Boutons d'action */}
               <motion.button
@@ -415,71 +407,71 @@ const Confluence: React.FC = () => {
                 Upload
               </motion.button>
 
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => setShowCreateModal(true)}
-                className="bg-gradient-to-r from-green-500 to-emerald-600 text-white px-4 py-2 rounded-lg font-semibold flex items-center gap-2 shadow-lg hover:shadow-xl transition-all duration-300"
-              >
-                <Plus className="w-4 h-4" />
-                Nouveau document
-              </motion.button>
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => setShowCreateModal(true)}
+            className="bg-gradient-to-r from-green-500 to-emerald-600 text-white px-4 py-2 rounded-lg font-semibold flex items-center gap-2 shadow-lg hover:shadow-xl transition-all duration-300"
+          >
+            <Plus className="w-4 h-4" />
+            Nouveau document
+          </motion.button>
             </div>
-          </div>
         </div>
+      </div>
 
-        {/* Filtres */}
+      {/* Filtres */}
         <div className="bg-[var(--card-background)] rounded-2xl p-4 mb-6 shadow-lg border border-[var(--border-color)]">
           <div className="flex flex-col lg:flex-row gap-4 items-stretch lg:items-center">
-            <div className="flex-1 relative">
+        <div className="flex-1 relative">
               <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-secondary)]" />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Rechercher dans les documents et fichiers..."
                 className="w-full pl-10 pr-4 py-2 bg-[var(--overlay-hover)] border border-[var(--border-color)] rounded-lg text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-green-500"
-              />
-            </div>
-
-            <Dropdown
-              options={[
-                { value: 'all', label: 'Toutes les catégories' },
-                { value: 'documentation', label: 'Documentation' },
-                { value: 'meeting-notes', label: 'Notes de réunion' },
-                { value: 'procedures', label: 'Procédures' },
-                { value: 'knowledge-base', label: 'Base de connaissances' },
-                { value: 'reunion', label: 'Réunion' },
-                { value: 'formation', label: 'Formation' }
-              ]}
-              value={selectedCategory}
-              onChange={setSelectedCategory}
-              placeholder="Filtrer par catégorie"
-              className="w-48"
-            />
-
-            <Dropdown
-              options={[
-                { value: '', label: 'Tous les dossiers' },
-                ...folders.map(folder => ({ value: folder.id, label: folder.name }))
-              ]}
-              value={selectedFolderId || ''}
-              onChange={(value) => setSelectedFolderId(value || null)}
-              placeholder="Filtrer par dossier"
-              className="w-48"
-            />
-          </div>
+          />
         </div>
 
-        {/* Layout principal */}
+        <Dropdown
+          options={[
+            { value: 'all', label: 'Toutes les catégories' },
+            { value: 'documentation', label: 'Documentation' },
+            { value: 'meeting-notes', label: 'Notes de réunion' },
+            { value: 'procedures', label: 'Procédures' },
+            { value: 'knowledge-base', label: 'Base de connaissances' },
+            { value: 'reunion', label: 'Réunion' },
+            { value: 'formation', label: 'Formation' }
+          ]}
+          value={selectedCategory}
+          onChange={setSelectedCategory}
+          placeholder="Filtrer par catégorie"
+          className="w-48"
+        />
+
+          <Dropdown
+            options={[
+              { value: '', label: 'Tous les dossiers' },
+              ...folders.map(folder => ({ value: folder.id, label: folder.name }))
+            ]}
+            value={selectedFolderId || ''}
+            onChange={(value) => setSelectedFolderId(value || null)}
+            placeholder="Filtrer par dossier"
+            className="w-48"
+          />
+          </div>
+      </div>
+
+      {/* Layout principal */}
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           {/* Panneau latéral - Dossiers */}
-          <div className="lg:col-span-1">
+        <div className="lg:col-span-1">
             <div className="bg-[var(--card-background)] rounded-2xl p-4 shadow-lg border border-[var(--border-color)]">
-              <h3 className="font-semibold text-[var(--text-primary)] mb-4 flex items-center gap-2">
-                <Folder className="w-5 h-5" />
+            <h3 className="font-semibold text-[var(--text-primary)] mb-4 flex items-center gap-2">
+                  <Folder className="w-5 h-5" />
                 Dossiers ({folders.length})
-              </h3>
+            </h3>
 
               <div className="space-y-2">
                 <motion.button
@@ -526,107 +518,107 @@ const Confluence: React.FC = () => {
                       <div className="flex items-center gap-1">
                         <span className={`text-xs px-2 py-1 rounded-full ${
                           selectedFolderId === folder.id
-                            ? 'bg-white/20 text-white'
+                                ? 'bg-white/20 text-white'
                             : 'bg-[var(--overlay-hover)] text-[var(--text-secondary)]'
-                        }`}>
+                            }`}>
                           {filteredItems.filter(item => item.folderId === folder.id).length}
-                        </span>
+                            </span>
                       </div>
                     </div>
                   </motion.div>
                 ))}
               </div>
-            </div>
           </div>
+        </div>
 
           {/* Zone principale - Documents et fichiers */}
           <div className="lg:col-span-3">
-            {currentDocument ? (
+          {currentDocument ? (
               <div className="bg-[var(--card-background)] rounded-2xl p-6 shadow-lg border border-[var(--border-color)]">
-                {/* Actions */}
+              {/* Actions */}
                 <div className="flex items-center justify-between mb-6">
                   <div className="flex items-center gap-3">
-                    {isEditing ? (
-                      <>
-                        <motion.button
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.95 }}
-                          onClick={saveDocument}
-                          className="bg-green-500 text-white px-4 py-2 rounded-lg font-medium flex items-center gap-2"
-                        >
-                          <Save className="w-4 h-4" />
-                          Sauvegarder
-                        </motion.button>
-                        <button
-                          onClick={() => setIsEditing(false)}
-                          className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] px-4 py-2 rounded-lg font-medium"
-                        >
-                          Annuler
-                        </button>
-                      </>
-                    ) : (
+                  {isEditing ? (
+                    <>
                       <motion.button
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
-                        onClick={() => setIsEditing(true)}
+                        onClick={saveDocument}
                         className="bg-green-500 text-white px-4 py-2 rounded-lg font-medium flex items-center gap-2"
                       >
-                        <Edit className="w-4 h-4" />
-                        Modifier
+                        <Save className="w-4 h-4" />
+                        Sauvegarder
                       </motion.button>
-                    )}
-                  </div>
-
-                  <div className="flex items-center gap-4 text-sm text-[var(--text-secondary)]">
-                    <div className="flex items-center gap-2">
-                      <User className="w-4 h-4" />
-                      {currentDocument.author}
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Calendar className="w-4 h-4" />
-                      {new Date(currentDocument.updatedAt).toLocaleDateString('fr-FR')}
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Tag className="w-4 h-4" />
-                      {getCategoryLabel(currentDocument.category)}
-                    </div>
-                    {currentDocument.isPublished && (
-                      <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                        Publié
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                {/* Éditeur/Visualiseur */}
-                <div className="min-h-[500px]">
-                  {isEditing ? (
-                    <RichTextEditor
-                      content={currentDocument.content}
-                      onChange={handleContentChange}
-                      placeholder="Commencez à écrire votre document..."
-                      className="min-h-[500px]"
-                    />
+                      <button
+                        onClick={() => setIsEditing(false)}
+                          className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] px-4 py-2 rounded-lg font-medium"
+                      >
+                        Annuler
+                      </button>
+                    </>
                   ) : (
-                    <div
-                      className="prose prose-sm max-w-none min-h-[500px] p-4 bg-[var(--hover-background)] rounded-lg"
-                      style={{
-                        fontSize: '14px',
-                        lineHeight: '1.6'
-                      }}
-                      dangerouslySetInnerHTML={{
-                        __html: currentDocument.content.replace(
-                          /<h1>/g, '<h1 style="font-size: 2rem; font-weight: bold; margin: 1rem 0;">'
-                        ).replace(
-                          /<h2>/g, '<h2 style="font-size: 1.5rem; font-weight: bold; margin: 0.8rem 0;">'
-                        ).replace(
-                          /<h3>/g, '<h3 style="font-size: 1.25rem; font-weight: bold; margin: 0.6rem 0;">'
-                        )
-                      }}
-                    />
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={() => setIsEditing(true)}
+                        className="bg-green-500 text-white px-4 py-2 rounded-lg font-medium flex items-center gap-2"
+                    >
+                      <Edit className="w-4 h-4" />
+                      Modifier
+                    </motion.button>
                   )}
                 </div>
+
+                <div className="flex items-center gap-4 text-sm text-[var(--text-secondary)]">
+                  <div className="flex items-center gap-2">
+                    <User className="w-4 h-4" />
+                    {currentDocument.author}
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Calendar className="w-4 h-4" />
+                    {new Date(currentDocument.updatedAt).toLocaleDateString('fr-FR')}
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Tag className="w-4 h-4" />
+                    {getCategoryLabel(currentDocument.category)}
+                  </div>
+                  {currentDocument.isPublished && (
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                      Publié
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Éditeur/Visualiseur */}
+              <div className="min-h-[500px]">
+                {isEditing ? (
+                  <RichTextEditor
+                    content={currentDocument.content}
+                    onChange={handleContentChange}
+                    placeholder="Commencez à écrire votre document..."
+                    className="min-h-[500px]"
+                  />
+                ) : (
+                  <div
+                    className="prose prose-sm max-w-none min-h-[500px] p-4 bg-[var(--hover-background)] rounded-lg"
+                    style={{
+                      fontSize: '14px',
+                      lineHeight: '1.6'
+                    }}
+                    dangerouslySetInnerHTML={{
+                      __html: currentDocument.content.replace(
+                        /<h1>/g, '<h1 style="font-size: 2rem; font-weight: bold; margin: 1rem 0;">'
+                      ).replace(
+                        /<h2>/g, '<h2 style="font-size: 1.5rem; font-weight: bold; margin: 0.8rem 0;">'
+                      ).replace(
+                        /<h3>/g, '<h3 style="font-size: 1.25rem; font-weight: bold; margin: 0.6rem 0;">'
+                      )
+                    }}
+                  />
+                )}
+              </div>
               </div>
             ) : (
               <div className="bg-[var(--card-background)] rounded-2xl p-6 shadow-lg border border-[var(--border-color)]">
@@ -645,7 +637,7 @@ const Confluence: React.FC = () => {
                         animate={{ opacity: 1, scale: 1 }}
                         whileHover={{ scale: 1.02 }}
                         draggable
-                        onDragStart={(e) => handleDragStart(e, item.id)}
+                        onDragStart={(e) => handleDragStart(e as unknown as React.DragEvent, item.id)}
                         className="p-4 bg-[var(--overlay-hover)] rounded-xl border border-[var(--border-color)] hover:border-green-500/50 transition-all duration-200 cursor-pointer"
                         onClick={() => {
                           if (item.type === 'document') {
@@ -663,8 +655,8 @@ const Confluence: React.FC = () => {
                             )}
                             <div className="flex-1 min-w-0">
                               <h4 className="font-medium text-[var(--text-primary)] truncate">
-                                {item.title}
-                              </h4>
+                                {item.type === 'document' ? (item as ConfluenceDocument).title : (item as UploadedFile).name}
+                    </h4>
                               <p className="text-xs text-[var(--text-secondary)] mt-1">
                                 {item.type === 'document'
                                   ? getCategoryLabel((item as ConfluenceDocument).category)
@@ -694,8 +686,8 @@ const Confluence: React.FC = () => {
                             >
                               <Trash2 className="w-4 h-4 text-red-500" />
                             </button>
-                          </div>
-                        </div>
+                    </div>
+                  </div>
 
                         <div className="flex items-center justify-between text-xs text-[var(--text-muted)]">
                           <span>
@@ -711,8 +703,8 @@ const Confluence: React.FC = () => {
                           )}
                         </div>
                       </motion.div>
-                    ))}
-                  </div>
+                        ))}
+                      </div>
                 ) : (
                   <div className="space-y-2">
                     {filteredItems.map((item) => (
@@ -722,7 +714,7 @@ const Confluence: React.FC = () => {
                         animate={{ opacity: 1, y: 0 }}
                         whileHover={{ scale: 1.01 }}
                         draggable
-                        onDragStart={(e) => handleDragStart(e, item.id)}
+                        onDragStart={(e) => handleDragStart(e as unknown as React.DragEvent, item.id)}
                         className="flex items-center justify-between p-4 bg-[var(--overlay-hover)] rounded-lg border border-[var(--border-color)] hover:border-green-500/50 transition-all duration-200 cursor-pointer"
                         onClick={() => {
                           if (item.type === 'document') {
@@ -739,7 +731,7 @@ const Confluence: React.FC = () => {
                           )}
                           <div className="flex-1 min-w-0">
                             <h4 className="font-medium text-[var(--text-primary)] truncate">
-                              {item.title}
+                              {item.type === 'document' ? (item as ConfluenceDocument).title : (item as UploadedFile).name}
                             </h4>
                             <p className="text-sm text-[var(--text-secondary)] truncate">
                               {item.type === 'document'
@@ -747,7 +739,7 @@ const Confluence: React.FC = () => {
                                 : formatFileSize((item as UploadedFile).size)
                               }
                             </p>
-                          </div>
+                    </div>
                           <div className="flex items-center gap-2 text-xs text-[var(--text-muted)]">
                             <span>
                               {new Date(item.type === 'document'
@@ -759,9 +751,9 @@ const Confluence: React.FC = () => {
                               <span className="px-2 py-1 bg-green-500/10 text-green-500 rounded-full">
                                 Publié
                               </span>
-                            )}
-                          </div>
-                        </div>
+                  )}
+                </div>
+              </div>
 
                         <div className="flex items-center gap-1 ml-4">
                           <button
@@ -784,7 +776,7 @@ const Confluence: React.FC = () => {
                           >
                             <Trash2 className="w-4 h-4 text-red-500" />
                           </button>
-                        </div>
+            </div>
                       </motion.div>
                     ))}
                   </div>
@@ -796,18 +788,18 @@ const Confluence: React.FC = () => {
                     <h3 className="text-lg font-medium text-[var(--text-primary)] mb-2">
                       Aucun élément trouvé
                     </h3>
-                    <p className="text-[var(--text-secondary)] mb-4">
+              <p className="text-[var(--text-secondary)] mb-4">
                       {searchQuery ? 'Aucun résultat pour votre recherche.' : 'Commencez par créer un document ou uploader un fichier.'}
-                    </p>
+              </p>
                     <div className="flex justify-center gap-3">
-                      <motion.button
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        onClick={() => setShowCreateModal(true)}
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => setShowCreateModal(true)}
                         className="bg-green-500 text-white px-4 py-2 rounded-lg font-medium"
-                      >
-                        Créer un document
-                      </motion.button>
+              >
+                Créer un document
+              </motion.button>
                       <motion.button
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
@@ -819,64 +811,64 @@ const Confluence: React.FC = () => {
                     </div>
                   </div>
                 )}
-              </div>
-            )}
-          </div>
+            </div>
+          )}
         </div>
+      </div>
 
         {/* Modals */}
         {/* Modal de création de document */}
-        {showCreateModal && (
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-            <div className="bg-[var(--card-background)] rounded-2xl p-6 w-full max-w-md mx-auto">
-              <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-4">Créer un nouveau document</h3>
-              <p className="text-[var(--text-secondary)] mb-6">
-                Choisissez une catégorie pour votre nouveau document.
-              </p>
-              <div className="space-y-3">
-                {[
-                  { value: 'documentation', label: 'Documentation', icon: FileText, color: 'bg-blue-500' },
-                  { value: 'meeting-notes', label: 'Notes de réunion', icon: Calendar, color: 'bg-green-500' },
-                  { value: 'procedures', label: 'Procédures', icon: Settings, color: 'bg-orange-500' },
-                  { value: 'knowledge-base', label: 'Base de connaissances', icon: Tag, color: 'bg-purple-500' },
-                  { value: 'reunion', label: 'Réunion', icon: Calendar, color: 'bg-indigo-500' },
-                  { value: 'formation', label: 'Formation', icon: Download, color: 'bg-pink-500' }
-                ].map((category) => (
-                  <button
-                    key={category.value}
-                    onClick={() => createNewDocument(category.value as ConfluenceDocument['category'])}
-                    className="w-full p-4 rounded-lg border border-[var(--border-color)] hover:border-green-500 transition-colors text-left"
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className={`w-10 h-10 rounded-lg ${category.color} flex items-center justify-center`}>
-                        <category.icon className="w-5 h-5 text-white" />
-                      </div>
-                      <div>
-                        <h4 className="font-medium text-[var(--text-primary)]">{category.label}</h4>
-                        <p className="text-sm text-[var(--text-secondary)]">
-                          {category.value === 'documentation' && 'Documentation technique et guides'}
-                          {category.value === 'meeting-notes' && 'Notes et comptes-rendus de réunions'}
-                          {category.value === 'procedures' && 'Procédures et processus'}
-                          {category.value === 'knowledge-base' && 'Base de connaissances partagée'}
-                          {category.value === 'reunion' && 'Comptes-rendus et notes de réunions'}
-                          {category.value === 'formation' && 'Documents de formation et tutoriels'}
-                        </p>
-                      </div>
-                    </div>
-                  </button>
-                ))}
-              </div>
-              <div className="flex justify-end gap-3 mt-6">
+      {showCreateModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-[var(--card-background)] rounded-2xl p-6 w-full max-w-md mx-auto">
+            <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-4">Créer un nouveau document</h3>
+            <p className="text-[var(--text-secondary)] mb-6">
+              Choisissez une catégorie pour votre nouveau document.
+            </p>
+            <div className="space-y-3">
+              {[
+                { value: 'documentation', label: 'Documentation', icon: FileText, color: 'bg-blue-500' },
+                { value: 'meeting-notes', label: 'Notes de réunion', icon: Calendar, color: 'bg-green-500' },
+                { value: 'procedures', label: 'Procédures', icon: Settings, color: 'bg-orange-500' },
+                { value: 'knowledge-base', label: 'Base de connaissances', icon: Tag, color: 'bg-purple-500' },
+                { value: 'reunion', label: 'Réunion', icon: Calendar, color: 'bg-indigo-500' },
+                { value: 'formation', label: 'Formation', icon: Download, color: 'bg-pink-500' }
+              ].map((category) => (
                 <button
-                  onClick={() => setShowCreateModal(false)}
-                  className="px-4 py-2 text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+                  key={category.value}
+                  onClick={() => createNewDocument(category.value as ConfluenceDocument['category'])}
+                    className="w-full p-4 rounded-lg border border-[var(--border-color)] hover:border-green-500 transition-colors text-left"
                 >
-                  Annuler
+                  <div className="flex items-center gap-3">
+                    <div className={`w-10 h-10 rounded-lg ${category.color} flex items-center justify-center`}>
+                      <category.icon className="w-5 h-5 text-white" />
+                    </div>
+                    <div>
+                      <h4 className="font-medium text-[var(--text-primary)]">{category.label}</h4>
+                      <p className="text-sm text-[var(--text-secondary)]">
+                        {category.value === 'documentation' && 'Documentation technique et guides'}
+                        {category.value === 'meeting-notes' && 'Notes et comptes-rendus de réunions'}
+                        {category.value === 'procedures' && 'Procédures et processus'}
+                        {category.value === 'knowledge-base' && 'Base de connaissances partagée'}
+                        {category.value === 'reunion' && 'Comptes-rendus et notes de réunions'}
+                        {category.value === 'formation' && 'Documents de formation et tutoriels'}
+                      </p>
+                    </div>
+                  </div>
                 </button>
-              </div>
+              ))}
+            </div>
+            <div className="flex justify-end gap-3 mt-6">
+              <button
+                onClick={() => setShowCreateModal(false)}
+                className="px-4 py-2 text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+              >
+                Annuler
+              </button>
             </div>
           </div>
-        )}
+        </div>
+      )}
 
         {/* Modal de création de dossier */}
         {showFolderModal && (
@@ -989,34 +981,34 @@ const Confluence: React.FC = () => {
           </div>
         )}
 
-        {/* Modal de suppression */}
-        {showDeleteModal && (
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-            <div className="bg-[var(--card-background)] rounded-2xl p-6 w-full max-w-md mx-auto">
+      {/* Modal de suppression */}
+      {showDeleteModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-[var(--card-background)] rounded-2xl p-6 w-full max-w-md mx-auto">
               <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-4">Supprimer l'élément</h3>
-              <p className="text-[var(--text-secondary)] mb-6">
-                Êtes-vous sûr de vouloir supprimer "{itemToDelete?.title}" ? Cette action est irréversible.
-              </p>
-              <div className="flex justify-end gap-3">
-                <button
-                  onClick={() => {
-                    setShowDeleteModal(false);
+            <p className="text-[var(--text-secondary)] mb-6">
+                Êtes-vous sûr de vouloir supprimer "{itemToDelete?.type === 'document' ? (itemToDelete as ConfluenceDocument).title : (itemToDelete as UploadedFile).name}" ? Cette action est irréversible.
+            </p>
+            <div className="flex justify-end gap-3">
+              <button
+                onClick={() => {
+                  setShowDeleteModal(false);
                     setItemToDelete(null);
-                  }}
-                  className="px-4 py-2 text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
-                >
-                  Annuler
-                </button>
-                <button
-                  onClick={confirmDelete}
-                  className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
-                >
-                  Supprimer
-                </button>
-              </div>
+                }}
+                className="px-4 py-2 text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+              >
+                Annuler
+              </button>
+              <button
+                onClick={confirmDelete}
+                className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
+              >
+                Supprimer
+              </button>
             </div>
           </div>
-        )}
+        </div>
+      )}
       </div>
     </div>
   );
