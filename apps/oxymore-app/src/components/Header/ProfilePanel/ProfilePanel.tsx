@@ -237,7 +237,7 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({
           <ChevronLeft size={16} />
         </button>
         <div className="profile-panel__collapsed">
-          <div className="profile-panel__avatar-collapsed">
+          <div className="profile-panel__avatar-collapsed" onClick={() => navigate("/profile")}>
             <Avatar
               src={user?.avatar_url}
               username={user?.username || "User"}
@@ -367,7 +367,7 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({
       {!collapsed && (
         <>
           <div className="profile-panel__header">
-            <div className="profile-panel__avatar">
+            <div className="profile-panel__avatar" onClick={() => navigate("/profile")}>
               <Avatar
                 src={user?.avatar_url}
                 username={user?.username || "User"}

@@ -1,0 +1,707 @@
+@import '../../../styles/global.scss';
+@import './TeamTooltipModal.scss';
+
+.team-search-container {
+  min-height: 100vh;
+  background: $color-background;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  position: relative;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.team-search-content {
+  max-width: 100%;
+  width: 100%;
+  padding: rem-calc(40) rem-calc(20);
+
+  .all-teams-section{
+    padding: 0 rem-calc(20);
+  }
+}
+
+.team-search-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh;
+  gap: rem-calc(20);
+  color: $color-white;
+
+  .loading-spinner {
+    width: rem-calc(60);
+    height: rem-calc(60);
+    border-radius: 50%;
+    background: linear-gradient(135deg, $color-purple-violet, $color-blue-indigo);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 rem-calc(10) rem-calc(20) rgba(139, 92, 246, 0.3);
+  }
+
+  p {
+    font-family: 'Outfit', sans-serif;
+    font-size: rem-calc(16);
+    color: rgba(255, 255, 255, 0.7);
+  }
+}
+
+.team-search-header {
+  margin-bottom: rem-calc(40);
+  text-align: center;
+
+  .header-content {
+    max-width: rem-calc(600);
+    margin: 0 auto;
+
+    .page-title {
+      font-family: 'Orbitron', monospace;
+      font-size: rem-calc(48);
+      font-weight: 700;
+      color: $color-white;
+      margin-bottom: rem-calc(16);
+    }
+
+    .page-description {
+      font-family: 'Outfit', sans-serif;
+      font-size: rem-calc(18);
+      color: rgba(255, 255, 255, 0.7);
+      line-height: 1.6;
+      margin-bottom: rem-calc(32);
+    }
+  }
+}
+
+.search-filters-section {
+  margin-bottom: rem-calc(40);
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+  gap: rem-calc(20);
+  margin-bottom: rem-calc(24);
+  max-width: rem-calc(800);
+  margin-left: auto;
+  margin-right: auto;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  .search-input-wrapper {
+    flex: 1;
+    min-width: rem-calc(300);
+    position: relative;
+
+    .search-icon {
+      position: absolute;
+      left: rem-calc(16);
+      top: 50%;
+      transform: translateY(-50%);
+      width: rem-calc(20);
+      height: rem-calc(20);
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    .search-input {
+      width: 100%;
+      padding: rem-calc(16) rem-calc(16) rem-calc(16) rem-calc(48);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: rem-calc(12);
+      color: $color-white;
+      font-family: 'Outfit', sans-serif;
+      font-size: rem-calc(16);
+      transition: all 0.3s ease;
+
+      &::placeholder {
+        color: rgba(255, 255, 255, 0.5);
+      }
+
+      &:focus {
+        outline: none;
+        border-color: rgba(139, 92, 246, 0.5);
+        background: rgba(255, 255, 255, 0.08);
+        box-shadow: 0 0 rem-calc(20) rgba(139, 92, 246, 0.2);
+      }
+    }
+  }
+
+  .view-controls {
+    display: flex;
+    gap: rem-calc(8);
+
+    .view-btn {
+      width: rem-calc(44);
+      height: rem-calc(44);
+      border-radius: rem-calc(8);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.05);
+      color: rgba(255, 255, 255, 0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      cursor: pointer;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(139, 92, 246, 0.5);
+        color: $color-white;
+      }
+
+      &.active {
+        background: rgba(139, 92, 246, 0.2);
+        border-color: rgba(139, 92, 246, 0.5);
+        color: $color-white;
+      }
+    }
+  }
+}
+
+.filters-container {
+  display: flex;
+  gap: rem-calc(12);
+  justify-content: center;
+  flex-wrap: wrap;
+
+  .filter-btn {
+    padding: rem-calc(12) rem-calc(20);
+    border-radius: rem-calc(8);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.7);
+    font-family: 'Outfit', sans-serif;
+    font-size: rem-calc(14);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: rem-calc(8);
+    transition: all 0.3s ease;
+    cursor: pointer;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(139, 92, 246, 0.5);
+      color: $color-white;
+    }
+
+    &.active {
+      background: rgba(139, 92, 246, 0.2);
+      border-color: rgba(139, 92, 246, 0.5);
+      color: $color-white;
+    }
+  }
+}
+
+.all-teams-section {
+  .section-header {
+    margin-bottom: rem-calc(32);
+
+    .section-title {
+      font-family: 'Orbitron', monospace;
+      font-size: rem-calc(28);
+      font-weight: 600;
+      color: $color-white;
+      display: flex;
+      align-items: center;
+      gap: rem-calc(12);
+      margin-bottom: rem-calc(8);
+      white-space: nowrap;
+
+      .team-count {
+        font-family: 'Outfit', sans-serif;
+        font-size: rem-calc(16);
+        color: rgba(255, 255, 255, 0.5);
+        font-weight: 400;
+      }
+    }
+  }
+
+  .teams-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: rem-calc(20);
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  .teams-list {
+    display: flex;
+    flex-direction: column;
+    gap: rem-calc(16);
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  .team-card {
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.08) 0%, rgba(0, 0, 0, 0.6) 50%, rgba(59, 130, 246, 0.08) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: rem-calc(12);
+    padding: rem-calc(24);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-height: rem-calc(200);
+    width: 100%;
+
+    &:hover {
+      transform: translateY(rem-calc(-2));
+      border-color: rgba(139, 92, 246, 0.3);
+      box-shadow: 0 rem-calc(10) rem-calc(20) rgba(0, 0, 0, 0.2);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: rem-calc(12);
+
+      .team-logo {
+        width: rem-calc(60);
+        height: rem-calc(60);
+        border-radius: rem-calc(16);
+        background: linear-gradient(135deg, $color-purple-violet, $color-blue-indigo);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: $color-white;
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          border-radius: rem-calc(16);
+        }
+      }
+
+      .team-badges {
+        display: flex;
+        gap: rem-calc(6);
+
+        .badge {
+          width: rem-calc(32);
+          height: rem-calc(32);
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          &.verified {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+          }
+
+          &.premium {
+            background: rgba(251, 191, 36, 0.2);
+            color: $color-yellow-dark;
+            border: 1px solid rgba(251, 191, 36, 0.3);
+          }
+
+          svg {
+            width: rem-calc(16);
+            height: rem-calc(16);
+          }
+        }
+      }
+    }
+
+    .card-content {
+      .team-name {
+        font-family: 'Orbitron', monospace;
+        font-size: rem-calc(16);
+        font-weight: 600;
+        color: $color-white;
+        margin-bottom: rem-calc(6);
+      }
+
+      .team-description {
+        font-family: 'Outfit', sans-serif;
+        font-size: rem-calc(12);
+        color: rgba(255, 255, 255, 0.7);
+        line-height: 1.4;
+        margin-bottom: rem-calc(12);
+      }
+
+      .team-stats {
+        display: flex;
+        gap: rem-calc(12);
+
+        .stat {
+          display: flex;
+          align-items: center;
+          gap: rem-calc(4);
+          font-family: 'Outfit', sans-serif;
+          font-size: rem-calc(11);
+          color: rgba(255, 255, 255, 0.8);
+
+          svg {
+            width: rem-calc(12);
+            height: rem-calc(12);
+          }
+        }
+      }
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: rem-calc(12);
+
+      .captain-info {
+        display: flex;
+        align-items: center;
+        gap: rem-calc(4);
+        font-family: 'Outfit', sans-serif;
+        font-size: rem-calc(11);
+        color: rgba(255, 255, 255, 0.8);
+
+        svg {
+          width: rem-calc(12);
+          height: rem-calc(12);
+          color: $color-yellow-dark;
+        }
+      }
+
+      .recruiting-badge {
+        display: flex;
+        align-items: center;
+        gap: rem-calc(4);
+        padding: rem-calc(4) rem-calc(8);
+        background: rgba(34, 197, 94, 0.2);
+        border: 1px solid rgba(34, 197, 94, 0.3);
+        border-radius: rem-calc(6);
+        font-family: 'Outfit', sans-serif;
+        font-size: rem-calc(10);
+        color: #22c55e;
+      }
+    }
+  }
+
+  .team-list-item {
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.08) 0%, rgba(0, 0, 0, 0.6) 50%, rgba(59, 130, 246, 0.08) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: rem-calc(12);
+    padding: rem-calc(20);
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover {
+      transform: translateX(rem-calc(4));
+      border-color: rgba(139, 92, 246, 0.3);
+      box-shadow: 0 rem-calc(10) rem-calc(20) rgba(0, 0, 0, 0.2);
+    }
+
+    .list-content {
+      .list-main {
+        display: flex;
+        align-items: center;
+        gap: rem-calc(20);
+        margin-bottom: rem-calc(16);
+
+        .team-info {
+          display: flex;
+          align-items: center;
+          gap: rem-calc(16);
+          flex: 1;
+
+          .team-logo {
+            width: rem-calc(48);
+            height: rem-calc(48);
+            border-radius: rem-calc(8);
+            background: linear-gradient(135deg, $color-purple-violet, $color-blue-indigo);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: $color-white;
+
+            img {
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+              border-radius: rem-calc(8);
+            }
+          }
+
+          .team-details {
+            flex: 1;
+
+            .team-header {
+              display: flex;
+              align-items: center;
+              gap: rem-calc(12);
+              margin-bottom: rem-calc(6);
+
+              .team-name {
+                font-family: 'Orbitron', monospace;
+                font-size: rem-calc(18);
+                font-weight: 600;
+                color: $color-white;
+              }
+
+              .team-badges {
+                display: flex;
+                gap: rem-calc(6);
+
+                .badge {
+                  width: rem-calc(20);
+                  height: rem-calc(20);
+                  border-radius: 50%;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+
+                  &.verified {
+                    background: rgba(34, 197, 94, 0.2);
+                    color: #22c55e;
+                  }
+
+                  &.premium {
+                    background: rgba(251, 191, 36, 0.2);
+                    color: $color-yellow-dark;
+                  }
+                }
+              }
+            }
+
+            .team-description {
+              font-family: 'Outfit', sans-serif;
+              font-size: rem-calc(14);
+              color: rgba(255, 255, 255, 0.7);
+              line-height: 1.4;
+              margin-bottom: rem-calc(8);
+            }
+
+            .team-tags {
+              display: flex;
+              gap: rem-calc(6);
+              flex-wrap: wrap;
+            }
+          }
+        }
+
+        .team-stats {
+          display: flex;
+          gap: rem-calc(20);
+
+          .stat {
+            display: flex;
+            align-items: center;
+            gap: rem-calc(6);
+            font-family: 'Outfit', sans-serif;
+            font-size: rem-calc(12);
+            color: rgba(255, 255, 255, 0.8);
+
+            svg {
+              width: rem-calc(14);
+              height: rem-calc(14);
+            }
+          }
+        }
+      }
+
+      .list-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .captain-info {
+          display: flex;
+          align-items: center;
+          gap: rem-calc(6);
+          font-family: 'Outfit', sans-serif;
+          font-size: rem-calc(12);
+          color: rgba(255, 255, 255, 0.8);
+
+          svg {
+            width: rem-calc(14);
+            height: rem-calc(14);
+            color: $color-yellow-dark;
+          }
+        }
+
+        .list-actions {
+          display: flex;
+          align-items: center;
+          gap: rem-calc(12);
+
+          .recruiting-badge {
+            display: flex;
+            align-items: center;
+            gap: rem-calc(4);
+            padding: rem-calc(4) rem-calc(8);
+            background: rgba(34, 197, 94, 0.2);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            border-radius: rem-calc(6);
+            font-family: 'Outfit', sans-serif;
+            font-size: rem-calc(10);
+            color: #22c55e;
+
+            svg {
+              width: rem-calc(12);
+              height: rem-calc(12);
+            }
+          }
+
+          .view-btn {
+            display: flex;
+            align-items: center;
+            gap: rem-calc(4);
+            padding: rem-calc(6) rem-calc(12);
+            background: rgba(139, 92, 246, 0.2);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: rem-calc(6);
+            font-family: 'Outfit', sans-serif;
+            font-size: rem-calc(10);
+            color: rgba(255, 255, 255, 0.8);
+            transition: all 0.3s ease;
+            cursor: pointer;
+
+            &:hover {
+              background: rgba(139, 92, 246, 0.3);
+              border-color: rgba(139, 92, 246, 0.5);
+              color: $color-white;
+            }
+
+            svg {
+              width: rem-calc(12);
+              height: rem-calc(12);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .no-results {
+    text-align: center;
+    padding: rem-calc(60) rem-calc(20);
+    color: rgba(255, 255, 255, 0.7);
+
+    svg {
+      width: rem-calc(48);
+      height: rem-calc(48);
+      margin-bottom: rem-calc(16);
+      opacity: 0.5;
+    }
+
+    h3 {
+      font-family: 'Orbitron', monospace;
+      font-size: rem-calc(24);
+      font-weight: 600;
+      color: $color-white;
+      margin-bottom: rem-calc(8);
+    }
+
+    p {
+      font-family: 'Outfit', sans-serif;
+      font-size: rem-calc(16);
+    }
+  }
+}
+
+
+// Responsive
+@media (max-width: 768px) {
+  .team-search-container {
+    padding: rem-calc(16);
+  }
+
+  .team-search-header {
+    margin-bottom: rem-calc(32);
+
+    .header-content {
+      .page-title {
+        font-size: rem-calc(32);
+      }
+
+      .page-description {
+        font-size: rem-calc(16);
+      }
+    }
+  }
+
+  .search-container {
+    flex-direction: column;
+    gap: rem-calc(16);
+
+    .search-input-wrapper {
+      width: 100%;
+      min-width: auto;
+    }
+
+    .view-controls {
+      align-self: center;
+    }
+  }
+
+  .filters-container {
+    justify-content: flex-start;
+    overflow-x: auto;
+    padding-bottom: rem-calc(8);
+
+    .filter-btn {
+      white-space: nowrap;
+    }
+  }
+
+  .teams-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: rem-calc(16);
+    max-width: rem-calc(800);
+    margin: 0;
+    padding: 0;
+  }
+
+  .teams-list {
+    max-width: rem-calc(800);
+    margin: 0;
+    padding: 0;
+  }
+
+  .section-title {
+    font-size: rem-calc(24);
+    flex-wrap: wrap;
+    white-space: normal;
+  }
+
+  .team-list-item {
+    .list-content {
+      .list-main {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: rem-calc(16);
+
+        .team-info {
+          width: 100%;
+        }
+
+        .team-stats {
+          width: 100%;
+          justify-content: space-between;
+          flex-wrap: wrap;
+          gap: rem-calc(12);
+        }
+      }
+
+      .list-footer {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: rem-calc(12);
+
+        .list-actions {
+          width: 100%;
+          justify-content: flex-end;
+        }
+      }
+    }
+  }
+}
