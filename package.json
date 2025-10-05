@@ -10,7 +10,7 @@
     "dev:app": "npm run dev --workspace=oxymore-app",
     "dev:site": "npm run dev --workspace=oxymore-site",
     "dev:back": "npm run dev --prefix back",
-    "dev:all": "concurrently \"npm run dev:back\" \"npm run dev:admin\" \"npm run dev:app\" \"npm run dev:site\"",
+    "dev": "concurrently \"npm run dev:back\" \"npm run dev:admin\" \"npm run dev:app\" \"npm run dev:site\"",
     "build": "npm run build --workspace=@oxymore/ui",
     "build:admin": "npm run build --workspace=oxymore-admin",
     "build:app": "npm run build --workspace=oxymore-app",
