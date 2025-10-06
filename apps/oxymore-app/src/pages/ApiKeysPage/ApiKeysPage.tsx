@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { OXMButton, OXMToast, OXMModal, OXMTabSwitcher } from "@oxymore/ui";
+import type { ApiKey, Toast } from "../../types/api";
 import {
   FiZap,
   FiTrendingUp,
@@ -8,19 +9,6 @@ import {
 } from "react-icons/fi";
 import "./ApiKeysPage.scss";
 
-
-interface ApiKey {
-  id: number;
-  label: string;
-  secret: string;
-  createdAt: string;
-}
-
-interface Toast {
-  id: number;
-  message: string;
-  type: "success" | "error" | "info";
-}
 
 export default function ApiKeysPage() {
   const [tab, setTab] = useState("api");
@@ -33,7 +21,6 @@ export default function ApiKeysPage() {
   const [modalStep, setModalStep] = useState<"input" | "display">("input");
   const [toasts, setToasts] = useState<Toast[]>([]);
 
-  // Vérifier l'URL au chargement pour ouvrir automatiquement la modal
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     if (params.get("modal") === "apikey") {

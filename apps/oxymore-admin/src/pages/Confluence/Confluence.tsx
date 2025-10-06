@@ -14,7 +14,7 @@ import {
   Download,
   Settings,
   Upload,
-  File,
+  File as FileIcon,
   FolderPlus,
   Star,
 
@@ -43,8 +43,7 @@ interface ConfluenceDocument {
   isArchived?: boolean;
 }
 
-// Types pour les dossiers
-interface Folder {
+interface FolderType {
   id: string;
   name: string;
   parentId?: string;
@@ -70,7 +69,7 @@ interface UploadedFile {
 
 const Confluence: React.FC = () => {
   const [documents, setDocuments] = useState<ConfluenceDocument[]>([]);
-  const [folders, setFolders] = useState<Folder[]>([]);
+  const [folders, setFolders] = useState<FolderType[]>([]);
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
   const [filteredItems, setFilteredItems] = useState<(ConfluenceDocument | UploadedFile)[]>([]);
   const [currentDocument, setCurrentDocument] = useState<ConfluenceDocument | null>(null);
@@ -90,7 +89,7 @@ const Confluence: React.FC = () => {
 
   // Données de test
   useEffect(() => {
-    const mockFolders: Folder[] = [
+    const mockFolders: FolderType[] = [
       {
         id: 'folder-1',
         name: 'Documentation Technique',
@@ -209,7 +208,7 @@ const Confluence: React.FC = () => {
   };
 
   const createNewFolder = (name: string, color: string, icon: string, description: string) => {
-    const newFolder: Folder = {
+    const newFolder: FolderType = {
       id: Date.now().toString(),
       name,
       createdAt: new Date().toISOString(),
@@ -651,7 +650,7 @@ const Confluence: React.FC = () => {
                             {item.type === 'document' ? (
                               <FileText className="w-6 h-6 text-blue-500" />
                             ) : (
-                              <File className="w-6 h-6 text-purple-500" />
+                              <FileIcon className="w-6 h-6 text-purple-500" />
                             )}
                             <div className="flex-1 min-w-0">
                               <h4 className="font-medium text-[var(--text-primary)] truncate">
@@ -727,7 +726,7 @@ const Confluence: React.FC = () => {
                           {item.type === 'document' ? (
                             <FileText className="w-5 h-5 text-blue-500 flex-shrink-0" />
                           ) : (
-                            <File className="w-5 h-5 text-purple-500 flex-shrink-0" />
+                            <FileIcon className="w-5 h-5 text-purple-500 flex-shrink-0" />
                           )}
                           <div className="flex-1 min-w-0">
                             <h4 className="font-medium text-[var(--text-primary)] truncate">

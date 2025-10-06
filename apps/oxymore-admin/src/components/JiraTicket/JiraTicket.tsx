@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { CheckSquare, Search, X, ExternalLink } from 'lucide-react';
 
-interface JiraTicket {
+interface JiraTicketType {
   id: string;
   title: string;
   status: string;
@@ -13,7 +13,7 @@ interface JiraTicket {
 }
 
 interface JiraTicketProps {
-  onInsertTicket: (ticket: JiraTicket) => void;
+  onInsertTicket: (ticket: JiraTicketType) => void;
   onClose: () => void;
   searchQuery?: string;
 }
@@ -23,14 +23,14 @@ const JiraTicket: React.FC<JiraTicketProps> = ({
   onClose,
   searchQuery = ''
 }) => {
-  const [tickets, setTickets] = useState<JiraTicket[]>([]);
-  const [filteredTickets, setFilteredTickets] = useState<JiraTicket[]>([]);
+  const [tickets, setTickets] = useState<JiraTicketType[]>([]);
+  const [filteredTickets, setFilteredTickets] = useState<JiraTicketType[]>([]);
   const [searchInput, setSearchInput] = useState(searchQuery);
-  const [selectedTicket, setSelectedTicket] = useState<JiraTicket | null>(null);
+  const [selectedTicket, setSelectedTicket] = useState<JiraTicketType | null>(null);
 
   // Données de test pour les tickets Jira
   useEffect(() => {
-    const mockTickets: JiraTicket[] = [
+    const mockTickets: JiraTicketType[] = [
       {
         id: 'JIRA-123',
         title: 'Implémenter l\'authentification OAuth',
@@ -143,7 +143,7 @@ const JiraTicket: React.FC<JiraTicketProps> = ({
     return colors[type as keyof typeof colors] || 'text-gray-500 bg-gray-500/10';
   };
 
-  const handleInsertTicket = (ticket: JiraTicket) => {
+  const handleInsertTicket = (ticket: JiraTicketType) => {
     onInsertTicket(ticket);
     onClose();
   };

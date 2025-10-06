@@ -12,7 +12,6 @@ import JoinTournament from "./pages/JoinTournament/JoinTournament";
 import Tournaments from "./pages/Home/Tournaments/Tournaments";
 import Resources from "./pages/Resources/Resources";
 
-// components common
 import ScrollToTop from "./components/ScrollToTop/ScrollToTop";
 
 export default function App() {

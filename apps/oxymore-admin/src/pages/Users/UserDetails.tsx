@@ -116,7 +116,7 @@ const UserDetails = () => {
     }
   };
 
-  const formatWallet = (wallet: number | string | undefined): string => {
+  const formatWallet = (wallet: number | string | undefined | null): string => {
     if (wallet === undefined || wallet === null) return '-';
     const numWallet = typeof wallet === 'string' ? parseFloat(wallet) : wallet;
     return `${numWallet.toFixed(2)} €`;
@@ -309,7 +309,6 @@ const UserDetails = () => {
 
   return (
     <div className="space-y-4 md:space-y-6">
-      {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div className="flex items-center gap-4">
           <Link
@@ -477,7 +476,6 @@ const UserDetails = () => {
             </div>
           </div>
 
-          {/* Statistiques */}
           <div className="bg-[var(--card-background)] rounded-2xl p-4 md:p-6">
             <h3 className="text-lg font-bold text-[var(--text-primary)] mb-4">
               Statistiques
@@ -522,9 +520,7 @@ const UserDetails = () => {
           </div>
         </div>
 
-        {/* Sidebar */}
         <div className="space-y-4 md:space-y-6">
-          {/* Liens */}
           <div className="bg-[var(--card-background)] rounded-2xl p-4 md:p-6">
             <h3 className="text-lg font-bold text-[var(--text-primary)] mb-4">
               Liens
@@ -572,14 +568,14 @@ const UserDetails = () => {
                 <Twitter className="w-5 h-5 text-blue-400" />
                 <div className="min-w-0 flex-1">
                   <span className="text-sm">Twitter</span>
-                  {user.twitter_url ? (
+                  {(user as any).twitter_url ? (
                     <a
-                      href={user.twitter_url}
+                      href={(user as any).twitter_url}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="ml-2 hover:text-[var(--text-primary)] transition-colors text-sm truncate block"
                     >
-                      {user.twitter_url.replace(/^https?:\/\/(www\.)?/, "")}
+                      {(user as any).twitter_url.replace(/^https?:\/\/(www\.)?/, "")}
                     </a>
                   ) : (
                     <span className="ml-2 text-sm">-</span>
@@ -627,7 +623,6 @@ const UserDetails = () => {
             </div>
           </div>
 
-          {/* Actions */}
           <div className="bg-[var(--card-background)] rounded-2xl p-4 md:p-6">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-bold text-[var(--text-primary)]">
@@ -723,7 +718,6 @@ const UserDetails = () => {
         </div>
       </div>
 
-      {/* Modal de confirmation pour le statut premium */}
       <ConfirmationModal
         isOpen={showPremiumModal}
         onClose={() => setShowPremiumModal(false)}
@@ -740,7 +734,6 @@ const UserDetails = () => {
         isLoading={isUpdatingPremium}
       />
 
-      {/* Modal de confirmation pour bannir/débannir l'utilisateur */}
       <ConfirmationModal
         isOpen={showBanModal}
         onClose={() => {
@@ -778,7 +771,6 @@ const UserDetails = () => {
         disabled={!isBanned && !banReason.trim()}
       />
 
-      {/* Modal de confirmation pour muter/démuter l'utilisateur */}
       <ConfirmationModal
         isOpen={showMuteModal}
         onClose={() => {

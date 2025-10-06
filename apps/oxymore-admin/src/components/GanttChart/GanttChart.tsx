@@ -79,11 +79,12 @@ const GanttChart = ({ todos }: GanttChartProps) => {
             aValue = new Date(a.dueDate || '');
             bValue = new Date(b.dueDate || '');
             break;
-          case 'priority':
+          case 'priority': {
             const priorityOrder = { urgent: 4, high: 3, medium: 2, low: 1 };
             aValue = priorityOrder[a.priority];
             bValue = priorityOrder[b.priority];
             break;
+          }
           default:
             return 0;
         }

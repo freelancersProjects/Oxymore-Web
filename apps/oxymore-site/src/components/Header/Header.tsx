@@ -126,7 +126,6 @@ const Header = () => {
         </div>
       </nav>
 
-      {/* Auth Desktop */}
       <div className="header__auth">
         <LanguageSelector />
         <a>{t('common.getStarted')}</a>

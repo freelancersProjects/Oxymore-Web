@@ -32,7 +32,6 @@ const Contact = () => {
             </form>
           </div>
 
-          {/* Infos de contact */}
           <div className="contact__info">
             <div className="contact__box">
               <h3>{t('contact.infoTitle')}</h3>

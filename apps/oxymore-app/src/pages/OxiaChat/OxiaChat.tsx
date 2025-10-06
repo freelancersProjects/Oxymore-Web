@@ -31,7 +31,6 @@ const initialMessages: Message[] = [
 ];
 
 function parseMarkdown(text: string): string {
-  // Remplace **gras** par <strong class="purple">
   let html = text.replace(
     /\*\*(.*?)\*\*/g,
     '<strong class="purple">$1</strong>'
@@ -47,14 +46,11 @@ function parseMarkdown(text: string): string {
     }
   );
 
-  // Si on a des <li>, on les entoure d'un <ol>
   if (html.includes("<li")) {
     html = html.replace(/((?:<li.*?>.*?<\/li>\s*)+)/gs, "<ol>$1</ol>");
   }
 
-  // Retour à la ligne, mais pas après un </li> suivi d'un <br />
   html = html.replace(/<\/li>\s*<br\s*\/?>/g, "</li>");
-  // Puis, retour à la ligne pour le reste
   html = html.replace(/\n/g, "<br />");
   return html;
 }
@@ -224,7 +220,6 @@ const OxiaChat: React.FC = () => {
         is_from_ai: true,
       };
       setMessages((prev) => [...prev, iaMsg]);
-      // Stocke le message IA côté back (envoie uniquement les champs attendus)
       const iaMsgPayload = {
         channel_id: iaMsg.channel_id,
         content: iaMsg.text,
@@ -320,7 +315,6 @@ const OxiaChat: React.FC = () => {
 
   return (
     <div className="oxia-chat-layout">
-      {/* Burger menu mobile */}
       <button
         className="oxia-chat-burger"
         onClick={() => setSidebarOpen(true)}
@@ -328,7 +322,6 @@ const OxiaChat: React.FC = () => {
       >
         <Menu size={28} />
       </button>
-      {/* Overlay + sidebar mobile */}
       {sidebarOpen && (
         <>
           <div className="oxia-chat-sidebar-overlay" onClick={() => setSidebarOpen(false)} />

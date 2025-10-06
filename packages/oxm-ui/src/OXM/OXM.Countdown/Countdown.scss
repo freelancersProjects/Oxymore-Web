@@ -61,7 +61,6 @@
     letter-spacing: rem-calc(1);
   }
 
-  // Thème Violet (par défaut)
   &--purple {
     .oxm-countdown-value {
       border-color: rgba($color-purple, 0.3);
@@ -75,7 +74,6 @@
     }
   }
 
-  // Thème Bleu
   &--blue {
     .oxm-countdown-value {
       border-color: rgba($color-blue, 0.3);
@@ -89,7 +87,6 @@
     }
   }
 
-  // Tailles
   &--small {
     .oxm-countdown-grid {
       gap: rem-calc(12);
@@ -141,7 +138,6 @@
     }
   }
 
-  // État terminé
   &--complete {
     .oxm-countdown-complete {
       color: $color-white;

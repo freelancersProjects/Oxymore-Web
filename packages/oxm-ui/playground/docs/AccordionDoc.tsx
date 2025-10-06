@@ -12,7 +12,6 @@ export default function AccordionDoc() {
       <h2>Props</h2>
       <ul>
         <li><b>title</b> : string — Titre de l'accordéon</li>
-        {/* Ajouter d'autres props ici */}
       </ul>
     </section>
   );

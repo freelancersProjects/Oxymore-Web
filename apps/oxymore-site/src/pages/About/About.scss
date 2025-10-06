@@ -197,7 +197,6 @@
     }
   }
 
-  // Mission Section
   &__mission {
     padding: rem-calc(80) 10%;
     background: rgba($color-background, 0.5);
@@ -557,7 +556,6 @@
     }
   }
 
-  // Story Section
   &__story {
     padding: rem-calc(80) 10%;
 
@@ -650,7 +648,7 @@
     }
   }
 
-  // CTA Section
+  
   &__cta {
     padding: rem-calc(80) rem-calc(20);
     background: linear-gradient(135deg, rgba($color-purple, 0.1) 0%, rgba($color-blue, 0.1) 100%);
@@ -757,7 +755,6 @@
   }
 }
 
-// Animations
 @keyframes fadeInUp {
   from {
     opacity: 0;

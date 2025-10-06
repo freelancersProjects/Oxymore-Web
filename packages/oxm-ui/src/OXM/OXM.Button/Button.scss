@@ -44,7 +44,6 @@
     box-shadow: 0 rem-calc(2) rem-calc(8) rgba($color-gray, 0.2);
   }
 
-  // Tailles
   &--small {
     height: rem-calc(40);
     padding: 0 rem-calc(20);
@@ -66,7 +65,6 @@
     border-radius: rem-calc(20);
   }
 
-  // Variantes
   &--primary {
     background: linear-gradient(135deg, $color-purple 0%, $color-purple-light 100%);
     color: $color-white;

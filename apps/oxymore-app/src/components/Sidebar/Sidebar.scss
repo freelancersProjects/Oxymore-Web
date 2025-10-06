@@ -141,15 +141,13 @@
     gap: rem-calc(24);
     position: relative;
 
-    // Masquer la scrollbar
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
 
     &::-webkit-scrollbar {
-      display: none; /* Chrome, Safari, Opera */
+      display: none;
     }
 
-    // Indicateur de scroll
     &::after {
       content: '';
       position: absolute;
@@ -252,7 +250,6 @@
           transform: translateX(4px);
         }
 
-        // Style spécial pour Matchmaking (effet guerre)
         &[href="/matchmaking"]:hover:not(.active) {
           background: linear-gradient(135deg, rgb(239 68 68 / 15%) 0%, rgb(220 38 38 / 10%) 100%);
           border: 1px solid rgb(239 68 68 / 30%);
@@ -293,7 +290,7 @@
       background: rgba(239, 68, 68, 0.1);
       border: 1px solid rgba(239, 68, 68, 0.3);
       border-radius: rem-calc(6);
-      color: #ef4444;
+      color: $color-red-error;
       font-size: rem-calc(12);
       font-weight: 500;
       animation: pulse-warning 2s infinite;
@@ -421,7 +418,6 @@
   }
 }
 
-// Mode collapsed
 .oxm-sidebar.collapsed {
   .oxm-sidebar__logo {
     img {
@@ -435,7 +431,7 @@
   }
 
   .oxm-sidebar__user-plan {
-    display: none; // Cache complètement le bloc utilisateur en mode collapsed
+    display: none;
   }
 
   .oxm-sidebar__nav {
@@ -518,7 +514,6 @@
   }
 }
 
-// Mobile styles
 @media (width <= 768px) {
   .oxm-sidebar {
     transform: translateX(-100%);

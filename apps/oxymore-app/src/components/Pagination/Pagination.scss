@@ -51,7 +51,6 @@
   font-size: rem-calc(14);
 }
 
-// Responsive
 @media (max-width: rem-calc(768)) {
   .pagination {
     flex-wrap: wrap;

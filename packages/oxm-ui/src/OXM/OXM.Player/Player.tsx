@@ -49,7 +49,6 @@ const Player: React.FC<PlayerProps> = ({ open, onClose, videoSrc, title, author 
     return () => document.removeEventListener("fullscreenchange", handleFs);
   }, []);
 
-  // Show meta on mouse move/tap, hide after 2.5s
   const showMetaBar = () => {
     setShowMeta(true);
     if (metaTimeout.current) clearTimeout(metaTimeout.current);
@@ -145,7 +144,6 @@ const Player: React.FC<PlayerProps> = ({ open, onClose, videoSrc, title, author 
     setPreviewTime(time);
     setPreviewPos(e.clientX - rect.left);
     setShowPreview(true);
-    // Seek la preview video
     previewVideoRef.current.currentTime = time;
   };
 

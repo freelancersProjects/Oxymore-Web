@@ -31,7 +31,6 @@
   animation: oxm-modal-scaleIn 0.22s ease-out;
   position: relative;
 
-  // Tailles de modal
   &--small {
     max-width: rem-calc(400);
   }
@@ -61,7 +60,6 @@
 @keyframes oxm-modal-fadeIn { from { opacity: 0; } to { opacity: 1; } }
 @keyframes oxm-modal-scaleIn { from { transform: scale(0.98); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
-// Responsive design
 @media (max-width: 768px) {
   .oxm-modal-backdrop {
     padding: rem-calc(16);

@@ -6,7 +6,7 @@ const ProtectedRoute: React.FC = () => {
   const { user, isLoading } = useAuth();
 
   if (isLoading) {
-    return <div>Loading...</div>; // Ou un composant de chargement plus sophistiqué
+    return <div>Loading...</div>;
   }
 
   if (!user) {

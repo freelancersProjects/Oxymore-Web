@@ -15,11 +15,9 @@ export const Header: React.FC<HeaderProps> = ({ isSidebarCollapsed = false, hide
   const [isScrolled, setIsScrolled] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [profileCollapsed, setProfileCollapsed] = useState(() => {
-    // Charger l'état depuis localStorage, par défaut fermé (true)
     const saved = localStorage.getItem('profilePanelCollapsed');
     const isCollapsed = saved ? JSON.parse(saved) : true;
 
-    // Appliquer immédiatement la classe CSS pour éviter le flash
     const root = document.querySelector('.oxm-layout');
     if (root && !isCollapsed) {
       root.classList.add('profile-panel-expanded');
@@ -39,7 +37,6 @@ export const Header: React.FC<HeaderProps> = ({ isSidebarCollapsed = false, hide
     }
   };
 
-  // Gestion du scroll pour la search bar
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = window.scrollY;

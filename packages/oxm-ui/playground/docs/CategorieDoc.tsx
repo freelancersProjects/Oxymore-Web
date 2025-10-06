@@ -12,7 +12,6 @@ export default function CategorieDoc() {
       <h2>Props</h2>
       <ul>
         <li><b>label</b> : string — Libellé de la catégorie</li>
-        {/* Ajouter d'autres props ici */}
       </ul>
     </section>
   );

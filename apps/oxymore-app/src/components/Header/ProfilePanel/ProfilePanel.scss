@@ -299,10 +299,9 @@
       gap: rem-calc(8);
       align-items: center;
       max-height: rem-calc(200);
-      overflow: hidden; /* Masque tout débordement et la scrollbar */
+      overflow: hidden;
       padding-right: rem-calc(4);
 
-      /* Masquer la scrollbar */
       scrollbar-width: none;
       -ms-overflow-style: none;
 
@@ -325,7 +324,7 @@
         will-change: transform;
 
         &:hover {
-          transform: scale(1.08); /* Moins grand pour ne pas dépasser */
+          transform: scale(1.08);
         }
 
         &.leader {
@@ -529,7 +528,6 @@
       padding-right: rem-calc(4);
       flex-wrap: wrap;
 
-      /* Style de la scrollbar */
       &::-webkit-scrollbar {
         width: rem-calc(4);
       }
@@ -861,7 +859,6 @@
         border-color: rgb(255 255 255 / 24%);
       }
 
-      // Badge de notification sur le bouton
       .notification-badge {
         position: absolute;
         top: rem-calc(4);
@@ -1062,7 +1059,6 @@
   }
 }
 
-// Styles pour les avatars avec initiales
 .avatar-with-initial {
   display: flex;
   align-items: center;

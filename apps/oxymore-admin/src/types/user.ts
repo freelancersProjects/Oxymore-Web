@@ -1,28 +1,24 @@
 export interface User {
   id_user: string;
+  first_name: string;
+  last_name: string;
   username: string;
   email: string;
-  first_name?: string;
-  last_name?: string;
-  avatar_url?: string;
-  banner_url?: string;
-  bio?: string;
   is_premium: boolean;
+  avatar_url: string;
+  banner_url: string;
+  bio: string;
+  elo: number;
+  wallet?: number | null;
+  country_code: string;
+  discord_link: string;
+  faceit_id: string;
+  steam_link: string;
+  twitch_link: string;
+  youtube_link: string;
   verified: boolean;
-  elo?: number;
-  wallet?: number;
-  country_code?: string;
-  created_at?: string;
-  tournaments_count?: number;
-  teams_count?: number;
-  twitter_url?: string;
-  discord_link?: string;
-  faceit_id?: string;
-  twitch_link?: string;
-  youtube_link?: string;
-  steam_link?: string;
-  team_chat_is_muted?: boolean;
-  role?: string;
+  created_at: string;
+  team_chat_is_muted: boolean;
 }
 
 export interface UserContextType {

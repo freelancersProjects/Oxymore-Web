@@ -182,7 +182,6 @@ const WebPConverter: React.FC = () => {
   return (
     <div className="min-h-screen bg-[var(--background)] p-4">
       <div className="max-w-6xl mx-auto">
-        {/* Header */}
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-2">
             <div className="p-3 bg-gradient-to-r from-blue-500/20 to-purple-600/20 rounded-xl">
@@ -196,7 +195,6 @@ const WebPConverter: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Zone de sélection de fichiers */}
           <div className="space-y-6">
             <div className="bg-[var(--card-background)] rounded-2xl p-6 shadow-lg border border-[var(--border-color)]">
               <h2 className="text-xl font-semibold text-[var(--text-primary)] mb-4 flex items-center gap-2">
@@ -204,7 +202,6 @@ const WebPConverter: React.FC = () => {
                 Sélectionner des images
               </h2>
 
-              {/* Zone de drag & drop */}
               <div
                 className={`relative border-2 border-dashed rounded-xl p-8 text-center transition-all duration-300 ${
                   dragActive
@@ -243,7 +240,6 @@ const WebPConverter: React.FC = () => {
                 </div>
               </div>
 
-              {/* Contrôle de qualité */}
               <div className="mt-6">
                 <label className="block text-sm font-medium text-[var(--text-secondary)] mb-2">
                   Qualité WebP: {quality}%
@@ -262,7 +258,6 @@ const WebPConverter: React.FC = () => {
                 </div>
               </div>
 
-              {/* Bouton de conversion */}
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
@@ -288,7 +283,6 @@ const WebPConverter: React.FC = () => {
               </motion.button>
             </div>
 
-            {/* Liste des fichiers sélectionnés */}
             {files.length > 0 && (
               <div className="bg-[var(--card-background)] rounded-2xl p-6 shadow-lg border border-[var(--border-color)]">
                 <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-4">
@@ -322,7 +316,6 @@ const WebPConverter: React.FC = () => {
             )}
           </div>
 
-          {/* Zone des images converties */}
           <div className="space-y-6">
             {convertedImages.length > 0 && (
               <div className="bg-[var(--card-background)] rounded-2xl p-6 shadow-lg border border-[var(--border-color)]">
@@ -350,7 +343,6 @@ const WebPConverter: React.FC = () => {
                       className="p-4 bg-[var(--overlay-hover)] rounded-xl border border-[var(--border-color)] converted-image-card"
                     >
                       <div className="flex items-start gap-4">
-                        {/* Aperçu de l'image */}
                         <div className="w-20 h-20 rounded-lg overflow-hidden bg-[var(--overlay-hover)] flex-shrink-0 image-preview">
                           <img
                             src={image.preview}
@@ -359,7 +351,6 @@ const WebPConverter: React.FC = () => {
                           />
                         </div>
 
-                        {/* Informations */}
                         <div className="flex-1 min-w-0">
                           <h4 className="font-medium text-[var(--text-primary)] truncate">
                             {image.originalFile.name.split('.')[0]}.webp
@@ -382,7 +373,6 @@ const WebPConverter: React.FC = () => {
                           </div>
                         </div>
 
-                        {/* Actions */}
                         <div className="flex items-center gap-2">
                           <motion.button
                             whileHover={{ scale: 1.1 }}
@@ -410,7 +400,6 @@ const WebPConverter: React.FC = () => {
               </div>
             )}
 
-            {/* Message d'état vide */}
             {convertedImages.length === 0 && files.length === 0 && (
               <div className="bg-[var(--card-background)] rounded-2xl p-12 shadow-lg border border-[var(--border-color)] text-center">
                 <div className="mx-auto w-16 h-16 bg-gradient-to-r from-gray-500/20 to-gray-600/20 rounded-full flex items-center justify-center mb-4">
@@ -427,7 +416,6 @@ const WebPConverter: React.FC = () => {
           </div>
         </div>
 
-        {/* Statistiques globales */}
         {convertedImages.length > 0 && (
           <div className="mt-8 bg-[var(--card-background)] rounded-2xl p-6 shadow-lg border border-[var(--border-color)] stats-card">
             <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-4">

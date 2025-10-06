@@ -107,7 +107,6 @@ td {
   text-decoration: none !important;
 }
 
-// Global custom scrollbar
 ::-webkit-scrollbar {
   width: rem-calc(10);
   background: $color-gray-darkest;
@@ -126,7 +125,6 @@ td {
   background: $color-gray-darkest;
 }
 
-// For Firefox
 * {
   scrollbar-width: thin;
   scrollbar-color: $color-gray $color-gray-darkest;

@@ -516,7 +516,6 @@ const Edit = () => {
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Cash Prize */}
             <div>
               <label className="block text-sm font-medium text-secondary mb-2">
                 Cash Prize (€)
@@ -530,7 +529,6 @@ const Edit = () => {
               />
             </div>
 
-            {/* Entry Fee */}
             <div>
               <label className="block text-sm font-medium text-secondary mb-2">
                 Entry Fee (€)
@@ -544,7 +542,6 @@ const Edit = () => {
               />
             </div>
 
-            {/* Max Participants */}
             <div>
               <label className="block text-sm font-medium text-secondary mb-2">
                 Max Participants
@@ -558,7 +555,6 @@ const Edit = () => {
               />
             </div>
 
-            {/* Min Participants */}
             <div>
               <label className="block text-sm font-medium text-secondary mb-2">
                 Min Participants
@@ -573,7 +569,6 @@ const Edit = () => {
             </div>
           </div>
 
-          {/* Premium Tournament */}
           <div className="mt-6">
             <label className="flex items-center gap-3">
               <input
@@ -588,14 +583,12 @@ const Edit = () => {
           </div>
         </div>
 
-        {/* Maps Selection */}
         <div className="card-base p-6">
           <h2 className="text-lg font-semibold text-primary mb-6">
             Tournament Maps
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Available Maps */}
             <div>
               <label className="block text-sm font-medium text-secondary mb-2">
                 Available Maps
@@ -619,7 +612,6 @@ const Edit = () => {
               </div>
             </div>
 
-            {/* Selected Maps */}
             <div>
               <label className="block text-sm font-medium text-secondary mb-2">
                 Selected Maps ({selectedMaps.length})

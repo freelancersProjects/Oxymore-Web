@@ -74,7 +74,6 @@ const FolderManager: React.FC<FolderManagerProps> = ({
     const updatedDocuments = [...documents, newItem];
     onDocumentsChange(updatedDocuments);
 
-    // Si c'est un document, on le sélectionne automatiquement
     if (newItemType === 'document') {
       onDocumentSelect(newItem);
     }
@@ -152,7 +151,6 @@ const FolderManager: React.FC<FolderManagerProps> = ({
       return;
     }
 
-    // Logique de déplacement (simplifiée pour cet exemple)
     const moveItem = (items: DocumentItem[]): DocumentItem[] => {
       return items.map(item => {
         if (item.id === targetItem.id && item.type === 'folder') {

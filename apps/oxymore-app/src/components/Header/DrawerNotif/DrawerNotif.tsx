@@ -42,7 +42,6 @@ const formatTimeAgo = (dateString: string) => {
 const DrawerNotif: React.FC<DrawerNotifProps> = ({ open, onClose, userId }) => {
   const [notifications, setNotifications] = useState<NotificationWithReadStatus[]>([]);
   const [loading, setLoading] = useState(false);
-  // const [markingAllRead, setMarkingAllRead] = useState(false);
 
   const fetchNotifications = async () => {
     setLoading(true);

@@ -1,15 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import TeamSearch from './TeamSearch/TeamSearch';
 import type { Team } from './TeamSearch/types/Team';
 import "./Teams.scss";
 
-export const Teams = () => {
-  const [selectedTeam, setSelectedTeam] = useState<Team | null>(null);
+export const Teams: React.FC = () => {
 
-  const handleTeamSelect = (team: Team) => {
-    setSelectedTeam(team);
-    // Ici tu peux ajouter la logique pour naviguer vers la page de l'équipe
+  const handleTeamSelect = (team: Team): void => {
     console.log('Équipe sélectionnée:', team);
   };
 

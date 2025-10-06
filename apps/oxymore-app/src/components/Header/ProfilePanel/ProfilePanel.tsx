@@ -15,7 +15,6 @@ import {
   ChevronRight,
   Bell,
 } from "lucide-react";
-import PrimeIcon from "../../../assets/images/prime.webp";
 import { OXMModal } from "@oxymore/ui";
 import { useAuth } from "../../../context/AuthContext";
 import apiService from "../../../api/apiService";
@@ -47,26 +46,12 @@ const USER_STATS = {
   inGameFriends: 3,
 };
 
-// Couleurs pour les avatars avec initiales
 const AVATAR_COLORS = [
-  "#FF6B6B",
-  "#4ECDC4",
-  "#45B7D1",
-  "#96CEB4",
-  "#FFEAA7",
-  "#DDA0DD",
-  "#98D8C8",
-  "#F7DC6F",
-  "#BB8FCE",
-  "#85C1E9",
-  "#F8C471",
-  "#82E0AA",
-  "#F1948A",
-  "#85C1E9",
-  "#D7BDE2",
+  '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7',
+  '#DDA0DD', '#98D8C8', '#F7DC6F', '#BB8FCE', '#85C1E9',
+  '#F8C471', '#82E0AA', '#F1948A', '#85C1E9', '#D7BDE2'
 ];
 
-// Fonction pour générer un avatar avec initiale
 const generateAvatarWithInitial = (username: string, size: number = 48) => {
   const initial = username.charAt(0).toUpperCase();
   const colorIndex = username.charCodeAt(0) % AVATAR_COLORS.length;
@@ -78,15 +63,15 @@ const generateAvatarWithInitial = (username: string, size: number = 48) => {
       style={{
         width: size,
         height: size,
-        borderRadius: "50%",
+        borderRadius: '50%',
         backgroundColor,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        color: "white",
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        color: 'white',
         fontSize: size * 0.4,
-        fontWeight: "bold",
-        textTransform: "uppercase",
+        fontWeight: 'bold',
+        textTransform: 'uppercase'
       }}
     >
       {initial}
@@ -107,7 +92,7 @@ const Avatar: React.FC<{
         src={src}
         alt={username}
         className={className}
-        style={{ width: size, height: size, borderRadius: "50%" }}
+        style={{ width: size, height: size, borderRadius: '50%' }}
       />
     );
   }
@@ -115,12 +100,7 @@ const Avatar: React.FC<{
   return generateAvatarWithInitial(username, size);
 };
 
-const ProfilePanel: React.FC<ProfilePanelProps> = ({
-  collapsed,
-  onToggle,
-  onNotificationClick,
-  unreadCount = 0,
-}) => {
+const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed, onToggle, onNotificationClick, unreadCount = 0 }) => {
   const panelRef = useRef<HTMLDivElement | null>(null);
   const navigate = useNavigate();
   const { user, logout } = useAuth();
@@ -234,10 +214,10 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({
     return (
       <div className="profile-panel collapsed" ref={panelRef}>
         <button className="profile-panel-toggle" onClick={onToggle}>
-          <ChevronLeft size={16} />
+          <ChevronRight size={16} />
         </button>
         <div className="profile-panel__collapsed">
-          <div className="profile-panel__avatar-collapsed" onClick={() => navigate("/profile")}>
+          <div className="profile-panel__avatar-collapsed">
             <Avatar
               src={user?.avatar_url}
               username={user?.username || "User"}
@@ -257,7 +237,27 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({
               <div className="stat-label">ELO</div>
             </div>
           </div>
-          {/* Section Groupe - déplacée avant les paramètres */}
+
+          <div className="profile-panel__quick-icons">
+            <button className="quick-icon" title="Settings">
+              <Settings size={16} />
+            </button>
+            <button className="quick-icon" title="API Access">
+              <KeyRound size={16} />
+            </button>
+            <button className="quick-icon" title="Security">
+              <Shield size={16} />
+            </button>
+            <button
+              className="quick-icon signout"
+              title="Sign Out"
+              onClick={handleLogout}
+            >
+              <LogOut size={16} />
+            </button>
+          </div>
+
+          {/* Section Groupe */}
           <div className="profile-panel__group-collapsed">
             <div className="group-header">
               <div className="group-title">Group</div>
@@ -301,14 +301,11 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({
                   length: Math.max(
                     0,
                     5 -
-                      (1 +
-                        groupMembers
-                          .filter(
-                            (m) =>
-                              m.status === "accepted" &&
-                              m.id_user !== user?.id_user
-                          )
-                          .slice(0, 4).length)
+                      (1 + groupMembers.filter(
+                        (m) =>
+                          m.status === "accepted" &&
+                          m.id_user !== user?.id_user
+                      ).slice(0, 4).length)
                   ),
                 },
                 (_, index) => (
@@ -325,32 +322,38 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({
               )}
             </div>
           </div>
+
           <div className="profile-panel__online-friends-collapsed">
             <div className="online-friends-header">
               <div className="online-friends-title">Friends</div>
             </div>
-            <div className="friends-count-circle">
-              <span>+{totalFriends}</span>
+            <div className="online-friends-avatars">
+              
+              <div className="online-friends-avatars">
+              {onlineFriends.slice(0, 3).map((friend) => (
+                <div
+                  key={friend.id_friend}
+                  className="friend-avatar-collapsed"
+                  title={friend.username}
+                >
+                  <Avatar
+                    src={friend.avatar_url}
+                    username={friend.username}
+                    size={32}
+                  />
+                  <div
+                    className={`status-indicator ${
+                      friend.online_status || "offline"
+                    }`}
+                  />
+                  <div className="friend-name-tooltip">{friend.username}</div>
+                </div>
+              ))}
+              <div className="more-friends-indicator">
+                <span>+{Math.max(0, totalFriends - 3)}</span>
+              </div>
             </div>
-          </div>
-
-          <div className="profile-panel__quick-icons">
-            <button className="quick-icon" title="Settings">
-              <Settings size={16} />
-            </button>
-            <button className="quick-icon" title="API Access">
-              <KeyRound size={16} />
-            </button>
-            <button className="quick-icon" title="Security">
-              <Shield size={16} />
-            </button>
-            <button
-              className="quick-icon signout"
-              title="Sign Out"
-              onClick={handleLogout}
-            >
-              <LogOut size={16} />
-            </button>
+            </div>
           </div>
         </div>
       </div>
@@ -360,14 +363,17 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({
   return (
     <div className="profile-panel" ref={panelRef}>
       {/* Flèche de toggle intégrée au profile panel */}
-      <button className="profile-panel-toggle" onClick={onToggle}>
-        <ChevronRight size={16} />
+      <button
+        className="profile-panel-toggle"
+        onClick={onToggle}
+      >
+        <ChevronLeft size={16} />
       </button>
 
       {!collapsed && (
         <>
           <div className="profile-panel__header">
-            <div className="profile-panel__avatar" onClick={() => navigate("/profile")}>
+            <div className="profile-panel__avatar">
               <Avatar
                 src={user?.avatar_url}
                 username={user?.username || "User"}
@@ -377,13 +383,7 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({
             </div>
             <div className="profile-panel__identity">
               <div className="name">{user?.username ?? "User"}</div>
-              <div className="meta-level">
-                Level {USER_STATS.level}{" "}
-                <img
-                  src={PrimeIcon}
-                  alt="Prime"
-                />{" "}
-              </div>
+              <div className="meta">Level {USER_STATS.level} • Premium</div>
               <div className="elo-badge">ELO {user?.elo || USER_STATS.elo}</div>
             </div>
             <button
@@ -461,14 +461,11 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({
                     length: Math.max(
                       0,
                       5 -
-                        (1 +
-                          groupMembers
-                            .filter(
-                              (m) =>
-                                m.status === "accepted" &&
-                                m.id_user !== user?.id_user
-                            )
-                            .slice(0, 4).length)
+                        (1 + groupMembers.filter(
+                          (m) =>
+                            m.status === "accepted" &&
+                            m.id_user !== user?.id_user
+                        ).slice(0, 4).length)
                     ),
                   },
                   (_, index) => (
@@ -507,21 +504,9 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({
                 <div className="preview-title">Online Friends</div>
                 <div className="friends-avatars">
                   {onlineFriends.slice(0, 4).map((friend) => (
-                    <div
-                      key={friend.id_friend}
-                      className="friend-avatar-preview"
-                      title={friend.username}
-                    >
-                      <Avatar
-                        src={friend.avatar_url}
-                        username={friend.username}
-                        size={36}
-                      />
-                      <div
-                        className={`status-indicator ${
-                          friend.online_status || "offline"
-                        }`}
-                      />
+                    <div key={friend.id_friend} className="friend-avatar-preview" title={friend.username}>
+                      <Avatar src={friend.avatar_url} username={friend.username} size={36} />
+                      <div className={`status-indicator ${friend.online_status || "offline"}`} />
                     </div>
                   ))}
                   {onlineFriends.length > 4 && (

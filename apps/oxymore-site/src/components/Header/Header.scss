@@ -29,7 +29,6 @@
     cursor: pointer;
   }
 
-  // Navigation Desktop
   &__nav--desktop {
     flex: 1;
     display: flex;
@@ -183,7 +182,6 @@
     }
   }
 
-  // Menu Burger - Design moderne
   &__burger {
     display: none;
     flex-direction: column;
@@ -244,7 +242,6 @@
     }
   }
 
-  // Navigation Mobile - Design moderne
   &__nav--mobile {
     display: none;
     position: fixed;
@@ -373,7 +370,6 @@
     }
   }
 
-  // Responsive
   @media (width <= 1024px) {
     .header__burger {
       display: flex;
