@@ -13,11 +13,6 @@ const getTypeColorUtil = (type: string): string => {
   }
 };
 
-const createLocalDate = (dateString: string): Date => {
-  const [year, month, day] = dateString.split('-').map(Number);
-  return new Date(year, month - 1, day, 12, 0, 0, 0);
-};
-
 export const createCalendarEvent = async (eventData: CreateAppointmentData, createdBy: string): Promise<CalendarAppointment> => {
   const id = uuidv4();
   const now = new Date();

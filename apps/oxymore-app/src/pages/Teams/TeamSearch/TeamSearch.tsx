@@ -26,7 +26,7 @@ interface TeamSearchProps {
   onTeamSelect?: (team: Team) => void;
 }
 
-const TeamSearch: React.FC<TeamSearchProps> = ({ onTeamSelect }) => {
+const TeamSearch: React.FC<TeamSearchProps> = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedFilter, setSelectedFilter] = useState('all');
@@ -40,7 +40,6 @@ const TeamSearch: React.FC<TeamSearchProps> = ({ onTeamSelect }) => {
   const [mousePosition, setMousePosition] = useState<{ x: number; y: number } | null>(null);
 
   useEffect(() => {
-    // Simuler le chargement des données
     const loadData = async () => {
       setIsLoading(true);
       await new Promise(resolve => setTimeout(resolve, 1000));
@@ -55,7 +54,6 @@ const TeamSearch: React.FC<TeamSearchProps> = ({ onTeamSelect }) => {
   useEffect(() => {
     let filtered = allTeams;
 
-    // Filtrage par recherche
     if (searchQuery) {
       filtered = filtered.filter(team =>
         team.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -64,7 +62,6 @@ const TeamSearch: React.FC<TeamSearchProps> = ({ onTeamSelect }) => {
       );
     }
 
-    // Filtrage par catégorie
     switch (selectedFilter) {
       case 'premium':
         filtered = filtered.filter(team => team.isPremium);
@@ -95,15 +92,13 @@ const TeamSearch: React.FC<TeamSearchProps> = ({ onTeamSelect }) => {
 
   const handleJoinTeam = () => {
     if (selectedTeam) {
-      console.log('Rejoindre l\'équipe:', selectedTeam.name);
-      // Ici tu peux ajouter la logique pour rejoindre l'équipe
+      return navigate(`/teams/${selectedTeam.id}`);
     }
   };
 
   const handleContactTeam = () => {
     if (selectedTeam) {
-      console.log('Contacter l\'équipe:', selectedTeam.name);
-      // Ici tu peux ajouter la logique pour contacter l'équipe
+      return navigate(`/teams/${selectedTeam.id}/contact`);
     }
   };
 
@@ -133,7 +128,6 @@ const TeamSearch: React.FC<TeamSearchProps> = ({ onTeamSelect }) => {
   return (
     <div className="team-search-container">
       <div className="team-search-content">
-      {/* Header */}
       <div className="team-search-header">
         <div className="header-content">
           <h1 className="page-title">Rechercher une Équipe</h1>
@@ -143,7 +137,6 @@ const TeamSearch: React.FC<TeamSearchProps> = ({ onTeamSelect }) => {
         </div>
       </div>
 
-      {/* Search and Filters */}
       <div className="search-filters-section">
         <div className="search-container">
           <div className="search-input-wrapper">
@@ -203,7 +196,6 @@ const TeamSearch: React.FC<TeamSearchProps> = ({ onTeamSelect }) => {
         </div>
       </div>
 
-      {/* All Teams Section */}
       <div className="all-teams-section">
         <div className="section-header">
           <h2 className="section-title">
@@ -242,7 +234,6 @@ const TeamSearch: React.FC<TeamSearchProps> = ({ onTeamSelect }) => {
                 }}
               >
                 {viewMode === 'grid' ? (
-                  // Grid View
                   <>
                     <div className="card-header">
                       <div className="team-logo">
@@ -293,7 +284,6 @@ const TeamSearch: React.FC<TeamSearchProps> = ({ onTeamSelect }) => {
                     </div>
                   </>
                 ) : (
-                  // List View
                   <div className="list-content">
                     <div className="list-main">
                       <div className="team-info">
@@ -388,12 +378,10 @@ const TeamSearch: React.FC<TeamSearchProps> = ({ onTeamSelect }) => {
       </div>
       </div>
 
-      {/* Tooltip */}
       <AnimatePresence>
         <TeamTooltip team={hoveredTeam} mousePosition={mousePosition} />
       </AnimatePresence>
 
-      {/* Modal */}
       <AnimatePresence>
         <TeamModal
           team={selectedTeam}

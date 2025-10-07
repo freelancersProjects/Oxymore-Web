@@ -452,7 +452,6 @@
   }
 }
 
-// Responsive design
 @media (width <= 768px) {
   .friends-container {
     padding: rem-calc(20);
@@ -717,7 +716,6 @@
   justify-content: center;
   cursor: pointer;
 
-  /* Dégradé violet/bleu */
   background: linear-gradient(135deg, $color-purple 0%, $color-blue 100%);
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -886,7 +884,6 @@
   }
 }
 
-// Modal Add Friend Styles
 .add-friend-modal {
   padding: rem-calc(20);
   max-height: rem-calc(600);

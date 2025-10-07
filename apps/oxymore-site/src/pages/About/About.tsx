@@ -88,7 +88,6 @@ const About = () => {
 
   return (
     <div className={`about ${isVisible ? "visible" : ""}`}>
-      {/* Hero Section */}
       <section
         className={`about__hero${activeSection === 0 ? " active" : ""}`}
         ref={(el) => {
@@ -229,7 +228,6 @@ const About = () => {
         </div>
       </section>
 
-      {/* Meet Our Team */}
       <section
         className={`about__team${activeSection === 3 ? " active" : ""}`}
         ref={(el) => {
@@ -281,7 +279,6 @@ const About = () => {
         </div>
       </section>
 
-      {/* Our Story */}
       <section
         className={`about__story${activeSection === 4 ? " active" : ""}`}
         ref={(el) => {
@@ -333,7 +330,6 @@ const About = () => {
         </div>
       </section>
 
-      {/* CTA Section */}
       <section
         className={`about__cta${activeSection === 5 ? " active" : ""}`}
         ref={(el) => {

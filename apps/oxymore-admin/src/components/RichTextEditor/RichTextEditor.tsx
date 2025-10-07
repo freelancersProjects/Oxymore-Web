@@ -2,7 +2,6 @@ import React, { useCallback } from 'react';
 import { useEditor, EditorContent } from '@tiptap/react';
 import type { Editor } from '@tiptap/core';
 import StarterKit from '@tiptap/starter-kit';
-import Image from '@tiptap/extension-image';
 import Link from '@tiptap/extension-link';
 import { Table } from '@tiptap/extension-table';
 import { TableRow } from '@tiptap/extension-table-row';
@@ -65,11 +64,6 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({
           keepAttributes: false,
         },
       }),
-      Image.configure({
-        HTMLAttributes: {
-          class: 'max-w-full h-auto rounded-lg',
-        },
-      }),
       Link.configure({
         openOnClick: false,
         HTMLAttributes: {
@@ -118,7 +112,8 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({
   const addImage = useCallback(() => {
     const url = window.prompt('URL de l\'image:');
     if (url) {
-      editor?.chain().focus().setImage({ src: url }).run();
+      // Insérer l'image directement dans le HTML
+      editor?.chain().focus().insertContent(`<img src="${url}" alt="" class="max-w-full h-auto rounded-lg" />`).run();
     }
   }, [editor]);
 

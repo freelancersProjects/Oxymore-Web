@@ -47,7 +47,6 @@ const Login: React.FC = () => {
       [name]: type === 'checkbox' ? checked : value
     }));
 
-    // Clear error when user starts typing
     if (errors[name as keyof typeof errors] || errors.form) {
       setErrors(prev => ({
         ...prev,

@@ -12,10 +12,9 @@ interface SidebarProps {
 export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false, onToggle }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [showScrollIndicator, setShowScrollIndicator] = useState(false);
-  const [hasTeam, setHasTeam] = useState(false); // Simuler si l'utilisateur a une équipe
+  const [hasTeam] = useState(false);
   const navRef = useRef<HTMLElement>(null);
 
-  // Charger l'état de la sidebar depuis localStorage
   useEffect(() => {
     const savedSidebarState = localStorage.getItem('oxymore-sidebar-collapsed');
     if (savedSidebarState !== null) {
@@ -26,7 +25,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false, onToggle 
     }
   }, []);
 
-  // Sauvegarder l'état de la sidebar dans localStorage
   const handleToggle = () => {
     if (onToggle) {
       onToggle();
@@ -57,7 +55,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false, onToggle 
   };
 
   const handleStoreClick = () => {
-    // Redirection vers le sous-domaine store
     window.open('https://store.oxymore.com', '_blank');
   };
 
@@ -122,7 +119,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false, onToggle 
 
 
         <nav className={`oxm-sidebar__nav ${showScrollIndicator ? 'has-scroll-indicator' : ''}`} ref={navRef}>
-          {/* Section Principale */}
           <div className="nav-section">
             <div className="section-label">Principal</div>
             <ul>
@@ -139,7 +135,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false, onToggle 
             </ul>
           </div>
 
-          {/* Section Compétition */}
           <div className="nav-section">
             <div className="section-label">Compétition</div>
             <ul>
@@ -161,7 +156,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false, onToggle 
             </ul>
           </div>
 
-          {/* Section Social */}
           <div className="nav-section">
             <div className="section-label">Social</div>
             <ul>
@@ -184,7 +178,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false, onToggle 
             </ul>
           </div>
 
-          {/* Section Outils */}
           <div className="nav-section">
             <div className="section-label">Outils</div>
             <ul>

@@ -73,7 +73,6 @@ const TournamentPage: React.FC = () => {
     { label: 'Premium', value: 'premium' }
   ];
 
-  // Calculer les tournois paginés
   const totalPages = Math.ceil(tournaments.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
@@ -102,11 +101,9 @@ const TournamentPage: React.FC = () => {
 
   return (
     <div className="tournament-container">
-      {/* Header */}
       <div className="tournament-header">
         <h1 className="tournament-title orbitron">Explore CS2 Tournaments</h1>
 
-        {/* Cartes de catégories */}
         <div className="category-cards">
           <div className="category-card minor" onClick={() => setMatchFormat('minor')}>
             <div className="category-image"></div>
@@ -123,7 +120,6 @@ const TournamentPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Filtres */}
       <div className="tournament-filters">
         {React.createElement(OXMDropdown as any, {
           options: matchFormats,
@@ -150,7 +146,6 @@ const TournamentPage: React.FC = () => {
           placeholder: "Access Type"
         })}
 
-        {/* Boutons de vue */}
         <div className="view-toggle">
           <button
             className={`view-btn ${viewMode === 'cards' ? 'active' : ''}`}
@@ -169,7 +164,6 @@ const TournamentPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Grille des tournois */}
       {tournaments.length === 0 ? (
         <div className="tournament-empty">Aucun tournoi disponible</div>
       ) : (
@@ -209,7 +203,6 @@ const TournamentPage: React.FC = () => {
         </div>
       )}
 
-      {/* Pagination */}
       {tournaments.length > itemsPerPage && (
         <Pagination
           currentPage={currentPage}

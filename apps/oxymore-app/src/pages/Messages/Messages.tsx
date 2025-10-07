@@ -128,7 +128,6 @@ const Messages = () => {
 
       setChats(chatsWithData);
     } catch (error) {
-      // Fallback sur les amis si pas de conversations
       try {
         const friends = await apiService.get(`/friends/user/${user?.id_user}`);
 
@@ -248,7 +247,6 @@ const Messages = () => {
   return (
     <div className="messages-container">
       <div className="messages-layout">
-        {/* Sidebar - Chat List */}
         <div className="messages-sidebar">
           <div className="sidebar-header">
             <h1 className="sidebar-title orbitron">Messages</h1>
@@ -331,11 +329,9 @@ const Messages = () => {
           </div>
         </div>
 
-        {/* Main Chat Area */}
         <div className="messages-main">
           {activeChat && currentChat ? (
             <>
-              {/* Chat Header */}
               <div className="chat-header-bar">
                 <div className="chat-user-info">
                   <div className="chat-user-avatar">
@@ -360,7 +356,6 @@ const Messages = () => {
                 </button>
               </div>
 
-              {/* Messages Area */}
               <div className="messages-area">
                 {messages.length === 0 ? (
                   <div className="empty-messages">
@@ -390,7 +385,6 @@ const Messages = () => {
                 )}
               </div>
 
-              {/* Message Input */}
               <div className="message-input-area">
                 <div className="message-input-wrapper">
                   <div className="input-wrapper">

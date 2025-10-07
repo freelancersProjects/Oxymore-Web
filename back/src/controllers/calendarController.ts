@@ -3,7 +3,6 @@ import { CalendarService } from '../services/calendarService';
 import { CalendarFilters } from '../interfaces/calendarInterfaces';
 import * as CalendarModel from '../models/calendarModel';
 
-// Fonction pour formater les dates pour l'API
 const formatEventForResponse = (event: any) => {
   return {
     ...event,
@@ -15,7 +14,6 @@ const formatEventForResponse = (event: any) => {
   };
 };
 
-// Fonctions pour les routes du calendrier
 export const createCalendarEvent = async (req: Request, res: Response): Promise<void> => {
   try {
     const eventData = req.body;
@@ -44,7 +42,7 @@ export const getAllCalendarEvents = async (req: Request, res: Response): Promise
   try {
     const events = await CalendarModel.getAllCalendarEvents();
     const formattedEvents = events.map(event => formatEventForResponse(event));
-    res.json(formattedEvents); // Return events directly, not wrapped in success object
+    res.json(formattedEvents);
   } catch (error) {
     console.error('Error fetching calendar events:', error);
     res.status(500).json({
@@ -301,7 +299,6 @@ export const createAppointment = async (req: Request, res: Response): Promise<Re
   }
 };
 
-// Mettre à jour un rendez-vous
 export const updateAppointment = async (req: Request, res: Response): Promise<Response> => {
   try {
     const { id } = req.params;
@@ -413,9 +410,6 @@ export const addComment = async (req: Request, res: Response): Promise<Response>
       });
     }
 
-    // Ajouter le commentaire (à implémenter dans le service)
-    // await CalendarService.addComment(parseInt(id), userId, comment, is_internal);
-
     return res.json({
       success: true,
       message: 'Commentaire ajouté avec succès'
@@ -429,10 +423,8 @@ export const addComment = async (req: Request, res: Response): Promise<Response>
   }
 };
 
-// Marquer un rendez-vous comme favori
 export const toggleFavorite = async (req: Request, res: Response): Promise<Response> => {
   try {
-    const { id: appointmentId } = req.params;
     const userId = (req as any).user?.id_user;
 
     if (!userId) {
@@ -441,9 +433,6 @@ export const toggleFavorite = async (req: Request, res: Response): Promise<Respo
         message: 'Utilisateur non authentifié'
       });
     }
-
-    // Toggle favorite (à implémenter dans le service)
-    // await CalendarService.toggleFavorite(parseInt(id), userId);
 
     return res.json({
       success: true,

@@ -117,7 +117,6 @@ const HeroBanner = () => {
             <h4>{videos[current].title}</h4>
             <p>{videos[current].subtitle}</p>
           </div>
-          {/* Carte du bas */}
           <div
             className={`thumb thumb-bottom ${selected === 1 ? "active" : ""} ${hoveredIndex === 1 ? "hovered" : ""}`}
             onClick={() => { setCurrent(nextIdx); setSelected(0); }}

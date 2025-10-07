@@ -24,7 +24,6 @@ const League: React.FC = () => {
   ];
 
   useEffect(() => {
-    // Simuler le chargement des données
     setTimeout(() => {
       setTeams(generateMockTeams());
       setLoading(false);
@@ -60,18 +59,18 @@ const League: React.FC = () => {
   };
 
   const getRankBadgeColor = (rank: number) => {
-    if (rank === 1) return '#FFD700'; // Gold
-    if (rank === 2) return '#C0C0C0'; // Silver
-    if (rank === 3) return '#CD7F32'; // Bronze
-    if (rank <= 10) return '#8B5CF6'; // Purple
-    return '#6B7280'; // Gray
+    if (rank === 1) return '#FFD700';
+    if (rank === 2) return '#C0C0C0';
+    if (rank === 3) return '#CD7F32';
+    if (rank <= 10) return '#8B5CF6';
+    return '#6B7280';
   };
 
   const getMatchResultColor = (result: string) => {
     switch (result) {
-      case 'W': return '#10B981'; // Green
-      case 'L': return '#EF4444'; // Red
-      case 'D': return '#F59E0B'; // Yellow
+      case 'W': return '#10B981';
+      case 'L': return '#EF4444';
+      case 'D': return '#F59E0B';
       default: return '#6B7280';
     }
   };
@@ -95,7 +94,6 @@ const League: React.FC = () => {
       transition={{ duration: 0.3, ease: "easeOut" }}
     >
       <div className="league-container">
-        {/* Header Section */}
         <motion.div
           className="league-header"
           initial={{ opacity: 0, y: 30 }}
@@ -168,7 +166,6 @@ const League: React.FC = () => {
           </motion.div>
         </motion.div>
 
-        {/* Leaderboard */}
         <motion.div
           className="league-leaderboard"
           initial={{ opacity: 0, y: 40 }}

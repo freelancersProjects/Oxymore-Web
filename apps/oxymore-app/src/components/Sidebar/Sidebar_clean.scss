@@ -179,7 +179,6 @@
           transform: translateX(4px);
         }
 
-        // Style spécial pour Matchmaking (effet guerre)
         &[href="/matchmaking"]:hover:not(.active) {
           background: linear-gradient(135deg, rgb(239 68 68 / 15%) 0%, rgb(220 38 38 / 10%) 100%);
           border: 1px solid rgb(239 68 68 / 30%);
@@ -316,7 +315,6 @@
   }
 }
 
-// Mode collapsed
 .oxm-sidebar.collapsed {
   .oxm-sidebar__nav {
     .nav-section {
@@ -386,7 +384,6 @@
   }
 }
 
-// Mobile styles
 @media (width <= 768px) {
   .oxm-sidebar {
     transform: translateX(-100%);

@@ -39,21 +39,18 @@ const Friends = () => {
   useEffect(() => {
     if (!user?.id_user) return;
 
-    // Load friends
     apiService.get(`/friends/user/${user.id_user}`).then((data) => {
       setFriends(data);
     }).catch((error) => {
       console.error('Error loading friends:', error);
     });
 
-    // Load pending requests (requests received, not sent)
     apiService.get(`/friends/pending/${user.id_user}`).then((data) => {
       setPendingRequests(data);
     }).catch((error) => {
       console.error('Error loading pending requests:', error);
     });
 
-    // Load sent requests
     apiService.get(`/friends/sent/${user.id_user}`).then((data) => {
       setSentRequests(data);
     }).catch((error) => {
@@ -61,7 +58,6 @@ const Friends = () => {
     });
   }, [user]);
 
-  // Cleanup timeout on unmount
   useEffect(() => {
     return () => {
       if (searchTimeoutRef.current) {
@@ -93,7 +89,6 @@ const Friends = () => {
   });
 
   const handleMessage = (friendId: string) => {
-    // Navigate to messages page with friend ID
     window.location.href = `/messages?friend=${friendId}`;
   };
 
@@ -104,7 +99,6 @@ const Friends = () => {
   const handleToggleFavorite = async (friendId: string) => {
     try {
       await apiService.put(`/friends/${friendId}/toggle-favorite`);
-      // Refresh friends list
       if (user?.id_user) {
         const friends = await apiService.get(`/friends/user/${user.id_user}`);
         setFriends(friends);
@@ -122,7 +116,7 @@ const Friends = () => {
 
 
 
-            const handleSearchUsers = useCallback(async (query: string) => {
+  const handleSearchUsers = useCallback(async (query: string) => {
     if (!query.trim() || !user?.id_user) {
       setSearchResults([]);
       return;
@@ -149,7 +143,6 @@ const Friends = () => {
         id_user_receiver: userId,
         status: 'pending'
       });
-      // Refresh friends list
       setShowAddFriendModal(false);
       setUserSearchQuery("");
       setSearchResults([]);
@@ -161,7 +154,6 @@ const Friends = () => {
   const handleCancelRequest = async (friendId: string) => {
     try {
       await apiService.delete(`/friends/${friendId}/cancel`);
-      // Refresh sent requests
       if (user?.id_user) {
         const requests = await apiService.get(`/friends/sent/${user.id_user}`);
         setSentRequests(requests);
@@ -174,7 +166,6 @@ const Friends = () => {
   const handleAcceptRequest = async (friendId: string) => {
     try {
       await apiService.put(`/friends/${friendId}/accept`);
-      // Refresh pending requests and friends
       if (user?.id_user) {
         const requests = await apiService.get(`/friends/pending/${user.id_user}`);
         setPendingRequests(requests);
@@ -189,7 +180,6 @@ const Friends = () => {
   const handleRejectRequest = async (friendId: string) => {
     try {
       await apiService.put(`/friends/${friendId}/reject`);
-      // Refresh pending requests
       if (user?.id_user) {
         const requests = await apiService.get(`/friends/pending/${user.id_user}`);
         setPendingRequests(requests);
@@ -202,13 +192,13 @@ const Friends = () => {
   const getStatusColor = (status: string) => {
     switch (status) {
       case "online":
-        return "#4ADE80"; // $color-green
+        return "#4ADE80";
       case "in-game":
-        return "#FACC15"; // $color-yellow
+        return "#FACC15";
       case "offline":
-        return "#888"; // $color-gray-medium
+        return "#888";
       default:
-        return "#888"; // $color-gray-medium
+        return "#888";
     }
   };
 
@@ -226,10 +216,10 @@ const Friends = () => {
   };
 
   const getEloColor = (elo: number) => {
-    if (elo >= 2000) return "#FACC15"; // $color-yellow (Gold)
-    if (elo >= 1500) return "#E0E0E0"; // $color-gray-light (Silver)
-    if (elo >= 1000) return "#CD7F32"; // $color-bronze (Bronze)
-    return "#888"; // $color-gray-medium (Gray)
+    if (elo >= 2000) return "#FACC15";
+    if (elo >= 1500) return "#E0E0E0";
+    if (elo >= 1000) return "#CD7F32";
+    return "#888";
   };
 
   return (
@@ -561,7 +551,6 @@ const Friends = () => {
          </div>
        )}
 
-      {/* Add Friend Modal */}
       {showAddFriendModal && (
         <div className="modal-overlay" onClick={() => setShowAddFriendModal(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
@@ -586,16 +575,14 @@ const Friends = () => {
                   const value = e.target.value;
                   setUserSearchQuery(value);
 
-                  // Clear previous timeout
                   if (searchTimeoutRef.current) {
                     clearTimeout(searchTimeoutRef.current);
                   }
 
-                  // Set new timeout for debounced search
                   if (value.trim()) {
                     searchTimeoutRef.current = setTimeout(() => {
                       handleSearchUsers(value);
-                    }, 300); // 300ms delay
+                    }, 300);
                   } else {
                     setSearchResults([]);
                   }

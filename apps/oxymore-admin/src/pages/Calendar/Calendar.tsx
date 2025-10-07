@@ -636,7 +636,7 @@ const Calendar = () => {
      const [position, setPosition] = useState({ top: 0, left: 0 });
      const triggerRef = useRef<HTMLDivElement>(null);
      const tooltipRef = useRef<HTMLDivElement>(null);
-     const hideTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+     const hideTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
      const isHoveringTooltip = useRef(false);
 
            const updatePosition = () => {
@@ -1754,7 +1754,14 @@ const Calendar = () => {
       {/* Video Call Component */}
       {videoCallAppointment && (
         <VideoCall
-          appointment={videoCallAppointment}
+          appointment={{
+            id: videoCallAppointment.id,
+            title: videoCallAppointment.title,
+            participants: videoCallAppointment.participants || [],
+            startTime: videoCallAppointment.startTime,
+            endTime: videoCallAppointment.endTime,
+            type: videoCallAppointment.type
+          }}
           isOpen={showVideoCall}
           onClose={handleCloseVideoCall}
         />

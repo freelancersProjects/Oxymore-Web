@@ -67,7 +67,6 @@
     line-height: 1.4;
   }
 
-  // Thème Violet (par défaut)
   &--purple {
     .oxm-checkbox-input:focus + .oxm-checkbox-custom {
       box-shadow: 0 0 0 rem-calc(3) rgba($color-purple, 0.3);
@@ -83,7 +82,6 @@
     }
   }
 
-  // Thème Bleu
   &--blue {
     .oxm-checkbox-input:focus + .oxm-checkbox-custom {
       box-shadow: 0 0 0 rem-calc(3) rgba($color-blue, 0.3);
@@ -99,7 +97,6 @@
     }
   }
 
-  // Tailles
   &--small {
     font-size: rem-calc(14);
     gap: rem-calc(8);
@@ -145,7 +142,6 @@
     }
   }
 
-  // États
   &--error {
     .oxm-checkbox-custom {
       border-color: $color-error;

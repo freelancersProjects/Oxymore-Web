@@ -137,12 +137,10 @@ const VideoCall: React.FC<VideoCallProps> = ({ appointment, isOpen, onClose }) =
   };
 
   const handleInviteParticipant = () => {
-    // Logique pour inviter un participant
     console.log('Inviting participant...');
   };
 
   const handleChat = () => {
-    // Logique pour ouvrir le chat
     console.log('Opening chat...');
   };
 

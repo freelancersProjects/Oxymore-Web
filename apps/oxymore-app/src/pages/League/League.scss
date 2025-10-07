@@ -15,7 +15,6 @@
   padding-top: rem-calc(100);
 }
 
-// Loading State
 .league-loading {
   display: flex;
   flex-direction: column;
@@ -45,7 +44,6 @@
   100% { transform: rotate(360deg); }
 }
 
-// Header Section
 .league-header {
   display: flex;
   justify-content: space-between;
@@ -114,7 +112,6 @@
   }
 }
 
-// Leaderboard
 .league-leaderboard {
   background: linear-gradient(135deg, rgb(139 92 246 / 8%) 0%, rgb(0 0 0 / 60%) 50%, rgb(59 130 246 / 8%) 100%);
   border: 1px solid rgb(255 255 255 / 10%);
@@ -145,7 +142,6 @@
   max-height: rem-calc(600);
   overflow-y: auto;
 
-  // Custom scrollbar
   &::-webkit-scrollbar {
     width: 6px;
   }
@@ -191,7 +187,6 @@
   }
 }
 
-// Rank Cell
 .rank-cell {
   display: flex;
   align-items: center;
@@ -212,7 +207,6 @@
   }
 }
 
-// Team Cell
 .team-cell {
   display: flex;
   align-items: center;
@@ -234,7 +228,6 @@
   }
 }
 
-// Stats Cells
 .stats-cell {
   display: flex;
   align-items: center;
@@ -284,7 +277,6 @@
   }
 }
 
-// Matches Cell
 .matches-cell {
   display: flex;
   align-items: center;
@@ -316,7 +308,6 @@
   }
 }
 
-// Responsive Design
 @media (width <= 1200px) {
   .leaderboard-header,
   .leaderboard-row {

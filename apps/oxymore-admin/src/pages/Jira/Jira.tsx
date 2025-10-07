@@ -259,16 +259,13 @@ const Jira = () => {
 
     const { source, destination, draggableId } = result;
 
-    // Si on déplace dans la même colonne, ne rien faire
     if (source.droppableId === destination.droppableId) return;
 
     try {
-      // Mettre à jour le statut via l'API
       await kanbanApi.updateTicket(draggableId, {
         status: destination.droppableId as Todo['status']
       });
 
-      // Mettre à jour localement
       setTodos(prev => prev.map(todo =>
         todo.id === draggableId
           ? { ...todo, status: destination.droppableId as Todo['status'], updatedAt: new Date().toISOString() }
@@ -709,9 +706,9 @@ const Jira = () => {
                 </span>
               </div>
 
-              {/* @ts-expect-error */}
+              {/* @ts-expect-error - Droppable component type issue with React 19 */}
               <Droppable droppableId={column.id} type="TASK">
-                {(provided: any, snapshot: any) => (
+                {(provided, snapshot) => (
                   <div
                     ref={provided.innerRef}
                     {...provided.droppableProps}

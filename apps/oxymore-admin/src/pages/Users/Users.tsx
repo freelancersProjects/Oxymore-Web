@@ -239,20 +239,17 @@ const fetchUserRole = async (userId: string): Promise<UserRole | null> => {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
       <div>
         <h1 className="text-2xl font-bold text-primary">Users</h1>
         <p className="text-secondary mt-1">Manage and monitor users</p>
       </div>
 
-      {/* Stats */}
       <UserStats
         statsData={statsData}
         isRefreshing={isRefreshingStats}
         onRefresh={refreshStats}
       />
 
-      {/* Search & Filters */}
       <div className="flex items-center gap-4">
         <div className="flex-1 relative">
           <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-muted" />
@@ -276,7 +273,6 @@ const fetchUserRole = async (userId: string): Promise<UserRole | null> => {
             )}
           </button>
 
-          {/* Filter Menu */}
           {showFilters && (
             <div className="absolute right-0 top-full mt-2 w-72 bg-[var(--card-background)] rounded-xl shadow-lg border border-[var(--border-color)] p-4 z-10 filter-menu">
               <div className="flex items-center justify-between mb-4">
@@ -322,7 +318,6 @@ const fetchUserRole = async (userId: string): Promise<UserRole | null> => {
         </div>
       </div>
 
-      {/* Active Filters */}
       {(filters.isVerified !== null || filters.isPremium !== null || filters.isAdmin !== null) && (
         <div className="flex flex-wrap gap-2">
           {filters.isVerified !== null && (
@@ -352,14 +347,12 @@ const fetchUserRole = async (userId: string): Promise<UserRole | null> => {
         </div>
       )}
 
-      {/* Results Count - Only show when filtering or searching */}
       {(searchQuery || filters.isVerified !== null || filters.isPremium !== null || filters.isAdmin !== null) && (
         <div className="text-secondary">
           {filteredUsers.length} user{filteredUsers.length !== 1 ? 's' : ''} found
         </div>
       )}
 
-      {/* Table */}
       <div className="card-base p-6">
 
         <div className="overflow-x-auto">
@@ -439,7 +432,7 @@ const fetchUserRole = async (userId: string): Promise<UserRole | null> => {
                           : getTooltipMessage(
                               canModifyUser(user),
                               currentUser?.id === user.id_user,
-                              user.role === 'admin',
+                              (user as any).role === 'admin',
                               'Gérer les permissions'
                             )
                         }
@@ -458,7 +451,7 @@ const fetchUserRole = async (userId: string): Promise<UserRole | null> => {
                           : getTooltipMessage(
                               canModifyUser(user),
                               currentUser?.id === user.id_user,
-                              user.role === 'admin',
+                              (user as any).role === 'admin',
                               'Modifier'
                             )
                         }
@@ -477,7 +470,7 @@ const fetchUserRole = async (userId: string): Promise<UserRole | null> => {
                           : getTooltipMessage(
                               canModifyUser(user),
                               currentUser?.id === user.id_user,
-                              user.role === 'admin',
+                              (user as any).role === 'admin',
                               'Voir l\'historique'
                             )
                         }
@@ -496,7 +489,7 @@ const fetchUserRole = async (userId: string): Promise<UserRole | null> => {
                           : getTooltipMessage(
                               canModifyUser(user),
                               currentUser?.id === user.id_user,
-                              user.role === 'admin',
+                              (user as any).role === 'admin',
                               'Bannir'
                             )
                         }
