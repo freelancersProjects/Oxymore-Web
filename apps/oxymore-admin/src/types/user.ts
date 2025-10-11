@@ -4,21 +4,25 @@ export interface User {
   last_name: string;
   username: string;
   email: string;
+  password_hash: string;
   is_premium: boolean;
-  avatar_url: string;
-  banner_url: string;
-  bio: string;
+  avatar_url: string | null;
+  banner_url: string | null;
+  bio: string | null;
   elo: number;
   wallet?: number | null;
-  country_code: string;
-  discord_link: string;
-  faceit_id: string;
-  steam_link: string;
-  twitch_link: string;
-  youtube_link: string;
+  country_code: string | null;
+  discord_link: string | null;
+  faceit_id: string | null;
+  steam_link: string | null;
+  twitch_link: string | null;
+  youtube_link: string | null;
   verified: boolean;
   created_at: string;
   team_chat_is_muted: boolean;
+  role_id: string | null;
+  online_status: 'online' | 'offline' | 'in-game';
+  last_seen: string | null;
 }
 
 export interface UserContextType {

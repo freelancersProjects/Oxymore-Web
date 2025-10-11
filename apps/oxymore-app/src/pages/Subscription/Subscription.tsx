@@ -16,6 +16,8 @@ const Subscription: React.FC = () => {
     console.log('View all features');
   };
 
+  const currentPlan = "Free Plan";
+
   return (
     <motion.div
       className="subscription-page"
@@ -75,11 +77,12 @@ const Subscription: React.FC = () => {
                     <span className="plan-period">{plan.period}</span>
                   </div>
                   <OXMButton
-                    variant="primary"
+                    variant={plan.name === currentPlan ? "secondary" : "primary"}
                     onClick={() => handleUpgrade(plan.name)}
-                    className="upgrade-button"
+                    className={`upgrade-button ${plan.name === currentPlan ? 'current-plan' : ''}`}
+                    disabled={plan.name === currentPlan}
                   >
-                    UPGRADE
+                    {plan.name === currentPlan ? 'CURRENT PLAN' : 'UPGRADE'}
                   </OXMButton>
                 </div>
 

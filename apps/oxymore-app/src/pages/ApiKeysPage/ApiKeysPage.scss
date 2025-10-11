@@ -4,26 +4,42 @@
   color: $color-white;
   padding-top: rem-calc(20);
 
+  .page-header {
+    margin-bottom: rem-calc(40);
+
+    .header-content {
+      h2 {
+        font-size: rem-calc(36);
+        text-align: left;
+        margin-bottom: rem-calc(12);
+        color: $color-white;
+      }
+
+      p {
+        color: rgba($color-white, 0.75);
+        font-size: rem-calc(18);
+        max-width: rem-calc(800);
+        line-height: 1.5;
+        text-align: left;
+      }
+    }
+  }
+
   .api-keys-tabs{
     margin-bottom: rem-calc(30);
   }
 
-  .api-keys-explainer {
-    margin-bottom: rem-calc(32);
+  .api-keys-toast {
+    z-index: 999999 !important;
 
-    h2 {
-      font-size: rem-calc(36);
-      text-align: left;
-      margin-bottom: rem-calc(12);
+    .toast-container {
+      z-index: 999999 !important;
     }
+  }
 
-    p {
-      color: rgba($color-white, 0.75);
-      font-size: rem-calc(18);
-        max-width: rem-calc(800);
-      line-height: 1.5;
-      text-align: left;
-    }
+  .oxm-tab-switcher {
+    margin-top: rem-calc(40);
+    margin-bottom: rem-calc(40);
   }
 
   .header {
@@ -110,6 +126,82 @@
 
     strong {
       color: $color-blue;
+    }
+  }
+
+  .api-keys-content {
+    .empty-state {
+      text-align: center;
+      padding: rem-calc(60) rem-calc(20);
+
+      .empty-icon {
+        font-size: rem-calc(48);
+        margin-bottom: rem-calc(20);
+      }
+
+      h3 {
+        font-size: rem-calc(24);
+        margin-bottom: rem-calc(12);
+        color: $color-white;
+      }
+
+      p {
+        color: rgba($color-white, 0.7);
+        margin-bottom: rem-calc(30);
+        font-size: rem-calc(16);
+      }
+    }
+
+    .keys-list {
+      display: flex;
+      flex-direction: column;
+      gap: rem-calc(20);
+    }
+
+    .key-item {
+      background: rgba($color-white, 0.02);
+      border: 1px solid rgba($color-white, 0.1);
+      border-radius: rem-calc(16);
+      padding: rem-calc(24);
+      backdrop-filter: blur(12px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.3s ease;
+
+      &:hover {
+        border-color: rgba($color-white, 0.2);
+        background: rgba($color-white, 0.04);
+      }
+
+      .key-info {
+        flex: 1;
+
+        h3 {
+          font-size: rem-calc(18);
+          font-weight: 600;
+          margin-bottom: rem-calc(8);
+          color: $color-white;
+        }
+
+        .key-secret {
+          font-family: monospace;
+          font-size: rem-calc(16);
+          color: $color-blue;
+          margin-bottom: rem-calc(4);
+          letter-spacing: 1px;
+        }
+
+        .key-date {
+          font-size: rem-calc(14);
+          color: rgba($color-white, 0.6);
+        }
+      }
+
+      .key-actions {
+        display: flex;
+        gap: rem-calc(12);
+      }
     }
   }
 
@@ -301,20 +393,57 @@
     text-align: center;
 
     .new-key {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: rgb(0 0 0 / 30%);
-      padding: rem-calc(15) rem-calc(20);
-      border-radius: rem-calc(10);
+      background: rgba($color-white, 0.05);
+      padding: rem-calc(20);
+      border-radius: rem-calc(12);
       margin: rem-calc(20) 0 rem-calc(30);
       border: 1px solid rgba($color-white, 0.1);
+      backdrop-filter: blur(12px);
 
-      code {
-        font-family: monospace;
-        font-size: rem-calc(16);
-        word-break: break-all;
-        color: $color-blue;
+      .key-display {
+        display: flex;
+        gap: rem-calc(12);
+        align-items: center;
+
+        .key-input {
+          flex: 1;
+          background: rgba($color-white, 0.1);
+          border: 1px solid rgba($color-white, 0.2);
+          border-radius: rem-calc(8);
+          padding: rem-calc(12) rem-calc(16);
+          color: $color-blue;
+          font-family: monospace;
+          font-size: rem-calc(16);
+          cursor: text;
+
+          &:focus {
+            outline: none;
+            border-color: $color-blue;
+            box-shadow: 0 0 0 2px rgba($color-blue, 0.2);
+          }
+        }
+
+        .copy-button {
+          background: $color-purple;
+          border: none;
+          border-radius: rem-calc(8);
+          padding: rem-calc(12);
+          color: $color-white;
+          cursor: pointer;
+          transition: all 0.2s ease;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          &:hover {
+            background: $color-purple-light;
+            transform: translateY(-1px);
+          }
+
+          &:active {
+            transform: translateY(0);
+          }
+        }
       }
     }
 

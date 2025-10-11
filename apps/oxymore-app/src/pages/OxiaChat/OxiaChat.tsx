@@ -8,6 +8,7 @@ import OxiaChatMessages from "./OxiaComponent/OxiaChatMessages";
 import OxiaChatInput from "./OxiaComponent/OxiaChatInput";
 import OxiaChatModals from "./OxiaComponent/OxiaChatModals";
 import { OXMToast } from "@oxymore/ui";
+import { formatDateTime } from "../../utils";
 import { useAuth } from "../../context/AuthContext";
 import { type Message } from "@oxymore/types";
 
@@ -159,9 +160,9 @@ const OxiaChat: React.FC = () => {
       id: Date.now(),
       author: user?.username || "You",
       text: input,
-      time: new Date().toLocaleTimeString([], {
+      time: formatDateTime(new Date(), {
         hour: "2-digit",
-        minute: "2-digit",
+        minute: "2-digit"
       }),
       side: "right",
       avatar: "",

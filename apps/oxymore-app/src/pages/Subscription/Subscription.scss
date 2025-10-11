@@ -130,6 +130,19 @@
     text-transform: uppercase;
     letter-spacing: 0.5px;
     margin-bottom: rem-calc(30);
+
+    &.current-plan {
+      opacity: 0.6;
+      cursor: not-allowed;
+      background: $color-gray-dark !important;
+      color: $color-gray-medium !important;
+      border-color: $color-gray-medium !important;
+
+      &:hover {
+        transform: none !important;
+        box-shadow: none !important;
+      }
+    }
   }
 }
 
