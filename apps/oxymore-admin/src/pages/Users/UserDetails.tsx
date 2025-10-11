@@ -6,7 +6,6 @@ import {
   Calendar,
   Trophy,
   Wallet,
-  User as UserIcon,
   Flag,
   MessageSquare,
   Star,
@@ -14,7 +13,18 @@ import {
   Twitter,
   Twitch,
   Youtube,
-  Lock
+  Lock,
+  Users,
+  Clock,
+  CheckCircle,
+  Gamepad2,
+  Mail,
+  Target,
+  TrendingUp,
+  Award,
+  MessageCircle,
+  UserPlus,
+  Monitor,
 } from 'lucide-react';
 import { apiService } from '../../api/apiService';
 import { User, UserRole } from '../../types';
@@ -43,9 +53,21 @@ const UserDetails = () => {
   const [isUpdatingMute, setIsUpdatingMute] = useState(false);
   const [muteReason, setMuteReason] = useState('');
 
+  const [userFriends, setUserFriends] = useState<any[]>([]);
+  const [recentMessages, setRecentMessages] = useState<any[]>([]);
+  const [userActivity, setUserActivity] = useState<any[]>([]);
+  const [userTeam, setUserTeam] = useState<any>(null);
+  const [userStats, setUserStats] = useState<any>(null);
+
   useEffect(() => {
     fetchUser();
   }, [id]);
+
+  useEffect(() => {
+    if (user) {
+      fetchAdditionalData();
+    }
+  }, [user]);
 
   const fetchUserRole = async (userId: string): Promise<UserRole | null> => {
     try {
@@ -54,6 +76,63 @@ const UserDetails = () => {
     } catch (error) {
       console.error(`Error fetching role for user ${userId}:`, error);
       return null;
+    }
+  };
+
+  const fetchAdditionalData = async () => {
+    if (!user) return;
+
+    try {
+      // Simuler des données supplémentaires (en dur pour l'instant)
+      const mockFriends = [
+        { id: '1', username: 'PlayerOne', avatar: null, status: 'online', mutual_friends: 5 },
+        { id: '2', username: 'GamerPro', avatar: null, status: 'in-game', mutual_friends: 3 },
+        { id: '3', username: 'EliteGamer', avatar: null, status: 'offline', mutual_friends: 8 },
+        { id: '4', username: 'ProPlayer', avatar: null, status: 'online', mutual_friends: 2 }
+      ];
+
+      const mockMessages = [
+        { id: '1', from: 'PlayerOne', content: 'Salut ! Tu veux jouer ?', timestamp: '2024-01-15T10:30:00Z', unread: true },
+        { id: '2', from: 'GamerPro', content: 'GG pour le match !', timestamp: '2024-01-15T09:15:00Z', unread: false },
+        { id: '3', from: 'EliteGamer', content: 'On refait une partie ?', timestamp: '2024-01-14T20:45:00Z', unread: false }
+      ];
+
+      const mockActivity = [
+        { id: '1', type: 'login', description: 'Connexion', timestamp: '2024-01-15T10:30:00Z', icon: Monitor },
+        { id: '2', type: 'match', description: 'Match terminé - Victoire', timestamp: '2024-01-15T09:15:00Z', icon: Trophy },
+        { id: '3', type: 'message', description: 'Message envoyé', timestamp: '2024-01-15T08:45:00Z', icon: MessageCircle },
+        { id: '4', type: 'friend', description: 'Nouvel ami ajouté', timestamp: '2024-01-14T20:30:00Z', icon: UserPlus },
+        { id: '5', type: 'tournament', description: 'Inscription tournoi', timestamp: '2024-01-14T18:00:00Z', icon: Award }
+      ];
+
+      const mockTeam = {
+        id: 'team1',
+        name: 'Elite Squad',
+        role: 'Captain',
+        members_count: 5,
+        created_at: '2024-01-01T00:00:00Z'
+      };
+
+      const mockStats = {
+        total_matches: 156,
+        wins: 98,
+        losses: 58,
+        win_rate: 62.8,
+        avg_score: 1.4,
+        play_time: '2h 34m',
+        favorite_game: 'CS2',
+        rank: 'Global Elite'
+      };
+
+      setUserFriends(mockFriends);
+      setRecentMessages(mockMessages);
+      setUserActivity(mockActivity);
+      setUserTeam(mockTeam);
+      setUserStats(mockStats);
+    } catch (error) {
+      console.error('Erreur lors du chargement des données supplémentaires:', error);
+    } finally {
+      setLoadingAdditionalData(false);
     }
   };
 
@@ -120,6 +199,40 @@ const UserDetails = () => {
     if (wallet === undefined || wallet === null) return '-';
     const numWallet = typeof wallet === 'string' ? parseFloat(wallet) : wallet;
     return `${numWallet.toFixed(2)} €`;
+  };
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'online': return 'text-green-400';
+      case 'in-game': return 'text-blue-400';
+      case 'offline': return 'text-gray-400';
+      default: return 'text-gray-400';
+    }
+  };
+
+  const getStatusIcon = (status: string) => {
+    switch (status) {
+      case 'online': return <div className="w-2 h-2 bg-green-400 rounded-full" />;
+      case 'in-game': return <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse" />;
+      case 'offline': return <div className="w-2 h-2 bg-gray-400 rounded-full" />;
+      default: return <div className="w-2 h-2 bg-gray-400 rounded-full" />;
+    }
+  };
+
+  const generateAvatarWithInitial = (username: string) => {
+    const initial = username.charAt(0).toUpperCase();
+    return `https://api.dicebear.com/7.x/initials/svg?seed=${initial}&backgroundColor=8b5cf6&textColor=ffffff`;
+  };
+
+  const formatRelativeTime = (timestamp: string) => {
+    const now = new Date();
+    const date = new Date(timestamp);
+    const diffInMinutes = Math.floor((now.getTime() - date.getTime()) / (1000 * 60));
+
+    if (diffInMinutes < 1) return 'À l\'instant';
+    if (diffInMinutes < 60) return `Il y a ${diffInMinutes}min`;
+    if (diffInMinutes < 1440) return `Il y a ${Math.floor(diffInMinutes / 60)}h`;
+    return date.toLocaleDateString('fr-FR');
   };
 
   const isUserAdmin = (): boolean => {
@@ -335,11 +448,24 @@ const UserDetails = () => {
             src={user.banner_url}
             alt="Banner"
             className="w-full h-full object-cover"
+            onError={(e) => {
+              e.currentTarget.style.display = 'none';
+              e.currentTarget.nextElementSibling?.classList.remove('hidden');
+            }}
           />
-        ) : (
-          <div className="w-full h-full bg-gradient-oxymore opacity-20" />
-        )}
+        ) : null}
+        <div className={`w-full h-full bg-gradient-to-br from-purple-600 via-blue-600 to-indigo-700 ${user.banner_url ? 'hidden' : ''}`} />
         <div className="absolute bottom-0 left-0 right-0 h-16 md:h-24 bg-gradient-to-t from-black/80 to-transparent" />
+
+        {/* Status indicator */}
+        <div className="absolute top-4 right-4 flex items-center gap-2">
+          {getStatusIcon(user.online_status || 'offline')}
+          <span className={`text-xs font-medium ${getStatusColor(user.online_status || 'offline')}`}>
+            {user.online_status === 'in-game' ? 'En jeu' :
+             user.online_status === 'online' ? 'En ligne' : 'Hors ligne'}
+          </span>
+        </div>
+
         <div className="absolute -bottom-4 md:-bottom-6 left-4 md:left-8 ring-4 md:ring-8 ring-[var(--background)] rounded-xl md:rounded-2xl overflow-hidden">
           <div className="w-16 h-16 md:w-24 md:h-24 bg-[var(--overlay-hover)]">
             {user.avatar_url ? (
@@ -347,14 +473,28 @@ const UserDetails = () => {
                 src={user.avatar_url}
                 alt={user.username}
                 className="w-full h-full object-cover"
+                onError={(e) => {
+                  e.currentTarget.src = generateAvatarWithInitial(user.username);
+                }}
               />
             ) : (
-              <div className="w-full h-full flex items-center justify-center">
-                <UserIcon className="w-8 h-8 md:w-12 md:h-12 text-[var(--text-secondary)]" />
-              </div>
+              <img
+                src={generateAvatarWithInitial(user.username)}
+                alt={user.username}
+                className="w-full h-full object-cover"
+              />
             )}
           </div>
         </div>
+
+        {/* Verified badge */}
+        {user.verified && (
+          <div className="absolute -bottom-2 md:-bottom-3 left-20 md:left-28">
+            <div className="w-6 h-6 md:w-8 md:h-8 bg-blue-500 rounded-full flex items-center justify-center">
+              <CheckCircle className="w-4 h-4 md:w-5 md:h-5 text-white" />
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6 pt-6 md:pt-10">
@@ -459,12 +599,16 @@ const UserDetails = () => {
                 )}
               </div>
             )}
-            <div className="flex flex-col sm:flex-row sm:items-center gap-3 md:gap-6 text-sm">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4 text-sm">
               <div className="flex items-center gap-2 text-[var(--text-secondary)]">
                 <Calendar className="w-4 h-4" />
                 <span>
                   Inscrit le{" "}
-                  {new Date(user.created_at || "").toLocaleDateString()}
+                  {new Date(user.created_at || "").toLocaleDateString('fr-FR', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                  })}
                 </span>
               </div>
               {user.country_code && (
@@ -473,6 +617,29 @@ const UserDetails = () => {
                   <span>{user.country_code}</span>
                 </div>
               )}
+              {user.last_seen && (
+                <div className="flex items-center gap-2 text-[var(--text-secondary)]">
+                  <Clock className="w-4 h-4" />
+                  <span>
+                    Dernière connexion{" "}
+                    {formatRelativeTime(user.last_seen)}
+                  </span>
+                </div>
+              )}
+              <div className="flex items-center gap-2 text-[var(--text-secondary)]">
+                <Mail className="w-4 h-4" />
+                <span className="truncate">{user.email}</span>
+              </div>
+              {user.discord_link && (
+                <div className="flex items-center gap-2 text-[var(--text-secondary)]">
+                  <MessageCircle className="w-4 h-4" />
+                  <span className="truncate">Discord connecté</span>
+                </div>
+              )}
+              <div className="flex items-center gap-2 text-[var(--text-secondary)]">
+                <Shield className="w-4 h-4" />
+                <span>Rôle: {userRole?.name || 'Utilisateur'}</span>
+              </div>
             </div>
           </div>
 
@@ -480,7 +647,7 @@ const UserDetails = () => {
             <h3 className="text-lg font-bold text-[var(--text-primary)] mb-4">
               Statistiques
             </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
               <div className="bg-[var(--overlay-hover)] rounded-xl p-3 md:p-4">
                 <div className="flex items-center gap-3 mb-2">
                   <div className="w-8 h-8 rounded-lg bg-blue-500/20 flex items-center justify-center">
@@ -516,6 +683,89 @@ const UserDetails = () => {
                   {user.team_chat_is_muted ? "Muté" : "Actif"}
                 </p>
               </div>
+              <div className="bg-[var(--overlay-hover)] rounded-xl p-3 md:p-4">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="w-8 h-8 rounded-lg bg-orange-500/20 flex items-center justify-center">
+                    <Users className="w-5 h-5 text-orange-500" />
+                  </div>
+                  <span className="text-[var(--text-secondary)] text-sm">Amis</span>
+                </div>
+                <p className="text-xl md:text-2xl font-bold text-[var(--text-primary)]">
+                  {userFriends.length}
+                </p>
+              </div>
+            </div>
+
+            {/* Statistiques détaillées si disponibles */}
+            {userStats && (
+              <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
+                <div className="bg-[var(--overlay-hover)] rounded-xl p-3 md:p-4">
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="w-8 h-8 rounded-lg bg-green-500/20 flex items-center justify-center">
+                      <TrendingUp className="w-5 h-5 text-green-500" />
+                    </div>
+                    <span className="text-[var(--text-secondary)] text-sm">Victoires</span>
+                  </div>
+                  <p className="text-lg font-bold text-[var(--text-primary)]">
+                    {userStats.wins}/{userStats.total_matches}
+                  </p>
+                  <p className="text-xs text-[var(--text-muted)]">
+                    {userStats.win_rate}% de réussite
+                  </p>
+                </div>
+                <div className="bg-[var(--overlay-hover)] rounded-xl p-3 md:p-4">
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="w-8 h-8 rounded-lg bg-blue-500/20 flex items-center justify-center">
+                      <Target className="w-5 h-5 text-blue-500" />
+                    </div>
+                    <span className="text-[var(--text-secondary)] text-sm">Score moyen</span>
+                  </div>
+                  <p className="text-lg font-bold text-[var(--text-primary)]">
+                    {userStats.avg_score}
+                  </p>
+                </div>
+                <div className="bg-[var(--overlay-hover)] rounded-xl p-3 md:p-4">
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="w-8 h-8 rounded-lg bg-purple-500/20 flex items-center justify-center">
+                      <Gamepad2 className="w-5 h-5 text-purple-500" />
+                    </div>
+                    <span className="text-[var(--text-secondary)] text-sm">Jeu favori</span>
+                  </div>
+                  <p className="text-lg font-bold text-[var(--text-primary)]">
+                    {userStats.favorite_game}
+                  </p>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Timeline d'activité */}
+          <div className="bg-[var(--card-background)] rounded-2xl p-4 md:p-6">
+            <h3 className="text-lg font-bold text-[var(--text-primary)] mb-4">
+              Activité récente
+            </h3>
+            <div className="space-y-4">
+              {userActivity.map((activity, index) => {
+                const IconComponent = activity.icon;
+                return (
+                  <div key={activity.id} className="flex items-start gap-3">
+                    <div className="w-8 h-8 rounded-lg bg-[var(--overlay-hover)] flex items-center justify-center flex-shrink-0">
+                      <IconComponent className="w-4 h-4 text-[var(--text-secondary)]" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm text-[var(--text-primary)]">
+                        {activity.description}
+                      </p>
+                      <p className="text-xs text-[var(--text-muted)] mt-1">
+                        {formatRelativeTime(activity.timestamp)}
+                      </p>
+                    </div>
+                    {index < userActivity.length - 1 && (
+                      <div className="absolute left-4 top-12 w-px h-4 bg-[var(--border-color)]" />
+                    )}
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>
@@ -620,8 +870,132 @@ const UserDetails = () => {
                   )}
                 </div>
               </div>
+
+              <div className="flex items-center gap-3 text-[var(--text-secondary)]">
+                <MessageCircle className="w-5 h-5 text-indigo-500" />
+                <div className="min-w-0 flex-1">
+                  <span className="text-sm">Discord</span>
+                  {user.discord_link ? (
+                    <a
+                      href={user.discord_link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="ml-2 hover:text-[var(--text-primary)] transition-colors text-sm truncate block"
+                    >
+                      {user.discord_link.replace(/^https?:\/\/(www\.)?/, "")}
+                    </a>
+                  ) : (
+                    <span className="ml-2 text-sm">-</span>
+                  )}
+                </div>
+              </div>
             </div>
           </div>
+
+          {/* Section Amis */}
+          <div className="bg-[var(--card-background)] rounded-2xl p-4 md:p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-bold text-[var(--text-primary)]">
+                Amis
+              </h3>
+              <span className="text-sm text-[var(--text-muted)]">
+                {userFriends.length} ami{userFriends.length > 1 ? 's' : ''}
+              </span>
+            </div>
+            <div className="space-y-3">
+              {userFriends.slice(0, 4).map((friend) => (
+                <div key={friend.id} className="flex items-center gap-3 p-2 rounded-lg hover:bg-[var(--overlay-hover)] transition-colors">
+                  <div className="w-8 h-8 rounded-full bg-cover bg-center" style={{
+                    backgroundImage: `url(${friend.avatar || generateAvatarWithInitial(friend.username)})`
+                  }} />
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2">
+                      <p className="text-sm font-medium text-[var(--text-primary)] truncate">
+                        {friend.username}
+                      </p>
+                      {getStatusIcon(friend.status)}
+                    </div>
+                    <p className="text-xs text-[var(--text-muted)]">
+                      {friend.mutual_friends} ami{friend.mutual_friends > 1 ? 's' : ''} en commun
+                    </p>
+                  </div>
+                </div>
+              ))}
+              {userFriends.length > 4 && (
+                <div className="text-center">
+                  <button className="text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors">
+                    Voir tous les amis ({userFriends.length - 4} de plus)
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Section Messages récents */}
+          <div className="bg-[var(--card-background)] rounded-2xl p-4 md:p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-bold text-[var(--text-primary)]">
+                Messages récents
+              </h3>
+              <span className="text-sm text-[var(--text-muted)]">
+                {recentMessages.filter(m => m.unread).length} non lu{recentMessages.filter(m => m.unread).length > 1 ? 's' : ''}
+              </span>
+            </div>
+            <div className="space-y-3">
+              {recentMessages.slice(0, 3).map((message) => (
+                <div key={message.id} className={`p-3 rounded-lg transition-colors ${message.unread ? 'bg-blue-500/10 border border-blue-500/20' : 'hover:bg-[var(--overlay-hover)]'}`}>
+                  <div className="flex items-start gap-3">
+                    <div className="w-6 h-6 rounded-full bg-cover bg-center flex-shrink-0" style={{
+                      backgroundImage: `url(${generateAvatarWithInitial(message.from)})`
+                    }} />
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-1">
+                        <p className="text-sm font-medium text-[var(--text-primary)] truncate">
+                          {message.from}
+                        </p>
+                        {message.unread && (
+                          <div className="w-2 h-2 bg-blue-500 rounded-full flex-shrink-0" />
+                        )}
+                      </div>
+                      <p className="text-xs text-[var(--text-secondary)] truncate">
+                        {message.content}
+                      </p>
+                      <p className="text-xs text-[var(--text-muted)] mt-1">
+                        {formatRelativeTime(message.timestamp)}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Section Équipe */}
+          {userTeam && (
+            <div className="bg-[var(--card-background)] rounded-2xl p-4 md:p-6">
+              <h3 className="text-lg font-bold text-[var(--text-primary)] mb-4">
+                Équipe actuelle
+              </h3>
+              <div className="flex items-center gap-3 p-3 rounded-lg bg-[var(--overlay-hover)]">
+                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center">
+                  <Users className="w-5 h-5 text-white" />
+                </div>
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-[var(--text-primary)]">
+                    {userTeam.name}
+                  </p>
+                  <p className="text-xs text-[var(--text-secondary)]">
+                    {userTeam.role} • {userTeam.members_count} membre{userTeam.members_count > 1 ? 's' : ''}
+                  </p>
+                </div>
+                <div className="text-right">
+                  <p className="text-xs text-[var(--text-muted)]">
+                    Depuis {new Date(userTeam.created_at).toLocaleDateString('fr-FR', { month: 'short', year: 'numeric' })}
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
 
           <div className="bg-[var(--card-background)] rounded-2xl p-4 md:p-6">
             <div className="flex items-center justify-between mb-4">

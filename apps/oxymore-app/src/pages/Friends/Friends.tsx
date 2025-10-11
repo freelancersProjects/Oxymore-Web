@@ -17,6 +17,7 @@ import { Heart } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 import apiService from "../../api/apiService";
 import type { FriendWithUser, UserSearchResult } from "../../types/friend";
+import { toLowerCase } from "../../utils";
 import "./Friends.scss";
 
 const Friends = () => {
@@ -75,7 +76,7 @@ const Friends = () => {
   ];
 
   const filteredFriends = friends.filter((friend) => {
-    const matchesSearch = friend.username.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesSearch = toLowerCase(friend.username).includes(toLowerCase(searchQuery));
 
     if (activeTab === "online") {
       return matchesSearch && friend.online_status === "online";

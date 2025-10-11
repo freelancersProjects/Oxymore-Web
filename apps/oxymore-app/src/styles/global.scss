@@ -97,7 +97,7 @@ td {
   position: fixed;
   top: rem-calc(20);
   right: rem-calc(20);
-  z-index: 20000;
+  z-index: 999999 !important;
   display: flex;
   flex-direction: column;
   gap: rem-calc(15);

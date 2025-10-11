@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { OXMDropdown } from '@oxymore/ui';
 import type { TeamStats } from '../../types/league';
+import { getRandomElement } from '../../utils';
 import './League.scss';
 
 const League: React.FC = () => {
@@ -52,7 +53,7 @@ const League: React.FC = () => {
       winRate: Math.floor(Math.random() * 40) + 40,
       lastFiveMatches: Array.from({ length: 5 }, () => ({
         opponent: `Team ${Math.floor(Math.random() * 100)}`,
-        result: ['W', 'L', 'D'][Math.floor(Math.random() * 3)] as 'W' | 'L' | 'D',
+        result: getRandomElement(['W', 'L', 'D']) as 'W' | 'L' | 'D',
         score: `${Math.floor(Math.random() * 5) + 1}-${Math.floor(Math.random() * 5) + 1}`
       }))
     })).sort((a, b) => b.points - a.points);

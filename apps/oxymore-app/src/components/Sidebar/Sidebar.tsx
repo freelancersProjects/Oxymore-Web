@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { NavLink } from "react-router-dom";
-import { Home, Trophy, Layers, Play, Users, UserPlus, LogOut, ChevronLeft, Bot, Menu, X, Store, Users2, BookOpen, AlertTriangle } from "lucide-react";
+import { Home, Trophy, Layers, Play, Users, UserPlus, LogOut, ChevronLeft, Bot, Menu, X, Store, Users2, BookOpen, AlertTriangle, ChevronDown } from "lucide-react";
 import Logo from "./../../assets/logo.png";
 import "./Sidebar.scss";
 
@@ -11,7 +11,8 @@ interface SidebarProps {
 
 export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false, onToggle }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [showScrollIndicator, setShowScrollIndicator] = useState(false);
+  const [showScrollArrow, setShowScrollArrow] = useState(false);
+  const [hasScrolled, setHasScrolled] = useState(false);
   const [hasTeam] = useState(false);
   const navRef = useRef<HTMLElement>(null);
 
@@ -36,15 +37,31 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false, onToggle 
     const checkScrollable = () => {
       if (navRef.current) {
         const { scrollHeight, clientHeight } = navRef.current;
-        setShowScrollIndicator(scrollHeight > clientHeight);
+        setShowScrollArrow(scrollHeight > clientHeight && !hasScrolled);
+      }
+    };
+
+    const handleScroll = () => {
+      if (navRef.current && !hasScrolled) {
+        setHasScrolled(true);
+        setShowScrollArrow(false);
       }
     };
 
     checkScrollable();
     window.addEventListener('resize', checkScrollable);
 
-    return () => window.removeEventListener('resize', checkScrollable);
-  }, []);
+    if (navRef.current) {
+      navRef.current.addEventListener('scroll', handleScroll);
+    }
+
+    return () => {
+      window.removeEventListener('resize', checkScrollable);
+      if (navRef.current) {
+        navRef.current.removeEventListener('scroll', handleScroll);
+      }
+    };
+  }, [hasScrolled]);
 
   const handleNavClick = () => setMobileOpen(false);
 
@@ -118,7 +135,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false, onToggle 
         </div>
 
 
-        <nav className={`oxm-sidebar__nav ${showScrollIndicator ? 'has-scroll-indicator' : ''}`} ref={navRef}>
+        <nav className="oxm-sidebar__nav" ref={navRef}>
           <div className="nav-section">
             <div className="section-label">Principal</div>
             <ul>
@@ -194,6 +211,12 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false, onToggle 
               </li>
             </ul>
           </div>
+
+          {showScrollArrow && (
+            <div className="scroll-arrow-indicator">
+              <ChevronDown size={16} />
+            </div>
+          )}
         </nav>
 
         <div className="oxm-sidebar__store">

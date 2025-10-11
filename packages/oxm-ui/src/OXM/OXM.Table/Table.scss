@@ -1,0 +1,67 @@
+@import "../../styles/global.scss";
+
+.oxm-table-container {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: rem-calc(16);
+  overflow: hidden;
+  backdrop-filter: blur(12px);
+  margin-bottom: rem-calc(40);
+}
+
+.oxm-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  thead {
+    background: rgba(255, 255, 255, 0.03);
+  }
+
+  th,
+  td {
+    padding: rem-calc(18) rem-calc(24);
+    font-size: rem-calc(18);
+    text-align: left;
+  }
+
+  th {
+    font-family: Orbitron, sans-serif;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.8);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+  }
+
+  tbody tr {
+    transition: background 0.2s;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    &:last-child td {
+      border-bottom: none;
+    }
+  }
+
+  .secret {
+    font-family: monospace;
+    letter-spacing: 1px;
+    color: $color-blue;
+  }
+
+  .actions {
+    display: flex;
+    gap: rem-calc(12);
+  }
+}
+
+.oxm-table-empty {
+  text-align: center;
+  padding: rem-calc(60) rem-calc(20);
+
+  p {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: rem-calc(16);
+  }
+}

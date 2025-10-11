@@ -14,7 +14,7 @@ interface DropdownProps {
   theme?: "blue" | "purple";
 }
 
-const Dropdown: React.FC<DropdownProps> = ({ options, value, onChange, placeholder, theme = "blue" }) => {
+const OXMDropdown: React.FC<DropdownProps> = ({ options, value, onChange, placeholder, theme = "blue" }): React.ReactElement => {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -70,4 +70,4 @@ const Dropdown: React.FC<DropdownProps> = ({ options, value, onChange, placehold
   );
 };
 
-export default Dropdown;
+export default OXMDropdown;

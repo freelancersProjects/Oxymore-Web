@@ -16,3 +16,4 @@ export { default as OXMSwitch } from "./OXM/OXM.Switch/Switch";
 export { default as OXMCardSelector } from "./OXM/OXM.CardSelector/CardSelector";
 export { default as OXMCodeInput } from "./OXM/OXM.CodeInput/CodeInput";
 export { default as OXMChip } from "./OXM/OXM.Chip/Chip";
+export { default as OXMTable } from "./OXM/OXM.Table/Table";
