@@ -79,7 +79,6 @@ const generateAvatarWithInitial = (username: string, size: number = 48) => {
   );
 };
 
-// Composant Avatar réutilisable
 const Avatar: React.FC<{
   src?: string;
   username: string;
@@ -201,10 +200,6 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed, onToggle, onNoti
     );
   }, [friends, query]);
 
-  // const toggleProfile = () => {
-  //   // This will be handled by the parent component
-  // };
-
   const handleLogout = () => {
     logout();
     navigate("/login");
@@ -257,13 +252,11 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed, onToggle, onNoti
             </button>
           </div>
 
-          {/* Section Groupe */}
           <div className="profile-panel__group-collapsed">
             <div className="group-header">
               <div className="group-title">Group</div>
             </div>
             <div className="group-avatars-collapsed">
-              {/* L'utilisateur actuel (leader avec couronne) */}
               <div
                 className="group-avatar-collapsed leader"
                 title={`${user?.username || "You"} (Leader)`}
@@ -273,9 +266,8 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed, onToggle, onNoti
                   username={user?.username || "User"}
                   size={28}
                 />
-                <div className="crown-icon">👑</div>
+                {/* <div className="crown-icon"></div> */}
               </div>
-              {/* Membres du groupe acceptés */}
               {groupMembers
                 .filter(
                   (member) =>
@@ -328,7 +320,7 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed, onToggle, onNoti
               <div className="online-friends-title">Friends</div>
             </div>
             <div className="online-friends-avatars">
-              
+
               <div className="online-friends-avatars">
               {onlineFriends.slice(0, 3).map((friend) => (
                 <div
@@ -362,7 +354,6 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed, onToggle, onNoti
 
   return (
     <div className="profile-panel" ref={panelRef}>
-      {/* Flèche de toggle intégrée au profile panel */}
       <button
         className="profile-panel-toggle"
         onClick={onToggle}
@@ -420,7 +411,6 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed, onToggle, onNoti
                 <span>Your Group</span>
               </div>
               <div className="group-avatars">
-                {/* L'utilisateur actuel (leader avec couronne) */}
                 <div
                   className="group-avatar leader"
                   title={`${user?.username || "You"} (Leader)`}
@@ -433,14 +423,13 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed, onToggle, onNoti
                   <div className="crown-icon">👑</div>
                 </div>
 
-                {/* Membres du groupe acceptés */}
                 {groupMembers
                   .filter(
                     (member) =>
                       member.status === "accepted" &&
                       member.id_user !== user?.id_user
                   )
-                  .slice(0, 4) // max 4 membres pour avoir 5 slots au total
+                  .slice(0, 4)
                   .map((member) => (
                     <div
                       key={member.id_group_member}
@@ -455,7 +444,6 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed, onToggle, onNoti
                     </div>
                   ))}
 
-                {/* Boutons + pour compléter à 5 slots */}
                 {Array.from(
                   {
                     length: Math.max(
