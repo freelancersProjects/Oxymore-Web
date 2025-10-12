@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import * as RoleService from "../../services/admin/roleService";
+import * as RoleService from "../../../services/admin/roleService";
 
 /**
  * @openapi
@@ -103,4 +103,4 @@ export const updateUserRole = async (req: Request, res: Response) => {
     console.error("Error updating user role:", error);
     res.status(500).json({ message: "Internal server error" });
   }
-}; 
+};

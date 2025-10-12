@@ -18,6 +18,9 @@
  *           type: string
  *         max_members:
  *           type: integer
+ *         entry_type:
+ *          type: string
+ *          enum: [open, inscription, cv]
  *         id_captain:
  *           type: string
  */
@@ -29,5 +32,6 @@ export interface Team {
   team_banner_url?: string;
   description?: string;
   max_members?: number;
+  entry_type: 'open' | 'inscription' | 'cv';
   id_captain: string;
 }

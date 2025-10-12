@@ -15,6 +15,7 @@ const PORT = process.env.PORT || 3000;
 app.use(
   cors({
     origin: [
+      "http://localhost:3000",
       "http://localhost:5173",
       "http://localhost:5174",
       "http://localhost:5175",
@@ -42,10 +43,14 @@ const swaggerOptions = {
     },
     servers: [
       {
+        url: `http://localhost:${PORT}`,
+        description: "Local Development (Default)",
+        variables: {}
+      },
+      {
         url: "https://mathis.alwaysdata.net",
         description: "Alwaysdata Production",
       },
-      { url: `http://localhost:${PORT}`, description: "Local Development" },
     ],
     components: {
       securitySchemes: {
@@ -58,7 +63,7 @@ const swaggerOptions = {
     },
     security: [{ bearerAuth: [] }],
   },
-  apis: ["./src/routes/*.ts", "./src/models/*.ts"],
+  apis: ["./src/routes/**/*.ts", "./src/models/*.ts"],
 };
 
 const swaggerSpec = swaggerJSDoc(swaggerOptions);
@@ -67,7 +72,18 @@ registerRoutes(app);
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
   explorer: true,
-  customSiteTitle: "Oxymore API Documentation"
+  customSiteTitle: "Oxymore API Documentation",
+  swaggerOptions: {
+    url: `http://localhost:${PORT}`,
+    defaultModelsExpandDepth: 2,
+    defaultModelExpandDepth: 2,
+    displayRequestDuration: true,
+    docExpansion: "list",
+    filter: true,
+    showRequestHeaders: true,
+    showCommonExtensions: true,
+    tryItOutEnabled: true
+  }
 }));
 
 server.listen(PORT, () => {
