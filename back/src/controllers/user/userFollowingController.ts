@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import * as UserFollowingService from "../../services/userFollowingService";
+import * as UserFollowingService from "../../services/user/userFollowingService";
 
 export const getAllUserFollowings = async (req: Request, res: Response) => {
   const followings = await UserFollowingService.getAllUserFollowings();

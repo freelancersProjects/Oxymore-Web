@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import UserStatsService from '../../services/userStatsService';
+import UserStatsService from '../../services/user/userStatsService';
 
 export const getUserStats = async (req: Request, res: Response) => {
   try {

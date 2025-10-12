@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import * as badgeService from "../../services/badgeService";
+import * as badgeService from "../../services/badge/badgeService";
 
 export const getAllBadges = async (req: Request, res: Response) => {
   try {

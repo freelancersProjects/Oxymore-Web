@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import * as LeagueService from "../../services/leagueService";
+import * as LeagueService from "../../services/league/leagueService";
 
 export const getAllLeagues = async (req: Request, res: Response) => {
   const leagues = await LeagueService.getAllLeagues();

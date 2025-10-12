@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import * as MapService from "../../services/mapService";
+import * as MapService from "../../services/game/mapService";
 
 export const getAllMaps = async (req: Request, res: Response) => {
   const maps = await MapService.getAllMaps();

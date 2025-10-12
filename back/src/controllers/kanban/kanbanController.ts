@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import * as kanbanService from '../../services/kanbanService';
+import * as kanbanService from '../../services/kanban/kanbanService';
 
 export const getAllKanbanBoards = async (req: Request, res: Response) => {
   try {

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import * as RoomService from "../../services/roomService";
+import * as RoomService from "../../services/room/roomService";
 
 export const getAllRooms = async (req: Request, res: Response) => {
   const rooms = await RoomService.getAllRooms();

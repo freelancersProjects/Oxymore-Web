@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import * as UserSanctionService from "../../services/userSanctionService";
+import * as UserSanctionService from "../../services/user/userSanctionService";
 
 export const getAllUserSanctions = async (req: Request, res: Response) => {
   const sanctions = await UserSanctionService.getAllUserSanctions();

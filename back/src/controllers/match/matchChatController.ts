@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import * as MatchChatService from "../../services/matchChatService";
+import * as MatchChatService from "../../services/match/matchChatService";
 
 export const getAllMatchChats = async (req: Request, res: Response) => {
   const chats = await MatchChatService.getAllMatchChats();

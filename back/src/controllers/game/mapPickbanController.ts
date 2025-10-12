@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import * as MapPickbanService from "../../services/mapPickbanService";
+import * as MapPickbanService from "../../services/game/mapPickbanService";
 
 export const getAllMapPickbans = async (req: Request, res: Response) => {
   const pickbans = await MapPickbanService.getAllMapPickbans();

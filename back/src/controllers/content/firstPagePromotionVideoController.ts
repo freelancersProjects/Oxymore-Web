@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import * as FirstPagePromotionVideoService from "../../services/firstPagePromotionVideoService";
+import * as FirstPagePromotionVideoService from "../../services/content/firstPagePromotionVideoService";
 
 export const getAllFirstPagePromotionVideos = async (req: Request, res: Response) => {
   const videos = await FirstPagePromotionVideoService.getAllFirstPagePromotionVideos();

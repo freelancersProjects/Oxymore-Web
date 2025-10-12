@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import * as TournamentMapService from "../../services/tournamentMapService";
+import * as TournamentMapService from "../../services/tournament/tournamentMapService";
 
 export const getAllTournamentMaps = async (req: Request, res: Response) => {
   const maps = await TournamentMapService.getAllTournamentMaps();

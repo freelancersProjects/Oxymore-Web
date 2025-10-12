@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import * as MatchMapService from "../../services/matchMapService";
+import * as MatchMapService from "../../services/match/matchMapService";
 
 export const getAllMatchMaps = async (req: Request, res: Response) => {
   const maps = await MatchMapService.getAllMatchMaps();

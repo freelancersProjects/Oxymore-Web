@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import * as FriendService from "../../services/friendService";
+import * as FriendService from "../../services/user/friendService";
 
 export const getAllFriends = async (req: Request, res: Response) => {
   try {

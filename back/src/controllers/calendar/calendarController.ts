@@ -1,7 +1,5 @@
 import { Request, Response } from 'express';
-import { CalendarService } from '../../services/calendarService';
-import { CalendarFilters } from '../../interfaces/calendarInterfaces';
-import * as CalendarModel from '../../models/calendarModel';
+import * as CalendarModel from '../../models/calendar/calendarModel';
 
 const formatEventForResponse = (event: any) => {
   return {
@@ -196,7 +194,8 @@ export const getCalendarStats = async (req: Request, res: Response): Promise<voi
 // Récupérer tous les types de rendez-vous
 export const getAppointmentTypes = async (req: Request, res: Response): Promise<Response> => {
   try {
-    const types = await CalendarService.getAppointmentTypes();
+    // Retourner les types prédéfinis
+    const types = ['meeting', 'training', 'tournament', 'league', 'other'];
     return res.json({
       success: true,
       data: types
@@ -213,16 +212,8 @@ export const getAppointmentTypes = async (req: Request, res: Response): Promise<
 // Récupérer tous les rendez-vous avec filtres
 export const getAppointments = async (req: Request, res: Response): Promise<Response> => {
   try {
-    const filters: CalendarFilters = {
-      type: req.query.type as any,
-      is_completed: req.query.is_completed !== undefined ? req.query.is_completed === 'true' : undefined,
-      date_from: req.query.date_from as string,
-      date_to: req.query.date_to as string,
-      search: req.query.search as string,
-      created_by: req.query.created_by ? parseInt(req.query.created_by as string) : undefined
-    };
-
-    const appointments = await CalendarService.getAppointments(filters);
+    // Utiliser getAllCalendarEvents pour l'instant
+    const appointments = await CalendarModel.getAllCalendarEvents();
     return res.json({
       success: true,
       data: appointments
@@ -240,7 +231,7 @@ export const getAppointments = async (req: Request, res: Response): Promise<Resp
 export const getAppointmentById = async (req: Request, res: Response): Promise<Response> => {
   try {
     const { id } = req.params;
-    const appointment = await CalendarService.getAppointmentById(parseInt(id));
+    const appointment = await CalendarModel.getCalendarEventById(id);
 
     if (!appointment) {
       return res.status(404).json({
@@ -283,11 +274,11 @@ export const createAppointment = async (req: Request, res: Response): Promise<Re
       });
     }
 
-    const appointmentId = await CalendarService.createAppointment(appointmentData, createdBy);
+    const appointment = await CalendarModel.createCalendarEvent(appointmentData, createdBy);
 
     return res.status(201).json({
       success: true,
-      data: { id: appointmentId },
+      data: appointment,
       message: 'Rendez-vous créé avec succès'
     });
   } catch (error) {
@@ -313,7 +304,7 @@ export const updateAppointment = async (req: Request, res: Response): Promise<Re
     }
 
     updateData.id = parseInt(id);
-    await CalendarService.updateAppointment(parseInt(id), updateData, updatedBy);
+    await CalendarModel.updateCalendarEvent(id, updateData);
 
     return res.json({
       success: true,
@@ -353,7 +344,7 @@ export const deleteAppointment = async (req: Request, res: Response): Promise<Re
       });
     }
 
-    await CalendarService.deleteAppointment(parseInt(id), deletedBy);
+    await CalendarModel.deleteCalendarEvent(id);
 
     return res.json({
       success: true,
@@ -402,7 +393,7 @@ export const addComment = async (req: Request, res: Response): Promise<Response>
     }
 
     // Vérifier que le rendez-vous existe
-    const appointment = await CalendarService.getAppointmentById(parseInt(id));
+    const appointment = await CalendarModel.getCalendarEventById(id);
     if (!appointment) {
       return res.status(404).json({
         success: false,

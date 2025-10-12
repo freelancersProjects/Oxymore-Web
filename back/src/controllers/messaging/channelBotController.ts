@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import * as ChannelBotService from "../../services/channelBotService";
+import * as ChannelBotService from "../../services/messaging/channelBotService";
 
 export const getAllChannelBots = async (req: Request, res: Response) => {
   try {

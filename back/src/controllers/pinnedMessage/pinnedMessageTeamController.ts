@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import * as PinnedMessageTeamService from "../../services/pinnedMessageTeamService";
+import * as PinnedMessageTeamService from "../../services/pinnedMessage/pinnedMessageTeamService";
 
 export const getAllPinnedMessageTeams = async (req: Request, res: Response) => {
   const pins = await PinnedMessageTeamService.getAllPinnedMessageTeams();

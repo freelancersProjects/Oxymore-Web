@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import * as NotificationService from "../../services/notificationService";
+import * as NotificationService from "../../services/notification/notificationService";
 
 export const getAllNotifications = async (req: Request, res: Response) => {
   try {
@@ -7,9 +7,7 @@ export const getAllNotifications = async (req: Request, res: Response) => {
     res.json(notifications);
   } catch (err) {
     console.error(err);
-    // Fallback vers les données de test si la DB n'est pas disponible
-    const notifications = NotificationService.getAllNotificationsFallback();
-    res.json(notifications);
+    res.status(500).json({ message: "Server error" });
   }
 };
 
@@ -20,10 +18,7 @@ export const getNotificationsByUserId = async (req: Request, res: Response) => {
     res.json(notifications);
   } catch (err) {
     console.error(err);
-    // Fallback vers les données de test si la DB n'est pas disponible
-    const userId = req.params.userId;
-    const notifications = NotificationService.getNotificationsByUserIdFallback(userId);
-    res.json(notifications);
+    res.status(500).json({ message: "Server error" });
   }
 };
 
@@ -34,10 +29,7 @@ export const getUnreadNotificationsCount = async (req: Request, res: Response) =
     res.json({ count });
   } catch (err) {
     console.error(err);
-    // Fallback vers les données de test si la DB n'est pas disponible
-    const userId = req.params.userId;
-    const count = NotificationService.getUnreadNotificationsCountFallback(userId);
-    res.json({ count });
+    res.status(500).json({ message: "Server error" });
   }
 };
 

@@ -5,7 +5,6 @@ import {
   deleteGroup,
   getGroupsByUserId,
   getGroupsOwnedByUserId,
-  createDefaultGroupForUser,
 } from "../../controllers/group/groupController";
 
 const router = Router();
@@ -101,24 +100,5 @@ router.get("/user/:userId", getGroupsByUserId);
  *         description: Liste des groupes créés par l'utilisateur
  */
 router.get("/owned/:userId", getGroupsOwnedByUserId);
-
-/**
- * @openapi
- * /api/groups/create-default/{userId}:
- *   post:
- *     tags:
- *       - Groups
- *     summary: Crée un groupe par défaut pour un utilisateur
- *     parameters:
- *       - in: path
- *         name: userId
- *         required: true
- *         schema:
- *           type: string
- *     responses:
- *       201:
- *         description: Groupe par défaut créé
- */
-router.post("/create-default/:userId", createDefaultGroupForUser);
 
 export default router;

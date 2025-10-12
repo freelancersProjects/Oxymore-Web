@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import * as GameService from '../../services/gameService';
+import * as GameService from '../../services/game/gameService';
 
 export const getAllGamesController = async (req: Request, res: Response) => {
   try {

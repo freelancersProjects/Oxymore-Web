@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import * as TeamSubscriptionService from "../../services/teamSubscriptionService";
+import * as TeamSubscriptionService from "../../services/team/teamSubscriptionService";
 
 export const getAllTeamSubscriptions = async (req: Request, res: Response) => {
   const subs = await TeamSubscriptionService.getAllTeamSubscriptions();

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import * as ShopItemService from "../../services/shopItemService";
+import * as ShopItemService from "../../services/shop/shopItemService";
 
 export const getAllShopItems = async (req: Request, res: Response) => {
   const items = await ShopItemService.getAllShopItems();

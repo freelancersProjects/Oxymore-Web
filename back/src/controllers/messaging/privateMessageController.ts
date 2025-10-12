@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { PrivateMessageInput } from "../../models/privateMessageModel";
+import { PrivateMessageInput } from "../../interfaces/messaging/privateMessageInterfaces";
 import {
   createPrivateMessage,
   getPrivateMessageById,
@@ -7,7 +7,7 @@ import {
   getConversationsForUser,
   markMessagesAsRead,
   deletePrivateMessage
-} from "../../services/privateMessageService";
+} from "../../services/messaging/privateMessageService";
 
 export const sendPrivateMessage = async (req: Request, res: Response) => {
   try {

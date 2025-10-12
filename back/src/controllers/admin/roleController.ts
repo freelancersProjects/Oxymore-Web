@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import * as RoleService from "../../../services/admin/roleService";
+import * as RoleService from "../../services/admin/roleService";
 
 /**
  * @openapi

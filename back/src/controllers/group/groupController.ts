@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import * as GroupService from "../../services/groupService";
+import * as GroupService from "../../services/group/groupService";
 
 export const getAllGroups = async (req: Request, res: Response) => {
   const groups = await GroupService.getAllGroups();
@@ -39,8 +39,3 @@ export const getGroupsOwnedByUserId = async (req: Request, res: Response): Promi
   res.json(groups);
 };
 
-export const createDefaultGroupForUser = async (req: Request, res: Response): Promise<void> => {
-  const { userId } = req.params;
-  const group = await GroupService.createDefaultGroupForUser(userId);
-  res.status(201).json(group);
-};

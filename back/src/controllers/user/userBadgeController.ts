@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import * as UserBadgeService from "../../services/userBadgeService";
+import * as UserBadgeService from "../../services/user/userBadgeService";
 
 export const getAllUserBadges = async (req: Request, res: Response) => {
   const badges = await UserBadgeService.getAllUserBadges();

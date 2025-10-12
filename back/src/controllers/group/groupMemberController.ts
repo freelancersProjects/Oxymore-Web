@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import * as GroupMemberService from "../../services/groupMemberService";
+import * as GroupMemberService from "../../services/group/groupMemberService";
 
 export const getAllGroupMembers = async (req: Request, res: Response): Promise<void> => {
   const members = await GroupMemberService.getAllGroupMembers();

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import * as VideoCommentService from "../../services/videoCommentService";
+import * as VideoCommentService from "../../services/content/videoCommentService";
 
 export const getAllVideoComments = async (req: Request, res: Response) => {
   const comments = await VideoCommentService.getAllVideoComments();

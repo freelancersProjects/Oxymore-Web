@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import * as MessageBotService from "../../services/messageBotService";
+import * as MessageBotService from "../../services/messaging/messageBotService";
 
 export const getAllMessageBots = async (req: Request, res: Response) => {
   try {

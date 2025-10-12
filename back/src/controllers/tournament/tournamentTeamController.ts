@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import * as TournamentTeamService from "../../services/tournamentTeamService";
+import * as TournamentTeamService from "../../services/tournament/tournamentTeamService";
 
 export const getAllTournamentTeams = async (req: Request, res: Response) => {
   const tournamentTeams = await TournamentTeamService.getAllTournamentTeams();

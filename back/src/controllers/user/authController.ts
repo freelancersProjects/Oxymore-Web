@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import * as UserService from "../../services/userService";
+import * as UserService from "../../services/user/userService";
 import { db } from "../../config/db";
 import { RowDataPacket } from "mysql2";
 

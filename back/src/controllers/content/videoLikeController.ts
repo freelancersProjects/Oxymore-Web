@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import * as VideoLikeService from "../../services/videoLikeService";
+import * as VideoLikeService from "../../services/content/videoLikeService";
 
 export const getAllVideoLikes = async (req: Request, res: Response) => {
   const likes = await VideoLikeService.getAllVideoLikes();
