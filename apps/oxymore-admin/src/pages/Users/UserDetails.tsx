@@ -131,8 +131,6 @@ const UserDetails = () => {
       setUserStats(mockStats);
     } catch (error) {
       console.error('Erreur lors du chargement des données supplémentaires:', error);
-    } finally {
-      setLoadingAdditionalData(false);
     }
   };
 
