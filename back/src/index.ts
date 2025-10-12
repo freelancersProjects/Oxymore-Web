@@ -32,7 +32,6 @@ app.get("/health", (req, res) => {
   res.status(200).json({ status: "healthy", timestamp: new Date().toISOString() });
 });
 
-
 const swaggerOptions = {
   definition: {
     openapi: "3.0.0",
@@ -41,7 +40,13 @@ const swaggerOptions = {
       version: "1.0.0",
       description: "Oxymore API Documentation",
     },
-    servers: [{ url: `http://localhost:${PORT}` }],
+    servers: [
+      {
+        url: "https://mathis.alwaysdata.net",
+        description: "Alwaysdata Production",
+      },
+      { url: `http://localhost:${PORT}`, description: "Local Development" },
+    ],
     components: {
       securitySchemes: {
         bearerAuth: {
@@ -51,15 +56,10 @@ const swaggerOptions = {
         },
       },
     },
-    security: [
-      {
-        bearerAuth: [],
-      },
-    ],
+    security: [{ bearerAuth: [] }],
   },
   apis: ["./src/routes/*.ts", "./src/models/*.ts"],
 };
-
 
 const swaggerSpec = swaggerJSDoc(swaggerOptions);
 

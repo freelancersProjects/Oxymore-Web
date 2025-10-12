@@ -15,6 +15,7 @@
     "build:admin": "npm run build --workspace=oxymore-admin",
     "build:app": "npm run build --workspace=oxymore-app",
     "build:site": "npm run build --workspace=oxymore-site",
+    "build:back": "npm run build --prefix back",
     "lint:admin": "npm run lint --workspace=oxymore-admin --fix",
     "lint:app": "npm run lint --workspace=oxymore-app --fix",
     "lint:site": "npm run lint --workspace=oxymore-site --fix",
