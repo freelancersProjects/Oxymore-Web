@@ -99,10 +99,84 @@ export default function App() {
   return (
     <Router>
       <AuthProvider>
-        {/* {showLoaderAtFirstTime() ? ( */}
-        <>
-          <LayoutLoader />
-        </>
+        {showLoaderAtFirstTime() ? (
+          <>
+            <LayoutLoader />
+          </>
+        ) : (
+          <LayoutManager>
+            {({ hideSidebar, hideHeader, hideProfileSidebar, isOxia }) => {
+              const location = useLocation();
+              const isLoginPage =
+                location.pathname === "/login" ||
+                location.pathname === "/register";
+              const isFullBackgroundPage =
+                location.pathname === "/leagues" ||
+                location.pathname === "/subscription" ||
+                location.pathname === "/teams";
+              return (
+                <div
+                  className={`oxm-layout${
+                    isSidebarCollapsed ? " sidebar-collapsed" : ""
+                  }${isOxia ? " oxia-mode" : ""}`}
+                >
+                  {!hideSidebar && (
+                    <Sidebar
+                      isCollapsed={isSidebarCollapsed}
+                      onToggle={() => setSidebarCollapsed(!isSidebarCollapsed)}
+                    />
+                  )}
+                  <div
+                    className={`oxm-main${
+                      isLoginPage ? " oxm-main--no-margin" : ""
+                    }`}
+                  >
+                    {!hideHeader && (
+                      <Header
+                        isSidebarCollapsed={isSidebarCollapsed}
+                        hideProfileSidebar={hideProfileSidebar}
+                      />
+                    )}
+                    <main
+                      className={
+                        isLoginPage
+                          ? "oxm-main--no-margin"
+                          : isFullBackgroundPage
+                          ? "oxm-main--full-background"
+                          : ""
+                      }
+                    >
+                      <ScrollToTop />
+                      <Routes>
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/register" element={<Register />} />
+
+                        <Route element={<ProtectedRoute />}>
+                          <Route path="/" element={<Dashboard />} />
+                          <Route path="/api-keys" element={<ApiKeysPage />} />
+                          <Route path="/highlights" element={<Highlights />} />
+                          <Route path="/teams" element={<Teams />} />
+                          <Route path="/friends" element={<Friends />} />
+                          <Route path="/messages" element={<Messages />} />
+                          <Route path="/oxia" element={<OxiaChat />} />
+                          <Route path="/leagues" element={<League />} />
+                          <Route
+                            path="/tournaments"
+                            element={<TournamentPage />}
+                          />
+                          <Route
+                            path="/subscription"
+                            element={<Subscription />}
+                          />
+                        </Route>
+                      </Routes>
+                    </main>
+                  </div>
+                </div>
+              );
+            }}
+          </LayoutManager>
+        )}
       </AuthProvider>
     </Router>
   );
