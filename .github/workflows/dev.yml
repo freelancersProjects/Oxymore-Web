@@ -1,0 +1,115 @@
+name: Development Pipeline
+
+on:
+  push:
+    branches: [ dev ]
+  pull_request:
+    branches: [ dev ]
+
+jobs:
+  backend-dev:
+    name: Backend - Dev (Simple Build)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: back
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Install deps
+        run: npm install
+      - name: Build (dev mode - no linting)
+        run: npm run build
+
+  ui-lib-dev:
+    name: UI Library - Dev Build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: packages/oxm-ui
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Install deps
+        run: npm install
+      - name: Build (dev mode)
+        run: npm run build
+      - name: Upload UI Library artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ui-library-dev
+          path: packages/oxm-ui/dist
+          retention-days: 1
+
+  app-dev:
+    name: App - Dev Build
+    runs-on: ubuntu-latest
+    needs: [ui-lib-dev]
+    defaults:
+      run:
+        working-directory: apps/oxymore-app
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: npm
+      - name: Install deps (root)
+        working-directory: .
+        run: npm install --workspaces --include-workspace-root
+      - name: Download UI Library artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: ui-library-dev
+          path: packages/oxm-ui/dist
+      - name: Build
+        run: npm run build
+
+  admin-dev:
+    name: Admin - Dev Build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/oxymore-admin
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Install deps
+        run: npm install
+      - name: Build
+        run: npm run build
+
+  site-dev:
+    name: Site - Dev Build
+    runs-on: ubuntu-latest
+    needs: [ui-lib-dev]
+    defaults:
+      run:
+        working-directory: apps/oxymore-site
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: npm
+      - name: Install deps (root)
+        working-directory: .
+        run: npm install --workspaces --include-workspace-root
+      - name: Download UI Library artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: ui-library-dev
+          path: packages/oxm-ui/dist
+      - name: Build
+        run: npm run build

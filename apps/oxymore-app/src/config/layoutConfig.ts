@@ -2,67 +2,69 @@
 export const LAYOUT_CONFIG = {
   // Pages qui doivent être en plein écran (sans sidebar, header, footer)
   fullscreenPages: [
-    '/login',
-    '/register',
-    '/forgot-password',
-    '/reset-password',
-    '/game-selection'
+    "/login",
+    "/register",
+    "/forgot-password",
+    "/reset-password",
+    "/game-selection",
     // '/oxia'
   ],
 
   // Pages qui doivent masquer seulement la sidebar
-  noSidebarPages: [
-    '/mobile-dashboard',
-    '/mobile-settings'
-  ],
+  noSidebarPages: ["/mobile-dashboard", "/mobile-settings"],
 
   // Pages qui doivent masquer seulement le header
   noHeaderPages: [
-    '/oxia',
-    '/highlights',
-    '/demo',
-    '/messages',
-    '/subscription'
+    "/oxia",
+    "/highlights",
+    "/demo",
+    "/messages",
+    "/subscription",
   ],
 
   // Pages qui doivent masquer seulement le footer
-  noFooterPages: [
-    '/dashboard',
-    '/admin'
-  ],
+  noFooterPages: ["/dashboard", "/admin"],
 
   //Pages qui doivent masquer seulement la sidebar du profile
-  noProfileSidebarPages: [
-    '/subscription'
-  ]
+  noProfileSidebarPages: ["/subscription"],
 };
 
 // Fonction utilitaire pour vérifier si une page doit être en plein écran
 export const isFullscreenPage = (pathname: string): boolean => {
-  return LAYOUT_CONFIG.fullscreenPages.some(page => pathname.startsWith(page));
+  return LAYOUT_CONFIG.fullscreenPages.some((page) =>
+    pathname.startsWith(page)
+  );
 };
 
 // Fonction utilitaire pour vérifier si une page doit masquer la sidebar
 export const shouldHideSidebar = (pathname: string): boolean => {
-  return LAYOUT_CONFIG.fullscreenPages.some(page => pathname.startsWith(page)) ||
-         LAYOUT_CONFIG.noSidebarPages.some(page => pathname.startsWith(page));
+  return (
+    LAYOUT_CONFIG.fullscreenPages.some((page) => pathname.startsWith(page)) ||
+    LAYOUT_CONFIG.noSidebarPages.some((page) => pathname.startsWith(page))
+  );
 };
 
 // Fonction utilitaire pour vérifier si une page doit masquer le header
 export const shouldHideHeader = (pathname: string): boolean => {
-  return LAYOUT_CONFIG.fullscreenPages.some(page => pathname.startsWith(page)) ||
-         LAYOUT_CONFIG.noHeaderPages.some(page => pathname.startsWith(page));
+  return (
+    LAYOUT_CONFIG.fullscreenPages.some((page) => pathname.startsWith(page)) ||
+    LAYOUT_CONFIG.noHeaderPages.some((page) => pathname.startsWith(page))
+  );
 };
 
 // Fonction utilitaire pour vérifier si une page doit masquer le footer
 export const shouldHideFooter = (pathname: string): boolean => {
-  return LAYOUT_CONFIG.fullscreenPages.some(page => pathname.startsWith(page)) ||
-         LAYOUT_CONFIG.noFooterPages.some(page => pathname.startsWith(page));
+  return (
+    LAYOUT_CONFIG.fullscreenPages.some((page) => pathname.startsWith(page)) ||
+    LAYOUT_CONFIG.noFooterPages.some((page) => pathname.startsWith(page))
+  );
 };
 
 // Fonction utilitaire pour vérifier si une page doit masquer la sidebar du profile
 export const shouldHideProfileSidebar = (pathname: string): boolean => {
-  return LAYOUT_CONFIG.noProfileSidebarPages.some(page => pathname.startsWith(page));
+  return LAYOUT_CONFIG.noProfileSidebarPages.some((page) =>
+    pathname.startsWith(page)
+  );
 };
 
 // Fonction pour ajouter une classe CSS au body selon la page
@@ -70,28 +72,34 @@ export const updateBodyClass = (pathname: string): void => {
   const body = document.body;
 
   // Supprimer toutes les classes de layout précédentes
-  body.classList.remove('fullscreen-layout', 'no-sidebar', 'no-header', 'no-footer', 'no-profile-sidebar');
+  body.classList.remove(
+    "fullscreen-layout",
+    "no-sidebar",
+    "no-header",
+    "no-footer",
+    "no-profile-sidebar"
+  );
 
   // Ajouter les classes appropriées
   if (isFullscreenPage(pathname)) {
-    body.classList.add('fullscreen-layout');
+    body.classList.add("fullscreen-layout");
   } else {
     if (shouldHideSidebar(pathname)) {
-      body.classList.add('no-sidebar');
+      body.classList.add("no-sidebar");
     }
     if (shouldHideHeader(pathname)) {
-      body.classList.add('no-header');
+      body.classList.add("no-header");
     }
     if (shouldHideFooter(pathname)) {
-      body.classList.add('no-footer');
+      body.classList.add("no-footer");
     }
     if (shouldHideProfileSidebar(pathname)) {
-      body.classList.add('no-profile-sidebar');
+      body.classList.add("no-profile-sidebar");
     }
   }
 };
 
 // Fonction utilitaire pour vérifier si on est sur la page Oxia
 export const isOxiaPage = (pathname: string): boolean => {
-  return pathname.startsWith('/oxia');
+  return pathname.startsWith("/oxia");
 };
