@@ -24,7 +24,7 @@ const OXMSkeleton: React.FC<SkeletonProps> = ({
 }) => {
   const getVariantStyles = () => {
     switch (variant) {
-      case "circular":
+      case "circular":s
         return {
           width: height,
           height: height,
