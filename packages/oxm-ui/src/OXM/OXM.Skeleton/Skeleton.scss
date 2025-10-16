@@ -1,0 +1,150 @@
+@import '../../styles/global.scss';
+
+.oxm-skeleton {
+    background: linear-gradient(90deg,
+            rgba(255, 255, 255, 0.1) 25%,
+            rgba(255, 255, 255, 0.2) 50%,
+            rgba(255, 255, 255, 0.1) 75%);
+    background-size: 200% 100%;
+    position: relative;
+    overflow: hidden;
+
+    &--pulse {
+        animation: skeleton-pulse 1.5s ease-in-out infinite;
+    }
+
+    &--wave {
+        animation: skeleton-wave 1.5s ease-in-out infinite;
+    }
+
+    &--none {
+        animation: none;
+    }
+
+    &--purple-pulse {
+        animation: skeleton-pulse-purple 1.5s ease-in-out infinite;
+    }
+
+    &--blue-pulse {
+        animation: skeleton-pulse-blue 1.5s ease-in-out infinite;
+    }
+
+    &--purple {
+        background: linear-gradient(135deg, rgba(139, 92, 246, 0.6) 0%, rgba(59, 130, 246, 0.4) 100%) !important;
+        background-size: 200% 100% !important;
+
+        &.oxm-skeleton--purple-pulse {
+            animation: skeleton-pulse-purple 1.5s ease-in-out infinite;
+        }
+    }
+
+    &--blue {
+        background: linear-gradient(135deg, rgba(59, 130, 246, 0.6) 0%, rgba(139, 92, 246, 0.4) 100%) !important;
+        background-size: 200% 100% !important;
+
+        &.oxm-skeleton--blue-pulse {
+            animation: skeleton-pulse-blue 1.5s ease-in-out infinite;
+        }
+    }
+
+    &--gradient {
+        background: linear-gradient(135deg, rgba(139, 92, 246, 0.5) 0%, rgba(59, 130, 246, 0.3) 100%) !important;
+        background-size: 200% 100% !important;
+
+        &.oxm-skeleton--purple-pulse {
+            animation: skeleton-pulse-purple 1.5s ease-in-out infinite;
+        }
+    }
+
+    &--circular {
+        border-radius: 50%;
+    }
+
+    &--text {
+        border-radius: rem-calc(4);
+    }
+
+    &--rounded {
+        border-radius: rem-calc(8);
+    }
+
+    &--rectangular {
+        border-radius: rem-calc(4);
+    }
+}
+
+.oxm-skeleton-container {
+    display: flex;
+    flex-direction: column;
+    gap: rem-calc(8);
+}
+
+@keyframes skeleton-pulse {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.4;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes skeleton-wave {
+    0% {
+        background-position: -200% 0;
+    }
+
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+@keyframes skeleton-pulse-purple {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.6;
+        transform: scale(1.02);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes skeleton-pulse-blue {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.5;
+        transform: scale(0.98);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+// Styles spécifiques pour forcer l'application des thèmes
+.oxm-skeleton.oxm-skeleton--purple {
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.6) 0%, rgba(59, 130, 246, 0.4) 100%) !important;
+    background-size: 200% 100% !important;
+}
+
+.oxm-skeleton.oxm-skeleton--blue {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.6) 0%, rgba(139, 92, 246, 0.4) 100%) !important;
+    background-size: 200% 100% !important;
+}
+
+.oxm-skeleton.oxm-skeleton--gradient {
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.5) 0%, rgba(59, 130, 246, 0.3) 100%) !important;
+    background-size: 200% 100% !important;
+}

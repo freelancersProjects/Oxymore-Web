@@ -69,7 +69,7 @@ const LayoutLoader: React.FC = () => {
 
 const initLoaderStateOnSessionStorage = () => {
   const hasLoaded = sessionStorage.getItem("hasLoaded");
-  if (!hasLoaded) {
+  if (hasLoaded !== "true") {
     sessionStorage.setItem("hasLoaded", "true");
     return true;
   }
