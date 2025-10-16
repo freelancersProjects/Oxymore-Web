@@ -10,7 +10,7 @@ export interface SkeletonProps {
   animation?: "pulse" | "wave" | "none" | "purple-pulse" | "blue-pulse";
   lines?: number;
   theme?: "default" | "purple" | "blue" | "gradient";
-}
+}d
 
 const OXMSkeleton: React.FC<SkeletonProps> = ({
   width = "100%",
