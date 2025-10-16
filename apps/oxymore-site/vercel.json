@@ -6,7 +6,7 @@
     }
   },
   "cleanUrls": true,
-  "buildCommand": "cd ../../ && npm run build && cd apps/oxymore-app && npm run build",
+  "buildCommand": "cd ../../ && npm run build && cd apps/oxymore-site && npm run build",
   "rewrites": [
     {
       "source": "/(.*)",
