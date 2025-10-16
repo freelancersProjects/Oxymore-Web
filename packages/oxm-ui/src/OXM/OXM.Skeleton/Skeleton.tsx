@@ -20,7 +20,7 @@ const OXMSkeleton: React.FC<SkeletonProps> = ({
   variant = "rectangular",
   animation = "pulse",
   lines = 1,
-  theme = "default",
+  theme = "defaultzz",
 }) => {
   const getVariantStyles = () => {
     switch (variant) {
