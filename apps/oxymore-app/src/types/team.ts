@@ -17,3 +17,7 @@ export interface Team {
   isRecruiting: boolean;
   requirements: string[];
 }
+
+export interface TeamSearchProps {
+  onTeamSelect?: (team: Team) => void;
+}

@@ -16,16 +16,12 @@ import {
   MapPin
 } from 'lucide-react';
 import { OXMChip, OXMSkeleton } from "@oxymore/ui";
-import type { Team } from '../../../types/team';
+import type { Team, TeamSearchProps } from '../../../types/team';
 import { ALL_TEAMS } from './data/teams';
 import TeamTooltip from './TeamTooltip';
 import TeamModal from './TeamModal';
 import TeamCardSkeleton from './TeamCardSkeleton/TeamCardSkeleton';
 import './TeamSearch.scss';
-
-interface TeamSearchProps {
-  onTeamSelect?: (team: Team) => void;
-}
 
 const TeamSearch: React.FC<TeamSearchProps> = () => {
   const navigate = useNavigate();
