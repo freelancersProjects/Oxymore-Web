@@ -1,0 +1,104 @@
+import { Router } from "express";
+import {
+  getAllGroups,
+  createGroup,
+  deleteGroup,
+  getGroupsByUserId,
+  getGroupsOwnedByUserId,
+} from "../../controllers/group/groupController";
+
+const router = Router();
+
+/**
+ * @openapi
+ * /api/groups:
+ *   get:
+ *     tags:
+ *       - Groups
+ *     summary: Récupère tous les groupes
+ *     responses:
+ *       200:
+ *         description: Liste des groupes
+ */
+router.get("/", getAllGroups);
+
+/**
+ * @openapi
+ * /api/groups:
+ *   post:
+ *     tags:
+ *       - Groups
+ *     summary: Crée un groupe
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/x-www-form-urlencoded:
+ *           schema:
+ *             $ref: '#/components/schemas/GroupInput'
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/GroupInput'
+ *     responses:
+ *       201:
+ *         description: Groupe créé
+ */
+router.post("/", createGroup);
+
+/**
+ * @openapi
+ * /api/groups/{id}:
+ *   delete:
+ *     tags:
+ *       - Groups
+ *     summary: Supprime un groupe
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       204:
+ *         description: Groupe supprimé
+ */
+router.delete("/:id", deleteGroup);
+
+/**
+ * @openapi
+ * /api/groups/user/{userId}:
+ *   get:
+ *     tags:
+ *       - Groups
+ *     summary: Récupère tous les groupes d'un utilisateur
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Liste des groupes de l'utilisateur
+ */
+router.get("/user/:userId", getGroupsByUserId);
+
+/**
+ * @openapi
+ * /api/groups/owned/{userId}:
+ *   get:
+ *     tags:
+ *       - Groups
+ *     summary: Récupère tous les groupes créés par un utilisateur
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Liste des groupes créés par l'utilisateur
+ */
+router.get("/owned/:userId", getGroupsOwnedByUserId);
+
+export default router;

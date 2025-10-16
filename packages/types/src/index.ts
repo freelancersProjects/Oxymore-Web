@@ -10,11 +10,10 @@ export interface Message {
   is_from_ai?: boolean;
 }
 
-// Notification types
 export type NotificationType = 'message' | 'success' | 'alert';
 
 export interface Notification {
-  id_notification: number;
+  id_notification: string;
   id_user: string;
   title: string;
   text: string;
@@ -31,6 +30,6 @@ export interface NotificationWithReadStatus extends Notification {
 export interface NotificationRead {
   id_notification_read: number;
   id_user: string;
-  id_notification: number;
+  id_notification: string;
   read_at: string;
 }

@@ -103,4 +103,4 @@ export const updateUserRole = async (req: Request, res: Response) => {
     console.error("Error updating user role:", error);
     res.status(500).json({ message: "Internal server error" });
   }
-}; 
+};

@@ -42,6 +42,7 @@ const formatTimeAgo = (dateString: string) => {
 const DrawerNotif: React.FC<DrawerNotifProps> = ({ open, onClose, userId }) => {
   const [notifications, setNotifications] = useState<NotificationWithReadStatus[]>([]);
   const [loading, setLoading] = useState(false);
+  const [expandedNotifications, setExpandedNotifications] = useState<Set<string>>(new Set());
 
   const fetchNotifications = async () => {
     setLoading(true);
@@ -61,9 +62,9 @@ const DrawerNotif: React.FC<DrawerNotifProps> = ({ open, onClose, userId }) => {
     }
   }, [open, userId]);
 
-  const handleMarkAsRead = async (notificationId: number) => {
+  const handleMarkAsRead = async (notificationId: string) => {
     try {
-      await apiService.post(`/notifications/user/${userId}/mark-read/${notificationId}`);
+      const response = await apiService.post(`/notifications/user/${userId}/mark-read/${notificationId}`);
       await fetchNotifications();
     } catch (error) {
       console.error('Erreur lors du marquage comme lu:', error);
@@ -82,7 +83,7 @@ const DrawerNotif: React.FC<DrawerNotifProps> = ({ open, onClose, userId }) => {
   //   }
   // };
 
-  const handleDeleteNotif = async (notificationId: number) => {
+  const handleDeleteNotif = async (notificationId: string) => {
     try {
       await apiService.delete(`/notifications/user/${userId}/${notificationId}`);
       await fetchNotifications();
@@ -91,13 +92,27 @@ const DrawerNotif: React.FC<DrawerNotifProps> = ({ open, onClose, userId }) => {
     }
   };
 
+  const toggleExpanded = (notificationId: string) => {
+    setExpandedNotifications(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(notificationId)) {
+        newSet.delete(notificationId);
+      } else {
+        newSet.add(notificationId);
+      }
+      return newSet;
+    });
+  };
+
   const unreadCount = notifications.filter(n => !n.is_read).length;
 
   return (
     <OXMDrawer open={open} onClose={onClose} side="right" width={380} className="drawer-notif">
       <div className="drawer-notif-header">
-        <Bell size={22} className="drawer-notif-header-icon" />
-        <span className="drawer-notif-title-main">Notifications</span>
+        <div className="drawer-notif-title-section">
+          <Bell size={22} className="drawer-notif-header-icon" />
+          <span className="drawer-notif-title-main">Notifications</span>
+        </div>
         <span className="notif-badge-right">{unreadCount}</span>
         {/* {unreadCount > 0 && (
           <button
@@ -113,6 +128,10 @@ const DrawerNotif: React.FC<DrawerNotifProps> = ({ open, onClose, userId }) => {
         )} */}
       </div>
 
+      <div className="drawer-notif-separator">
+        <div className="separator-line"></div>
+      </div>
+
       <div className="drawer-notif-list">
         {loading ? (
           <div className="drawer-notif-loading">
@@ -120,30 +139,36 @@ const DrawerNotif: React.FC<DrawerNotifProps> = ({ open, onClose, userId }) => {
             <span>Chargement des notifications...</span>
           </div>
         ) : notifications.length > 0 ? (
-          notifications.map(notif => (
-            <div
-              key={notif.id_notification}
-              className={`drawer-notif-item ${notif.is_read ? 'read' : 'unread'} notif-${notif.type}`}
-              onClick={() => !notif.is_read && handleMarkAsRead(notif.id_notification)}
-            >
-              <div className="drawer-notif-icon">{getNotificationIcon(notif.type)}</div>
-              <div className="drawer-notif-content">
-                <div className="drawer-notif-title">{notif.title}</div>
-                <div className="drawer-notif-text">{notif.text}</div>
-                <div className="drawer-notif-time">{formatTimeAgo(notif.created_at)}</div>
-              </div>
-              {!notif.is_read && (
-                <div className="drawer-notif-unread-indicator" />
-              )}
-              <button
-                className="drawer-notif-trash-btn"
-                title="Supprimer la notification"
-                onClick={e => { e.stopPropagation(); handleDeleteNotif(notif.id_notification); }}
+          notifications.map(notif => {
+            const isExpanded = expandedNotifications.has(notif.id_notification);
+            return (
+              <div
+                key={notif.id_notification}
+                className={`drawer-notif-item ${notif.is_read ? 'read' : 'unread'} notif-${notif.type} ${isExpanded ? 'expanded' : ''}`}
+                onClick={() => {
+                  // Force l'envoi de la requête pour tester
+                  handleMarkAsRead(notif.id_notification);
+                  toggleExpanded(notif.id_notification);
+                }}
               >
-                <Trash2 size={18} />
-              </button>
-            </div>
-          ))
+                <div className="drawer-notif-icon">{getNotificationIcon(notif.type)}</div>
+                <div className="drawer-notif-content">
+                  <div className="drawer-notif-title">{notif.title}</div>
+                  <div className={`drawer-notif-text ${isExpanded ? 'expanded' : ''}`}>
+                    {notif.text}
+                  </div>
+                  <div className="drawer-notif-time">{formatTimeAgo(notif.created_at)}</div>
+                </div>
+                <button
+                  className="drawer-notif-trash-btn"
+                  title="Supprimer la notification"
+                  onClick={e => { e.stopPropagation(); handleDeleteNotif(notif.id_notification); }}
+                >
+                  <Trash2 size={18} />
+                </button>
+              </div>
+            );
+          })
         ) : (
           <div className="drawer-notif-empty">
             <Bell size={48} className="empty-icon" />
