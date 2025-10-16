@@ -15,11 +15,12 @@ import {
   UserPlus,
   MapPin
 } from 'lucide-react';
-import { OXMChip } from "@oxymore/ui";
-import type { Team } from './types/Team';
+import { OXMChip, OXMSkeleton } from "@oxymore/ui";
+import type { Team } from '../../../types/team';
 import { ALL_TEAMS } from './data/teams';
 import TeamTooltip from './TeamTooltip';
 import TeamModal from './TeamModal';
+import TeamCardSkeleton from './TeamCardSkeleton/TeamCardSkeleton';
 import './TeamSearch.scss';
 
 interface TeamSearchProps {
@@ -116,11 +117,46 @@ const TeamSearch: React.FC<TeamSearchProps> = () => {
 
   if (isLoading) {
     return (
-      <div className="team-search-loading">
-        <div className="loading-spinner">
-          <Trophy className="w-8 h-8 animate-spin" />
+      <div className="team-search-container">
+        <div className="team-search-content">
+          <div className="team-search-header">
+            <div className="header-content">
+              <OXMSkeleton width="300px" height="32px" />
+              <OXMSkeleton width="500px" height="20px" />
+            </div>
+          </div>
+
+          <div className="search-filters-section">
+            <div className="search-container">
+              <div className="search-input-wrapper">
+                <OXMSkeleton width="100%" height="48px" borderRadius="24px" />
+              </div>
+              <div className="view-controls">
+                <OXMSkeleton width="40px" height="40px" borderRadius="8px" />
+                <OXMSkeleton width="40px" height="40px" borderRadius="8px" />
+              </div>
+            </div>
+
+            <div className="filters-container">
+              <OXMSkeleton width="80px" height="36px" borderRadius="18px" />
+              <OXMSkeleton width="100px" height="36px" borderRadius="18px" />
+              <OXMSkeleton width="120px" height="36px" borderRadius="18px" />
+              <OXMSkeleton width="100px" height="36px" borderRadius="18px" />
+            </div>
+          </div>
+
+          <div className="all-teams-section">
+            <div className="section-header">
+              <OXMSkeleton width="200px" height="24px" />
+            </div>
+
+            <div className="teams-grid">
+              {Array.from({ length: 6 }, (_, index) => (
+                <TeamCardSkeleton key={`skeleton-${index}`} />
+              ))}
+            </div>
+          </div>
         </div>
-        <p>Chargement des équipes...</p>
       </div>
     );
   }
@@ -213,7 +249,20 @@ const TeamSearch: React.FC<TeamSearchProps> = () => {
             exit={{ opacity: 0 }}
             className={viewMode === 'grid' ? 'teams-grid' : 'teams-list'}
           >
-            {filteredTeams.map((team, index) => (
+            {isLoading ? (
+              // Skeleton loading state
+              Array.from({ length: 6 }, (_, index) => (
+                <motion.div
+                  key={`skeleton-${index}`}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: index * 0.1 }}
+                >
+                  <TeamCardSkeleton />
+                </motion.div>
+              ))
+            ) : (
+              filteredTeams.map((team, index) => (
               <motion.div
                 key={team.id}
                 initial={{ opacity: 0, scale: 0.9 }}
@@ -364,7 +413,8 @@ const TeamSearch: React.FC<TeamSearchProps> = () => {
                   </div>
                 )}
               </motion.div>
-            ))}
+            ))
+            )}
           </motion.div>
         </AnimatePresence>
 

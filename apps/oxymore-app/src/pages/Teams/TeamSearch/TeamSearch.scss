@@ -16,7 +16,7 @@
 .team-search-content {
   max-width: 100%;
   width: 100%;
-  padding: rem-calc(40) rem-calc(20);
+  padding: rem-calc(80) rem-calc(20) rem-calc(40) rem-calc(20);
 
   .all-teams-section{
     padding: 0 rem-calc(20);
@@ -51,7 +51,7 @@
 }
 
 .team-search-header {
-  margin-bottom: rem-calc(40);
+  margin-bottom: rem-calc(60);
   text-align: center;
 
   .header-content {
@@ -77,7 +77,7 @@
 }
 
 .search-filters-section {
-  margin-bottom: rem-calc(40);
+  margin-bottom: rem-calc(60);
 }
 
 .search-container {

@@ -1,0 +1,72 @@
+@import '../../../../styles/global.scss';
+
+.team-card-skeleton {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(30, 30, 35, 0.9) 100%);
+  border-radius: rem-calc(20);
+  padding: rem-calc(20);
+  border: rem-calc(1) solid rgba(139, 92, 246, 0.2);
+  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+
+  // Effet de brillance animé
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(139, 92, 246, 0.3) 50%,
+      transparent 100%
+    );
+    animation: skeleton-shine 2s infinite;
+  }
+
+  &-header {
+    display: flex;
+    align-items: center;
+    gap: rem-calc(12);
+    margin-bottom: rem-calc(16);
+
+    .team-card-skeleton-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: rem-calc(8);
+    }
+  }
+
+  &-content {
+    margin-bottom: rem-calc(16);
+
+    .team-card-skeleton-tags {
+      display: flex;
+      gap: rem-calc(8);
+      margin-top: rem-calc(12);
+    }
+  }
+
+  &-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .team-card-skeleton-stats {
+      display: flex;
+      gap: rem-calc(16);
+    }
+  }
+}
+
+// Animation de brillance
+@keyframes skeleton-shine {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
