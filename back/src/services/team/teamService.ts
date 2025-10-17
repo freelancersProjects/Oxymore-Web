@@ -3,7 +3,20 @@ import { db } from "../../config/db";
 import crypto from "crypto";
 
 export const getAllTeams = async (): Promise<Team[]> => {
-  const [rows] = await db.query("SELECT * FROM team");
+  const [rows] = await db.query(`
+    SELECT
+      t.*,
+      u.username as captain_name,
+      COUNT(tm.id_team_member) as members_count,
+      ts.active as subscription_status,
+      COALESCE(t.created_at, NOW()) as created_at
+    FROM team t
+    LEFT JOIN user u ON t.id_captain = u.id_user
+    LEFT JOIN team_member tm ON t.id_team = tm.id_team
+    LEFT JOIN team_subscription ts ON t.id_team = ts.id_team AND ts.active = 1
+    GROUP BY t.id_team
+    ORDER BY t.team_name
+  `);
   return rows as Team[];
 };
 
@@ -12,7 +25,7 @@ export const createTeam = async (
 ): Promise<TeamData> => {
   const id_team = crypto.randomUUID();
   await db.query(
-    "INSERT INTO team (id_team, team_name, team_logo_url, team_banner_url, description, max_members, entry_type id_captain) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+    "INSERT INTO team (id_team, team_name, team_logo_url, team_banner_url, description, max_members, entry_type, id_captain, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())",
     [
       id_team,
       data.team_name,
