@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import TeamSearch from './TeamSearch/TeamSearch';
 import type { Team } from './TeamSearch/types/Team';
