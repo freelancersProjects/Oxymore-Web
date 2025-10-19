@@ -17,8 +17,8 @@ import {
   ChevronRight,
   LogOut,
   CheckSquare,
-  FileText,
-  Zap
+  Zap,
+  Hash
 } from 'lucide-react';
 import { useSidebar } from '../../../context/SidebarContext';
 import { useAuth } from '../../../context/AuthContext';
@@ -153,8 +153,8 @@ const Sidebar = () => {
     { label: 'Badges', icon: Star, path: '/badges' },
     { label: 'Calendrier', icon: Calendar, path: '/calendar' },
     { label: 'Jira', icon: CheckSquare, path: '/jira', color: 'bg-gradient-blue' },
-    { label: 'Confluence', icon: FileText, path: '/confluence', color: 'bg-gradient-green' },
-    { label: 'WebP Converter', icon: Zap, path: '/webp-converter', color: 'bg-gradient-orange' }
+    { label: 'WebP Converter', icon: Zap, path: '/webp-converter', color: 'bg-gradient-orange' },
+    { label: 'UUID Generator', icon: Hash, path: '/uuid-generator', color: 'bg-gradient-purple' }
   ];
 
   const statsNav = [

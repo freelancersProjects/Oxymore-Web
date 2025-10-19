@@ -9,6 +9,10 @@ export interface Team extends RowDataPacket {
   max_members?: number;
   entry_type: 'open' | 'inscription' | 'cv';
   id_captain: string;
+  captain_name?: string;
+  members_count?: number;
+  subscription_status?: boolean;
+  created_at?: string;
 }
 
 export interface TeamData {
@@ -20,6 +24,7 @@ export interface TeamData {
   max_members?: number;
   entry_type: 'open' | 'inscription' | 'cv';
   id_captain: string;
+  created_at?: string;
 }
 
 export interface TeamMemberData {
