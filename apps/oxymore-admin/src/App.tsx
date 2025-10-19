@@ -36,8 +36,8 @@ import Analytics from './pages/Analytics/Analytics';
 import Activity from './pages/Activity/Activity';
 import Calendar from './pages/Calendar/Calendar';
 import Jira from './pages/Jira/Jira';
-import Confluence from './pages/Confluence/Confluence';
 import WebPConverter from './pages/WebPConverter/WebPConverter';
+import UUIDGenerator from './pages/UUIDGenerator/UUIDGenerator';
 
 const queryClient = new QueryClient();
 
@@ -120,8 +120,8 @@ const App = () => {
                             <Route path="activity" element={<Activity />} />
                             <Route path="calendar" element={<Calendar />} />
                             <Route path="jira" element={<Jira />} />
-                            <Route path="confluence" element={<Confluence />} />
                             <Route path="webp-converter" element={<WebPConverter />} />
+                            <Route path="uuid-generator" element={<UUIDGenerator />} />
                             <Route path="settings" element={<Settings />} />
                           </Route>
                         </Routes>
