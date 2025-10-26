@@ -24,19 +24,47 @@ export const createTeam = async (
   data: Omit<TeamData, "id_team">
 ): Promise<TeamData> => {
   const id_team = crypto.randomUUID();
+
+  const [existingMember] = await db.query(
+    "SELECT * FROM team_member WHERE id_user = ?",
+    [String(data.id_captain)]
+  );
+
+  if (Array.isArray(existingMember) && existingMember.length > 0) {
+    throw new Error("Vous êtes déjà membre d'une équipe. Vous ne pouvez être membre que d'une seule équipe à la fois.");
+  }
+
   await db.query(
-    "INSERT INTO team (id_team, team_name, team_logo_url, team_banner_url, description, max_members, entry_type, id_captain, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())",
+    "INSERT INTO team (id_team, team_name, team_logo_url, team_banner_url, description, max_members, entry_type, id_captain, created_at, verified, region, id_game) VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?, ?, ?)",
     [
-      id_team,
-      data.team_name,
-      data.team_logo_url ?? null,
-      data.team_banner_url ?? null,
-      data.description ?? null,
-      data.max_members ?? null,
-      data.entry_type,
-      data.id_captain,
+      String(id_team),
+      String(data.team_name),
+      data.team_logo_url || null,
+      data.team_banner_url || null,
+      data.description || null,
+      data.max_members || null,
+      String(data.entry_type),
+      String(data.id_captain),
+      data.verified || false,
+      data.region || null,
+      data.id_game || null,
     ]
   );
+
+  const id_team_member = crypto.randomUUID();
+  console.log('Creating team member:', id_team_member, id_team, data.id_captain);
+
+  await db.query(
+    "INSERT INTO team_member (id_team_member, id_team, id_user, role, included_in_team_premium, join_date) VALUES (?, ?, ?, ?, ?, NOW())",
+    [
+      String(id_team_member),
+      String(id_team),
+      String(data.id_captain),
+      'captain',
+      false,
+    ]
+  );
+
   return { id_team, ...data };
 };
 

@@ -89,4 +89,4 @@ const OXMTextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
 
 OXMTextArea.displayName = "OXMTextArea";
 
-export default OXMTextArea; 
+export default OXMTextArea;

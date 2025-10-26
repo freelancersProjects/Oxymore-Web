@@ -68,7 +68,28 @@
     z-index: 20;
     animation: dropdown-fade-in 0.22s cubic-bezier(0.4,0,0.2,1);
     box-shadow: none;
-    overflow: hidden;
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: rem-calc(300);
+
+    // Style de scrollbar personnalisé
+    &::-webkit-scrollbar {
+      width: rem-calc(6);
+    }
+
+    &::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.1);
+      border-radius: rem-calc(3);
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: rem-calc(3);
+
+      &:hover {
+        background: rgba(0, 0, 0, 0.4);
+      }
+    }
   }
 
   &__option {
@@ -111,7 +132,7 @@
     }
     .oxm-dropdown__menu {
       border: 1.5px solid rgba($color-purple, 0.13);
-      background: rgba($color-black, 0.18);
+      background: rgba($color-black, 0.8);
     }
     .oxm-dropdown__option {
       color: $color-white;
