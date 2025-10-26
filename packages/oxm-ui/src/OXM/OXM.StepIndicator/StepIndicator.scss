@@ -1,0 +1,67 @@
+@import '../../styles/global.scss';
+
+.oxm-step-indicator {
+  display: flex;
+  justify-content: center;
+  margin-bottom: rem-calc(32);
+  gap: rem-calc(20);
+
+  .oxm-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: rem-calc(8);
+    opacity: 0.5;
+    transition: all 0.3s ease;
+
+    &.active {
+      opacity: 1;
+
+      .oxm-step-number {
+        background: linear-gradient(135deg, $color-purple-violet, $color-blue-indigo);
+        color: $color-white;
+        transform: scale(1.1);
+      }
+    }
+
+    &.completed {
+      opacity: 1;
+
+      .oxm-step-number {
+        background: rgba(34, 197, 94, 0.2);
+        color: $color-green-success;
+        border-color: $color-green-success;
+      }
+    }
+
+    .oxm-step-number {
+      width: rem-calc(40);
+      height: rem-calc(40);
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Orbitron', monospace;
+      font-weight: 600;
+      font-size: rem-calc(14);
+      color: rgba(255, 255, 255, 0.7);
+      transition: all 0.3s ease;
+
+      .check-icon {
+        width: rem-calc(20);
+        height: rem-calc(20);
+        stroke: $color-green-success;
+      }
+    }
+
+    .oxm-step-label {
+      font-family: 'Outfit', sans-serif;
+      font-size: rem-calc(12);
+      color: rgba(255, 255, 255, 0.7);
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+  }
+}

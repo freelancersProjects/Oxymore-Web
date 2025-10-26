@@ -22,6 +22,7 @@
   &::placeholder {
     color: rgba($color-white, 0.5);
     font-weight: 400;
+    font-size: rem-calc(14);
     transition: color 0.3s ease;
   }
 
@@ -68,16 +69,28 @@
   &--small {
     padding: rem-calc(12) rem-calc(4) rem-calc(6) rem-calc(4);
     font-size: rem-calc(14);
+
+    &::placeholder {
+      font-size: rem-calc(13);
+    }
   }
 
   &--medium {
     padding: rem-calc(16) rem-calc(4) rem-calc(8) rem-calc(4);
-    font-size: rem-calc(16);
+    font-size: rem-calc(14);
+
+    &::placeholder {
+      font-size: rem-calc(14);
+    }
   }
 
   &--large {
     padding: rem-calc(20) rem-calc(4) rem-calc(10) rem-calc(4);
-    font-size: rem-calc(18);
+    font-size: rem-calc(16);
+
+    &::placeholder {
+      font-size: rem-calc(16);
+    }
   }
 
   &--error {
@@ -125,4 +138,4 @@
   font-size: rem-calc(12);
   font-weight: 400;
   line-height: 1.4;
-} 
+}

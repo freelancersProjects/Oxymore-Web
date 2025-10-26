@@ -10,7 +10,8 @@ import {
   ArrowDownRight,
   Shield,
   Crown,
-  Loader2
+  Loader2,
+  CheckCircle
 } from 'lucide-react';
 import { useTeams } from '../../hooks/useTeams';
 
@@ -164,6 +165,9 @@ const Teams = () => {
                               <p className="text-[var(--text-primary)] font-medium">{team.team_name}</p>
                               {team.subscription_status && (
                                 <Star className="w-4 h-4 text-yellow-400" />
+                              )}
+                              {team.verified && (
+                                <CheckCircle className="w-4 h-4 text-green-400" />
                               )}
                             </div>
                             <p className="text-[var(--text-secondary)] text-sm">

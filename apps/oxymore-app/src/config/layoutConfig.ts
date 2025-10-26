@@ -7,6 +7,7 @@ export const LAYOUT_CONFIG = {
     "/forgot-password",
     "/reset-password",
     "/game-selection",
+    "/teams/create",
     // '/oxia'
   ],
 

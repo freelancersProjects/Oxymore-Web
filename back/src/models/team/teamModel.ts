@@ -23,6 +23,9 @@
  *          enum: [open, inscription, cv]
  *         id_captain:
  *           type: string
+ *         verified:
+ *           type: boolean
+ *           default: false
  */
 
 import { Team } from '../../interfaces/team/teamInterfaces';

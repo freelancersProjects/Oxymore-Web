@@ -14,6 +14,7 @@ import Login from "./pages/Login/Login";
 import OxiaChat from "./pages/OxiaChat/OxiaChat";
 import Register from "./pages/Register/Register";
 import { Teams } from "./pages/Teams/Teams";
+import { CreateTeam } from "./pages/CreateTeam/CreateTeam";
 import League from "./pages/League/League";
 import TournamentPage from "./pages/Tournament/Tournament";
 import Subscription from "./pages/Subscription/Subscription";
@@ -113,7 +114,8 @@ export default function App() {
               const isFullBackgroundPage =
                 location.pathname === "/leagues" ||
                 location.pathname === "/subscription" ||
-                location.pathname === "/teams";
+                location.pathname === "/teams" ||
+                location.pathname === "/teams/create";
               return (
                 <div
                   className={`oxm-layout${
@@ -156,6 +158,7 @@ export default function App() {
                           <Route path="/api-keys" element={<ApiKeysPage />} />
                           <Route path="/highlights" element={<Highlights />} />
                           <Route path="/teams" element={<Teams />} />
+                          <Route path="/teams/create" element={<CreateTeam />} />
                           <Route path="/friends" element={<Friends />} />
                           <Route path="/messages" element={<Messages />} />
                           <Route path="/oxia" element={<OxiaChat />} />

@@ -14,6 +14,7 @@ export interface Team {
   members_count?: number;
   subscription_status?: boolean;
   created_at?: string;
+  verified?: boolean;
 }
 
 export interface TeamsStats {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import {
   X,
@@ -18,6 +18,8 @@ import {
 } from 'lucide-react';
 import { OXMChip } from '@oxymore/ui';
 import type { Team } from './types';
+import apiService from '../../../api/apiService';
+import { gameService } from '../../../services/gameService';
 
 interface TeamModalProps {
   team: Team | null;
@@ -34,6 +36,31 @@ const TeamModal: React.FC<TeamModalProps> = ({
   onJoinTeam,
   onContactTeam
 }) => {
+  const [game, setGame] = useState<any>(null);
+  const [gameLogo, setGameLogo] = useState<string | null>(null);
+
+  useEffect(() => {
+    const loadGame = async () => {
+      if (team?.id_game) {
+        try {
+          const gameData = await apiService.get(`/games/${team.id_game}`);
+          setGame(gameData);
+
+          if (gameData?.name) {
+            const logo = gameService.getGameLogoByName(gameData.name);
+            setGameLogo(logo);
+          }
+        } catch (error) {
+          console.error('Error loading game:', error);
+        }
+      }
+    };
+
+    if (team?.id_game) {
+      loadGame();
+    }
+  }, [team?.id_game]);
+
   if (!team || !isOpen) return null;
 
   return (
@@ -141,15 +168,38 @@ const TeamModal: React.FC<TeamModalProps> = ({
           </div>
 
           <div className="modal-tags">
-            <h3>Jeux</h3>
+            <h3>Jeu</h3>
             <div className="tags-grid">
-              {team.tags.map(tag => (
+              {team.tags.slice(0, 1).map(tag => (
                 <OXMChip key={tag} variant="default" size="medium">
                   {tag}
                 </OXMChip>
               ))}
             </div>
           </div>
+
+          {game && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4 }}
+              className="game-details-card-modal"
+            >
+              <div className="game-details-header-modal">
+                <div className="game-icon-large-modal">
+                  {gameLogo && (
+                    <img src={gameLogo} alt={game.name} />
+                  )}
+                </div>
+                <div>
+                  <h3 className="game-name-modal">{game.name}</h3>
+                  <p className="game-description-modal">
+                    {game.description || 'Aucune description disponible'}
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+          )}
 
           {team.requirements.length > 0 && (
             <div className="modal-requirements">

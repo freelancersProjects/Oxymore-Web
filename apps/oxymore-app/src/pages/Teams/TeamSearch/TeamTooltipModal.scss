@@ -292,6 +292,67 @@
       }
     }
 
+    .game-details-card-modal {
+      margin: rem-calc(24) 0;
+      padding: rem-calc(20);
+      background: rgba(139, 92, 246, 0.08);
+      border: 1px solid rgba(139, 92, 246, 0.2);
+      border-radius: rem-calc(12);
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+
+      &:hover {
+        background: rgba(139, 92, 246, 0.12);
+        border-color: rgba(139, 92, 246, 0.3);
+      }
+
+      .game-details-header-modal {
+        display: flex;
+        gap: rem-calc(16);
+        align-items: center;
+
+        .game-icon-large-modal {
+          flex-shrink: 0;
+          width: rem-calc(80);
+          height: rem-calc(80);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: rem-calc(10);
+          background: rgba(0, 0, 0, 0.4);
+          padding: rem-calc(10);
+          transition: all 0.3s ease;
+
+          &:hover {
+            background: rgba(0, 0, 0, 0.5);
+          }
+
+          img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 0 8px rgba(139, 92, 246, 0.4));
+            border-radius: rem-calc(6);
+          }
+        }
+
+        .game-name-modal {
+          font-family: 'Outfit', sans-serif;
+          font-size: rem-calc(18);
+          font-weight: 600;
+          color: $color-white;
+          margin-bottom: rem-calc(4);
+        }
+
+        .game-description-modal {
+          font-family: 'Outfit', sans-serif;
+          font-size: rem-calc(13);
+          color: rgba(255, 255, 255, 0.6);
+          line-height: 1.5;
+        }
+      }
+    }
+
     .modal-requirements {
       h3 {
         font-family: 'Orbitron', monospace;

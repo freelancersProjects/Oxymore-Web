@@ -19,3 +19,4 @@ export { default as OXMChip } from "./OXM/OXM.Chip/Chip";
 export { default as OXMTable } from "./OXM/OXM.Table/Table";
 export { default as OXMLoader } from "./OXM/OXM.Loader/Loader";
 export { default as OXMSkeleton } from "./OXM/OXM.Skeleton/Skeleton";
+export { default as OXMStepIndicator } from "./OXM/OXM.StepIndicator/StepIndicator";
