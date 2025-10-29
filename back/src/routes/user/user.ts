@@ -7,8 +7,12 @@ import {
   updateUser,
   deleteUser,
   togglePremiumStatus,
+  toggleTeamChatMute,
 } from "../../controllers/user/userController";
-import { getUserStats, refreshUserStats } from "../../controllers/user/userStatsController";
+import {
+  getUserStats,
+  refreshUserStats,
+} from "../../controllers/user/userStatsController";
 
 const router = Router();
 
@@ -168,5 +172,35 @@ router.delete("/:id", deleteUser as Handler);
  *         description: Utilisateur non trouvé
  */
 router.patch("/:id/premium", togglePremiumStatus as Handler);
+
+/**
+ * @openapi
+ * /api/users/{id}/team-chat-mute:
+ *   patch:
+ *     tags:
+ *       - Users
+ *     summary: Active ou désactive le mute des notifications du chat d'équipe pour un utilisateur
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               team_chat_is_muted:
+ *                 type: boolean
+ *     responses:
+ *       200:
+ *         description: Statut de mute des notifications du chat d'équipe modifié
+ *       404:
+ *         description: Utilisateur non trouvé
+ */
+router.patch("/:id/team-chat-mute", toggleTeamChatMute as Handler);
 
 export default router;

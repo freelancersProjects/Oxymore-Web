@@ -28,7 +28,7 @@ export const createUser = async (req: Request, res: Response) => {
   try {
     const newUser = await UserService.createUser({
       ...req.body,
-      role_id: req.body.role_id || 1
+      role_id: req.body.role_id || 1,
     });
     res.status(201).json(newUser);
   } catch (error) {
@@ -76,7 +76,9 @@ export const togglePremiumStatus = async (req: Request, res: Response) => {
     res.json({
       success: true,
       data: updatedUser,
-      message: `Statut premium ${is_premium ? 'activé' : 'désactivé'} avec succès`
+      message: `Statut premium ${
+        is_premium ? "activé" : "désactivé"
+      } avec succès`,
     });
   } catch (error) {
     console.error("Error toggling premium status:", error);
@@ -84,3 +86,27 @@ export const togglePremiumStatus = async (req: Request, res: Response) => {
   }
 };
 
+export const toggleTeamChatMute = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { team_chat_is_muted } = req.body;
+
+    const updatedUser = await UserService.toggleTeamChatMute(
+      id,
+      Boolean(team_chat_is_muted)
+    );
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.json({
+      success: true,
+      data: updatedUser,
+      message: `Notifications du chat d'équipe ${
+        team_chat_is_muted ? "désactivées" : "activées"
+      }`,
+    });
+  } catch (error) {
+    console.error("Error toggling team chat mute:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
