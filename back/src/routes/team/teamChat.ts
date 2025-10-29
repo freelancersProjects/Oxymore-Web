@@ -3,6 +3,9 @@ import {
   getAllTeamChats,
   createTeamChat,
   deleteTeamChat,
+  getTeamChatsByTeamId,
+  updateTeamChat,
+  deleteTeamChatById,
 } from "../../controllers/team/teamChatController";
 
 const router = Router();
@@ -41,6 +44,11 @@ router.get("/", getAllTeamChats);
  *         description: Message ajouté
  */
 router.post("/", createTeamChat);
+
+router.get("/team/:id_team", getTeamChatsByTeamId);
+
+router.patch("/:id", updateTeamChat);
+router.delete("/:id", deleteTeamChatById);
 
 /**
  * @openapi

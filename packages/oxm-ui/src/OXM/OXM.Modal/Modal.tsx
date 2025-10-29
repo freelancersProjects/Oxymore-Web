@@ -9,9 +9,10 @@ interface ModalProps {
   keyUrl?: string;
   persistOnRefresh?: boolean;
   urlValue?: string;
+  variant?: 'default' | 'blue';
 }
 
-const OXMModal: React.FC<ModalProps> = ({ isOpen, onClose, children, keyUrl, persistOnRefresh = false, urlValue }) => {
+const OXMModal: React.FC<ModalProps> = ({ isOpen, onClose, children, keyUrl, persistOnRefresh = false, urlValue, variant = 'default' }) => {
   useEffect(() => {
     const handlePopState = () => {
       if (persistOnRefresh && keyUrl && urlValue) {
@@ -41,7 +42,7 @@ const OXMModal: React.FC<ModalProps> = ({ isOpen, onClose, children, keyUrl, per
 
   const content = (
     <div className="oxm-modal-backdrop" onClick={handleClose}>
-      <div className="oxm-modal" onClick={(e) => e.stopPropagation()}>
+      <div className={`oxm-modal ${variant === 'blue' ? 'oxm-modal--blue' : ''}`} onClick={(e) => e.stopPropagation()}>
         {children}
       </div>
     </div>

@@ -1,0 +1,96 @@
+@import '../../../styles/global';
+
+.tournament-empty {
+  text-align: center;
+  font-size: rem-calc(18);
+  color: $color-white;
+  padding: rem-calc(40);
+}
+
+.tournament-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: rem-calc(20);
+  width: 100%;
+  margin-bottom: rem-calc(40);
+
+  &.list-view {
+    flex-direction: column;
+    gap: rem-calc(12);
+
+    .tournament-cards-view {
+      flex: 1;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      height: rem-calc(140);
+      padding: rem-calc(20);
+      border-radius: rem-calc(16);
+
+      .card-image-container {
+        width: rem-calc(200);
+        height: rem-calc(100);
+        margin-bottom: 0;
+        margin-right: rem-calc(20);
+        flex-shrink: 0;
+        border-radius: rem-calc(12);
+      }
+
+      .title {
+        font-size: rem-calc(20);
+        margin-bottom: rem-calc(6);
+        flex: 1;
+      }
+
+      .meta {
+        margin-bottom: rem-calc(6);
+        flex: 1;
+      }
+
+      .status-info {
+        margin-bottom: 0;
+        flex: 1;
+      }
+
+      .card-separator {
+        display: none;
+      }
+
+      .card-buttons {
+        margin-left: auto;
+        width: auto;
+        gap: rem-calc(10);
+        flex-shrink: 0;
+
+        .oxm-button {
+          height: rem-calc(40);
+          font-size: rem-calc(13);
+          padding: 0 rem-calc(20);
+          border-radius: rem-calc(10);
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: rem-calc(1400)) {
+  .tournament-grid {
+    gap: rem-calc(20);
+  }
+}
+
+@media (max-width: rem-calc(1200)) {
+  .tournament-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: rem-calc(18);
+  }
+}
+
+@media (max-width: rem-calc(768)) {
+  .tournament-grid {
+    gap: rem-calc(16);
+  }
+}
+
+
+

@@ -1,0 +1,21 @@
+@import '../../../../styles/global';
+
+.team-tournament-history-page {
+  padding: rem-calc(24);
+
+  .tournament-history-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: rem-calc(24);
+
+    .tournament-history-title {
+      font-family: 'Orbitron', monospace;
+      font-size: rem-calc(24);
+      font-weight: 700;
+      color: $color-white;
+      margin: 0;
+    }
+  }
+}
+

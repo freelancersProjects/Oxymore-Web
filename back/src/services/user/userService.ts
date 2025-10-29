@@ -77,3 +77,11 @@ export const deleteUser = async (id: string): Promise<void> => {
   await db.execute("DELETE FROM user WHERE id_user = ?", [id]);
 };
 
+export const toggleTeamChatMute = async (id_user: string, team_chat_is_muted: boolean): Promise<User | null> => {
+  await db.execute(
+    "UPDATE user SET team_chat_is_muted = ? WHERE id_user = ?",
+    [team_chat_is_muted, id_user]
+  );
+  return getUserById(id_user);
+};
+

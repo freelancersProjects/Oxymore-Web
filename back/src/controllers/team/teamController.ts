@@ -1,9 +1,23 @@
 import { Request, Response } from "express";
 import * as TeamService from "../../services/team/teamService";
 
-export const getAllTeams = async (req: Request, res: Response) => {
+export const getAllTeams = async (req: Request, res: Response): Promise<void> => {
   const teams = await TeamService.getAllTeams();
   res.json(teams);
+};
+
+export const getTeamById = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const team = await TeamService.getTeamById(req.params.id);
+    if (!team) {
+      res.status(404).json({ message: "Team not found" });
+      return;
+    }
+    res.json(team);
+  } catch (error) {
+    console.error("Error getting team by id:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
 };
 
 export const createTeam = async (req: Request, res: Response) => {
@@ -42,6 +56,19 @@ export const createTeam = async (req: Request, res: Response) => {
       return;
     }
     res.status(500).json({ message: error instanceof Error ? error.message : "Erreur lors de la création de l'équipe" });
+  }
+};
+
+export const updateTeam = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { id } = req.params;
+    const updateData = req.body;
+
+    const updatedTeam = await TeamService.updateTeam(id, updateData);
+    res.json(updatedTeam);
+  } catch (error) {
+    console.error("Error updating team:", error);
+    res.status(500).json({ message: error instanceof Error ? error.message : "Erreur lors de la mise à jour de l'équipe" });
   }
 };
 

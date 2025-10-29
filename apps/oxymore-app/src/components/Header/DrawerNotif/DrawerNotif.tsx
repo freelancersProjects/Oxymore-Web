@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { OXMDrawer } from "@oxymore/ui";
+import { OXMDrawer, OXMLoader } from "@oxymore/ui";
 import './DrawerNotif.scss';
-import { Bell, CheckCircle, AlertTriangle, MessageCircle, Loader2, Trash2 } from 'lucide-react';
+import { Bell, CheckCircle, AlertTriangle, MessageCircle, Trash2 } from 'lucide-react';
 import apiService from '../../../api/apiService';
 import type { NotificationWithReadStatus, NotificationType } from '@oxymore/types';
 
@@ -138,9 +138,8 @@ const DrawerNotif: React.FC<DrawerNotifProps> = ({ open, onClose, userId }) => {
 
       <div className="drawer-notif-list">
         {loading ? (
-          <div className="drawer-notif-loading">
-            <Loader2 size={24} className="spinner" />
-            <span>Chargement des notifications...</span>
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '200px' }}>
+            <OXMLoader type="normal" text="Chargement des notifications..." />
           </div>
         ) : notifications.length > 0 ? (
           notifications.map(notif => {

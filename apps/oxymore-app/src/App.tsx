@@ -15,6 +15,7 @@ import OxiaChat from "./pages/OxiaChat/OxiaChat";
 import Register from "./pages/Register/Register";
 import { Teams } from "./pages/Teams/Teams";
 import { CreateTeam } from "./pages/CreateTeam/CreateTeam";
+import TeamView from "./pages/Teams/TeamView/TeamView";
 import League from "./pages/League/League";
 import TournamentPage from "./pages/Tournament/Tournament";
 import Subscription from "./pages/Subscription/Subscription";
@@ -120,7 +121,9 @@ export default function App() {
                 <div
                   className={`oxm-layout${
                     isSidebarCollapsed ? " sidebar-collapsed" : ""
-                  }${isOxia ? " oxia-mode" : ""}`}
+                  }${isOxia ? " oxia-mode" : ""}${
+                    hideProfileSidebar ? " no-profile-sidebar" : ""
+                  }`}
                 >
                   {!hideSidebar && (
                     <Sidebar
@@ -159,6 +162,7 @@ export default function App() {
                           <Route path="/highlights" element={<Highlights />} />
                           <Route path="/teams" element={<Teams />} />
                           <Route path="/teams/create" element={<CreateTeam />} />
+                          <Route path="/teams/:id" element={<TeamView />} />
                           <Route path="/friends" element={<Friends />} />
                           <Route path="/messages" element={<Messages />} />
                           <Route path="/oxia" element={<OxiaChat />} />

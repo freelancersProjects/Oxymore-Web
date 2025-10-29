@@ -1,0 +1,229 @@
+@import '../../../../styles/global.scss';
+
+.team-challenges-page {
+  padding: rem-calc(24);
+
+  .challenges-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: rem-calc(24);
+
+    .challenges-title {
+      font-family: 'Orbitron', monospace;
+      font-size: rem-calc(24);
+      font-weight: 700;
+      color: $color-white;
+      margin: 0;
+    }
+
+    .challenges-count {
+      font-family: 'Outfit', sans-serif;
+      font-size: rem-calc(14);
+      color: rgba(255, 255, 255, 0.6);
+      padding: rem-calc(6) rem-calc(12);
+      background: rgba(139, 92, 246, 0.2);
+      border: 1px solid rgba(139, 92, 246, 0.3);
+      border-radius: rem-calc(8);
+    }
+  }
+
+  .challenges-container {
+    display: flex;
+    flex-direction: column;
+    gap: rem-calc(32);
+  }
+
+  .challenges-section {
+    .section-title {
+      font-family: 'Orbitron', monospace;
+      font-size: rem-calc(18);
+      font-weight: 600;
+      color: $color-white;
+      margin-bottom: rem-calc(16);
+      padding-bottom: rem-calc(12);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .challenges-list {
+      display: flex;
+      flex-direction: column;
+      gap: rem-calc(8);
+    }
+  }
+
+  .challenge-row {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: rem-calc(16);
+    background: rgb(255 255 255 / 3%);
+    border: 1px solid rgb(255 255 255 / 10%);
+    border-radius: rem-calc(12);
+    padding: rem-calc(20) rem-calc(24);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: rgb(255 255 255 / 5%);
+      border-color: rgba($color-purple, 0.3);
+    }
+
+    &.pending {
+      background: rgba(251, 191, 36, 0.03);
+      border-color: rgba(251, 191, 36, 0.15);
+    }
+
+    .challenge-main {
+      display: flex;
+      flex-direction: column;
+      gap: rem-calc(12);
+      flex: 1;
+      min-width: 0;
+
+      .challenge-teams {
+        display: flex;
+        align-items: center;
+        gap: rem-calc(16);
+        flex-wrap: wrap;
+
+        .challenge-team {
+          display: flex;
+          align-items: center;
+          gap: rem-calc(12);
+
+          .challenge-team-logo {
+            width: rem-calc(40);
+            height: rem-calc(40);
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            flex-shrink: 0;
+            object-fit: cover;
+          }
+
+          .challenge-team-name {
+            font-family: 'Orbitron', monospace;
+            font-size: rem-calc(14);
+            font-weight: 600;
+            color: $color-white;
+          }
+        }
+
+        .challenge-vs {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: rem-calc(32);
+          height: rem-calc(32);
+          border-radius: 50%;
+          background: rgba(139, 92, 246, 0.2);
+          border: 1px solid rgba(139, 92, 246, 0.3);
+          color: rgba(139, 92, 246, 0.8);
+          flex-shrink: 0;
+        }
+      }
+
+      .challenge-info {
+        display: flex;
+        align-items: center;
+        gap: rem-calc(16);
+        flex-wrap: wrap;
+
+        .challenge-date,
+        .challenge-scheduled {
+          font-family: 'Outfit', sans-serif;
+          font-size: rem-calc(12);
+          color: rgba(255, 255, 255, 0.5);
+          display: flex;
+          align-items: center;
+          gap: rem-calc(4);
+
+          svg {
+            width: rem-calc(12);
+            height: rem-calc(12);
+          }
+        }
+
+        .challenge-direction {
+          font-family: 'Outfit', sans-serif;
+          font-size: rem-calc(12);
+          color: rgba(139, 92, 246, 0.8);
+          padding: rem-calc(4) rem-calc(8);
+          background: rgba(139, 92, 246, 0.1);
+          border-radius: rem-calc(4);
+        }
+      }
+    }
+
+    .challenge-actions {
+      display: flex;
+      align-items: center;
+      gap: rem-calc(8);
+      flex-shrink: 0;
+
+      .challenge-action-btn {
+        width: rem-calc(36);
+        height: rem-calc(36);
+        border-radius: rem-calc(8);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.05);
+        color: rgba(255, 255, 255, 0.7);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+
+        &:hover {
+          border-color: rgba(139, 92, 246, 0.5);
+          background: rgba(139, 92, 246, 0.1);
+        }
+
+        &.accept {
+          &:hover {
+            background: rgba(16, 185, 129, 0.2);
+            border-color: rgba(16, 185, 129, 0.5);
+            color: #10b981;
+          }
+        }
+
+        &.reject,
+        &.cancel {
+          &:hover {
+            background: rgba(239, 68, 68, 0.2);
+            border-color: rgba(239, 68, 68, 0.5);
+            color: #ef4444;
+          }
+        }
+
+        svg {
+          width: rem-calc(18);
+          height: rem-calc(18);
+        }
+      }
+    }
+
+    .challenge-status-badge {
+      display: flex;
+      align-items: center;
+      gap: rem-calc(6);
+      padding: rem-calc(6) rem-calc(12);
+      border-radius: rem-calc(6);
+      border: 1px solid;
+      background: rgba(255, 255, 255, 0.05);
+      font-family: 'Outfit', sans-serif;
+      font-size: rem-calc(12);
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.8);
+      flex-shrink: 0;
+
+      .status-dot {
+        width: rem-calc(6);
+        height: rem-calc(6);
+        border-radius: 50%;
+      }
+    }
+  }
+}
+

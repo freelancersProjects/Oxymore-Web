@@ -29,3 +29,30 @@ export const deleteTeamChat = async (id_team_chat: string): Promise<void> => {
   await db.query("DELETE FROM team_chat WHERE id_team_chat = ?", [id_team_chat]);
 };
 
+export const getTeamChatsByTeamId = async (id_team: string): Promise<any[]> => {
+  const [rows] = await db.query(
+    `SELECT
+      tc.id_team_chat,
+      tc.message,
+      tc.sent_at,
+      tc.id_team,
+      tc.id_user,
+      u.username,
+      u.avatar_url
+    FROM team_chat tc
+    LEFT JOIN user u ON tc.id_user = u.id_user
+    WHERE tc.id_team = ?
+    ORDER BY tc.sent_at ASC`,
+    [id_team]
+  );
+  return rows as any[];
+};
+
+export const deleteTeamChatById = async (id_team_chat: string): Promise<void> => {
+  await db.query("DELETE FROM team_chat WHERE id_team_chat = ?", [id_team_chat]);
+};
+
+export const updateTeamChatById = async (id_team_chat: string, message: string): Promise<void> => {
+  await db.query("UPDATE team_chat SET message = ? WHERE id_team_chat = ?", [message, id_team_chat]);
+};
+

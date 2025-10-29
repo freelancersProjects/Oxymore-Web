@@ -335,10 +335,10 @@
 
     &:hover {
       transform: translateY(rem-calc(-6));
-      border-color: rgba(139, 92, 246, 0.4);
+      border: 2px solid rgba(139, 92, 246, 0.5);
       box-shadow:
         0 rem-calc(20) rem-calc(40) rgba(0, 0, 0, 0.4),
-        0 0 rem-calc(30) rgba(139, 92, 246, 0.1);
+        0 0 rem-calc(30) rgba(139, 92, 246, 0.2);
       background: rgba(255, 255, 255, 0.05);
 
       &::before {
@@ -464,12 +464,7 @@
             width: rem-calc(14);
             height: rem-calc(14);
             opacity: 0.8;
-          }
-
-          &:first-child {
-            svg {
-              color: $color-purple-violet;
-            }
+            color: rgba(255, 255, 255, 0.9);
           }
 
           &:last-child {
@@ -540,7 +535,7 @@
 
     &:hover {
       transform: translateX(rem-calc(4));
-      border-color: rgba(139, 92, 246, 0.3);
+      border: 2px solid rgba(139, 92, 246, 0.5);
       box-shadow: 0 rem-calc(10) rem-calc(20) rgba(0, 0, 0, 0.2);
     }
 

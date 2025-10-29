@@ -1,0 +1,39 @@
+@import '../../styles/global.scss';
+
+.oxm-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Orbitron', monospace;
+  font-weight: 700;
+  color: $color-white;
+  background: #ef4444;
+
+  &--toolbar {
+    position: absolute;
+    top: rem-calc(-6);
+    right: rem-calc(-6);
+    font-size: rem-calc(11);
+    min-width: rem-calc(18);
+    height: rem-calc(18);
+    border-radius: rem-calc(9);
+    padding: 0 rem-calc(4);
+    border: 2px solid rgb(30 30 40);
+    box-shadow: 0 rem-calc(2) rem-calc(4) rgba(0, 0, 0, 0.3);
+    z-index: 10;
+  }
+
+  &--sidebar {
+    margin-left: auto;
+    font-size: rem-calc(12);
+    min-width: rem-calc(20);
+    height: rem-calc(20);
+    border-radius: rem-calc(10);
+    padding: 0 rem-calc(6);
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    box-shadow: 0 rem-calc(2) rem-calc(6) rgba(239, 68, 68, 0.4),
+                inset 0 rem-calc(1) rem-calc(2) rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+}
+

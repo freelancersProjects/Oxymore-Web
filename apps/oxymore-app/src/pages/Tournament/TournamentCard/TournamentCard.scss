@@ -1,0 +1,284 @@
+@import '../../../styles/global';
+
+.tournament-cards-view {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: rem-calc(16);
+  flex: 1;
+  min-width: 0;
+  max-width: 100%;
+  border-radius: rem-calc(24);
+  border: 1px solid rgb(255 255 255 / 10%);
+  background: linear-gradient(135deg, rgb(139 69 255 / 8%) 0%, rgb(0 0 0 / 60%) 50%, rgb(59 130 246 / 8%) 100%);
+  padding: rem-calc(20);
+  position: relative;
+  box-sizing: border-box;
+  backdrop-filter: blur(20px);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  overflow: hidden;
+  animation: tournamentCardSlideIn 0.6s ease-out;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, $color-purple, $color-blue, $color-purple);
+    background-size: 200% 100%;
+    opacity: 0;
+    transition: all 0.4s ease;
+    animation: borderGlow 3s ease-in-out infinite;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgb(255 255 255 / 10%),
+      transparent
+    );
+    transition: left 0.6s ease;
+    z-index: 1;
+  }
+
+  &:hover {
+    transform: translateY(rem-calc(-4));
+    border-color: rgba($color-purple, 0.3);
+    background: linear-gradient(135deg, rgb(139 69 255 / 12%) 0%, rgb(0 0 0 / 65%) 50%, rgb(59 130 246 / 12%) 100%);
+    box-shadow: 0 10px 25px rgb(0 0 0 / 30%);
+
+    &::after {
+      left: 100%;
+    }
+  }
+
+  @keyframes borderGlow {
+    0%, 100% {
+      background-position: 0% 50%;
+    }
+
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+}
+
+.card-image-container {
+  position: relative;
+  width: 100%;
+  max-height: rem-calc(200);
+  border-radius: rem-calc(16);
+  overflow: hidden;
+  margin-bottom: rem-calc(16);
+  z-index: 2;
+
+  .card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .tag {
+    position: absolute;
+    top: rem-calc(20);
+    left: rem-calc(20);
+    z-index: 3;
+    margin: 0;
+  }
+}
+
+.tournament-cards-view:hover .card-image-container {
+  .card-image {
+    transform: scale(1.02);
+  }
+}
+
+.tag {
+  display: flex;
+  padding: rem-calc(10) rem-calc(18);
+  justify-content: center;
+  align-items: center;
+  gap: rem-calc(8);
+  border-radius: rem-calc(20);
+  border: 1px solid rgba($color-purple, 0.4);
+  background: linear-gradient(135deg, rgba($color-purple, 0.15), rgba($color-blue, 0.1));
+  font-size: rem-calc(13);
+  font-weight: 600;
+  color: $color-white;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  z-index: 2;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 12px rgba($color-purple, 0.2);
+
+  .dot {
+    width: rem-calc(6);
+    height: rem-calc(6);
+    background: $color-purple;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  &:hover {
+    background: linear-gradient(135deg, rgba($color-purple, 0.2), rgba($color-blue, 0.15));
+    border-color: rgba($color-purple, 0.5);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.7;
+    transform: scale(1.1);
+  }
+}
+
+.title {
+  color: $color-white;
+  font-size: rem-calc(24);
+  font-family: Orbitron, sans-serif;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: rem-calc(8);
+  transition: color 0.3s ease;
+  z-index: 2;
+  text-shadow: 0 2px 8px rgb(0 0 0 / 50%);
+
+  &:hover {
+    color: $color-purple;
+  }
+}
+
+.card-separator {
+  border: none;
+  border-top: 1px solid rgba($color-white, 0.1);
+  width: 100%;
+  margin: rem-calc(8) 0;
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: rem-calc(60);
+    height: 1px;
+    background: linear-gradient(90deg, transparent, $color-purple, transparent);
+  }
+}
+
+.meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  align-self: stretch;
+  font-size: rem-calc(14);
+  color: rgba($color-white, 0.8);
+  width: 100%;
+  font-weight: 500;
+  font-family: Outfit, sans-serif;
+  margin-bottom: rem-calc(8);
+  z-index: 2;
+}
+
+.status-info {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  margin-bottom: rem-calc(16);
+  z-index: 2;
+
+  span {
+    font-size: rem-calc(14);
+    color: rgba($color-white, 0.8);
+    font-weight: 500;
+    font-family: Outfit, sans-serif;
+  }
+}
+
+.card-buttons {
+  display: flex;
+  gap: rem-calc(12);
+  width: 100%;
+
+  .oxm-button {
+    flex: 1 !important;
+    min-width: 0;
+    height: rem-calc(44);
+    font-size: rem-calc(14);
+    font-weight: 500;
+    width: 100% !important;
+  }
+}
+
+@keyframes tournamentCardSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(rem-calc(30));
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: rem-calc(768)) {
+  .tournament-cards-view {
+    padding: rem-calc(15);
+  }
+
+  .card-image-container {
+    height: rem-calc(600);
+  }
+
+  .title {
+    font-size: rem-calc(20);
+  }
+
+  .card-buttons {
+    flex-direction: column;
+    gap: rem-calc(8);
+
+    .oxm-button {
+      width: 100%;
+      height: rem-calc(34);
+    }
+  }
+}
+
+@media (max-width: rem-calc(480)) {
+  .tournament-cards-view {
+    padding: rem-calc(12);
+  }
+
+  .card-image-container {
+    height: rem-calc(500);
+  }
+
+  .title {
+    font-size: rem-calc(18);
+  }
+}
+
+
+

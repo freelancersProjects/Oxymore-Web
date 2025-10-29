@@ -1,7 +1,9 @@
 import { Router } from "express";
 import {
   getAllTeams,
+  getTeamById,
   createTeam,
+  updateTeam,
   deleteTeam,
 } from "../../controllers/team/teamController";
 
@@ -19,6 +21,27 @@ const router = Router();
  *         description: Liste des teams
  */
 router.get("/", getAllTeams);
+
+/**
+ * @openapi
+ * /api/teams/{id}:
+ *   get:
+ *     tags:
+ *       - Teams
+ *     summary: Récupère une team par son id
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Team trouvée
+ *       404:
+ *         description: Team non trouvée
+ */
+router.get("/:id", getTeamById);
 
 /**
  * @openapi
@@ -41,6 +64,31 @@ router.get("/", getAllTeams);
  *         description: Team créée
  */
 router.post("/", createTeam);
+
+/**
+ * @openapi
+ * /api/teams/{id}:
+ *   patch:
+ *     tags:
+ *       - Teams
+ *     summary: Met à jour une team
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *     responses:
+ *       200:
+ *         description: Team mise à jour
+ */
+router.patch("/:id", updateTeam);
 
 /**
  * @openapi
