@@ -20,6 +20,25 @@ export const getAllTeams = async (): Promise<Team[]> => {
   return rows as Team[];
 };
 
+export const getTeamById = async (id: string): Promise<Team | null> => {
+  const [rows] = await db.query(`
+    SELECT
+      t.*,
+      u.username as captain_name,
+      COUNT(tm.id_team_member) as members_count,
+      ts.active as subscription_status,
+      COALESCE(t.created_at, NOW()) as created_at
+    FROM team t
+    LEFT JOIN user u ON t.id_captain = u.id_user
+    LEFT JOIN team_member tm ON t.id_team = tm.id_team
+    LEFT JOIN team_subscription ts ON t.id_team = ts.id_team AND ts.active = 1
+    WHERE t.id_team = ?
+    GROUP BY t.id_team
+  `, [id]);
+  const teams = rows as Team[];
+  return teams.length > 0 ? teams[0] : null;
+};
+
 export const createTeam = async (
   data: Omit<TeamData, "id_team">
 ): Promise<TeamData> => {

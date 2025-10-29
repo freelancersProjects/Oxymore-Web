@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import { NavLink } from "react-router-dom";
 import { Home, Trophy, Layers, Play, Users, UserPlus, LogOut, ChevronLeft, Bot, Menu, X, Store, Users2, BookOpen, AlertTriangle, ChevronDown } from "lucide-react";
+import { OXMBadge } from "@oxymore/ui";
 import Logo from "./../../assets/logo.png";
+import { teamService } from "../../services/teamService";
 import "./Sidebar.scss";
 
 interface SidebarProps {
@@ -12,8 +14,13 @@ interface SidebarProps {
 export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false, onToggle }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [showScrollArrow, setShowScrollArrow] = useState(false);
-  const [hasScrolled, setHasScrolled] = useState(false);
-  const [hasTeam] = useState(false);
+  const [hasScrolled, setHasScrolled] = useState(() => {
+    return sessionStorage.getItem('sidebar-has-scrolled') === 'true';
+  });
+    const [isCheckingTeam, setIsCheckingTeam] = useState(true);
+
+  const [hasTeam, setHasTeam] = useState(false);
+  const [teamNotificationsCount, setTeamNotificationsCount] = useState(0);
   const navRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -34,6 +41,87 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false, onToggle 
   };
 
   useEffect(() => {
+    const checkUserTeam = async () => {
+      try {
+        setIsCheckingTeam(true);
+        const userStr = localStorage.getItem("useroxm");
+        if (userStr) {
+          const user = JSON.parse(userStr);
+          if (user.id_user) {
+            const data = await teamService.getUserTeam(user.id_user);
+            setHasTeam(data.hasTeam);
+
+            if (data.hasTeam && data.teamMember?.id_team) {
+              const teamId = data.teamMember.id_team;
+
+              let totalNotifications = 0;
+
+              try {
+                const members = await teamService.getTeamMembersByTeamId(teamId);
+                const currentUserMember = members.find((member: any) => member.id_user === user.id_user);
+                const isAdmin = currentUserMember?.role === 'captain' || currentUserMember?.role === 'admin';
+
+                try {
+                  const chats = await teamService.getTeamChats(teamId);
+                  const lastSeenKey = `team_chat_last_seen_${teamId}_${user.id_user}`;
+                  const lastSeenTimestamp = localStorage.getItem(lastSeenKey);
+
+                  if (lastSeenTimestamp) {
+                    const lastSeenDate = new Date(lastSeenTimestamp);
+                    const unreadCount = chats.filter((chat: any) => {
+                      const msgDate = new Date(chat.sent_at);
+                      return chat.id_user !== user.id_user && msgDate > lastSeenDate;
+                    }).length;
+                    totalNotifications += unreadCount;
+                  } else {
+                    const unreadCount = chats.filter((chat: any) => {
+                      return chat.id_user !== user.id_user;
+                    }).length;
+                    totalNotifications += unreadCount;
+                  }
+                } catch (error) {
+                }
+
+                if (isAdmin) {
+                  try {
+                    const applications = await teamService.getTeamApplications(teamId);
+                    const pendingCount = applications.filter((app: any) => app.status === 'pending').length;
+                    totalNotifications += pendingCount;
+                  } catch (error) {
+                  }
+                }
+
+                try {
+                  const challenges = await teamService.getTeamChallenges(teamId);
+                  const pendingChallenges = challenges.filter((challenge: any) =>
+                    challenge.status === 'pending' && challenge.id_team_challenged === teamId
+                  ).length;
+                  totalNotifications += pendingChallenges;
+                } catch (error) {
+                }
+              } catch (error) {
+              }
+
+              setTeamNotificationsCount(totalNotifications);
+            }
+          }
+        }
+      } catch (error) {
+      } finally {
+        setIsCheckingTeam(false);
+      }
+    };
+
+    checkUserTeam();
+
+    const interval = setInterval(() => {
+      checkUserTeam();
+    }, 30000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
     const checkScrollable = () => {
       if (navRef.current) {
         const { scrollHeight, clientHeight } = navRef.current;
@@ -44,6 +132,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false, onToggle 
     const handleScroll = () => {
       if (navRef.current && !hasScrolled) {
         setHasScrolled(true);
+        sessionStorage.setItem('sidebar-has-scrolled', 'true');
         setShowScrollArrow(false);
       }
     };
@@ -179,8 +268,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false, onToggle 
               <li>
                 <NavLink to="/teams" onClick={handleNavClick} className="oxm-sidebar-nav-link">
                   <Users size={20} /> <span>Teams</span>
+                  <OXMBadge count={teamNotificationsCount} variant="sidebar" />
                 </NavLink>
-                {!hasTeam && !isCollapsed && (
+                {!hasTeam && !isCollapsed && !isCheckingTeam && (
                   <div className="team-warning">
                     <AlertTriangle size={14} />
                     <span>Pas d'équipe</span>

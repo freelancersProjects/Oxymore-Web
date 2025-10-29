@@ -261,6 +261,7 @@
           letter-spacing: 0.5px;
           box-shadow: 0 2px 8px rgb(139 92 246 / 30%);
         }
+
       }
     }
 
@@ -432,6 +433,7 @@
         padding: rem-calc(14) rem-calc(8);
         margin: 0 rem-calc(16);
         border-radius: rem-calc(12);
+        position: relative;
 
         span {
           display: none;
@@ -440,6 +442,13 @@
         svg {
           width: rem-calc(20);
           height: rem-calc(20);
+        }
+
+        .oxm-badge--sidebar {
+          position: absolute;
+          top: rem-calc(6);
+          right: rem-calc(6);
+          margin-left: 0;
         }
 
         &.active {

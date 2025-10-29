@@ -1,0 +1,59 @@
+@import '../../../styles/global.scss';
+
+.team-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: rem-calc(0) 0 rem-calc(20) 0;
+
+  &__tabs {
+    display: flex;
+    gap: rem-calc(2);
+    align-items: center;
+    background: rgba($color-background, 0.5);
+    backdrop-filter: blur(20px);
+    padding: rem-calc(4);
+    border-radius: rem-calc(16);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  &__tab {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: rem-calc(10) rem-calc(16);
+    background: transparent;
+    border: none;
+    border-radius: rem-calc(12);
+    color: rgba($color-white, 0.5);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+
+
+    &:hover {
+      background: rgba(139, 92, 246, 0.08);
+      color: $color-white;
+    }
+
+    &.active {
+      background: $color-purple;
+      color: $color-white;
+    }
+  }
+
+  &__icon {
+    width: rem-calc(22);
+    height: rem-calc(22);
+    stroke-width: 1.5;
+  }
+
+  &__icon-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+}
+

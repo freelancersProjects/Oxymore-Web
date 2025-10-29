@@ -23,11 +23,14 @@ export const LAYOUT_CONFIG = {
     "/subscription",
   ],
 
+  // Pages qui doivent masquer le header avec pattern
+  noHeaderPatterns: ["/teams/:id"],
+
   // Pages qui doivent masquer seulement le footer
   noFooterPages: ["/dashboard", "/admin"],
 
   //Pages qui doivent masquer seulement la sidebar du profile
-  noProfileSidebarPages: ["/subscription"],
+  noProfileSidebarPatterns: ["/subscription", "/teams/:id"],
 };
 
 // Fonction utilitaire pour vérifier si une page doit être en plein écran
@@ -47,10 +50,21 @@ export const shouldHideSidebar = (pathname: string): boolean => {
 
 // Fonction utilitaire pour vérifier si une page doit masquer le header
 export const shouldHideHeader = (pathname: string): boolean => {
-  return (
-    LAYOUT_CONFIG.fullscreenPages.some((page) => pathname.startsWith(page)) ||
-    LAYOUT_CONFIG.noHeaderPages.some((page) => pathname.startsWith(page))
-  );
+  const matchesFullscreen = LAYOUT_CONFIG.fullscreenPages.some((page) => pathname.startsWith(page));
+  const matchesNoHeader = LAYOUT_CONFIG.noHeaderPages.some((page) => pathname.startsWith(page));
+  const matchesPattern = LAYOUT_CONFIG.noHeaderPatterns?.some((pattern) => {
+    if (!pattern.includes(':')) {
+      return pathname === pattern;
+    }
+    const patternParts = pattern.split('/');
+    const pathParts = pathname.split('/');
+    if (patternParts.length !== pathParts.length) return false;
+    return patternParts.every((part, index) => {
+      return part.startsWith(':') || part === pathParts[index];
+    });
+  }) || false;
+
+  return matchesFullscreen || matchesNoHeader || matchesPattern;
 };
 
 // Fonction utilitaire pour vérifier si une page doit masquer le footer
@@ -63,9 +77,22 @@ export const shouldHideFooter = (pathname: string): boolean => {
 
 // Fonction utilitaire pour vérifier si une page doit masquer la sidebar du profile
 export const shouldHideProfileSidebar = (pathname: string): boolean => {
-  return LAYOUT_CONFIG.noProfileSidebarPages.some((page) =>
-    pathname.startsWith(page)
-  );
+  return LAYOUT_CONFIG.noProfileSidebarPatterns.some((pattern) => {
+    // Vérifier si c'est un match exact (pas de paramètres dynamiques)
+    if (!pattern.includes(':')) {
+      return pathname === pattern;
+    }
+
+    // Vérifier les patterns avec paramètres (ex: /teams/:id)
+    const patternParts = pattern.split('/');
+    const pathParts = pathname.split('/');
+
+    if (patternParts.length !== pathParts.length) return false;
+
+    return patternParts.every((part, index) => {
+      return part.startsWith(':') || part === pathParts[index];
+    });
+  });
 };
 
 // Fonction pour ajouter une classe CSS au body selon la page

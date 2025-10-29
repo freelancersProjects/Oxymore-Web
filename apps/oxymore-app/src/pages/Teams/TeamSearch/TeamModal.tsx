@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import {
   X,
   Users,
@@ -13,13 +14,15 @@ import {
   Star,
   UserPlus,
   MessageCircle,
-  Sword,
   Share2
 } from 'lucide-react';
-import { OXMChip } from '@oxymore/ui';
-import type { Team } from './types';
+import { OXMChip, OXMModal, OXMLoader, OXMToast } from '@oxymore/ui';
+import type { Team } from '../../../types/team';
 import apiService from '../../../api/apiService';
 import { gameService } from '../../../services/gameService';
+import { teamService } from '../../../services/teamService';
+import TeamCVModal from './TeamCVModal/TeamCVModal';
+import './TeamModal.scss';
 
 interface TeamModalProps {
   team: Team | null;
@@ -36,8 +39,20 @@ const TeamModal: React.FC<TeamModalProps> = ({
   onJoinTeam,
   onContactTeam
 }) => {
+  const navigate = useNavigate();
   const [game, setGame] = useState<any>(null);
   const [gameLogo, setGameLogo] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [showCVModal, setShowCVModal] = useState(false);
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+
+  useEffect(() => {
+    if (!isOpen) {
+      setIsLoading(false);
+      setShowCVModal(false);
+      setToast(null);
+    }
+  }, [isOpen]);
 
   useEffect(() => {
     const loadGame = async () => {
@@ -51,7 +66,6 @@ const TeamModal: React.FC<TeamModalProps> = ({
             setGameLogo(logo);
           }
         } catch (error) {
-          console.error('Error loading game:', error);
         }
       }
     };
@@ -61,22 +75,81 @@ const TeamModal: React.FC<TeamModalProps> = ({
     }
   }, [team?.id_game]);
 
-  if (!team || !isOpen) return null;
+  const handleJoinTeam = async () => {
+    if (!team) return;
+
+    const userStr = localStorage.getItem('useroxm');
+    const user = userStr ? JSON.parse(userStr) : null;
+    if (!user) {
+      setToast({ message: 'Vous devez être connecté pour rejoindre une équipe', type: 'error' });
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      if (team.entryType === 'open') {
+        await teamService.joinTeam(team.id, user.id_user);
+        setIsLoading(false);
+        setToast({ message: 'Vous avez rejoint l\'équipe avec succès!', type: 'success' });
+        setTimeout(() => {
+          onClose();
+          navigate(`/teams/${team.id}`);
+        }, 1500);
+      } else if (team.entryType === 'inscription') {
+        await teamService.sendTeamApplication(team.id, user.id_user);
+        setIsLoading(false);
+        setToast({ message: 'Demande envoyée avec succès!', type: 'success' });
+        setTimeout(() => {
+          onClose();
+          navigate('/teams');
+        }, 1500);
+      } else if (team.entryType === 'cv') {
+        setIsLoading(false);
+        setShowCVModal(true);
+      }
+    } catch (error: any) {
+      setToast({
+        message: error?.response?.data?.message || 'Une erreur est survenue',
+        type: 'error'
+      });
+      setIsLoading(false);
+    }
+  };
+
+  const handleCVSubmit = async (subject: string, message: string) => {
+    if (!team) return;
+
+    const userStr = localStorage.getItem('useroxm');
+    const user = userStr ? JSON.parse(userStr) : null;
+    if (!user) return;
+
+    try {
+      await teamService.sendTeamCV(team.id, user.id_user, subject, message);
+      setShowCVModal(false);
+      setToast({ message: 'Candidature envoyée avec succès!', type: 'success' });
+      setTimeout(() => {
+        onClose();
+        navigate('/teams');
+      }, 1500);
+    } catch (error: any) {
+      setToast({
+        message: error?.response?.data?.message || 'Une erreur est survenue',
+        type: 'error'
+      });
+      throw error;
+    }
+  };
+
+  if (!team) return null;
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="team-modal-overlay"
-      onClick={onClose}
-    >
+    <OXMModal isOpen={isOpen} onClose={onClose} variant="blue">
       <motion.div
-        initial={{ opacity: 0, scale: 0.8 }}
+        initial={{ opacity: 0, scale: 0.98 }}
         animate={{ opacity: 1, scale: 1 }}
-        exit={{ opacity: 0, scale: 0.8 }}
-        className="team-modal"
-        onClick={(e) => e.stopPropagation()}
+        transition={{ duration: 0.2 }}
+        className="team-modal-search-content"
       >
         <div className="modal-header">
           <div className="modal-team-info">
@@ -170,7 +243,7 @@ const TeamModal: React.FC<TeamModalProps> = ({
           <div className="modal-tags">
             <h3>Jeu</h3>
             <div className="tags-grid">
-              {team.tags.slice(0, 1).map(tag => (
+              {team.tags.slice(0, 1).map((tag: string) => (
                 <OXMChip key={tag} variant="default" size="medium">
                   {tag}
                 </OXMChip>
@@ -205,26 +278,28 @@ const TeamModal: React.FC<TeamModalProps> = ({
             <div className="modal-requirements">
               <h3>Exigences</h3>
               <ul>
-                {team.requirements.map((req, index) => (
-                  <li key={index}>{req}</li>
-                ))}
+              {team.requirements.map((req: string, index: number) => (
+                <li key={index}>{req}</li>
+              ))}
               </ul>
             </div>
           )}
         </div>
 
         <div className="modal-actions">
-          <button className="action-button primary" onClick={onJoinTeam}>
-            <UserPlus className="w-5 h-5" />
-            Rejoindre l'équipe
-          </button>
+          {isLoading ? (
+            <div className="join-button-loading">
+              <OXMLoader type="normal" text="Chargement..." />
+            </div>
+          ) : (
+            <button className="action-button primary" onClick={handleJoinTeam} disabled={isLoading}>
+              <UserPlus className="w-5 h-5" />
+              Rejoindre l'équipe
+            </button>
+          )}
           <button className="action-button secondary" onClick={onContactTeam}>
             <MessageCircle className="w-5 h-5" />
             Contacter
-          </button>
-          <button className="action-button secondary">
-            <Sword className="w-5 h-5" />
-            Défier
           </button>
           <button className="action-button secondary">
             <Share2 className="w-5 h-5" />
@@ -232,7 +307,22 @@ const TeamModal: React.FC<TeamModalProps> = ({
           </button>
         </div>
       </motion.div>
-    </motion.div>
+
+      {toast && (
+        <OXMToast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
+
+      <TeamCVModal
+        isOpen={showCVModal}
+        onClose={() => setShowCVModal(false)}
+        onSubmit={handleCVSubmit}
+        teamName={team.name}
+      />
+    </OXMModal>
   );
 };
 

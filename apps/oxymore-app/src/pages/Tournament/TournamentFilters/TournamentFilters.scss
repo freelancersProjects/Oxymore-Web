@@ -1,0 +1,63 @@
+@import '../../../styles/global';
+
+.tournament-filters {
+  display: flex;
+  padding: rem-calc(15) rem-calc(20);
+  justify-content: space-between;
+  align-items: center;
+  flex: 1 0 0;
+  gap: rem-calc(20);
+  margin-bottom: rem-calc(40);
+
+  .oxm-dropdown {
+    flex: 1;
+    min-width: rem-calc(200);
+  }
+
+  .view-toggle {
+    display: flex;
+    gap: rem-calc(8);
+    margin-left: rem-calc(20);
+
+    .view-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: rem-calc(40);
+      height: rem-calc(40);
+      border: 1px solid rgb(255 255 255 / 20%);
+      background: rgb(255 255 255 / 5%);
+      border-radius: rem-calc(8);
+      color: rgb(255 255 255 / 70%);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+
+      &:hover {
+        background: rgb(255 255 255 / 10%);
+        border-color: rgba($color-purple, 0.3);
+        color: $color-white;
+      }
+
+      &.active {
+        background: rgba($color-purple, 0.2);
+        border-color: $color-purple;
+        color: $color-purple;
+      }
+    }
+  }
+}
+
+@media (max-width: rem-calc(768)) {
+  .tournament-filters {
+    flex-direction: column;
+    gap: rem-calc(15);
+
+    .oxm-dropdown {
+      width: 100%;
+    }
+  }
+}
+
+
+

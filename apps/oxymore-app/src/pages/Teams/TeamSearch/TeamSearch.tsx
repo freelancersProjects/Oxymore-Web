@@ -16,7 +16,6 @@ import {
   MapPin,
   Plus
 } from 'lucide-react';
-import { Star as StarIcon } from '@mui/icons-material';
 import { OXMChip, OXMSkeleton } from "@oxymore/ui";
 import type { Team, TeamSearchProps } from '../../../types/team';
 import { teamService } from '../../../services/teamService';
@@ -338,6 +337,7 @@ const TeamSearch: React.FC<TeamSearchProps> = () => {
 
                             <div className="team-stats">
                               <div className="stat">
+                                <Users className="w-4 h-4" />
                                 <span>
                                   {team.members}/{team.maxMembers}
                                 </span>
@@ -353,6 +353,7 @@ const TeamSearch: React.FC<TeamSearchProps> = () => {
 
                           <div className="card-footer">
                             <div className="captain-info">
+                              <Crown className="w-4 h-4" />
                               <span>{team.captain}</span>
                             </div>
                             {team.isRecruiting && (

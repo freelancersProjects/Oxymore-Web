@@ -24,3 +24,14 @@ export const deletePinnedMessageTeam = async (req: Request, res: Response) => {
   await PinnedMessageTeamService.deletePinnedMessageTeam(req.params.id);
   res.status(204).send();
 };
+
+export const getPinnedMessagesByTeamId = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { id_team } = req.params;
+    const pins = await PinnedMessageTeamService.getPinnedMessagesByTeamId(id_team);
+    res.json(pins);
+  } catch (error) {
+    console.error('Error fetching pinned messages:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};

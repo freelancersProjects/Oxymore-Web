@@ -18,6 +18,7 @@ import {
 import { OXMModal } from "@oxymore/ui";
 import { useAuth } from "../../../context/AuthContext";
 import apiService from "../../../api/apiService";
+import { avatarService } from "../../../services/avatarService";
 import type { FriendWithUser } from "../../../types/friend";
 import "./ProfilePanel.scss";
 
@@ -85,18 +86,16 @@ const Avatar: React.FC<{
   size?: number;
   className?: string;
 }> = ({ src, username, size = 48, className = "" }) => {
-  if (src) {
-    return (
-      <img
-        src={src}
-        alt={username}
-        className={className}
-        style={{ width: size, height: size, borderRadius: '50%' }}
-      />
-    );
-  }
+  const avatarUrl = avatarService.getAvatarUrl(username, src);
 
-  return generateAvatarWithInitial(username, size);
+  return (
+    <img
+      src={avatarUrl}
+      alt={username}
+      className={className}
+      style={{ width: size, height: size, borderRadius: '50%' }}
+    />
+  );
 };
 
 const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed, onToggle, onNotificationClick, unreadCount = 0 }) => {

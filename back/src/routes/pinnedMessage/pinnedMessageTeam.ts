@@ -3,6 +3,7 @@ import {
   getAllPinnedMessageTeams,
   createPinnedMessageTeam,
   deletePinnedMessageTeam,
+  getPinnedMessagesByTeamId,
 } from "../../controllers/pinnedMessage/pinnedMessageTeamController";
 
 const router = Router();
@@ -41,6 +42,8 @@ router.get("/", getAllPinnedMessageTeams);
  *         description: Message épinglé
  */
 router.post("/", createPinnedMessageTeam);
+
+router.get("/team/:id_team", getPinnedMessagesByTeamId);
 
 /**
  * @openapi

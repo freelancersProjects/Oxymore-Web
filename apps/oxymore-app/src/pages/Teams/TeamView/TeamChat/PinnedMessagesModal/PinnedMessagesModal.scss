@@ -1,0 +1,277 @@
+@import '../../../../../styles/global';
+
+.pinned-messages-modal-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  margin: 0 auto;
+
+  .modal-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: rem-calc(32);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    flex-shrink: 0;
+
+    .modal-team-info {
+      display: flex;
+      align-items: flex-start;
+      gap: rem-calc(24);
+      flex: 1;
+
+      .modal-title-section {
+        flex: 1;
+        min-width: 0;
+
+        h1 {
+          font-family: 'Orbitron', monospace;
+          font-size: rem-calc(28);
+          font-weight: 700;
+          color: $color-white;
+          margin-bottom: rem-calc(8);
+          line-height: 1.2;
+        }
+
+        p {
+          font-family: 'Outfit', sans-serif;
+          font-size: rem-calc(14);
+          color: rgba(255, 255, 255, 0.7);
+          margin-bottom: rem-calc(16);
+          line-height: 1.5;
+        }
+
+        .modal-badges {
+          display: flex;
+          gap: rem-calc(8);
+          flex-wrap: wrap;
+
+          .badge {
+            display: flex;
+            align-items: center;
+            gap: rem-calc(6);
+            padding: rem-calc(6) rem-calc(12);
+            border-radius: rem-calc(8);
+            font-family: 'Outfit', sans-serif;
+            font-size: rem-calc(12);
+            font-weight: 600;
+
+            svg {
+              width: rem-calc(14);
+              height: rem-calc(14);
+            }
+
+            &.verified {
+              background: rgba(34, 197, 94, 0.2);
+              color: $color-green-success;
+              border: 1px solid rgba(34, 197, 94, 0.3);
+            }
+          }
+        }
+      }
+    }
+
+    .close-button {
+      width: rem-calc(40);
+      height: rem-calc(40);
+      border-radius: rem-calc(8);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.05);
+      color: rgba(255, 255, 255, 0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      flex-shrink: 0;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(139, 92, 246, 0.5);
+        color: $color-white;
+      }
+
+      svg {
+        width: rem-calc(20);
+        height: rem-calc(20);
+      }
+    }
+  }
+
+  .modal-content {
+    flex: 1;
+    min-height: 0;
+    padding: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: block;
+  }
+}
+
+.pinned-messages-modal-content .modal-content {
+  .pinned-messages-list {
+    display: flex;
+    flex-direction: column;
+    gap: rem-calc(10);
+    padding: rem-calc(24) rem-calc(30);
+    min-height: 100%;
+  }
+}
+
+.pinned-messages-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: rem-calc(80) rem-calc(24);
+  text-align: center;
+
+  .empty-icon {
+    color: rgba(139, 92, 246, 0.4);
+    margin-bottom: rem-calc(24);
+  }
+
+  p {
+    font-family: 'Orbitron', monospace;
+    font-size: rem-calc(20);
+    font-weight: 600;
+    color: $color-white;
+    margin-bottom: rem-calc(12);
+  }
+
+  span {
+    font-family: 'Outfit', sans-serif;
+    font-size: rem-calc(14);
+    color: rgba(255, 255, 255, 0.6);
+  }
+}
+
+.pinned-message-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: rem-calc(10);
+  padding: rem-calc(12);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+  min-height: auto !important;
+  max-height: none !important;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(139, 92, 246, 0.4);
+    transform: translateY(rem-calc(-2));
+    box-shadow: 0 rem-calc(10) rem-calc(20) rgba(139, 92, 246, 0.2);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+.pinned-message-card-header {
+  display: flex;
+  align-items: center;
+  gap: rem-calc(10);
+  margin-bottom: rem-calc(8);
+  position: relative;
+}
+
+.pinned-message-card-avatar {
+  width: rem-calc(36);
+  height: rem-calc(36);
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.pinned-message-card-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+
+  .pinned-message-card-author {
+    font-family: 'Orbitron', monospace;
+    font-size: rem-calc(16);
+    font-weight: 600;
+    color: $color-white;
+    margin-bottom: rem-calc(4);
+  }
+
+  .pinned-message-card-date {
+    font-family: 'Outfit', sans-serif;
+    font-size: rem-calc(12);
+    color: rgba(255, 255, 255, 0.6);
+  }
+}
+
+.pinned-message-card-unpin {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: rem-calc(6);
+  width: rem-calc(24);
+  height: rem-calc(24);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+  padding: 0;
+
+  &:hover {
+    background: rgba(239, 68, 68, 0.15);
+    border-color: rgba(239, 68, 68, 0.3);
+    color: rgba(239, 68, 68, 0.9);
+  }
+}
+
+.pinned-message-card-content {
+  margin: rem-calc(8) 0;
+
+  p {
+    font-family: 'Outfit', sans-serif;
+    font-size: rem-calc(14);
+    line-height: 1.4;
+    color: rgba(255, 255, 255, 0.9);
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    margin: 0;
+    max-height: rem-calc(60);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+  }
+}
+
+.pinned-message-card-footer {
+  display: flex;
+  align-items: center;
+  gap: rem-calc(6);
+  padding-top: rem-calc(6);
+  margin-top: rem-calc(6);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-family: 'Outfit', sans-serif;
+  font-size: rem-calc(11);
+  color: rgba(139, 92, 246, 0.8);
+  font-weight: 500;
+
+  svg {
+    width: rem-calc(12);
+    height: rem-calc(12);
+    color: rgba(139, 92, 246, 0.8);
+  }
+}
