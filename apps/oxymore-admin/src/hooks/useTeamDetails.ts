@@ -20,6 +20,7 @@ export interface TeamChat {
   id_user: string;
   username?: string;
   avatar_url?: string;
+  is_admin?: boolean;
 }
 
 export interface TeamDetails {

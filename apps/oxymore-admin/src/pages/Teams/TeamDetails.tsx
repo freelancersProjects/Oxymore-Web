@@ -30,6 +30,7 @@ const TeamDetails = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [isSendingMessage, setIsSendingMessage] = useState(false);
 
   // Helper function to format date
   const formatDate = (dateString: string | undefined): string => {
@@ -123,6 +124,38 @@ const TeamDetails = () => {
     }
   };
 
+  const handleSendAdminMessage = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!id || !newMessage.trim()) return;
+
+    try {
+      setIsSendingMessage(true);
+      await apiService.post('/team-chats/admin', {
+        message: newMessage,
+        id_team: id
+      });
+      setNewMessage('');
+      await refetch();
+    } catch (err: any) {
+      console.error('Error sending admin message:', err);
+      alert(err.response?.data?.message || 'Failed to send message');
+    } finally {
+      setIsSendingMessage(false);
+    }
+  };
+
+  const handleDeleteMessage = async (messageId: string) => {
+    if (!window.confirm('Are you sure you want to delete this message?')) return;
+
+    try {
+      await apiService.delete(`/team-chats/${messageId}`);
+      await refetch();
+    } catch (err: any) {
+      console.error('Error deleting message:', err);
+      alert(err.response?.data?.message || 'Failed to delete message');
+    }
+  };
+
   return (
     <div className="space-y-4 md:space-y-6">
       {/* Header */}
@@ -207,39 +240,66 @@ const TeamDetails = () => {
               {teamDetails.chats.length === 0 ? (
                 <p className="text-[var(--text-secondary)] text-center py-4">No messages yet</p>
               ) : (
-                teamDetails.chats.map((chat) => (
-                  <div key={chat.id_team_chat} className="flex items-start gap-3">
-                    <div className="w-8 h-8 rounded-lg bg-gradient-oxymore flex items-center justify-center flex-shrink-0">
-                      {chat.avatar_url ? (
-                        <img src={chat.avatar_url} alt={chat.username || 'User'} className="w-full h-full rounded-lg object-cover" />
-                      ) : (
-                        <span className="text-white font-medium text-sm">{(chat.username || 'U')[0].toUpperCase()}</span>
-                      )}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2">
-                        <p className="font-medium text-[var(--text-primary)] text-sm md:text-base">{chat.username || 'Unknown'}</p>
-                        <span className="text-xs text-[var(--text-muted)]">{formatRelativeTime(chat.sent_at)}</span>
+                teamDetails.chats.map((chat) => {
+                  const isAdmin = chat.is_admin || false;
+                  return (
+                    <div key={chat.id_team_chat} className="flex items-start gap-3 group hover:bg-[var(--overlay-hover)] p-2 rounded-lg transition-colors relative">
+                      <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${isAdmin ? 'bg-red-500' : 'bg-gradient-oxymore'}`}>
+                        {isAdmin ? (
+                          <span className="text-white font-medium text-sm">Ad</span>
+                        ) : chat.avatar_url ? (
+                          <img src={chat.avatar_url} alt={chat.username || 'User'} className="w-full h-full rounded-lg object-cover" />
+                        ) : (
+                          <span className="text-white font-medium text-sm">{(chat.username || 'U')[0].toUpperCase()}</span>
+                        )}
                       </div>
-                      <p className="text-[var(--text-secondary)] text-sm md:text-base">{chat.message}</p>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2">
+                          <p className={`font-medium text-sm md:text-base ${isAdmin ? 'text-red-500' : 'text-[var(--text-primary)]'}`}>
+                            {isAdmin ? 'Admin' : (chat.username || 'Unknown')}
+                          </p>
+                          <span className="text-xs text-[var(--text-muted)]">{formatRelativeTime(chat.sent_at)}</span>
+                          <motion.button
+                            whileHover={{ scale: 1.1 }}
+                            whileTap={{ scale: 0.9 }}
+                            onClick={() => handleDeleteMessage(chat.id_team_chat)}
+                            className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:bg-red-500/20 rounded text-red-400"
+                            title="Delete message"
+                          >
+                            <Ban className="w-4 h-4" />
+                          </motion.button>
+                        </div>
+                        <p className={`text-sm md:text-base ${isAdmin ? 'text-red-400' : 'text-[var(--text-secondary)]'}`}>{chat.message}</p>
+                      </div>
                     </div>
-                  </div>
-                ))
+                  );
+                })
               )}
             </div>
 
-            <div className="relative">
+            <form onSubmit={handleSendAdminMessage} className="relative">
               <input
                 type="text"
                 value={newMessage}
                 onChange={(e) => setNewMessage(e.target.value)}
-                placeholder="Type a message..."
+                placeholder="Type a message as admin..."
                 className="input-base w-full pr-12 text-sm md:text-base"
+                disabled={isSendingMessage}
               />
-              <button className="absolute right-2 top-1/2 -translate-y-1/2 p-2 text-oxymore-purple hover:text-oxymore-purple-light transition-colors">
-                <Send className="w-4 h-4 md:w-5 md:h-5" />
-              </button>
-            </div>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                type="submit"
+                disabled={isSendingMessage || !newMessage.trim()}
+                className="absolute right-2 top-1/2 -translate-y-1/2 p-2 text-oxymore-purple hover:text-oxymore-purple-light transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {isSendingMessage ? (
+                  <Loader2 className="w-4 h-4 md:w-5 md:h-5 animate-spin" />
+                ) : (
+                  <Send className="w-4 h-4 md:w-5 md:h-5" />
+                )}
+              </motion.button>
+            </form>
           </div>
         </div>
 
