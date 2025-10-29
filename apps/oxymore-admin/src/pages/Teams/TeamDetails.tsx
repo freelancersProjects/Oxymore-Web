@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
   ArrowLeft,
@@ -12,42 +12,116 @@ import {
   Ban,
   Clock,
   DollarSign,
-  Send
+  Send,
+  Loader2
 } from 'lucide-react';
-
-const mockTeam = {
-  id: '1',
-  name: 'Team Liquid',
-  logo_url: null,
-  banner_url: null,
-  description: 'Professional esports organization competing in major tournaments worldwide.',
-  members: [
-    { id: '1', username: 'John Doe', role: 'captain', avatar: null, joined: '2023-11-01' },
-    { id: '2', username: 'Alice Smith', role: 'member', avatar: null, joined: '2023-11-05' },
-    { id: '3', username: 'Bob Wilson', role: 'member', avatar: null, joined: '2023-11-10' }
-  ],
-  subscription: {
-    status: 'active',
-    start_date: '2023-11-01',
-    end_date: '2024-11-01',
-    purchased_by: 'John Doe'
-  },
-  chat: [
-    { id: '1', user: 'John Doe', message: 'Team practice at 8PM tonight!', time: '2 hours ago' },
-    { id: '2', user: 'Alice Smith', message: `I'll be there!`, time: '1 hour ago' },
-    { id: '3', user: 'Bob Wilson', message: 'Same here, see you all!', time: '30 minutes ago' }
-  ],
-  stats: {
-    total_matches: 156,
-    win_rate: 68,
-    total_tournaments: 24,
-    tournament_wins: 8
-  }
-};
+import { useTeamDetails } from '../../hooks/useTeamDetails';
+import ConfirmationModal from '../../components/ConfirmationModal/ConfirmationModal';
+import TeamEditModal from '../../components/TeamEditModal/TeamEditModal';
+import { apiService } from '../../api/apiService';
+import type { TeamDetails } from '../../hooks/useTeamDetails';
 
 const TeamDetails = () => {
   const navigate = useNavigate();
+  const { id } = useParams<{ id: string }>();
+  const { teamDetails, loading, error, refetch } = useTeamDetails(id);
   const [newMessage, setNewMessage] = useState('');
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+
+  // Helper function to format date
+  const formatDate = (dateString: string | undefined): string => {
+    if (!dateString) return 'Unknown';
+    const date = new Date(dateString);
+    return date.toLocaleDateString();
+  };
+
+  // Helper function to format relative time
+  const formatRelativeTime = (dateString: string): string => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
+
+    if (diffInSeconds < 60) return 'just now';
+    if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)} minutes ago`;
+    if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)} hours ago`;
+    if (diffInSeconds < 604800) return `${Math.floor(diffInSeconds / 86400)} days ago`;
+    return formatDate(dateString);
+  };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="flex flex-col items-center gap-4">
+          <Loader2 className="w-8 h-8 animate-spin text-oxymore-purple" />
+          <p className="text-[var(--text-secondary)]">Loading team details...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !teamDetails) {
+    return (
+      <div className="space-y-4 md:space-y-6">
+        <div className="flex items-center gap-4">
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => navigate('/teams')}
+            className="p-2 bg-[var(--overlay-hover)] hover:bg-[var(--overlay-active)] rounded-xl transition-colors"
+          >
+            <ArrowLeft className="w-5 h-5 text-[var(--text-primary)]" />
+          </motion.button>
+          <div>
+            <h1 className="text-xl md:text-2xl font-bold text-[var(--text-primary)]">Team Details</h1>
+          </div>
+        </div>
+        <div className="card-base p-6 text-center">
+          <p className="text-red-400">{error || 'Team not found'}</p>
+          <button
+            onClick={() => navigate('/teams')}
+            className="button-primary mt-4"
+          >
+            Back to Teams
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  const captain = teamDetails.members.find(m => m.role === 'captain' || m.id_user === teamDetails.id_captain);
+
+  const handleEditTeam = async (data: Partial<TeamDetails>) => {
+    if (!id) return;
+
+    try {
+      setIsSaving(true);
+      await apiService.patch(`/teams/${id}`, data);
+      await refetch();
+      setIsEditModalOpen(false);
+    } catch (err: any) {
+      console.error('Error updating team:', err);
+      alert(err.response?.data?.message || 'Failed to update team');
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleDeleteTeam = async () => {
+    if (!id) return;
+
+    try {
+      setIsDeleting(true);
+      await apiService.delete(`/teams/${id}`);
+      navigate('/teams');
+    } catch (err: any) {
+      console.error('Error deleting team:', err);
+      alert(err.response?.data?.message || 'Failed to delete team');
+      setIsDeleting(false);
+    }
+  };
 
   return (
     <div className="space-y-4 md:space-y-6">
@@ -79,10 +153,15 @@ const TeamDetails = () => {
                 </div>
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">
-                    <h2 className="text-lg md:text-xl font-bold text-[var(--text-primary)] truncate">{mockTeam.name}</h2>
-                    <Star className="w-4 h-4 md:w-5 md:h-5 text-yellow-400 flex-shrink-0" />
+                    <h2 className="text-lg md:text-xl font-bold text-[var(--text-primary)] truncate">{teamDetails.team_name}</h2>
+                    {teamDetails.subscription_status && (
+                      <Star className="w-4 h-4 md:w-5 md:h-5 text-yellow-400 flex-shrink-0" />
+                    )}
+                    {teamDetails.verified && (
+                      <Crown className="w-4 h-4 md:w-5 md:h-5 text-green-400 flex-shrink-0" />
+                    )}
                   </div>
-                  <p className="text-[var(--text-secondary)] mt-1 text-sm md:text-base">{mockTeam.description}</p>
+                  <p className="text-[var(--text-secondary)] mt-1 text-sm md:text-base">{teamDetails.description || 'No description'}</p>
                 </div>
               </div>
               <motion.button
@@ -97,20 +176,20 @@ const TeamDetails = () => {
             {/* Stats Grid */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mt-6 md:mt-8">
               <div className="p-3 md:p-4 bg-[var(--overlay-hover)] rounded-xl">
-                <p className="text-[var(--text-secondary)] text-xs md:text-sm">Total Matches</p>
-                <p className="text-xl md:text-2xl font-bold text-[var(--text-primary)] mt-1">{mockTeam.stats.total_matches}</p>
+                <p className="text-[var(--text-secondary)] text-xs md:text-sm">Members</p>
+                <p className="text-xl md:text-2xl font-bold text-[var(--text-primary)] mt-1">{teamDetails.members.length}</p>
               </div>
               <div className="p-3 md:p-4 bg-[var(--overlay-hover)] rounded-xl">
-                <p className="text-[var(--text-secondary)] text-xs md:text-sm">Win Rate</p>
-                <p className="text-xl md:text-2xl font-bold text-[var(--text-primary)] mt-1">{mockTeam.stats.win_rate}%</p>
+                <p className="text-[var(--text-secondary)] text-xs md:text-sm">Max Members</p>
+                <p className="text-xl md:text-2xl font-bold text-[var(--text-primary)] mt-1">{teamDetails.max_members || '∞'}</p>
               </div>
               <div className="p-3 md:p-4 bg-[var(--overlay-hover)] rounded-xl">
-                <p className="text-[var(--text-secondary)] text-xs md:text-sm">Tournaments</p>
-                <p className="text-xl md:text-2xl font-bold text-[var(--text-primary)] mt-1">{mockTeam.stats.total_tournaments}</p>
+                <p className="text-[var(--text-secondary)] text-xs md:text-sm">Messages</p>
+                <p className="text-xl md:text-2xl font-bold text-[var(--text-primary)] mt-1">{teamDetails.chats.length}</p>
               </div>
               <div className="p-3 md:p-4 bg-[var(--overlay-hover)] rounded-xl">
-                <p className="text-[var(--text-secondary)] text-xs md:text-sm">Tournament Wins</p>
-                <p className="text-xl md:text-2xl font-bold text-[var(--text-primary)] mt-1">{mockTeam.stats.tournament_wins}</p>
+                <p className="text-[var(--text-secondary)] text-xs md:text-sm">Created</p>
+                <p className="text-xl md:text-2xl font-bold text-[var(--text-primary)] mt-1 text-sm md:text-base">{formatDate(teamDetails.created_at)}</p>
               </div>
             </div>
           </div>
@@ -124,21 +203,29 @@ const TeamDetails = () => {
               </div>
             </div>
 
-            <div className="space-y-3 md:space-y-4 mb-4 md:mb-6">
-              {mockTeam.chat.map((message) => (
-                <div key={message.id} className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-gradient-oxymore flex items-center justify-center flex-shrink-0">
-                    <span className="text-white font-medium text-sm">{message.user[0]}</span>
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2">
-                      <p className="font-medium text-[var(--text-primary)] text-sm md:text-base">{message.user}</p>
-                      <span className="text-xs text-[var(--text-muted)]">{message.time}</span>
+            <div className="space-y-3 md:space-y-4 mb-4 md:mb-6 max-h-[400px] overflow-y-auto">
+              {teamDetails.chats.length === 0 ? (
+                <p className="text-[var(--text-secondary)] text-center py-4">No messages yet</p>
+              ) : (
+                teamDetails.chats.map((chat) => (
+                  <div key={chat.id_team_chat} className="flex items-start gap-3">
+                    <div className="w-8 h-8 rounded-lg bg-gradient-oxymore flex items-center justify-center flex-shrink-0">
+                      {chat.avatar_url ? (
+                        <img src={chat.avatar_url} alt={chat.username || 'User'} className="w-full h-full rounded-lg object-cover" />
+                      ) : (
+                        <span className="text-white font-medium text-sm">{(chat.username || 'U')[0].toUpperCase()}</span>
+                      )}
                     </div>
-                    <p className="text-[var(--text-secondary)] text-sm md:text-base">{message.message}</p>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2">
+                        <p className="font-medium text-[var(--text-primary)] text-sm md:text-base">{chat.username || 'Unknown'}</p>
+                        <span className="text-xs text-[var(--text-muted)]">{formatRelativeTime(chat.sent_at)}</span>
+                      </div>
+                      <p className="text-[var(--text-secondary)] text-sm md:text-base">{chat.message}</p>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))
+              )}
             </div>
 
             <div className="relative">
@@ -168,21 +255,23 @@ const TeamDetails = () => {
             <div className="space-y-3 md:space-y-4">
               <div>
                 <p className="text-[var(--text-secondary)] text-xs md:text-sm">Status</p>
-                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium status-active mt-1">
-                  {mockTeam.subscription.status}
+                <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium mt-1 ${
+                  teamDetails.subscription_status ? 'status-active' : 'status-inactive'
+                }`}>
+                  {teamDetails.subscription_status ? 'Active' : 'Inactive'}
                 </span>
               </div>
               <div>
-                <p className="text-[var(--text-secondary)] text-xs md:text-sm">Start Date</p>
-                <p className="text-[var(--text-primary)] mt-1 text-sm md:text-base">{mockTeam.subscription.start_date}</p>
+                <p className="text-[var(--text-secondary)] text-xs md:text-sm">Entry Type</p>
+                <p className="text-[var(--text-primary)] mt-1 text-sm md:text-base capitalize">{teamDetails.entry_type || 'N/A'}</p>
               </div>
               <div>
-                <p className="text-[var(--text-secondary)] text-xs md:text-sm">End Date</p>
-                <p className="text-[var(--text-primary)] mt-1 text-sm md:text-base">{mockTeam.subscription.end_date}</p>
+                <p className="text-[var(--text-secondary)] text-xs md:text-sm">Captain</p>
+                <p className="text-[var(--text-primary)] mt-1 text-sm md:text-base">{teamDetails.captain_name || captain?.username || 'Unknown'}</p>
               </div>
               <div>
-                <p className="text-[var(--text-secondary)] text-xs md:text-sm">Purchased By</p>
-                <p className="text-[var(--text-primary)] mt-1 text-sm md:text-base">{mockTeam.subscription.purchased_by}</p>
+                <p className="text-[var(--text-secondary)] text-xs md:text-sm">Created At</p>
+                <p className="text-[var(--text-primary)] mt-1 text-sm md:text-base">{formatDate(teamDetails.created_at)}</p>
               </div>
             </div>
           </div>
@@ -194,34 +283,44 @@ const TeamDetails = () => {
                 <Users className="w-5 h-5 text-oxymore-purple" />
                 <h2 className="text-lg font-semibold text-[var(--text-primary)]">Members</h2>
               </div>
-              <span className="text-[var(--text-secondary)] text-xs md:text-sm">{mockTeam.members.length} members</span>
+              <span className="text-[var(--text-secondary)] text-xs md:text-sm">{teamDetails.members.length} members</span>
             </div>
 
-            <div className="space-y-3 md:space-y-4">
-              {mockTeam.members.map((member) => (
-                <div key={member.id} className="flex items-center justify-between p-3 hover:bg-[var(--overlay-hover)] rounded-xl transition-colors">
-                  <div className="flex items-center gap-3 min-w-0 flex-1">
-                    <div className="w-8 h-8 rounded-lg bg-gradient-oxymore flex items-center justify-center flex-shrink-0">
-                      <span className="text-white font-medium text-sm">{member.username[0]}</span>
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <p className="font-medium text-[var(--text-primary)] text-sm md:text-base truncate">{member.username}</p>
-                      <div className="flex items-center gap-2">
-                        {member.role === 'captain' ? (
-                          <Crown className="w-4 h-4 text-yellow-400" />
+            <div className="space-y-3 md:space-y-4 max-h-[400px] overflow-y-auto">
+              {teamDetails.members.length === 0 ? (
+                <p className="text-[var(--text-secondary)] text-center py-4">No members</p>
+              ) : (
+                teamDetails.members.map((member) => (
+                  <div key={member.id_team_member} className="flex items-center justify-between p-3 hover:bg-[var(--overlay-hover)] rounded-xl transition-colors">
+                    <div className="flex items-center gap-3 min-w-0 flex-1">
+                      <div className="w-8 h-8 rounded-lg bg-gradient-oxymore flex items-center justify-center flex-shrink-0">
+                        {member.avatar_url ? (
+                          <img src={member.avatar_url} alt={member.username || member.name || 'Member'} className="w-full h-full rounded-lg object-cover" />
                         ) : (
-                          <Users className="w-4 h-4 text-[var(--text-secondary)]" />
+                          <span className="text-white font-medium text-sm">{(member.username || member.name || 'U')[0].toUpperCase()}</span>
                         )}
-                        <span className="text-xs text-[var(--text-secondary)]">{member.role}</span>
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <p className="font-medium text-[var(--text-primary)] text-sm md:text-base truncate">{member.username || member.name || 'Unknown'}</p>
+                        <div className="flex items-center gap-2">
+                          {member.role === 'captain' ? (
+                            <Crown className="w-4 h-4 text-yellow-400" />
+                          ) : member.role === 'admin' ? (
+                            <Shield className="w-4 h-4 text-blue-400" />
+                          ) : (
+                            <Users className="w-4 h-4 text-[var(--text-secondary)]" />
+                          )}
+                          <span className="text-xs text-[var(--text-secondary)] capitalize">{member.role}</span>
+                        </div>
                       </div>
                     </div>
+                    <div className="flex items-center gap-2 flex-shrink-0">
+                      <Clock className="w-4 h-4 text-[var(--text-secondary)]" />
+                      <span className="text-xs md:text-sm text-[var(--text-secondary)]">{formatDate(member.join_date)}</span>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2 flex-shrink-0">
-                    <Clock className="w-4 h-4 text-[var(--text-secondary)]" />
-                    <span className="text-xs md:text-sm text-[var(--text-secondary)]">{member.joined}</span>
-                  </div>
-                </div>
-              ))}
+                ))
+              )}
             </div>
           </div>
 
@@ -233,18 +332,50 @@ const TeamDetails = () => {
             </div>
 
             <div className="space-y-3">
-              <button className="button-secondary w-full py-2 rounded-xl flex items-center justify-center gap-2 text-sm md:text-base">
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => setIsEditModalOpen(true)}
+                className="button-secondary w-full py-2 rounded-xl flex items-center justify-center gap-2 text-sm md:text-base"
+              >
                 <Settings className="w-4 h-4" />
                 <span>Edit Team</span>
-              </button>
-              <button className="w-full py-2 rounded-xl flex items-center justify-center gap-2 bg-red-500/10 text-red-400 hover:bg-red-500/20 transition-colors text-sm md:text-base">
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => setIsDeleteModalOpen(true)}
+                className="w-full py-2 rounded-xl flex items-center justify-center gap-2 bg-red-500/10 text-red-400 hover:bg-red-500/20 transition-colors text-sm md:text-base"
+              >
                 <Ban className="w-4 h-4" />
-                <span>Suspend Team</span>
-              </button>
+                <span>Delete Team</span>
+              </motion.button>
             </div>
           </div>
         </div>
       </div>
+
+      {/* Edit Modal */}
+      <TeamEditModal
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
+        onSave={handleEditTeam}
+        teamData={teamDetails}
+        isLoading={isSaving}
+      />
+
+      {/* Delete Confirmation Modal */}
+      <ConfirmationModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        onConfirm={handleDeleteTeam}
+        title="Delete Team"
+        message={`Are you sure you want to delete "${teamDetails.team_name}"? This action cannot be undone and will permanently remove the team and all associated data.`}
+        confirmText="Delete Team"
+        cancelText="Cancel"
+        type="danger"
+        isLoading={isDeleting}
+      />
     </div>
   );
 };
