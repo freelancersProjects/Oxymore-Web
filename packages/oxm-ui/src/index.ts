@@ -20,3 +20,5 @@ export { default as OXMTable } from "./OXM/OXM.Table/Table";
 export { default as OXMLoader } from "./OXM/OXM.Loader/Loader";
 export { default as OXMSkeleton } from "./OXM/OXM.Skeleton/Skeleton";
 export { default as OXMStepIndicator } from "./OXM/OXM.StepIndicator/StepIndicator";
+export { default as OXMTooltip } from "./OXM/OXM.Tooltip/Tooltip";
+export { default as OXMBadge } from "./OXM/OXM.Badge/Badge";

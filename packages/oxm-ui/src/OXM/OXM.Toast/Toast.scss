@@ -1,7 +1,10 @@
 @import '../../styles/global.scss';
 
 .oxm-toast {
-    position: relative;
+    position: fixed;
+    top: rem-calc(20);
+    right: rem-calc(20);
+    z-index: 10000;
     min-width: rem-calc(250);
     background: $color-black;
     color: $color-white;
@@ -51,23 +54,23 @@
 @keyframes slideIn {
     from {
         opacity: 0;
-        transform: translateY(rem-calc(30));
+        transform: translateX(rem-calc(30));
     }
 
     to {
         opacity: 1;
-        transform: translateY(0);
+        transform: translateX(0);
     }
 }
 
 @keyframes slideOut {
     from {
         opacity: 1;
-        transform: translateY(0);
+        transform: translateX(0);
     }
 
     to {
         opacity: 0;
-        transform: translateY(rem-calc(30));
+        transform: translateX(rem-calc(30));
     }
 }

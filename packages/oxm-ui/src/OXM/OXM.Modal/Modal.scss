@@ -15,21 +15,28 @@
   align-items: center;
   animation: oxm-modal-fadeIn 0.2s ease;
   z-index: 9999;
+  padding: rem-calc(20);
+
+  &:has(.oxm-modal--blue) {
+    padding: rem-calc(10);
+  }
 }
 
 .oxm-modal {
-  background: linear-gradient(120deg, rgba(30, 22, 55, 0.22) 0%, rgba(255, 255, 255, 0.06) 100%);
-  border: 1px solid rgb(255 255 255 / 12%);
-  border-radius: rem-calc(18);
+  background: linear-gradient(135deg, #0a1929 0%, #0f2547 50%, #1a3a5a 100%);
+  border: 1px solid rgba(6, 182, 212, 0.3);
+  border-radius: rem-calc(20);
   padding: rem-calc(24);
   width: 90%;
   max-width: rem-calc(560);
   min-width: rem-calc(320);
   max-height: 90vh;
   overflow-y: auto;
-  box-shadow: 0 rem-calc(20) rem-calc(60) rgb(0 0 0 / 50%);
+  box-shadow: 0 rem-calc(20) rem-calc(60) rgba(0, 0, 0, 0.5);
   animation: oxm-modal-scaleIn 0.22s ease-out;
   position: relative;
+  display: flex;
+  flex-direction: column;
 
   &--small {
     max-width: rem-calc(400);
@@ -41,6 +48,14 @@
 
   &--large {
     max-width: rem-calc(800);
+  }
+
+  &--blue {
+    max-width: 98vw;
+    width: 98vw;
+    height: 95vh;
+    max-height: 95vh;
+    padding: 0;
   }
 
   h2 {
@@ -64,7 +79,7 @@
   .oxm-modal-backdrop {
     padding: rem-calc(16);
   }
-  
+
   .oxm-modal {
     width: 100%;
     max-width: none;

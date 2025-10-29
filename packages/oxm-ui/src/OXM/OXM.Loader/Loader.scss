@@ -47,3 +47,34 @@
     }
   }
 }
+
+.oxm-loader-simple {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  gap: 1rem;
+
+  .oxm-loader-spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid rgba(139, 92, 246, 0.3);
+    border-top-color: #8b5cf6;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  .oxm-loader-simple-text {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 14px;
+    font-family: 'Outfit', sans-serif;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
