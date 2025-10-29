@@ -45,8 +45,42 @@ router.get("/", getAllTeamMembers);
  */
 router.post("/", createTeamMember);
 
+/**
+ * @openapi
+ * /api/team-members/user/{id_user}:
+ *   get:
+ *     tags:
+ *       - TeamMembers
+ *     summary: Récupère l'équipe d'un utilisateur
+ *     parameters:
+ *       - in: path
+ *         name: id_user
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Équipe de l'utilisateur
+ */
 router.get("/user/:id_user", getUserTeamByUserId);
 
+/**
+ * @openapi
+ * /api/team-members/team/{id_team}:
+ *   get:
+ *     tags:
+ *       - TeamMembers
+ *     summary: Récupère tous les membres d'une équipe
+ *     parameters:
+ *       - in: path
+ *         name: id_team
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Liste des membres de l'équipe
+ */
 router.get("/team/:id_team", getTeamMembersByTeamId);
 
 /**
