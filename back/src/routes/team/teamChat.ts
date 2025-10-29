@@ -2,7 +2,6 @@ import { Router } from "express";
 import {
   getAllTeamChats,
   createTeamChat,
-  deleteTeamChat,
   getTeamChatsByTeamId,
   updateTeamChat,
   deleteTeamChatById,
@@ -46,6 +45,23 @@ router.get("/", getAllTeamChats);
  */
 router.post("/", createTeamChat);
 
+/**
+ * @openapi
+ * /api/team-chats/team/{id_team}:
+ *   get:
+ *     tags:
+ *       - TeamChats
+ *     summary: Récupère tous les messages d'une équipe
+ *     parameters:
+ *       - in: path
+ *         name: id_team
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Liste des messages de l'équipe
+ */
 router.get("/team/:id_team", getTeamChatsByTeamId);
 
 /**
@@ -75,8 +91,35 @@ router.get("/team/:id_team", getTeamChatsByTeamId);
  */
 router.post("/admin", createAdminTeamChat);
 
+/**
+ * @openapi
+ * /api/team-chats/{id}:
+ *   patch:
+ *     tags:
+ *       - TeamChats
+ *     summary: Met à jour un message de team
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - message
+ *             properties:
+ *               message:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Message mis à jour
+ */
 router.patch("/:id", updateTeamChat);
-router.delete("/:id", deleteTeamChatById);
 
 /**
  * @openapi
@@ -84,7 +127,7 @@ router.delete("/:id", deleteTeamChatById);
  *   delete:
  *     tags:
  *       - TeamChats
- *     summary: Supprime un message de team
+ *     summary: Supprime un message de team par son id
  *     parameters:
  *       - in: path
  *         name: id
@@ -95,6 +138,6 @@ router.delete("/:id", deleteTeamChatById);
  *       204:
  *         description: Message supprimé
  */
-router.delete("/:id", deleteTeamChat);
+router.delete("/:id", deleteTeamChatById);
 
 export default router;

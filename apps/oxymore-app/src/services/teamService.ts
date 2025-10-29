@@ -142,7 +142,7 @@ export const teamService = {
     }
   },
 
-  pinMessage: async (teamId: string, chatId: string, userId: string): Promise<any> => {
+  pinMessage: async (_teamId: string, chatId: string, userId: string): Promise<any> => {
     try {
       return await apiService.post('/pinned-message-teams', {
         id_team_chat: chatId,
