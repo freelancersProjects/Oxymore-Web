@@ -1,0 +1,31 @@
+@import '../../styles/global.scss';
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: rem-calc(80) rem-calc(24);
+  text-align: center;
+
+  .empty-state-icon {
+    color: rgba(139, 92, 246, 0.4);
+    margin-bottom: rem-calc(24);
+  }
+
+  .empty-state-title {
+    font-family: 'Orbitron', monospace;
+    font-size: rem-calc(20);
+    font-weight: 600;
+    color: $color-white;
+    margin-bottom: rem-calc(12);
+  }
+
+  .empty-state-description {
+    font-family: 'Outfit', sans-serif;
+    font-size: rem-calc(14);
+    color: rgba(255, 255, 255, 0.6);
+  }
+}
+
+
