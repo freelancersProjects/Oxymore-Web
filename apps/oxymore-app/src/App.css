@@ -41,16 +41,22 @@ body {
   width: calc(100vw - var(--sidebar-width-collapsed) - 80px);
 }
 
-/* Supprimé - la sidebar profile ne resize plus le contenu */
-
-
-
-.oxm-layout .oxm-header {
-  padding-right: 120px;
-  transition: padding-right 0.2s ease;
+image.png.no-profile-sidebar .profile-panel {
+  display: none !important;
 }
 
-/* Supprimé - le header ne se recentre plus par rapport à la sidebar profile */
+.no-profile-sidebar .oxm-main {
+  width: calc(100vw - var(--sidebar-width-expanded)) !important;
+  margin-right: 0 !important;
+}
+
+.no-profile-sidebar.sidebar-collapsed .oxm-main {
+  width: calc(100vw - var(--sidebar-width-collapsed)) !important;
+}
+
+.no-profile-sidebar .oxm-header {
+  right: 0 !important;
+}
 
 @media (max-width: 768px) {
   .oxm-main {

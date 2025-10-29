@@ -4,13 +4,12 @@
   position: fixed;
   top: 0;
   left: rem-calc(274);
-  right: 0;
+  right: rem-calc(50);
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 rem-calc(40);
   z-index: 500;
-  width: calc(100% - rem-calc(250));
   height: rem-calc(95);
 
   &__search {
