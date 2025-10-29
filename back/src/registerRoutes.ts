@@ -33,6 +33,8 @@ import teamRoutes from "./routes/team/team";
 import teamChatRoutes from "./routes/team/teamChat";
 import teamMemberRoutes from "./routes/team/teamMember";
 import teamSubscriptionRoutes from "./routes/team/teamSubscription";
+import teamApplicationRoutes from "./routes/team/teamApplication";
+import teamChallengeRoutes from "./routes/team/teamChallenge";
 import tournamentRoutes from "./routes/tournament/tournament";
 import tournamentTeamRoutes from "./routes/tournament/tournamentTeam";
 import tournamentMapRoutes from "./routes/tournament/tournamentMap";
@@ -75,6 +77,8 @@ export const registerRoutes = (app: Express) => {
   app.use("/api/team-chats", teamChatRoutes);
   app.use("/api/team-members", teamMemberRoutes);
   app.use("/api/team-subscriptions", teamSubscriptionRoutes);
+  app.use("/api/team-applications", teamApplicationRoutes);
+  app.use("/api/team-challenges", teamChallengeRoutes);
   app.use("/api/tournaments", tournamentRoutes);
   app.use("/api/tournament-teams", tournamentTeamRoutes);
   app.use("/api/tournament-maps", tournamentMapRoutes);
