@@ -286,7 +286,11 @@ const TeamMembers: React.FC<TeamMembersProps> = ({ teamId, teamData }) => {
         </div>
       ) : (
         <div className="members-list">
-          {members.map((member) => {
+          {[...members].sort((a, b) => {
+            if (a.id_user === currentUserId) return -1;
+            if (b.id_user === currentUserId) return 1;
+            return 0;
+          }).map((member) => {
             const isTargetMember = member.role === 'member';
             const isCurrentUserAdmin = currentUserMember?.role === 'admin';
 
@@ -302,7 +306,7 @@ const TeamMembers: React.FC<TeamMembersProps> = ({ teamId, teamData }) => {
             const isDropdownOpen = openRoleDropdown === member.id_user;
 
             return (
-              <div key={member.id_user} className={`member-row ${isCurrentUser ? 'current-user' : ''}`}>
+              <div key={member.id_user} className={`member-row ${isCurrentUser ? 'current-user' : ''} ${isDropdownOpen ? 'dropdown-open' : ''}`}>
                 <div className="member-avatar-wrapper">
                   <Avatar
                     src={member.avatar}

@@ -261,14 +261,16 @@ export const teamService = {
 
   updateTeam: async (teamId: string, data: Partial<Team>): Promise<Team> => {
     try {
-      const updatedTeam: BackendTeam = await apiService.patch(`/teams/${teamId}`, {
-        team_name: data.name,
-        team_logo_url: data.logo,
-        team_banner_url: data.banner,
-        description: data.description,
-        max_members: data.maxMembers,
-        entry_type: data.entryType,
-      });
+      const updatePayload: any = {};
+      if (data.name !== undefined) updatePayload.team_name = data.name;
+      if (data.logo !== undefined) updatePayload.team_logo_url = data.logo;
+      if (data.banner !== undefined) updatePayload.team_banner_url = data.banner;
+      if (data.description !== undefined) updatePayload.description = data.description;
+      if (data.maxMembers !== undefined) updatePayload.max_members = data.maxMembers;
+      if (data.entryType !== undefined) updatePayload.entry_type = data.entryType;
+      if (data.region !== undefined) updatePayload.region = data.region;
+
+      const updatedTeam: BackendTeam = await apiService.patch(`/teams/${teamId}`, updatePayload);
       return transformTeam(updatedTeam);
     } catch (error) {
       console.error('Error updating team:', error);

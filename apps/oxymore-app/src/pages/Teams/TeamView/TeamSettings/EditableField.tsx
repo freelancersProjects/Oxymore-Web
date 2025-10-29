@@ -9,6 +9,7 @@ interface EditableFieldProps {
   type?: 'text' | 'textarea' | 'number';
   placeholder?: string;
   maxLength?: number;
+  disabled?: boolean;
 }
 
 const EditableField: React.FC<EditableFieldProps> = ({
@@ -17,7 +18,8 @@ const EditableField: React.FC<EditableFieldProps> = ({
   onSave,
   type = 'text',
   placeholder,
-  maxLength
+  maxLength,
+  disabled = false
 }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editValue, setEditValue] = useState(value);
@@ -41,6 +43,7 @@ const EditableField: React.FC<EditableFieldProps> = ({
   }, [isEditing, type]);
 
   const handleEdit = () => {
+    if (disabled) return;
     setIsEditing(true);
     setEditValue(value);
   };
@@ -78,8 +81,8 @@ const EditableField: React.FC<EditableFieldProps> = ({
 
   return (
     <div
-      className={`editable-field ${isEditing ? 'editing' : ''}`}
-      onMouseEnter={() => setShowEditIcon(true)}
+      className={`editable-field ${isEditing ? 'editing' : ''} ${disabled ? 'disabled' : ''}`}
+      onMouseEnter={() => !disabled && setShowEditIcon(true)}
       onMouseLeave={() => !isEditing && setShowEditIcon(false)}
     >
       <div className="editable-field__label">{label}</div>
@@ -133,7 +136,7 @@ const EditableField: React.FC<EditableFieldProps> = ({
             <span className="editable-field__value">
               {value || <span className="placeholder">{placeholder || 'Non défini'}</span>}
             </span>
-            {showEditIcon && (
+            {showEditIcon && !disabled && (
               <button
                 className="editable-field__edit-icon"
                 onClick={handleEdit}

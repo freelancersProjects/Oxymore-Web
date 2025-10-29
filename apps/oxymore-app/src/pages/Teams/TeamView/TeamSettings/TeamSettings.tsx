@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Image as ImageIcon, LogOut } from 'lucide-react';
-import { OXMToast } from '@oxymore/ui';
+import { OXMToast, OXMDropdown } from '@oxymore/ui';
 import { teamService } from '../../../../services/teamService';
-import { avatarService } from '../../../../services/avatarService';
+import { regionService, type Country } from '../../../../services/regionService';
 import type { Team, TeamMember } from '../../../../types/team';
 import EditableField from './EditableField';
 import ImageCropperModal from './ImageCropperModal';
@@ -25,6 +25,8 @@ const TeamSettings: React.FC<TeamSettingsProps> = ({ teamId, teamData, onTeamUpd
   const [currentUserId, setCurrentUserId] = useState<string>("");
   const [userRole, setUserRole] = useState<string>("");
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' | 'info' } | null>(null);
+  const [countries, setCountries] = useState<Country[]>([]);
+  const [countryOptions, setCountryOptions] = useState<{label: string; value: string}[]>([]);
 
   React.useEffect(() => {
     const userStr = localStorage.getItem("useroxm");
@@ -55,8 +57,23 @@ const TeamSettings: React.FC<TeamSettingsProps> = ({ teamId, teamData, onTeamUpd
     setLocalTeamData(teamData);
   }, [teamData]);
 
+  React.useEffect(() => {
+    const loadCountries = async () => {
+      const all = await regionService.getAllCountries();
+      setCountries(all);
+      setCountryOptions(all.map(c => ({ label: `${c.flag} ${c.name}` , value: c.code })));
+    };
+    loadCountries();
+  }, []);
+
   const handleFieldUpdate = async (field: keyof Team, value: string | number) => {
     if (!localTeamData) return;
+
+    const isCreatorCheck = localTeamData.id_captain === currentUserId;
+    if (!isCreatorCheck) {
+      setToast({ message: 'Vous n\'avez pas la permission de modifier cette équipe', type: 'error' });
+      return;
+    }
 
     try {
       const updateData: Partial<Team> = { [field]: value };
@@ -73,6 +90,14 @@ const TeamSettings: React.FC<TeamSettingsProps> = ({ teamId, teamData, onTeamUpd
   };
 
   const handleImageUpdate = async (imageData: string, type: 'logo' | 'banner') => {
+    if (!localTeamData) return;
+
+    const isCreator = localTeamData.id_captain === currentUserId;
+    if (!isCreator) {
+      setToast({ message: 'Vous n\'avez pas la permission de modifier cette équipe', type: 'error' });
+      return;
+    }
+
     try {
       const updateData: Partial<Team> = { [type]: imageData };
       const updatedTeam = await teamService.updateTeam(teamId, updateData);
@@ -86,26 +111,62 @@ const TeamSettings: React.FC<TeamSettingsProps> = ({ teamId, teamData, onTeamUpd
     }
   };
 
-  const handleLogoSave = (imageData: string, position: { x: number; y: number; scale: number }) => {
+  const handleLogoSave = (imageData: string, _position: { x: number; y: number; scale: number }) => {
     handleImageUpdate(imageData, 'logo');
   };
 
-  const handleBannerSave = (imageData: string, position: { x: number; y: number; scale: number }) => {
+  const handleBannerSave = (imageData: string, _position: { x: number; y: number; scale: number }) => {
     handleImageUpdate(imageData, 'banner');
   };
 
-  const getEntryTypeLabel = (type: string) => {
-    const labels: Record<string, string> = {
-      open: 'Ouverte',
-      inscription: 'Sur inscription',
-      cv: 'Sur CV'
-    };
-    return labels[type] || type;
-  };
+  // const getEntryTypeLabel = (type: string) => {
+  //   const labels: Record<string, string> = {
+  //     open: 'Ouverte',
+  //     inscription: 'Sur inscription',
+  //     cv: 'Sur CV'
+  //   };
+  //   return labels[type] || type;
+  // };
+
+  const isCreator = localTeamData?.id_captain === currentUserId;
 
   const handleEntryTypeChange = async (newValue: string) => {
+    if (!isCreator) return;
     if (!['open', 'inscription', 'cv'].includes(newValue)) return;
     await handleFieldUpdate('entryType', newValue as 'open' | 'inscription' | 'cv');
+  };
+
+  const getCurrentRegionCode = (): string => {
+    if (!localTeamData?.region || countries.length === 0) return '';
+
+    // Recherche exacte par nom
+    let country = countries.find(c =>
+      c.name.toLowerCase() === localTeamData.region?.toLowerCase()
+    );
+
+    // Si pas trouvé, recherche partielle
+    if (!country) {
+      country = countries.find(c =>
+        localTeamData.region?.toLowerCase().includes(c.name.toLowerCase()) ||
+        c.name.toLowerCase().includes(localTeamData.region?.toLowerCase() || '')
+      );
+    }
+
+    return country?.code || '';
+  };
+
+  const handleRegionChange = async (code: string) => {
+    if (!isCreator || !localTeamData || !code) return;
+    try {
+      const country = countries.find(c => c.code === code);
+      if (!country) {
+        setToast({ message: 'Pays non trouvé', type: 'error' });
+        return;
+      }
+      await handleFieldUpdate('region', country.name);
+    } catch (error) {
+      setToast({ message: 'Erreur lors de la mise à jour de la région', type: 'error' });
+    }
   };
 
   if (!localTeamData) {
@@ -133,8 +194,9 @@ const TeamSettings: React.FC<TeamSettingsProps> = ({ teamId, teamData, onTeamUpd
               <div className="image-field__label">Logo de l'équipe</div>
               <div className="image-field__content">
                 <div
-                  className="image-preview image-preview--logo"
-                  onClick={() => setShowLogoModal(true)}
+                  className={`image-preview image-preview--logo ${!isCreator ? 'disabled' : ''}`}
+                  onClick={() => isCreator && setShowLogoModal(true)}
+                  style={{ cursor: isCreator ? 'pointer' : 'not-allowed', opacity: isCreator ? 1 : 0.6 }}
                 >
                   {localTeamData.logo ? (
                     <img
@@ -160,8 +222,9 @@ const TeamSettings: React.FC<TeamSettingsProps> = ({ teamId, teamData, onTeamUpd
               <div className="image-field__label">Bannière de l'équipe</div>
               <div className="image-field__content">
                 <div
-                  className="image-preview image-preview--banner"
-                  onClick={() => setShowBannerModal(true)}
+                  className={`image-preview image-preview--banner ${!isCreator ? 'disabled' : ''}`}
+                  onClick={() => isCreator && setShowBannerModal(true)}
+                  style={{ cursor: isCreator ? 'pointer' : 'not-allowed', opacity: isCreator ? 1 : 0.6 }}
                 >
                   {localTeamData.banner ? (
                     <img
@@ -194,6 +257,7 @@ const TeamSettings: React.FC<TeamSettingsProps> = ({ teamId, teamData, onTeamUpd
               onSave={(value) => handleFieldUpdate('name', value)}
               placeholder="Nom de l'équipe"
               maxLength={50}
+              disabled={!isCreator}
             />
 
             <EditableField
@@ -203,15 +267,26 @@ const TeamSettings: React.FC<TeamSettingsProps> = ({ teamId, teamData, onTeamUpd
               type="textarea"
               placeholder="Description de l'équipe"
               maxLength={500}
+              disabled={!isCreator}
             />
 
-            <EditableField
-              label="Région"
-              value={localTeamData.region}
-              onSave={(value) => handleFieldUpdate('region', value)}
-              placeholder="Région"
-              maxLength={50}
-            />
+            <div className="editable-field">
+              <div className="editable-field__label">Région</div>
+              <div className="editable-field__content" style={{ width: '100%' }}>
+                <div className="editable-field__value-wrapper" style={{ width: '100%' }}>
+                  <div style={{ width: '100%', opacity: isCreator ? 1 : 0.6, pointerEvents: isCreator ? 'auto' : 'none' }}>
+                    {/* @ts-ignore */}
+                    <OXMDropdown
+                      options={countryOptions}
+                      value={getCurrentRegionCode()}
+                      onChange={(value) => handleRegionChange(String(value))}
+                      placeholder="Sélectionner un pays"
+                      theme="purple"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -224,6 +299,7 @@ const TeamSettings: React.FC<TeamSettingsProps> = ({ teamId, teamData, onTeamUpd
               onSave={(value) => handleFieldUpdate('maxMembers', parseInt(value, 10) || 10)}
               type="number"
               placeholder="10"
+              disabled={!isCreator}
             />
 
             <div className="editable-field">
@@ -233,18 +309,21 @@ const TeamSettings: React.FC<TeamSettingsProps> = ({ teamId, teamData, onTeamUpd
                   <button
                     className={`entry-type-btn ${localTeamData.entryType === 'open' ? 'active' : ''}`}
                     onClick={() => handleEntryTypeChange('open')}
+                    disabled={!isCreator}
                   >
                     Ouverte
                   </button>
                   <button
                     className={`entry-type-btn ${localTeamData.entryType === 'inscription' ? 'active' : ''}`}
                     onClick={() => handleEntryTypeChange('inscription')}
+                    disabled={!isCreator}
                   >
                     Sur inscription
                   </button>
                   <button
                     className={`entry-type-btn ${localTeamData.entryType === 'cv' ? 'active' : ''}`}
                     onClick={() => handleEntryTypeChange('cv')}
+                    disabled={!isCreator}
                   >
                     Sur CV
                   </button>
@@ -325,6 +404,7 @@ const TeamSettings: React.FC<TeamSettingsProps> = ({ teamId, teamData, onTeamUpd
       />
 
       {toast && (
+        /* @ts-ignore */
         <OXMToast
           message={toast.message}
           type={toast.type}

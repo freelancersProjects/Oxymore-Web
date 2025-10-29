@@ -42,6 +42,8 @@ const TeamChat: React.FC<TeamChatProps> = ({ teamId, teamData, onUnreadCountChan
   const previousMessagesLengthRef = useRef(0);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const chatMessagesRef = useRef<HTMLDivElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const restoredScrollRef = useRef<boolean>(false);
   const messageRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
   const navigate = useNavigate();
 
@@ -83,6 +85,22 @@ const TeamChat: React.FC<TeamChatProps> = ({ teamId, teamData, onUnreadCountChan
           setHasInitiallyScrolled(false);
           isInitialLoadRef.current = false;
         }
+
+        // Restore previous scroll position if available (when returning to the chat)
+        setTimeout(() => {
+          const container = chatMessagesRef.current;
+          if (!container) return;
+          const saved = sessionStorage.getItem(`team_chat_scroll_${teamId}`);
+          if (saved && !restoredScrollRef.current) {
+            const savedTop = parseInt(saved, 10);
+            if (!Number.isNaN(savedTop)) {
+              container.scrollTop = savedTop;
+              setHasInitiallyScrolled(true);
+              setShouldAutoScroll(false);
+              restoredScrollRef.current = true;
+            }
+          }
+        }, 50);
 
         if (user && onUnreadCountChange) {
           const lastSeenKey = `team_chat_last_seen_${teamId}_${user.id_user}`;
@@ -131,6 +149,7 @@ const TeamChat: React.FC<TeamChatProps> = ({ teamId, teamData, onUnreadCountChan
 
     if (teamId) {
       isInitialLoadRef.current = true;
+      restoredScrollRef.current = false;
       loadMessages();
       loadTeamMembers();
       loadPinnedMessages();
@@ -142,13 +161,24 @@ const TeamChat: React.FC<TeamChatProps> = ({ teamId, teamData, onUnreadCountChan
       }
     }, 5000);
 
-    return () => clearInterval(interval);
+    return () => {
+      // Persist scroll position on unmount/navigation away
+      const container = chatMessagesRef.current;
+      if (container) {
+        sessionStorage.setItem(`team_chat_scroll_${teamId}` , String(container.scrollTop));
+      }
+      clearInterval(interval);
+    };
   }, [teamId, onUnreadCountChange]);
 
   useEffect(() => {
+    if (restoredScrollRef.current) {
+      return;
+    }
+
     if (!hasInitiallyScrolled && messages.length > 0 && chatMessagesRef.current) {
       setTimeout(() => {
-        if (chatMessagesRef.current && messagesEndRef.current) {
+        if (chatMessagesRef.current && messagesEndRef.current && !restoredScrollRef.current) {
           messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
           setHasInitiallyScrolled(true);
           setShouldAutoScroll(true);
@@ -285,6 +315,10 @@ const TeamChat: React.FC<TeamChatProps> = ({ teamId, teamData, onUnreadCountChan
         }, 100);
       }
       setNewMessageText("");
+      // Refocus input after sending
+      setTimeout(() => {
+        textareaRef.current?.focus();
+      }, 50);
     } catch (error) {
       setToast({ message: "Erreur lors de l'envoi", type: "error" });
     } finally {
@@ -565,6 +599,7 @@ const TeamChat: React.FC<TeamChatProps> = ({ teamId, teamData, onUnreadCountChan
             value={newMessageText}
             onChange={(e) => setNewMessageText(e.target.value)}
             rows={1}
+            ref={textareaRef}
             onKeyDown={(e: React.KeyboardEvent<HTMLTextAreaElement>) => {
               if (e.key === 'Enter' && !e.shiftKey && !isSending) {
                 e.preventDefault();
