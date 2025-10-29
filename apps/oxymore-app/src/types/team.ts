@@ -68,6 +68,7 @@ export interface TeamChatResponse {
   sent_at: string;
   username?: string;
   avatar_url?: string;
+  is_admin?: boolean;
 }
 
 export interface PinnedMessageTeam {

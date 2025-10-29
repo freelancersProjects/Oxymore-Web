@@ -5,5 +5,6 @@ export interface Message {
   timestamp: string;
   text: string;
   isFromMe: boolean;
+  isAdmin?: boolean;
 }
 

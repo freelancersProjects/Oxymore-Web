@@ -60,17 +60,20 @@ const TeamChat: React.FC<TeamChatProps> = ({ teamId, teamData, onUnreadCountChan
 
         const transformedMessages: Message[] = chats.map((chat: TeamChatResponse) => {
           const sentDate = new Date(chat.sent_at);
+          // Check if message is from admin: is_admin flag or id_user is null
+          const isAdmin = chat.is_admin || chat.id_user === null || chat.id_user === 'admin';
           return {
             id: chat.id_team_chat,
-            sender: chat.id_user === user?.id_user ? "You" : (chat.username || "Unknown"),
-            senderAvatar: avatarService.getAvatarUrl(chat.username, chat.avatar_url),
+            sender: isAdmin ? "Admin" : (chat.id_user === user?.id_user ? "You" : (chat.username || "Unknown")),
+            senderAvatar: isAdmin ? avatarService.getAvatarUrl("Admin") : avatarService.getAvatarUrl(chat.username, chat.avatar_url),
             timestamp: sentDate.toLocaleTimeString("fr-FR", {
               hour: "2-digit",
               minute: "2-digit",
               timeZone: "Europe/Paris",
             }),
             text: chat.message,
-            isFromMe: chat.id_user === user?.id_user,
+            isFromMe: chat.id_user === user?.id_user && !isAdmin,
+            isAdmin: isAdmin,
           };
         });
 
@@ -504,13 +507,13 @@ const TeamChat: React.FC<TeamChatProps> = ({ teamId, teamData, onUnreadCountChan
               )}
               <div className="message-content">
                 <div className="message-bubble" onMouseEnter={() => message.isFromMe && setHoveredMessageId(message.id)}>
-                  <div className={`message-text ${pinnedMessages.some(pin => pin.id_team_chat === message.id) ? 'message-text--pinned' : ''}`}>
+                  <div className={`message-text ${pinnedMessages.some(pin => pin.id_team_chat === message.id) ? 'message-text--pinned' : ''} ${message.isAdmin ? 'message-text--admin' : ''}`}>
                     {pinnedMessages.some(pin => pin.id_team_chat === message.id) && (
                       <span className="pinned-icon">
                         <Pin size={14} />
                       </span>
                     )}
-                    <span style={{ whiteSpace: 'pre-wrap' }}>{message.text}</span>
+                    <span style={{ whiteSpace: 'pre-wrap', color: message.isAdmin ? '#ef4444' : 'inherit' }}>{message.text}</span>
                   </div>
                   {hoveredMessageId === message.id && message.isFromMe && (
                     <div
@@ -534,8 +537,8 @@ const TeamChat: React.FC<TeamChatProps> = ({ teamId, teamData, onUnreadCountChan
                   )}
                 </div>
                 <div className="message-footer">
-                  <span className="message-sender">{message.sender}</span>
-                  <span className="message-time">{message.timestamp}</span>
+                  <span className={`message-sender ${message.isAdmin ? 'message-sender--admin' : ''}`} style={{ color: message.isAdmin ? '#ef4444' : 'inherit' }}>{message.sender}</span>
+                  <span className={`message-time ${message.isAdmin ? 'message-time--admin' : ''}`}>{message.timestamp}</span>
                 </div>
               </div>
               {message.isFromMe && (
