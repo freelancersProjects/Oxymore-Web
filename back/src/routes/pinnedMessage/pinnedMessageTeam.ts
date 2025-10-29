@@ -43,6 +43,23 @@ router.get("/", getAllPinnedMessageTeams);
  */
 router.post("/", createPinnedMessageTeam);
 
+/**
+ * @openapi
+ * /api/pinned-message-teams/team/{id_team}:
+ *   get:
+ *     tags:
+ *       - PinnedMessageTeams
+ *     summary: Récupère tous les messages épinglés d'une équipe
+ *     parameters:
+ *       - in: path
+ *         name: id_team
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Liste des messages épinglés de l'équipe
+ */
 router.get("/team/:id_team", getPinnedMessagesByTeamId);
 
 /**
