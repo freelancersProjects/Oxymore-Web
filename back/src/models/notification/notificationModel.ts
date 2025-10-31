@@ -35,11 +35,11 @@
  *       type: object
  *       properties:
  *         id_notification_read:
- *           type: integer
+ *           type: string
  *         id_user:
  *           type: string
  *         id_notification:
- *           type: integer
+ *           type: string
  *         read_at:
  *           type: string
  *           format: date-time

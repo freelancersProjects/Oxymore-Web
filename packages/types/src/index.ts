@@ -28,7 +28,7 @@ export interface NotificationWithReadStatus extends Notification {
 }
 
 export interface NotificationRead {
-  id_notification_read: number;
+  id_notification_read: string;
   id_user: string;
   id_notification: string;
   read_at: string;
