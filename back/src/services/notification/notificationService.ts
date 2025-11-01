@@ -40,6 +40,8 @@ export const getUnreadNotificationsCount = async (userId: string): Promise<numbe
     LEFT JOIN notification_read nr ON n.id_notification = nr.id_notification AND nr.id_user COLLATE utf8mb4_general_ci = ?
     LEFT JOIN notification_hidden nh ON n.id_notification = nh.id_notification AND nh.id_user COLLATE utf8mb4_general_ci = ?
     WHERE (n.id_user IS NULL OR n.id_user COLLATE utf8mb4_general_ci = ?)
+    AND n.type = 'message'
+    AND n.title = 'Nouvelle réponse'
     AND nr.id_notification_read IS NULL
     AND nh.id_notification_hidden IS NULL
   `, [userId, userId, userId]);
@@ -124,6 +126,40 @@ export const markAllNotificationsAsRead = async (userId: string): Promise<void> 
   }
 };
 
+export const markReplyNotificationsAsReadForTeam = async (userId: string, teamName: string): Promise<void> => {
+  const [userCheck] = await db.query(
+    "SELECT id_user FROM user WHERE id_user = ?",
+    [userId]
+  );
+
+  if (!Array.isArray(userCheck) || userCheck.length === 0) {
+    return;
+  }
+
+  const [unreadReplyNotifications] = await db.query(`
+    SELECT n.id_notification FROM notification n
+    LEFT JOIN notification_read nr ON n.id_notification = nr.id_notification AND nr.id_user COLLATE utf8mb4_general_ci = ?
+    LEFT JOIN notification_hidden nh ON n.id_notification = nh.id_notification AND nh.id_user COLLATE utf8mb4_general_ci = ?
+    WHERE n.id_user COLLATE utf8mb4_general_ci = ?
+    AND n.type = 'message'
+    AND n.title = 'Nouvelle réponse'
+    AND n.text LIKE ?
+    AND nr.id_notification_read IS NULL
+    AND nh.id_notification_hidden IS NULL
+  `, [userId, userId, userId, `%dans ${teamName}%`]);
+
+  if (Array.isArray(unreadReplyNotifications) && unreadReplyNotifications.length > 0) {
+    const readAt = new Date().toISOString();
+    for (const notif of unreadReplyNotifications as any[]) {
+      const id_notification_read = crypto.randomUUID();
+      await db.query(
+        "INSERT INTO notification_read (id_notification_read, id_user, id_notification, read_at) VALUES (?, ?, ?, ?)",
+        [id_notification_read, userId, notif.id_notification, readAt]
+      );
+    }
+  }
+};
+
 export const deleteNotification = async (notificationId: string): Promise<void> => {
   await db.query("DELETE FROM notification_read WHERE id_notification = ?", [notificationId]);
   await db.query("DELETE FROM notification_hidden WHERE id_notification = ?", [notificationId]);
@@ -131,7 +167,6 @@ export const deleteNotification = async (notificationId: string): Promise<void> 
 };
 
 export const deleteNotificationForUser = async (userId: string, notificationId: string): Promise<void> => {
-  // Vérifier si la notification existe
   const [notificationCheck] = await db.query(
     "SELECT id_notification, id_user FROM notification WHERE id_notification = ?",
     [notificationId]
@@ -143,9 +178,7 @@ export const deleteNotificationForUser = async (userId: string, notificationId: 
   
   const notification = notificationCheck[0] as any;
   
-  // Si c'est une notification globale (id_user IS NULL), on la masque pour l'utilisateur
   if (!notification.id_user) {
-    // Vérifier si elle n'est pas déjà masquée
     const [existingHidden] = await db.query(
       "SELECT id_notification_hidden FROM notification_hidden WHERE id_user COLLATE utf8mb4_general_ci = ? AND id_notification = ?",
       [userId, notificationId]
@@ -160,13 +193,11 @@ export const deleteNotificationForUser = async (userId: string, notificationId: 
       );
     }
     
-    // Supprimer aussi l'entrée de lecture si elle existe
     await db.query(
       "DELETE FROM notification_read WHERE id_user = ? AND id_notification = ?",
       [userId, notificationId]
     );
   } else if (notification.id_user === userId) {
-    // Si c'est une notification personnelle pour cet utilisateur, on la supprime complètement
     await db.query("DELETE FROM notification_read WHERE id_notification = ?", [notificationId]);
     await db.query("DELETE FROM notification_hidden WHERE id_notification = ?", [notificationId]);
     await db.query("DELETE FROM notification WHERE id_notification = ?", [notificationId]);

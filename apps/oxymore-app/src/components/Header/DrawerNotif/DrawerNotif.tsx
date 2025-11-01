@@ -151,7 +151,7 @@ const DrawerNotif: React.FC<DrawerNotifProps> = ({ open, onClose, userId, onMark
     }
   };
 
-  const unreadCount = notifications.filter(n => !n.is_read).length;
+  const unreadCount = notifications.filter(n => !n.is_read && n.type === 'message' && n.title === 'Nouvelle réponse').length;
 
   return (
     <OXMDrawer open={open} onClose={onClose} side="right" width={420} className="drawer-notif">

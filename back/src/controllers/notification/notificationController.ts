@@ -90,6 +90,24 @@ export const markAllNotificationsAsRead = async (req: Request, res: Response) =>
   }
 };
 
+export const markReplyNotificationsAsReadForTeam = async (req: Request, res: Response) => {
+  try {
+    const userId = req.params.userId;
+    const { teamName } = req.body;
+    
+    if (!teamName) {
+      res.status(400).json({ message: "teamName is required" });
+      return;
+    }
+    
+    await NotificationService.markReplyNotificationsAsReadForTeam(userId, teamName);
+    res.json({ message: "Reply notifications marked as read" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 export const deleteNotification = async (req: Request, res: Response) => {
   try {
     const notificationId = req.params.notificationId;

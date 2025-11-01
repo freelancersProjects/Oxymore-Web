@@ -59,7 +59,35 @@
 
   &--highlighted {
     .message-bubble {
-      animation: flashHighlight 1s ease;
+      animation: gradientWave 2s ease-in-out;
+      position: relative;
+      overflow: hidden;
+
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 200%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent 0%,
+          rgba(59, 130, 246, 0.6) 25%,
+          rgba(139, 92, 246, 0.8) 50%,
+          rgba(59, 130, 246, 0.6) 75%,
+          transparent 100%
+        );
+        animation: waveSweep 2s ease-in-out;
+        pointer-events: none;
+        z-index: 1;
+        border-radius: inherit;
+      }
+
+      > * {
+        position: relative;
+        z-index: 2;
+      }
     }
   }
 
@@ -99,8 +127,9 @@
       left: 50%;
       top: rem-calc(40);
       transform: translateX(-50%);
-      background: linear-gradient(135deg, #0a1929 0%, #0f2547 50%, #1a3a5a 100%);
-      border: 1px solid rgba(6, 182, 212, 0.5);
+      background: rgba(10, 10, 20, 0.95);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
       border-radius: rem-calc(6);
       padding: rem-calc(4);
       display: flex;
@@ -136,7 +165,15 @@
     transition: all 0.2s ease;
 
     &:hover {
-      background: rgba(6, 182, 212, 0.1);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    &--danger {
+      color: #ef4444;
+
+      &:hover {
+        background: rgba(239, 68, 68, 0.1);
+      }
     }
   }
 
@@ -172,6 +209,11 @@
         .message-bubble {
           background: rgb(255 255 255 / 8%);
           border-radius: rem-calc(18) rem-calc(18) rem-calc(18) rem-calc(2);
+
+          .message-menu-btn-wrapper {
+            left: auto;
+            right: rem-calc(-40);
+          }
         }
 
       .message-footer {
@@ -220,10 +262,12 @@
     max-width: 100%;
     white-space: pre-wrap;
 
-    .pinned-icon {
-      margin-right: rem-calc(4);
-      display: inline-flex;
-      align-items: center;
+    &--pinned::after {
+      content: "épinglé";
+      margin-left: rem-calc(8);
+      color: rgba($color-white, 0.4);
+      font-size: rem-calc(12);
+      font-style: italic;
     }
 
     &.message-text--admin {
@@ -294,7 +338,6 @@
 .chat-input-wrapper {
   display: flex;
   gap: rem-calc(8);
-  padding-top: rem-calc(20);
   margin-top: auto;
   align-items: center;
 }
@@ -357,6 +400,139 @@
   }
 }
 
+.reply-preview {
+  display: flex;
+  align-items: center;
+  gap: rem-calc(12);
+  padding: rem-calc(12) rem-calc(16);
+  background: rgba(139, 92, 246, 0.1);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  border-radius: rem-calc(12);
+  position: relative;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba(139, 92, 246, 0.15);
+    border-color: rgba(139, 92, 246, 0.5);
+  }
+}
+
+.reply-preview-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.reply-preview-info {
+  display: flex;
+  align-items: center;
+  gap: rem-calc(8);
+  margin-bottom: rem-calc(4);
+}
+
+.reply-preview-label {
+  font-size: rem-calc(11);
+  font-weight: 600;
+  color: rgba($color-white, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.reply-preview-sender {
+  font-size: rem-calc(12);
+  font-weight: 600;
+  color: $color-purple;
+}
+
+.reply-preview-text {
+  font-size: rem-calc(13);
+  color: rgba($color-white, 0.7);
+  line-height: 1.4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.reply-preview-close {
+  background: transparent;
+  border: none;
+  color: rgba($color-white, 0.5);
+  cursor: pointer;
+  padding: rem-calc(4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  z-index: 10;
+
+  &:hover {
+    color: $color-white;
+    transform: scale(1.1);
+  }
+}
+
+.message-reply-preview {
+  display: flex;
+  flex-direction: column;
+  gap: rem-calc(6);
+  padding: rem-calc(10) rem-calc(12);
+  background: rgba(0, 0, 0, 0.3);
+  border-left: 3px solid $color-purple;
+  border-radius: rem-calc(8);
+  margin-bottom: rem-calc(8);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.4);
+    border-left-color: lighten($color-purple, 10%);
+    transform: translateX(rem-calc(2));
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: rem-calc(-3);
+    top: 0;
+    bottom: 0;
+    width: rem-calc(3);
+    background: linear-gradient(180deg, $color-purple 0%, lighten($color-purple, 10%) 100%);
+    border-radius: rem-calc(8) 0 0 rem-calc(8);
+  }
+}
+
+.message-reply-preview-info {
+  display: flex;
+  align-items: center;
+  gap: rem-calc(8);
+  font-size: rem-calc(11);
+}
+
+.message-reply-preview-label {
+  color: rgba($color-white, 0.6);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: rem-calc(10);
+}
+
+.message-reply-preview-sender {
+  font-size: rem-calc(12);
+  font-weight: 600;
+  color: $color-purple;
+}
+
+.message-reply-preview-text {
+  font-size: rem-calc(12);
+  color: rgba($color-white, 0.7);
+  line-height: 1.4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .sidebar-box {
   background: rgb(255 255 255 / 3%);
   border: 1px solid rgb(255 255 255 / 10%);
@@ -387,8 +563,9 @@
     }
 
     .pinned-messages-open-btn {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(10, 10, 20, 0.95);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
       border-radius: rem-calc(6);
       width: rem-calc(28);
       height: rem-calc(28);
@@ -588,12 +765,38 @@
   }
 }
 
-@keyframes flashHighlight {
+@keyframes gradientWave {
   0%, 100% {
     box-shadow: 0 0 0 0 rgba(139, 92, 246, 0);
   }
+  25% {
+    box-shadow: 0 0 rem-calc(20) rem-calc(8) rgba(139, 92, 246, 0.5),
+                0 0 rem-calc(15) rem-calc(5) rgba(59, 130, 246, 0.4);
+  }
   50% {
-    box-shadow: 0 0 rem-calc(20) rem-calc(10) rgba(139, 92, 246, 0.5);
+    box-shadow: 0 0 rem-calc(25) rem-calc(12) rgba(59, 130, 246, 0.6),
+                0 0 rem-calc(20) rem-calc(8) rgba(139, 92, 246, 0.5);
+  }
+  75% {
+    box-shadow: 0 0 rem-calc(20) rem-calc(8) rgba(139, 92, 246, 0.5),
+                0 0 rem-calc(15) rem-calc(5) rgba(59, 130, 246, 0.4);
+  }
+}
+
+@keyframes waveSweep {
+  0% {
+    left: -100%;
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    left: 100%;
+    opacity: 0;
   }
 }
 

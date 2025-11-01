@@ -4,6 +4,7 @@ export interface TeamChat {
   sent_at?: string;
   id_team: string;
   id_user: string;
+  reply_to?: string;
 }
 
 export interface TeamChatInput {
@@ -11,6 +12,7 @@ export interface TeamChatInput {
   sent_at?: string;
   id_team: string;
   id_user: string;
+  reply_to?: string;
 }
 
 export interface TeamChatUpdate {

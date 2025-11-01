@@ -6,5 +6,10 @@ export interface Message {
   text: string;
   isFromMe: boolean;
   isAdmin?: boolean;
+  replyTo?: {
+    id: string;
+    text: string;
+    sender: string;
+  };
 }
 

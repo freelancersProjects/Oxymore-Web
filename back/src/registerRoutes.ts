@@ -32,6 +32,7 @@ import roomRoutes from "./routes/room/room";
 import shopItemRoutes from "./routes/shop/shopItem";
 import teamRoutes from "./routes/team/team";
 import teamChatRoutes from "./routes/team/teamChat";
+import teamChatReportRoutes from "./routes/team/teamChatReport";
 import teamMemberRoutes from "./routes/team/teamMember";
 import teamSubscriptionRoutes from "./routes/team/teamSubscription";
 import teamApplicationRoutes from "./routes/team/teamApplication";
@@ -77,6 +78,7 @@ export const registerRoutes = (app: Express) => {
   app.use("/api/shop-items", shopItemRoutes);
   app.use("/api/teams", teamRoutes);
   app.use("/api/team-chats", teamChatRoutes);
+  app.use("/api/team-chat-reports", teamChatReportRoutes);
   app.use("/api/team-members", teamMemberRoutes);
   app.use("/api/team-subscriptions", teamSubscriptionRoutes);
   app.use("/api/team-applications", teamApplicationRoutes);

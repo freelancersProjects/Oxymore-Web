@@ -458,7 +458,7 @@ const TeamMembers: React.FC<TeamMembersProps> = ({ teamId, teamData }) => {
       <OXMModal isOpen={showAdminConfirmModal} onClose={() => {
         setShowAdminConfirmModal(false);
         setPendingRoleChange(null);
-      }}>
+      }} variant="default">
         <div className="admin-confirm-modal">
           <div className="modal-header">
             <div className="modal-header-content">
@@ -530,7 +530,7 @@ const TeamMembers: React.FC<TeamMembersProps> = ({ teamId, teamData }) => {
       <OXMModal isOpen={showDeleteConfirmModal} onClose={() => {
         setShowDeleteConfirmModal(false);
         setMemberToDelete(null);
-      }}>
+      }} variant="default">
         <div className="delete-confirm-modal">
           <div className="modal-header">
             <div className="modal-header-content">
