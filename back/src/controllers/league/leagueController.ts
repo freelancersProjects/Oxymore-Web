@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import * as LeagueService from "../../services/league/leagueService";
+import { createAdminNotificationForAction } from "../../services/admin/notificationAdminService";
 
 export const getAllLeagues = async (req: Request, res: Response) => {
   const leagues = await LeagueService.getAllLeagues();
@@ -23,6 +24,14 @@ export const createLeague = async (req: Request, res: Response) => {
     entry_type,
     id_badge_champion
   });
+
+  await createAdminNotificationForAction(
+    'create',
+    'Ligue',
+    league_name,
+    `Ligue "${league_name}" créée avec succès`
+  );
+
   res.status(201).json(newLeague);
 };
 
@@ -37,6 +46,9 @@ export const getLeagueById = async (req: Request, res: Response) => {
 
 export const updateLeague = async (req: Request, res: Response) => {
   const { league_name, max_teams, start_date, end_date, promotion_slots, relegation_slots, image_url, entry_type, id_badge_champion } = req.body;
+
+  const league = await LeagueService.getLeagueById(req.params.id);
+  const oldName = league?.league_name || 'Ligue';
 
   const updatedLeague = await LeagueService.updateLeague(req.params.id, {
     league_name,
@@ -55,10 +67,28 @@ export const updateLeague = async (req: Request, res: Response) => {
     return;
   }
 
+  await createAdminNotificationForAction(
+    'update',
+    'Ligue',
+    league_name || oldName,
+    `Ligue "${league_name || oldName}" modifiée`
+  );
+
   res.json(updatedLeague);
 };
 
 export const deleteLeague = async (req: Request, res: Response) => {
+  const league = await LeagueService.getLeagueById(req.params.id);
+  const leagueName = league?.league_name || 'Ligue';
+
   await LeagueService.deleteLeague(req.params.id);
+
+  await createAdminNotificationForAction(
+    'delete',
+    'Ligue',
+    leagueName,
+    `Ligue "${leagueName}" supprimée`
+  );
+
   res.status(204).send();
 };

@@ -77,16 +77,16 @@ const TeamToolbar: React.FC<TeamToolbarProps> = ({ activeTab, onTabChange, isAdm
                 <Trophy className="team-toolbar__icon" />
               </button>
             </OXMTooltip>
-            <OXMTooltip text="Paramètres" position="bottom" delay={200}>
-              <button
-                className={`team-toolbar__tab ${activeTab === 'settings' ? 'active' : ''}`}
-                onClick={() => onTabChange('settings')}
-              >
-                <Settings className="team-toolbar__icon" />
-              </button>
-            </OXMTooltip>
           </>
         )}
+        <OXMTooltip text="Paramètres" position="bottom" delay={200}>
+          <button
+            className={`team-toolbar__tab ${activeTab === 'settings' ? 'active' : ''}`}
+            onClick={() => onTabChange('settings')}
+          >
+            <Settings className="team-toolbar__icon" />
+          </button>
+        </OXMTooltip>
       </div>
     </div>
   );

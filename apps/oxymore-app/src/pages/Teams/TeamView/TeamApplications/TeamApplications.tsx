@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Check, X, Calendar, Mail, FileText, Eye } from "lucide-react";
 import { teamService } from "../../../../services/teamService";
+import { notificationService } from "../../../../services/notificationService";
 import { avatarService } from "../../../../services/avatarService";
 import { OXMToast, OXMLoader, OXMModal } from "@oxymore/ui";
 import EmptyState from "../../../../components/EmptyState/EmptyState";
@@ -47,11 +48,28 @@ const TeamApplications: React.FC<TeamApplicationsProps> = ({ teamId, teamData, o
       if (status === 'accepted' && application) {
         try {
           await teamService.joinTeam(teamId, application.id_user);
+          
+          const teamName = teamData?.name || 'l\'équipe';
+          await notificationService.createForUser(
+            `Votre candidature pour rejoindre ${teamName} a été acceptée !`,
+            'success',
+            application.id_user,
+            'Candidature acceptée'
+          );
+          
           setToast({ message: "Candidature acceptée et membre ajouté à l'équipe", type: "success" });
         } catch (joinError) {
           setToast({ message: "Candidature acceptée mais erreur lors de l'ajout du membre", type: "error" });
         }
-      } else {
+      } else if (status === 'rejected' && application) {
+        const teamName = teamData?.name || 'l\'équipe';
+        await notificationService.createForUser(
+          `Votre candidature pour rejoindre ${teamName} a été refusée.`,
+          'alert',
+          application.id_user,
+          'Candidature refusée'
+        );
+        
         setToast({ message: "Candidature refusée", type: "success" });
       }
 

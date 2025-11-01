@@ -35,7 +35,7 @@ export const getUnreadNotificationsCount = async (req: Request, res: Response) =
 
 export const createNotification = async (req: Request, res: Response) => {
   try {
-    const { type, title, text } = req.body;
+    const { type, title, text, id_user } = req.body;
 
     if (!type || !title || !text) {
       res.status(400).json({ message: "Missing required fields: type, title, text" });
@@ -51,6 +51,7 @@ export const createNotification = async (req: Request, res: Response) => {
       type,
       title,
       text,
+      id_user,
     });
 
     res.status(201).json(newNotification);
@@ -63,9 +64,9 @@ export const createNotification = async (req: Request, res: Response) => {
 export const markNotificationAsRead = async (req: Request, res: Response) => {
   try {
     const userId = req.params.userId;
-    const notificationId = parseInt(req.params.notificationId);
+    const notificationId = req.params.notificationId;
 
-    if (isNaN(notificationId)) {
+    if (!notificationId) {
       res.status(400).json({ message: "Invalid notification ID" });
       return;
     }
@@ -91,9 +92,9 @@ export const markAllNotificationsAsRead = async (req: Request, res: Response) =>
 
 export const deleteNotification = async (req: Request, res: Response) => {
   try {
-    const notificationId = parseInt(req.params.notificationId);
+    const notificationId = req.params.notificationId;
 
-    if (isNaN(notificationId)) {
+    if (!notificationId) {
       res.status(400).json({ message: "Invalid notification ID" });
       return;
     }
@@ -109,15 +110,15 @@ export const deleteNotification = async (req: Request, res: Response) => {
 export const deleteNotificationForUser = async (req: Request, res: Response) => {
   try {
     const userId = req.params.userId;
-    const notificationId = parseInt(req.params.notificationId);
-    if (!userId || isNaN(notificationId)) {
+    const notificationId = req.params.notificationId;
+    if (!userId || !notificationId) {
       res.status(400).json({ message: "Invalid userId or notificationId" });
       return;
     }
     await NotificationService.deleteNotificationForUser(userId, notificationId);
     res.status(204).send();
   } catch (err) {
-    console.error(err);
+    console.error('Error in deleteNotificationForUser:', err);
     res.status(500).json({ message: "Server error" });
   }
 };

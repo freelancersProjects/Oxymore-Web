@@ -2,7 +2,7 @@
  * @openapi
  * components:
  *   schemas:
- *     NotificationInput:
+ *     NotificationAdminInput:
  *       type: object
  *       required:
  *         - type
@@ -16,11 +16,11 @@
  *           type: string
  *         text:
  *           type: string
- *     Notification:
+ *     NotificationAdmin:
  *       type: object
  *       properties:
- *         id_notification:
- *           type: integer
+ *         id_notification_admin:
+ *           type: string
  *         type:
  *           type: string
  *           enum: [message, success, alert]
@@ -31,20 +31,12 @@
  *         created_at:
  *           type: string
  *           format: date-time
- *     NotificationRead:
- *       type: object
- *       properties:
- *         id_notification_read:
- *           type: string
- *         id_user:
- *           type: string
- *         id_notification:
- *           type: string
  *         read_at:
  *           type: string
  *           format: date-time
  */
 
-import { Notification, NotificationRead, NotificationWithReadStatus } from '../../interfaces/notification/notificationInterfaces';
+import { NotificationAdmin, NotificationAdminWithReadStatus } from '../../interfaces/admin/notificationAdminInterfaces';
 
-export { Notification, NotificationRead, NotificationWithReadStatus };
+export { NotificationAdmin, NotificationAdminWithReadStatus };
+

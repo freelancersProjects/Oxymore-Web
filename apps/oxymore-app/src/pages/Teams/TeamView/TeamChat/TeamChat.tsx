@@ -42,7 +42,9 @@ const TeamChat: React.FC<TeamChatProps> = ({ teamId, teamData, onUnreadCountChan
   const previousMessagesLengthRef = useRef(0);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const chatMessagesRef = useRef<HTMLDivElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
   const messageRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
+  const previousIsActiveRef = useRef<boolean>(false);
   const navigate = useNavigate();
 
 
@@ -131,6 +133,7 @@ const TeamChat: React.FC<TeamChatProps> = ({ teamId, teamData, onUnreadCountChan
 
     if (teamId) {
       isInitialLoadRef.current = true;
+      previousIsActiveRef.current = isActive;
       loadMessages();
       loadTeamMembers();
       loadPinnedMessages();
@@ -142,11 +145,28 @@ const TeamChat: React.FC<TeamChatProps> = ({ teamId, teamData, onUnreadCountChan
       }
     }, 5000);
 
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+    };
   }, [teamId, onUnreadCountChange]);
 
   useEffect(() => {
-    if (!hasInitiallyScrolled && messages.length > 0 && chatMessagesRef.current) {
+    if (isActive && !previousIsActiveRef.current && messages.length > 0 && chatMessagesRef.current) {
+      setTimeout(() => {
+        if (chatMessagesRef.current && messagesEndRef.current) {
+          messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+          setHasInitiallyScrolled(true);
+          setShouldAutoScroll(true);
+          previousMessagesLengthRef.current = messages.length;
+        }
+      }, 100);
+    }
+    
+    previousIsActiveRef.current = isActive;
+  }, [isActive, messages.length]);
+
+  useEffect(() => {
+    if (!hasInitiallyScrolled && messages.length > 0 && chatMessagesRef.current && isActive) {
       setTimeout(() => {
         if (chatMessagesRef.current && messagesEndRef.current) {
           messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
@@ -285,6 +305,10 @@ const TeamChat: React.FC<TeamChatProps> = ({ teamId, teamData, onUnreadCountChan
         }, 100);
       }
       setNewMessageText("");
+      // Refocus input after sending
+      setTimeout(() => {
+        textareaRef.current?.focus();
+      }, 50);
     } catch (error) {
       setToast({ message: "Erreur lors de l'envoi", type: "error" });
     } finally {
@@ -565,6 +589,7 @@ const TeamChat: React.FC<TeamChatProps> = ({ teamId, teamData, onUnreadCountChan
             value={newMessageText}
             onChange={(e) => setNewMessageText(e.target.value)}
             rows={1}
+            ref={textareaRef}
             onKeyDown={(e: React.KeyboardEvent<HTMLTextAreaElement>) => {
               if (e.key === 'Enter' && !e.shiftKey && !isSending) {
                 e.preventDefault();

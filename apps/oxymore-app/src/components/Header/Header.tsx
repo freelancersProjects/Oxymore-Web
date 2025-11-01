@@ -4,6 +4,7 @@ import { Bell as BellIcon, Search } from 'lucide-react';
 import DrawerNotif from "./DrawerNotif/DrawerNotif";
 import apiService from '../../api/apiService';
 import ProfilePanel from './ProfilePanel/ProfilePanel';
+import { useAuth } from '../../context/AuthContext';
 
 interface HeaderProps {
   isSidebarCollapsed?: boolean;
@@ -11,6 +12,7 @@ interface HeaderProps {
 }
 
 export const Header: React.FC<HeaderProps> = ({ isSidebarCollapsed = false, hideProfileSidebar = false }) => {
+  const { user } = useAuth();
   const [notifOpen, setNotifOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -26,7 +28,7 @@ export const Header: React.FC<HeaderProps> = ({ isSidebarCollapsed = false, hide
     return isCollapsed;
   });
   const [unreadCount, setUnreadCount] = useState(0);
-  const userId = "1";
+  const userId = user?.id_user || '';
 
   const fetchUnreadCount = async () => {
     try {
@@ -47,8 +49,17 @@ export const Header: React.FC<HeaderProps> = ({ isSidebarCollapsed = false, hide
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  useEffect(() => { fetchUnreadCount(); }, []);
-  useEffect(() => { if (!notifOpen) fetchUnreadCount(); }, [notifOpen]);
+  useEffect(() => {
+    if (userId) {
+      fetchUnreadCount();
+    }
+  }, [userId]);
+  
+  useEffect(() => {
+    if (userId && !notifOpen) {
+      fetchUnreadCount();
+    }
+  }, [notifOpen, userId]);
 
   const toggleProfile = () => {
     setProfileCollapsed((prev: boolean) => {
@@ -101,7 +112,14 @@ export const Header: React.FC<HeaderProps> = ({ isSidebarCollapsed = false, hide
             <BellIcon className="icon-bell" size={24} />
             {unreadCount > 0 && <span className="notif-badge-header">{unreadCount}</span>}
           </div>
-          <DrawerNotif open={notifOpen} onClose={() => setNotifOpen(false)} userId={userId} />
+          {userId && (
+            <DrawerNotif 
+              open={notifOpen} 
+              onClose={() => setNotifOpen(false)} 
+              userId={userId}
+              onMarkAllRead={fetchUnreadCount}
+            />
+          )}
         </div>
       </header>
 

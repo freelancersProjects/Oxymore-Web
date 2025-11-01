@@ -5,6 +5,7 @@ import channelBotRoutes from "./routes/messaging/channelBot";
 import privateMessageRoutes from "./routes/messaging/privateMessage";
 import authRoutes from "./routes/user/auth";
 import roleRoutes from "./routes/admin/role";
+import notificationAdminRoutes from "./routes/admin/notificationAdmin";
 
 import messageBotRoutes from "./routes/messaging/messageBot";
 import userVideoRoutes from "./routes/user/userVideo";
@@ -48,6 +49,7 @@ export const registerRoutes = (app: Express) => {
   app.use("/api/users", userRoutes);
   app.use("/api/roles", roleRoutes);
   app.use("/api/notifications", notificationRoutes);
+  app.use("/api/admin/notifications", notificationAdminRoutes);
   app.use("/api/channel-bots", channelBotRoutes);
   app.use("/api/private-messages", privateMessageRoutes);
   app.use("/api/message-bots", messageBotRoutes);

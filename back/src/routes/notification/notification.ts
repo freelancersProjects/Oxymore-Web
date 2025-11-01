@@ -70,20 +70,54 @@ router.get("/user/:userId/unread-count", getUnreadNotificationsCount);
  *     tags:
  *       - Notifications
  *     summary: Crée une nouvelle notification
+ *     description: Crée une nouvelle notification avec un type, titre et texte
  *     requestBody:
  *       required: true
  *       content:
- *         application/x-www-form-urlencoded:
+ *         application/json:
  *           schema:
  *             $ref: '#/components/schemas/NotificationInput'
- *         application/json:
+ *           examples:
+ *             messageNotification:
+ *               summary: Notification de message
+ *               value:
+ *                 type: "message"
+ *                 title: "Nouveau message"
+ *                 text: "Vous avez reçu un nouveau message de Jean"
+ *             successNotification:
+ *               summary: Notification de succès
+ *               value:
+ *                 type: "success"
+ *                 title: "Action réussie"
+ *                 text: "Votre profil a été mis à jour avec succès"
+ *             alertNotification:
+ *               summary: Notification d'alerte
+ *               value:
+ *                 type: "alert"
+ *                 title: "Attention requise"
+ *                 text: "Votre session expire bientôt"
+ *         application/x-www-form-urlencoded:
  *           schema:
  *             $ref: '#/components/schemas/NotificationInput'
  *     responses:
  *       201:
- *         description: Notification créée
+ *         description: Notification créée avec succès
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Notification'
  *       400:
- *         description: Données invalides
+ *         description: Données invalides ou champs manquants
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Missing required fields: type, title, text"
+ *       500:
+ *         description: Erreur serveur
  */
 router.post("/", createNotification);
 
@@ -104,7 +138,7 @@ router.post("/", createNotification);
  *         name: notificationId
  *         required: true
  *         schema:
- *           type: integer
+ *           type: string
  *     responses:
  *       200:
  *         description: Notification marquée comme lue
@@ -144,7 +178,7 @@ router.post("/user/:userId/mark-all-read", markAllNotificationsAsRead);
  *         name: notificationId
  *         required: true
  *         schema:
- *           type: integer
+ *           type: string
  *     responses:
  *       200:
  *         description: Notification supprimée
@@ -170,7 +204,7 @@ router.delete("/:notificationId", deleteNotification);
  *         name: notificationId
  *         required: true
  *         schema:
- *           type: integer
+ *           type: string
  *     responses:
  *       200:
  *         description: Notification supprimée pour l'utilisateur
