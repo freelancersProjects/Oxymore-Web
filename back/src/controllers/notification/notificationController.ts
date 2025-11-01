@@ -118,7 +118,7 @@ export const deleteNotificationForUser = async (req: Request, res: Response) => 
     await NotificationService.deleteNotificationForUser(userId, notificationId);
     res.status(204).send();
   } catch (err) {
-    console.error(err);
+    console.error('Error in deleteNotificationForUser:', err);
     res.status(500).json({ message: "Server error" });
   }
 };
