@@ -7,7 +7,7 @@ export const getAllTeamChats = async (req: Request, res: Response) => {
 };
 
 export const createTeamChat = async (req: Request, res: Response) => {
-  const { message, sent_at, id_team, id_user, is_admin } = req.body;
+  const { message, sent_at, id_team, id_user, is_admin, reply_to } = req.body;
   if (!message || !id_team || !id_user) {
     res.status(400).json({ message: "message, id_team et id_user sont requis" });
     return;
@@ -17,7 +17,8 @@ export const createTeamChat = async (req: Request, res: Response) => {
     sent_at,
     id_team,
     id_user,
-    is_admin: is_admin || false
+    is_admin: is_admin || false,
+    reply_to: reply_to || null
   });
   res.status(201).json(newChat);
 };

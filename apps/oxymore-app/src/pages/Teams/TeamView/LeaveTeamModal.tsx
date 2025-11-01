@@ -43,7 +43,7 @@ const LeaveTeamModal: React.FC<LeaveTeamModalProps> = ({
   ].filter(Boolean) as string[];
 
   return (
-    <OXMModal isOpen={isOpen} onClose={handleClose}>
+    <OXMModal isOpen={isOpen} onClose={handleClose} variant="default">
       <div className="leave-team-modal">
         <div className="modal-header">
           <div className="modal-header-content">

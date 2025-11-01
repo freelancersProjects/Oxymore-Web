@@ -6,6 +6,7 @@ import {
   createNotification,
   markNotificationAsRead,
   markAllNotificationsAsRead,
+  markReplyNotificationsAsReadForTeam,
   deleteNotification,
   deleteNotificationForUser,
 } from "../../controllers/notification/notificationController";
@@ -165,6 +166,8 @@ router.post("/user/:userId/mark-read/:notificationId", markNotificationAsRead);
  *         description: Toutes les notifications marquées comme lues
  */
 router.post("/user/:userId/mark-all-read", markAllNotificationsAsRead);
+
+router.post("/user/:userId/mark-reply-read-team", markReplyNotificationsAsReadForTeam);
 
 /**
  * @openapi

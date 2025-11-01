@@ -4,6 +4,7 @@ import { Home, Trophy, Layers, Play, Users, UserPlus, LogOut, ChevronLeft, Bot, 
 import { OXMBadge } from "@oxymore/ui";
 import Logo from "./../../assets/logo.png";
 import { teamService } from "../../services/teamService";
+import { notificationService } from "../../services/notificationService";
 import "./Sidebar.scss";
 
 interface SidebarProps {
@@ -62,23 +63,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false, onToggle 
                 const isAdmin = currentUserMember?.role === 'captain' || currentUserMember?.role === 'admin';
 
                 try {
-                  const chats = await teamService.getTeamChats(teamId);
-                  const lastSeenKey = `team_chat_last_seen_${teamId}_${user.id_user}`;
-                  const lastSeenTimestamp = localStorage.getItem(lastSeenKey);
-
-                  if (lastSeenTimestamp) {
-                    const lastSeenDate = new Date(lastSeenTimestamp);
-                    const unreadCount = chats.filter((chat: any) => {
-                      const msgDate = new Date(chat.sent_at);
-                      return chat.id_user !== user.id_user && msgDate > lastSeenDate;
-                    }).length;
-                    totalNotifications += unreadCount;
-                  } else {
-                    const unreadCount = chats.filter((chat: any) => {
-                      return chat.id_user !== user.id_user;
-                    }).length;
-                    totalNotifications += unreadCount;
-                  }
+                  const unreadReplyCount = await notificationService.getUnreadCount(user.id_user);
+                  totalNotifications += unreadReplyCount;
                 } catch (error) {
                 }
 

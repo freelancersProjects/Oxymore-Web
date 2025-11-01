@@ -109,13 +109,14 @@ export const teamService = {
     }
   },
 
-  createTeamChat: async (message: string, teamId: string, userId: string): Promise<any> => {
+  createTeamChat: async (message: string, teamId: string, userId: string, replyTo?: string): Promise<any> => {
     try {
       const chat = await apiService.post('/team-chats', {
         message,
         id_team: teamId,
         id_user: userId,
-        sent_at: new Date().toISOString()
+        sent_at: new Date().toISOString(),
+        reply_to: replyTo || null
       });
       return chat;
     } catch (error) {
@@ -290,6 +291,19 @@ export const teamService = {
       await apiService.delete(`/team-members/${userMember.id_team_member}`);
     } catch (error) {
       console.error('Error leaving team:', error);
+      throw error;
+    }
+  },
+
+  reportTeamChat: async (id_team_chat: string, id_user: string, reason: string): Promise<void> => {
+    try {
+      await apiService.post('/team-chat-reports', {
+        id_team_chat,
+        id_user,
+        reason
+      });
+    } catch (error) {
+      console.error('Error reporting team chat:', error);
       throw error;
     }
   }

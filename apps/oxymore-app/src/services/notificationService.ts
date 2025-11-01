@@ -102,6 +102,15 @@ export const notificationService = {
     }
   },
 
+  markReplyNotificationsAsReadForTeam: async (userId: string, teamName: string): Promise<void> => {
+    try {
+      await apiService.post(`/notifications/user/${userId}/mark-reply-read-team`, { teamName });
+    } catch (error) {
+      console.error('Error marking reply notifications as read for team:', error);
+      throw error;
+    }
+  },
+
   delete: async (notificationId: string): Promise<void> => {
     try {
       await apiService.delete(`/notifications/${notificationId}`);
