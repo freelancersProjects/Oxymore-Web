@@ -43,8 +43,8 @@ const TeamChat: React.FC<TeamChatProps> = ({ teamId, teamData, onUnreadCountChan
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const chatMessagesRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const restoredScrollRef = useRef<boolean>(false);
   const messageRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
+  const previousIsActiveRef = useRef<boolean>(false);
   const navigate = useNavigate();
 
 
@@ -85,22 +85,6 @@ const TeamChat: React.FC<TeamChatProps> = ({ teamId, teamData, onUnreadCountChan
           setHasInitiallyScrolled(false);
           isInitialLoadRef.current = false;
         }
-
-        // Restore previous scroll position if available (when returning to the chat)
-        setTimeout(() => {
-          const container = chatMessagesRef.current;
-          if (!container) return;
-          const saved = sessionStorage.getItem(`team_chat_scroll_${teamId}`);
-          if (saved && !restoredScrollRef.current) {
-            const savedTop = parseInt(saved, 10);
-            if (!Number.isNaN(savedTop)) {
-              container.scrollTop = savedTop;
-              setHasInitiallyScrolled(true);
-              setShouldAutoScroll(false);
-              restoredScrollRef.current = true;
-            }
-          }
-        }, 50);
 
         if (user && onUnreadCountChange) {
           const lastSeenKey = `team_chat_last_seen_${teamId}_${user.id_user}`;
@@ -149,7 +133,7 @@ const TeamChat: React.FC<TeamChatProps> = ({ teamId, teamData, onUnreadCountChan
 
     if (teamId) {
       isInitialLoadRef.current = true;
-      restoredScrollRef.current = false;
+      previousIsActiveRef.current = isActive;
       loadMessages();
       loadTeamMembers();
       loadPinnedMessages();
@@ -162,23 +146,29 @@ const TeamChat: React.FC<TeamChatProps> = ({ teamId, teamData, onUnreadCountChan
     }, 5000);
 
     return () => {
-      // Persist scroll position on unmount/navigation away
-      const container = chatMessagesRef.current;
-      if (container) {
-        sessionStorage.setItem(`team_chat_scroll_${teamId}` , String(container.scrollTop));
-      }
       clearInterval(interval);
     };
   }, [teamId, onUnreadCountChange]);
 
   useEffect(() => {
-    if (restoredScrollRef.current) {
-      return;
-    }
-
-    if (!hasInitiallyScrolled && messages.length > 0 && chatMessagesRef.current) {
+    if (isActive && !previousIsActiveRef.current && messages.length > 0 && chatMessagesRef.current) {
       setTimeout(() => {
-        if (chatMessagesRef.current && messagesEndRef.current && !restoredScrollRef.current) {
+        if (chatMessagesRef.current && messagesEndRef.current) {
+          messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+          setHasInitiallyScrolled(true);
+          setShouldAutoScroll(true);
+          previousMessagesLengthRef.current = messages.length;
+        }
+      }, 100);
+    }
+    
+    previousIsActiveRef.current = isActive;
+  }, [isActive, messages.length]);
+
+  useEffect(() => {
+    if (!hasInitiallyScrolled && messages.length > 0 && chatMessagesRef.current && isActive) {
+      setTimeout(() => {
+        if (chatMessagesRef.current && messagesEndRef.current) {
           messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
           setHasInitiallyScrolled(true);
           setShouldAutoScroll(true);
