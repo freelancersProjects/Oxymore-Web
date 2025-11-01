@@ -81,10 +81,14 @@ export const notificationService = {
   },
 
   markAsRead: async (userId: string, notificationId: string): Promise<void> => {
+    if (!userId || !notificationId) {
+      throw new Error(`Invalid parameters: userId=${userId}, notificationId=${notificationId}`);
+    }
+    const url = `/notifications/user/${userId}/mark-read/${notificationId}`;
     try {
-      await apiService.post(`/notifications/user/${userId}/mark-read/${notificationId}`);
+      await apiService.post(url);
     } catch (error) {
-      console.error('Error marking notification as read:', error);
+      console.error('Error marking notification as read:', { url, userId, notificationId, error });
       throw error;
     }
   },
@@ -108,10 +112,14 @@ export const notificationService = {
   },
 
   deleteForUser: async (userId: string, notificationId: string): Promise<void> => {
+    if (!userId || !notificationId) {
+      throw new Error(`Invalid parameters: userId=${userId}, notificationId=${notificationId}`);
+    }
     try {
-      await apiService.delete(`/notifications/user/${userId}/${notificationId}`);
+      const url = `/notifications/user/${userId}/${notificationId}`;
+      await apiService.delete(url);
     } catch (error) {
-      console.error('Error deleting notification for user:', error);
+      console.error('Error deleting notification for user:', { userId, notificationId, error });
       throw error;
     }
   },

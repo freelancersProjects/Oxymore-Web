@@ -21,6 +21,7 @@ import type { Team } from '../../../types/team';
 import apiService from '../../../api/apiService';
 import { gameService } from '../../../services/gameService';
 import { teamService } from '../../../services/teamService';
+import { notificationService } from '../../../services/notificationService';
 import TeamCVModal from './TeamCVModal/TeamCVModal';
 import './TeamModal.scss';
 
@@ -119,13 +120,30 @@ const TeamModal: React.FC<TeamModalProps> = ({
 
   const handleCVSubmit = async (subject: string, message: string) => {
     if (!team) return;
-
+    
     const userStr = localStorage.getItem('useroxm');
     const user = userStr ? JSON.parse(userStr) : null;
     if (!user) return;
 
     try {
       await teamService.sendTeamCV(team.id, user.id_user, subject, message);
+      
+      try {
+        const members = await teamService.getTeamMembersByTeamId(team.id);
+        const admins = members.filter((m: any) => m.role === 'captain' || m.role === 'admin');
+        const username = user.username || user.first_name || 'Un utilisateur';
+        
+        for (const admin of admins) {
+          await notificationService.createForUser(
+            `${username} a postulé pour rejoindre ${team.name}`,
+            'message',
+            admin.id_user,
+            'Nouvelle candidature reçue'
+          );
+        }
+      } catch (notifError) {
+      }
+      
       setShowCVModal(false);
       setToast({ message: 'Candidature envoyée avec succès!', type: 'success' });
       setTimeout(() => {
