@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { OXMDrawer, OXMLoader } from "@oxymore/ui";
 import './DrawerNotif.scss';
-import { Bell, CheckCircle, AlertTriangle, MessageCircle, Info, Trash2, ChevronDown } from 'lucide-react';
+import { Bell, CheckCircle, AlertTriangle, MessageCircle, Info, Trash2, ChevronDown, CheckCheck } from 'lucide-react';
 import { notificationService } from '../../../services/notificationService';
 import type { NotificationWithReadStatus, NotificationType } from '../../../types/notification';
 
@@ -9,6 +9,7 @@ interface DrawerNotifProps {
   open: boolean;
   onClose: () => void;
   userId: string;
+  onMarkAllRead?: () => void;
 }
 
 const getNotificationIcon = (type: NotificationType) => {
@@ -41,7 +42,7 @@ const formatTimeAgo = (dateString: string) => {
   return `il y a ${diffInDays}j`;
 };
 
-const DrawerNotif: React.FC<DrawerNotifProps> = ({ open, onClose, userId }) => {
+const DrawerNotif: React.FC<DrawerNotifProps> = ({ open, onClose, userId, onMarkAllRead }) => {
   const [notifications, setNotifications] = useState<NotificationWithReadStatus[]>([]);
   const [loading, setLoading] = useState(false);
   const [expandedNotifications, setExpandedNotifications] = useState<Set<string>>(new Set());
@@ -65,6 +66,11 @@ const DrawerNotif: React.FC<DrawerNotifProps> = ({ open, onClose, userId }) => {
   }, [open]);
 
   const handleMarkAsRead = async (notificationId: string) => {
+    if (!notificationId || !userId) {
+      console.error('Missing notificationId or userId:', { notificationId, userId });
+      return;
+    }
+    
     const notification = notifications.find(n => n.id_notification === notificationId);
     if (notification?.is_read) return;
     
@@ -84,6 +90,13 @@ const DrawerNotif: React.FC<DrawerNotifProps> = ({ open, onClose, userId }) => {
 
   const handleDeleteNotif = async (e: React.MouseEvent, notificationId: string) => {
     e.stopPropagation();
+    e.preventDefault();
+    
+    if (!notificationId || !userId) {
+      console.error('Missing notificationId or userId for delete:', { notificationId, userId });
+      return;
+    }
+    
     try {
       await notificationService.deleteForUser(userId, notificationId);
       setNotifications(prev => prev.filter(n => n.id_notification !== notificationId));
@@ -93,6 +106,11 @@ const DrawerNotif: React.FC<DrawerNotifProps> = ({ open, onClose, userId }) => {
   };
 
   const toggleExpanded = async (notificationId: string) => {
+    if (!notificationId) {
+      console.error('toggleExpanded called with empty notificationId');
+      return;
+    }
+    
     const notification = notifications.find(n => n.id_notification === notificationId);
     
     if (!notification?.is_read) {
@@ -110,21 +128,54 @@ const DrawerNotif: React.FC<DrawerNotifProps> = ({ open, onClose, userId }) => {
     });
   };
 
+  const handleMarkAllAsRead = async () => {
+    if (!userId) {
+      console.error('Cannot mark all as read: userId is missing');
+      return;
+    }
+    
+    try {
+      await notificationService.markAllAsRead(userId);
+      setNotifications(prev => 
+        prev.map(n => ({ 
+          ...n, 
+          is_read: true, 
+          read_at: new Date().toISOString() 
+        }))
+      );
+      if (onMarkAllRead) {
+        onMarkAllRead();
+      }
+    } catch (error) {
+      console.error('Error marking all notifications as read:', error);
+    }
+  };
+
   const unreadCount = notifications.filter(n => !n.is_read).length;
 
   return (
     <OXMDrawer open={open} onClose={onClose} side="right" width={420} className="drawer-notif">
       <div className="drawer-notif-header">
-        <div className="drawer-notif-title-section">
-          <Bell size={22} className="drawer-notif-header-icon" />
-          <span className="drawer-notif-title-main">
-            Notifications
-            {unreadCount > 0 && (
-              <span className="notif-count">({unreadCount})</span>
-            )}
-          </span>
+          <div className="drawer-notif-title-section">
+            <Bell size={22} className="drawer-notif-header-icon" />
+            <span className="drawer-notif-title-main">
+              Notifications
+              {unreadCount > 0 && (
+                <span className="notif-count">({unreadCount})</span>
+              )}
+            </span>
+          </div>
+          {unreadCount > 0 && (
+            <button 
+              className="drawer-notif-mark-all-btn"
+              onClick={handleMarkAllAsRead}
+              title="Marquer toutes comme lues"
+            >
+              <CheckCheck size={14} />
+              <span>Tout lu</span>
+            </button>
+          )}
         </div>
-      </div>
 
       <div className="drawer-notif-separator">
         <div className="separator-line"></div>
@@ -137,6 +188,11 @@ const DrawerNotif: React.FC<DrawerNotifProps> = ({ open, onClose, userId }) => {
           </div>
         ) : notifications.length > 0 ? (
           notifications.map(notif => {
+            if (!notif.id_notification) {
+              console.error('Notification without id_notification:', notif);
+              return null;
+            }
+            
             const isExpanded = expandedNotifications.has(notif.id_notification);
             const isUnread = !notif.is_read;
             
@@ -144,7 +200,11 @@ const DrawerNotif: React.FC<DrawerNotifProps> = ({ open, onClose, userId }) => {
               <div
                 key={notif.id_notification}
                 className={`drawer-notif-item ${isUnread ? 'unread' : 'read'} notif-${notif.type} ${isExpanded ? 'expanded' : ''}`}
-                onClick={() => toggleExpanded(notif.id_notification)}
+                onClick={() => {
+                  if (notif.id_notification) {
+                    toggleExpanded(notif.id_notification);
+                  }
+                }}
               >
                 <div className="drawer-notif-left">
                   <div className={`drawer-notif-icon notif-icon-${notif.type}`}>
