@@ -1,5 +1,9 @@
 import { Request, Response } from "express";
 import * as RoleService from "../../services/admin/roleService";
+import { createAdminNotificationForAction } from "../../services/admin/notificationAdminService";
+import * as UserService from "../../services/user/userService";
+import { db } from "../../config/db";
+import { RowDataPacket } from "mysql2";
 
 /**
  * @openapi
@@ -98,6 +102,28 @@ export const updateUserRole = async (req: Request, res: Response) => {
     if (!updated) {
       return res.status(404).json({ message: "User not found" });
     }
+
+    try {
+      const user = await UserService.getUserById(req.params.userId);
+      const userName = user?.username || user?.first_name || `User ${req.params.userId}`;
+      
+      interface Role extends RowDataPacket {
+        id: number;
+        name: string;
+      }
+      const [roles] = await db.execute<Role[]>('SELECT * FROM roles WHERE id = ?', [roleId]);
+      const roleName = roles.length > 0 ? roles[0].name : 'nouveau rôle';
+
+      await createAdminNotificationForAction(
+        'update',
+        'Utilisateur',
+        userName,
+        `Rôle de "${userName}" changé vers "${roleName}"`
+      );
+    } catch (error) {
+      console.error('Error creating admin notification for role change:', error);
+    }
+
     res.json({ message: "Role updated successfully" });
   } catch (error) {
     console.error("Error updating user role:", error);

@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import * as CalendarModel from '../../models/calendar/calendarModel';
+import { createAdminNotificationForAction } from '../../services/admin/notificationAdminService';
 
 const formatEventForResponse = (event: any) => {
   return {
@@ -26,6 +27,15 @@ export const createCalendarEvent = async (req: Request, res: Response): Promise<
     }
 
     const event = await CalendarModel.createCalendarEvent(eventData, createdBy);
+
+    const eventDate = new Date(eventData.appointment_date).toLocaleDateString('fr-FR');
+    await createAdminNotificationForAction(
+      'create',
+      'Rendez-vous calendrier',
+      eventData.title,
+      `Rendez-vous "${eventData.title}" créé pour le ${eventDate}`
+    );
+
     res.status(201).json(formatEventForResponse(event));
   } catch (error) {
     console.error('Error creating calendar event:', error);
@@ -81,6 +91,9 @@ export const updateCalendarEvent = async (req: Request, res: Response): Promise<
     const { id } = req.params;
     const updateData = req.body;
 
+    const oldEvent = await CalendarModel.getCalendarEventById(id);
+    const oldTitle = oldEvent?.title || 'Rendez-vous';
+
     const event = await CalendarModel.updateCalendarEvent(id, updateData);
     if (!event) {
       res.status(404).json({
@@ -89,6 +102,16 @@ export const updateCalendarEvent = async (req: Request, res: Response): Promise<
       });
       return;
     }
+
+    const eventTitle = updateData.title || oldTitle;
+    const eventDate = event.appointment_date ? new Date(event.appointment_date).toLocaleDateString('fr-FR') : '';
+    await createAdminNotificationForAction(
+      'update',
+      'Rendez-vous calendrier',
+      eventTitle,
+      `Rendez-vous "${eventTitle}" modifié${eventDate ? ` pour le ${eventDate}` : ''}`
+    );
+
     res.json(formatEventForResponse(event));
   } catch (error) {
     console.error('Error updating calendar event:', error);
@@ -102,6 +125,11 @@ export const updateCalendarEvent = async (req: Request, res: Response): Promise<
 export const deleteCalendarEvent = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
+    
+    const oldEvent = await CalendarModel.getCalendarEventById(id);
+    const eventTitle = oldEvent?.title || 'Rendez-vous';
+    const eventDate = oldEvent?.appointment_date ? new Date(oldEvent.appointment_date).toLocaleDateString('fr-FR') : '';
+
     const deleted = await CalendarModel.deleteCalendarEvent(id);
 
     if (!deleted) {
@@ -111,6 +139,13 @@ export const deleteCalendarEvent = async (req: Request, res: Response): Promise<
       });
       return;
     }
+
+    await createAdminNotificationForAction(
+      'delete',
+      'Rendez-vous calendrier',
+      eventTitle,
+      `Rendez-vous "${eventTitle}" supprimé${eventDate ? ` (${eventDate})` : ''}`
+    );
 
     res.json({
       success: true,

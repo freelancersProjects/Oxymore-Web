@@ -1,6 +1,8 @@
 import express, { Request, Response } from 'express';
 import { db } from '../../config/db';
 import { RowDataPacket, ResultSetHeader } from 'mysql2';
+import { createAdminNotificationForAction } from '../../services/admin/notificationAdminService';
+import * as UserService from '../../services/user/userService';
 
 const router = express.Router();
 
@@ -130,7 +132,6 @@ router.put('/:userId', async (req: Request<{ userId: string }, any, UpdateRoleRe
       return;
     }
 
-    // Vérifier si le rôle existe
     const [roles] = await db.execute<Role[]>(
       'SELECT * FROM roles WHERE id = ?',
       [role_id]
@@ -152,11 +153,24 @@ router.put('/:userId', async (req: Request<{ userId: string }, any, UpdateRoleRe
       return;
     }
 
-    // Mettre à jour le rôle de l'utilisateur
     await db.execute<ResultSetHeader>(
       'UPDATE user SET role_id = ? WHERE id_user = ?',
       [role_id, req.params.userId]
     );
+
+    try {
+      const user = await UserService.getUserById(req.params.userId);
+      const userName = user?.username || user?.first_name || `User ${req.params.userId}`;
+      const roleName = roles[0]?.name || 'nouveau rôle';
+      await createAdminNotificationForAction(
+        'update',
+        'Utilisateur',
+        userName,
+        `Rôle de "${userName}" changé vers "${roleName}"`
+      );
+    } catch (error) {
+      console.error('Error creating admin notification for role change:', error);
+    }
 
     res.json({ message: "User role updated successfully" });
   } catch (error) {
