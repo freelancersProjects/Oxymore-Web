@@ -2,6 +2,9 @@ import React, { useState, useRef, useEffect } from 'react';
 import { X, ZoomIn, ZoomOut, Move } from 'lucide-react';
 import { OXMModal, OXMButton, OXMToast } from '@oxymore/ui';
 import { compressImage } from '../../../../utils/imageCompression';
+import { cropImage } from '../../../../utils/imageCrop';
+import { extractPublicIdFromUrl } from '../../../../utils/cloudinaryUtils';
+import apiService from '../../../../api/apiService';
 import './ImageCropperModal.scss';
 
 interface ImageCropperModalProps {
@@ -152,14 +155,42 @@ const ImageCropperModal: React.FC<ImageCropperModalProps> = ({
     });
   };
 
-  const handleSave = () => {
-    if (!imageSrc) {
+  const handleSave = async () => {
+    if (!imageSrc || !containerRef.current || !imageRef.current) {
       setToast({ message: "Veuillez sélectionner une image", type: "error" });
       return;
     }
 
-    onSave(imageSrc, { ...position, scale });
-    onClose();
+    try {
+      const container = containerRef.current;
+      const containerRect = container.getBoundingClientRect();
+      
+      const croppedImage = await cropImage(
+        imageSrc,
+        containerRect.width,
+        containerRect.height,
+        position,
+        scale,
+        type === 'logo' ? 'avatar' : 'banner'
+      );
+
+      setToast({ message: "Upload en cours...", type: "info" });
+      
+      const oldPublicId = currentImage ? extractPublicIdFromUrl(currentImage) : null;
+      
+      const response = await apiService.post('/cloudinary/upload', {
+        image: croppedImage,
+        type: type === 'logo' ? 'avatar' : 'banner',
+        oldPublicId: oldPublicId,
+      });
+
+      onSave(response.url, { ...position, scale });
+      setToast({ message: "Image uploadée avec succès", type: "success" });
+      onClose();
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      setToast({ message: "Erreur lors de l'upload de l'image", type: "error" });
+    }
   };
 
   const getImageStyle = () => {

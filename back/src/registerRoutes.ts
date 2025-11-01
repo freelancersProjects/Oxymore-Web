@@ -43,6 +43,7 @@ import tournamentMapRoutes from "./routes/tournament/tournamentMap";
 import kanbanRoutes from "./routes/kanban/kanban";
 import calendarRoutes from "./routes/calendar/calendar";
 import gameRoutes from "./routes/game/game";
+import cloudinaryRoutes from "./routes/cloudinary/cloudinary";
 
 export const registerRoutes = (app: Express) => {
   // Routes publiques
@@ -89,4 +90,5 @@ export const registerRoutes = (app: Express) => {
   app.use("/api/kanban", kanbanRoutes);
   app.use("/api/calendar", calendarRoutes);
   app.use("/api/games", gameRoutes);
+  app.use("/api/cloudinary", cloudinaryRoutes);
 };
