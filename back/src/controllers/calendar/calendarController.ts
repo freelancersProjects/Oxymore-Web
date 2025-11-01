@@ -81,9 +81,6 @@ export const updateCalendarEvent = async (req: Request, res: Response): Promise<
     const { id } = req.params;
     const updateData = req.body;
 
-    console.log('UPDATE - ID:', id);
-    console.log('UPDATE - Data:', updateData);
-
     const event = await CalendarModel.updateCalendarEvent(id, updateData);
     if (!event) {
       res.status(404).json({
@@ -92,8 +89,6 @@ export const updateCalendarEvent = async (req: Request, res: Response): Promise<
       });
       return;
     }
-
-    console.log('UPDATE - Result:', event);
     res.json(formatEventForResponse(event));
   } catch (error) {
     console.error('Error updating calendar event:', error);
