@@ -35,6 +35,7 @@ import Settings from './pages/Settings/Settings';
 import Analytics from './pages/Analytics/Analytics';
 import Activity from './pages/Activity/Activity';
 import Calendar from './pages/Calendar/Calendar';
+import Notifications from './pages/Notifications/Notifications';
 import Jira from './pages/Jira/Jira';
 import WebPConverter from './pages/WebPConverter/WebPConverter';
 import UUIDGenerator from './pages/UUIDGenerator/UUIDGenerator';
@@ -118,6 +119,7 @@ const App = () => {
                             />
                             <Route path="analytics" element={<Analytics />} />
                             <Route path="activity" element={<Activity />} />
+                            <Route path="notifications" element={<Notifications />} />
                             <Route path="calendar" element={<Calendar />} />
                             <Route path="jira" element={<Jira />} />
                             <Route path="webp-converter" element={<WebPConverter />} />
