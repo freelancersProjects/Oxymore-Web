@@ -103,3 +103,7 @@ image.png.no-profile-sidebar .profile-panel {
   margin: 0 !important;
   padding: 0 !important;
 }
+
+.oxm-main--no-header-margin {
+  margin-top: 0 !important;
+}

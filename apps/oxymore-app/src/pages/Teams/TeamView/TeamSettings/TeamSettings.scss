@@ -90,7 +90,14 @@
   position: relative;
   cursor: pointer;
   overflow: hidden;
-  transition: all 0.2s;
+  transition: all 0.3s ease;
+
+  &.drag-over {
+    border-color: rgba(139, 92, 246, 0.8) !important;
+    background: rgba(139, 92, 246, 0.15) !important;
+    border-width: 3px !important;
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+  }
 
   &--logo {
     width: rem-calc(120);

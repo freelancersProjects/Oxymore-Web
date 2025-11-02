@@ -7,6 +7,7 @@ import { regionService, type Country } from '../../../../services/regionService'
 import type { Team, TeamMember } from '../../../../types/team';
 import EditableField from './EditableField';
 import ImageCropperModal from './ImageCropperModal';
+import ImageDropZone from '../../../../components/ImageDropZone/ImageDropZone';
 import LeaveTeamModal from '../LeaveTeamModal';
 import './TeamSettings.scss';
 
@@ -27,6 +28,7 @@ const TeamSettings: React.FC<TeamSettingsProps> = ({ teamId, teamData, onTeamUpd
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' | 'info' } | null>(null);
   const [countries, setCountries] = useState<Country[]>([]);
   const [countryOptions, setCountryOptions] = useState<{label: string; value: string}[]>([]);
+  const [droppedImageForModal, setDroppedImageForModal] = useState<string | null>(null);
 
   React.useEffect(() => {
     const userStr = localStorage.getItem("useroxm");
@@ -119,6 +121,16 @@ const TeamSettings: React.FC<TeamSettingsProps> = ({ teamId, teamData, onTeamUpd
     handleImageUpdate(imageData, 'banner');
   };
 
+  const handleLogoDrop = (imageData: string) => {
+    setDroppedImageForModal(imageData);
+    setShowLogoModal(true);
+  };
+
+  const handleBannerDrop = (imageData: string) => {
+    setDroppedImageForModal(imageData);
+    setShowBannerModal(true);
+  };
+
   // const getEntryTypeLabel = (type: string) => {
   //   const labels: Record<string, string> = {
   //     open: 'Ouverte',
@@ -193,10 +205,15 @@ const TeamSettings: React.FC<TeamSettingsProps> = ({ teamId, teamData, onTeamUpd
             <div className="image-field">
               <div className="image-field__label">Logo de l'équipe</div>
               <div className="image-field__content">
-                <div
+                <ImageDropZone
+                  onImageDrop={handleLogoDrop}
+                  disabled={!isCreator}
+                  type="logo"
                   className={`image-preview image-preview--logo ${!isCreator ? 'disabled' : ''}`}
+                >
+                <div
                   onClick={() => isCreator && setShowLogoModal(true)}
-                  style={{ cursor: isCreator ? 'pointer' : 'not-allowed', opacity: isCreator ? 1 : 0.6 }}
+                  style={{ cursor: isCreator ? 'pointer' : 'not-allowed', opacity: isCreator ? 1 : 0.6, width: '100%', height: '100%' }}
                 >
                   {localTeamData.logo ? (
                     <img
@@ -215,16 +232,22 @@ const TeamSettings: React.FC<TeamSettingsProps> = ({ teamId, teamData, onTeamUpd
                     <span>Modifier</span>
                   </div>
                 </div>
+                </ImageDropZone>
               </div>
             </div>
 
             <div className="image-field">
               <div className="image-field__label">Bannière de l'équipe</div>
               <div className="image-field__content">
-                <div
+                <ImageDropZone
+                  onImageDrop={handleBannerDrop}
+                  disabled={!isCreator}
+                  type="banner"
                   className={`image-preview image-preview--banner ${!isCreator ? 'disabled' : ''}`}
+                >
+                <div
                   onClick={() => isCreator && setShowBannerModal(true)}
-                  style={{ cursor: isCreator ? 'pointer' : 'not-allowed', opacity: isCreator ? 1 : 0.6 }}
+                  style={{ cursor: isCreator ? 'pointer' : 'not-allowed', opacity: isCreator ? 1 : 0.6, width: '100%', height: '100%' }}
                 >
                   {localTeamData.banner ? (
                     <img
@@ -243,6 +266,7 @@ const TeamSettings: React.FC<TeamSettingsProps> = ({ teamId, teamData, onTeamUpd
                     <span>Modifier</span>
                   </div>
                 </div>
+                </ImageDropZone>
               </div>
             </div>
           </div>
@@ -387,18 +411,24 @@ const TeamSettings: React.FC<TeamSettingsProps> = ({ teamId, teamData, onTeamUpd
 
       <ImageCropperModal
         isOpen={showLogoModal}
-        onClose={() => setShowLogoModal(false)}
+        onClose={() => {
+          setShowLogoModal(false);
+          setDroppedImageForModal(null);
+        }}
         onSave={handleLogoSave}
-        currentImage={localTeamData.logo}
+        currentImage={droppedImageForModal || localTeamData.logo}
         type="logo"
         title="Modifier le logo"
       />
 
       <ImageCropperModal
         isOpen={showBannerModal}
-        onClose={() => setShowBannerModal(false)}
+        onClose={() => {
+          setShowBannerModal(false);
+          setDroppedImageForModal(null);
+        }}
         onSave={handleBannerSave}
-        currentImage={localTeamData.banner}
+        currentImage={droppedImageForModal || localTeamData.banner}
         type="banner"
         title="Modifier la bannière"
       />

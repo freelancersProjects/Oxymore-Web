@@ -18,6 +18,7 @@ export const LAYOUT_CONFIG = {
   noHeaderPages: [
     "/oxia",
     "/highlights",
+    "/upload",
     "/demo",
     "/messages",
     "/subscription",
@@ -30,7 +31,7 @@ export const LAYOUT_CONFIG = {
   noFooterPages: ["/dashboard", "/admin"],
 
   //Pages qui doivent masquer seulement la sidebar du profile
-  noProfileSidebarPatterns: ["/subscription", "/teams/:id"],
+  noProfileSidebarPatterns: ["/subscription", "/teams/:id", "/upload", "/highlights"],
 };
 
 // Fonction utilitaire pour vérifier si une page doit être en plein écran

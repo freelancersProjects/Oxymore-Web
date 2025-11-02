@@ -4,6 +4,7 @@ import { OXMModal, OXMButton, OXMToast } from '@oxymore/ui';
 import { compressImage } from '../../../../utils/imageCompression';
 import { cropImage } from '../../../../utils/imageCrop';
 import { extractPublicIdFromUrl } from '../../../../utils/cloudinaryUtils';
+import ImageDropZone from '../../../../components/ImageDropZone/ImageDropZone';
 import apiService from '../../../../api/apiService';
 import './ImageCropperModal.scss';
 
@@ -35,17 +36,40 @@ const ImageCropperModal: React.FC<ImageCropperModalProps> = ({
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (isOpen && currentImage) {
-      setImageSrc(currentImage);
+    if (isOpen) {
+      if (currentImage) {
+        setImageSrc(currentImage);
+      } else {
+        setImageSrc(null);
+      }
       setPosition({ x: 0, y: 0 });
       setScale(1);
     }
   }, [isOpen, currentImage]);
 
-  const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+  useEffect(() => {
+    if (isOpen && !imageSrc && fileInputRef.current) {
+      const input = fileInputRef.current;
+      const checkForDroppedImage = () => {
+        if (input.files && input.files.length > 0) {
+          const file = input.files[0];
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            const result = e.target?.result as string;
+            setImageSrc(result);
+            setPosition({ x: 0, y: 0 });
+            setScale(1);
+          };
+          if (file) {
+            reader.readAsDataURL(file);
+          }
+        }
+      };
+      setTimeout(checkForDroppedImage, 100);
+    }
+  }, [isOpen, imageSrc]);
 
+  const processImageFile = async (file: File) => {
     if (!file.type.startsWith('image/')) {
       setToast({ message: "Veuillez sélectionner une image", type: "error" });
       return;
@@ -68,6 +92,18 @@ const ImageCropperModal: React.FC<ImageCropperModalProps> = ({
       }
     };
     reader.readAsDataURL(file);
+  };
+
+  const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    await processImageFile(file);
+  };
+
+  const handleImageDrop = (imageData: string) => {
+    setImageSrc(imageData);
+    setPosition({ x: 0, y: 0 });
+    setScale(1);
   };
 
   const handleMouseDown = (e: React.MouseEvent) => {
@@ -212,7 +248,11 @@ const ImageCropperModal: React.FC<ImageCropperModalProps> = ({
           </button>
         </div>
 
-        <div className="image-cropper-modal__content">
+        <ImageDropZone
+          onImageDrop={handleImageDrop}
+          type={type === 'logo' ? 'logo' : 'banner'}
+          className="image-cropper-modal__content"
+        >
           <div className="image-cropper-controls">
             <button
               type="button"
@@ -265,7 +305,7 @@ const ImageCropperModal: React.FC<ImageCropperModalProps> = ({
               </div>
             )}
           </div>
-        </div>
+        </ImageDropZone>
 
         <div className="image-cropper-modal__footer">
           <OXMButton variant="secondary" onClick={onClose}>
