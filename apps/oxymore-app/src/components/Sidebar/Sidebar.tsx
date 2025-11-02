@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { NavLink } from "react-router-dom";
-import { Home, Trophy, Layers, Play, Users, UserPlus, LogOut, ChevronLeft, Bot, Menu, X, Store, Users2, BookOpen, AlertTriangle, ChevronDown } from "lucide-react";
+import { Home, Trophy, Layers, Play, Users, UserPlus, LogOut, ChevronLeft, Bot, Menu, X, Store, Users2, BookOpen, AlertTriangle, ChevronDown, ExternalLink } from "lucide-react";
+import { gameService } from "../../services/gameService";
 import { OXMBadge } from "@oxymore/ui";
 import Logo from "./../../assets/logo.png";
 import { teamService } from "../../services/teamService";
@@ -22,6 +23,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false, onToggle 
 
   const [hasTeam, setHasTeam] = useState(false);
   const [teamNotificationsCount, setTeamNotificationsCount] = useState(0);
+  const [currentGame] = useState({ name: 'Counter-Strike 2', logo: gameService.getGameLogoByName('Counter-Strike 2') });
   const navRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -224,6 +226,13 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false, onToggle 
                   <Play size={20} /> <span>Highlights</span>
                 </NavLink>
               </li>
+              <li>
+                <button onClick={handleStoreClick} className="oxm-sidebar-nav-link store-nav-btn">
+                  <Store size={20} />
+                  <span>Store</span>
+                  <ExternalLink size={14} />
+                </button>
+              </li>
             </ul>
           </div>
 
@@ -295,11 +304,20 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false, onToggle 
           )}
         </nav>
 
-        <div className="oxm-sidebar__store">
-          <button onClick={handleStoreClick} className="store-btn">
-            <Store size={20} />
-            <span>Store</span>
-          </button>
+        <div className="oxm-sidebar__current-game">
+          <div className="current-game-content">
+            <div className="current-game-logo">
+              {currentGame.logo ? (
+                <img src={currentGame.logo} alt={currentGame.name} />
+              ) : (
+                <div className="current-game-placeholder">CS</div>
+              )}
+            </div>
+            <div className="current-game-info">
+              <div className="current-game-label">Jeu actuel</div>
+              <div className="current-game-name">{currentGame.name}</div>
+            </div>
+          </div>
         </div>
 
         <div className="oxm-sidebar__logout">
