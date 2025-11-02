@@ -187,6 +187,15 @@
         border-radius: rem-calc(10);
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         position: relative;
+        border: 1px solid transparent;
+        background: transparent;
+        width: 100%;
+        text-align: left;
+        cursor: pointer;
+        overflow: hidden;
+        box-sizing: border-box;
+        line-height: 1.5;
+        min-height: rem-calc(44);
 
         &::before {
           content: '';
@@ -231,13 +240,14 @@
           background: rgba(255 255 255 / 5%);
           color: white;
           transform: translateX(4px);
+          box-sizing: border-box;
         }
 
         &[href="/matchmaking"]:hover:not(.active) {
           background: linear-gradient(135deg, rgb(239 68 68 / 15%) 0%, rgb(220 38 38 / 10%) 100%);
           border: 1px solid rgb(239 68 68 / 30%);
           box-shadow: 0 4px 16px rgb(239 68 68 / 20%);
-          transform: translateX(4px) scale(1.02);
+          transform: translateX(4px);
 
           svg {
             color: $color-red-error;
@@ -258,6 +268,7 @@
           border-radius: rem-calc(4);
           padding: rem-calc(3) rem-calc(8);
           margin-left: auto;
+          margin-right: rem-calc(10);
           letter-spacing: 0.5px;
           box-shadow: 0 2px 8px rgb(139 92 246 / 30%);
         }
@@ -336,9 +347,9 @@
       }
   }
 
-  &__store {
+  &__current-game {
     margin-top: rem-calc(16);
-    padding: rem-calc(10) rem-calc(16);
+    padding: rem-calc(16);
     border-top: 1px solid rgb(255 255 255 / 6%);
     position: sticky;
     bottom: rem-calc(60);
@@ -346,57 +357,105 @@
     backdrop-filter: blur(rem-calc(20));
     z-index: 10;
 
-    .store-btn {
+    .current-game-content {
       display: flex;
       align-items: center;
-      gap: rem-calc(14);
-      background: linear-gradient(135deg, rgb(34 197 94 / 10%) 0%, rgb(16 185 129 / 5%) 100%);
-      border: 1px solid rgb(34 197 94 / 20%);
-      color: rgb(255 255 255 / 80%);
-      font-family: Outfit, sans-serif;
-      font-size: rem-calc(16);
-      font-weight: 500;
-      padding: rem-calc(18) rem-calc(20);
-      margin: 0 rem-calc(16);
+      gap: rem-calc(12);
+      padding: rem-calc(12);
+      background: rgb(255 255 255 / 5%);
+      border: 1px solid rgb(255 255 255 / 10%);
       border-radius: rem-calc(12);
-      cursor: pointer;
-      width: calc(100% - 2rem);
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      position: relative;
+      backdrop-filter: blur(10px);
+    }
+
+    .current-game-logo {
+      width: rem-calc(48);
+      height: rem-calc(48);
+      border-radius: rem-calc(12);
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(59, 130, 246, 0.2));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      border: 1px solid rgba(255, 255, 255, 0.1);
       overflow: hidden;
 
-      &::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
+      img {
         width: 100%;
         height: 100%;
-        background: linear-gradient(90deg, transparent, rgb(255 255 255 / 10%), transparent);
-        transition: left 0.5s ease;
+        object-fit: cover;
       }
+    }
 
-      &:hover {
-        background: linear-gradient(135deg, rgb(34 197 94 / 20%) 0%, rgb(16 185 129 / 10%) 100%);
-        border-color: rgb(34 197 94 / 40%);
-        color: white;
-        transform: translateX(4px);
-        box-shadow: 0 4px 16px rgb(34 197 94 / 20%);
+    .current-game-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Orbitron', monospace;
+      font-size: rem-calc(14);
+      font-weight: 700;
+      color: $color-white;
+      background: linear-gradient(135deg, $color-purple-violet, $color-blue-indigo);
+    }
 
-        &::before {
-          left: 100%;
-        }
-      }
+    .current-game-info {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: rem-calc(2);
+    }
 
-      svg {
-        transition: all 0.3s ease;
+    .current-game-label {
+      font-family: 'Outfit', sans-serif;
+      font-size: rem-calc(11);
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.6);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .current-game-name {
+      font-family: 'Orbitron', monospace;
+      font-size: rem-calc(14);
+      font-weight: 600;
+      color: $color-white;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+
+  .store-nav-btn {
+    svg:last-child {
+      margin-left: auto;
+      margin-right: rem-calc(10);
+      opacity: 0.6;
+      transition: all 0.3s ease;
+      position: relative;
+      z-index: 1;
+    }
+
+    &:hover:not(.active) {
+      background: linear-gradient(135deg, rgb(34 197 94 / 15%) 0%, rgb(16 185 129 / 10%) 100%);
+      border: 1px solid rgb(34 197 94 / 30%);
+      box-shadow: 0 4px 16px rgb(34 197 94 / 20%);
+      transform: translateX(4px);
+
+      svg:first-child {
         color: $color-green-success;
-        width: rem-calc(22);
-        height: rem-calc(22);
       }
 
       span {
-        transition: all 0.3s ease;
+        color: $color-green-success;
+        font-weight: 600;
+      }
+
+      svg:last-child {
+        color: $color-green-success;
+        opacity: 1;
       }
     }
   }
@@ -404,9 +463,12 @@
 
 .oxm-sidebar.collapsed {
   .oxm-sidebar__logo {
+    justify-content: center;
+    
     img {
       width: rem-calc(32);
       height: rem-calc(32);
+      margin: 0;
     }
 
     span {
@@ -430,8 +492,10 @@
 
       .oxm-sidebar-nav-link {
         justify-content: center;
-        padding: rem-calc(14) rem-calc(8);
-        margin: 0 rem-calc(16);
+        padding: rem-calc(14) 0;
+        margin: 0 auto;
+        width: rem-calc(48);
+        height: rem-calc(48);
         border-radius: rem-calc(12);
         position: relative;
 
@@ -442,6 +506,11 @@
         svg {
           width: rem-calc(20);
           height: rem-calc(20);
+          margin: 0;
+        }
+
+        svg:first-child {
+          margin: 0;
         }
 
         .oxm-badge--sidebar {
@@ -460,13 +529,16 @@
   }
 
   .oxm-sidebar__logout {
+    display: flex;
+    justify-content: center;
+    
     button {
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: rem-calc(12) rem-calc(8);
+      padding: 0;
       border-radius: rem-calc(12);
-      margin: 0;
+      margin: 0 auto;
       width: rem-calc(48);
       height: rem-calc(48);
 
@@ -477,31 +549,46 @@
       svg {
         width: rem-calc(20);
         height: rem-calc(20);
+        margin: 0;
       }
     }
   }
 
-  .oxm-sidebar__store {
-    bottom: rem-calc(60);
+  .oxm-sidebar__current-game {
+    margin-top: rem-calc(16);
+    padding: 0;
+    border-top: 1px solid rgb(255 255 255 / 6%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-    .store-btn {
+    .current-game-content {
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: rem-calc(12) rem-calc(8);
-      border-radius: rem-calc(12);
-      margin: 0;
+      padding: 0;
+      gap: 0;
+      background: transparent;
+      border: none;
       width: rem-calc(48);
       height: rem-calc(48);
+    }
 
-      span {
-        display: none;
-      }
+    .current-game-logo {
+      width: rem-calc(48);
+      height: rem-calc(48);
+      border-radius: rem-calc(12);
+      margin: 0;
+    }
 
-      svg {
-        width: rem-calc(20);
-        height: rem-calc(20);
-      }
+    .current-game-info {
+      display: none;
+    }
+  }
+
+  .store-nav-btn {
+    svg:last-child {
+      display: none;
     }
   }
 }
