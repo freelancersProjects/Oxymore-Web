@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { CheckCircle2, XCircle, Info, X } from "lucide-react";
 import "./Toast.scss";
 
 interface ToastProps {
@@ -30,6 +31,19 @@ const Toast: React.FC<ToastProps> = ({
     }
   };
 
+  const getIcon = () => {
+    switch (type) {
+      case "success":
+        return <CheckCircle2 size={20} />;
+      case "error":
+        return <XCircle size={20} />;
+      case "info":
+        return <Info size={20} />;
+      default:
+        return <Info size={20} />;
+    }
+  };
+
   return (
     <div
       className={`oxm-toast oxm-toast--${type} ${
@@ -37,8 +51,17 @@ const Toast: React.FC<ToastProps> = ({
       }`}
       onAnimationEnd={handleAnimationEnd}
     >
-      <span>{message}</span>
-      <button onClick={() => setVisible(false)}>Fermer</button>
+      <div className="oxm-toast__content">
+        <div className="oxm-toast__icon">{getIcon()}</div>
+        <span className="oxm-toast__message">{message}</span>
+      </div>
+      <button 
+        className="oxm-toast__close" 
+        onClick={() => setVisible(false)}
+        aria-label="Fermer"
+      >
+        <X size={16} />
+      </button>
     </div>
   );
 };
