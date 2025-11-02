@@ -15,6 +15,7 @@ import OxiaChat from "./pages/OxiaChat/OxiaChat";
 import Register from "./pages/Register/Register";
 import { Teams } from "./pages/Teams/Teams";
 import { CreateTeam } from "./pages/CreateTeam/CreateTeam";
+import { UploadVideo } from "./pages/UploadVideo/UploadVideo";
 import TeamView from "./pages/Teams/TeamView/TeamView";
 import League from "./pages/League/League";
 import TournamentPage from "./pages/Tournament/Tournament";
@@ -117,6 +118,7 @@ export default function App() {
                 location.pathname === "/subscription" ||
                 location.pathname === "/teams" ||
                 location.pathname === "/teams/create";
+              const isHighlightsPage = location.pathname === "/highlights";
               return (
                 <div
                   className={`oxm-layout${
@@ -148,6 +150,8 @@ export default function App() {
                           ? "oxm-main--no-margin"
                           : isFullBackgroundPage
                           ? "oxm-main--full-background"
+                          : isHighlightsPage
+                          ? "oxm-main--no-header-margin"
                           : ""
                       }
                     >
@@ -160,6 +164,7 @@ export default function App() {
                           <Route path="/" element={<Dashboard />} />
                           <Route path="/api-keys" element={<ApiKeysPage />} />
                           <Route path="/highlights" element={<Highlights />} />
+                          <Route path="/upload" element={<UploadVideo />} />
                           <Route path="/teams" element={<Teams />} />
                           <Route path="/teams/create" element={<CreateTeam />} />
                           <Route path="/teams/:id" element={<TeamView />} />
