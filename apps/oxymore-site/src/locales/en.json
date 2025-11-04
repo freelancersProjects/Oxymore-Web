@@ -184,7 +184,9 @@
       "emailPlaceholder": "Enter Email",
       "message": "Message",
       "messagePlaceholder": "Type here",
-      "send": "Submit"
+      "send": "Submit",
+      "sending": "Sending...",
+      "success": "Message sent successfully!"
     },
     "infoTitle": "Support & Community Channels",
     "infoEmail": "Support Email",

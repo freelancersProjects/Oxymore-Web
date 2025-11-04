@@ -19,7 +19,8 @@ import {
   CheckSquare,
   Zap,
   Hash,
-  Bell
+  Bell,
+  MessageSquare
 } from 'lucide-react';
 import { useSidebar } from '../../../context/SidebarContext';
 import { useAuth } from '../../../context/AuthContext';
@@ -152,6 +153,7 @@ const Sidebar = () => {
     { label: 'Leagues', icon: Target, path: '/leagues', badge: loading ? '...' : stats.totalLeagues.toString() },
     { label: 'Matches', icon: Calendar, path: '/matches', badge: 'LIVE', color: 'bg-red-500' },
     { label: 'Badges', icon: Star, path: '/badges' },
+    { label: 'Reviews', icon: MessageSquare, path: '/reviews', color: 'bg-gradient-purple' },
     { label: 'Notifications', icon: Bell, path: '/notifications', color: 'bg-gradient-blue' },
     { label: 'Calendrier', icon: Calendar, path: '/calendar' },
     { label: 'Jira', icon: CheckSquare, path: '/jira', color: 'bg-gradient-blue' },
