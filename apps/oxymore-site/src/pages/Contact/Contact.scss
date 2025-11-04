@@ -96,6 +96,28 @@
                 width: fit-content;
             }
         }
+
+        .contact__success {
+            padding: rem-calc(15);
+            background-color: rgba(16, 185, 129, 0.2);
+            border: 1px solid rgba(16, 185, 129, 0.5);
+            border-radius: rem-calc(10);
+            color: #10b981;
+            font-family: Outfit, sans-serif;
+            font-size: rem-calc(16);
+            margin-bottom: rem-calc(20);
+        }
+
+        .contact__error {
+            padding: rem-calc(15);
+            background-color: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.5);
+            border-radius: rem-calc(10);
+            color: #ef4444;
+            font-family: Outfit, sans-serif;
+            font-size: rem-calc(16);
+            margin-bottom: rem-calc(20);
+        }
     }
 
     .contact__info {

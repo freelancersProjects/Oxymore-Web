@@ -31,6 +31,7 @@ import MatchDetails from './pages/Matches/MatchDetails';
 import Badges from './pages/Badges/Badges';
 import CreateBadge from './pages/Badges/Create/Create';
 import EditBadge from './pages/Badges/Edit/Edit';
+import Reviews from './pages/Reviews/Reviews';
 import Settings from './pages/Settings/Settings';
 import Analytics from './pages/Analytics/Analytics';
 import Activity from './pages/Activity/Activity';
@@ -117,6 +118,7 @@ const App = () => {
                               path="badges/edit/:id"
                               element={<EditBadge />}
                             />
+                            <Route path="reviews" element={<Reviews />} />
                             <Route path="analytics" element={<Analytics />} />
                             <Route path="activity" element={<Activity />} />
                             <Route path="notifications" element={<Notifications />} />

@@ -228,7 +228,9 @@
       "emailPlaceholder": "Entrez votre email",
       "message": "Message",
       "messagePlaceholder": "Écrivez ici",
-      "send": "Envoyer"
+      "send": "Envoyer",
+      "sending": "Envoi...",
+      "success": "Message envoyé avec succès !"
     },
     "infoTitle": "Support & Communauté",
     "infoEmail": "Email du support",
