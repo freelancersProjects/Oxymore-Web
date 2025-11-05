@@ -18,7 +18,12 @@ export const uploadImage = async (req: Request, res: Response) => {
       }
     }
 
-    const folderPath = folder || (type === 'avatar' ? 'oxymore/avatars' : type === 'banner' ? 'oxymore/banners' : 'oxymore');
+    const folderPath = folder || (
+      type === 'avatar' ? 'oxymore/avatars' : 
+      type === 'banner' ? 'oxymore/banners' : 
+      type === 'badge' ? 'oxymore/badges' : 
+      'oxymore'
+    );
 
     const result = await cloudinaryService.uploadFromBase64(image, {
       folder: folderPath,

@@ -31,7 +31,7 @@ export const LAYOUT_CONFIG = {
   noFooterPages: ["/dashboard", "/admin"],
 
   //Pages qui doivent masquer seulement la sidebar du profile
-  noProfileSidebarPatterns: ["/subscription", "/teams/:id", "/upload", "/highlights"],
+  noProfileSidebarPatterns: ["/subscription", "/teams/:id", "/upload", "/highlights", "/tournaments/:id"],
 };
 
 // Fonction utilitaire pour vérifier si une page doit être en plein écran

@@ -2,6 +2,13 @@ const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
 const handleResponse = async (response: Response) => {
   if (!response.ok) {
+    if (response.status === 401) {
+      localStorage.removeItem('token');
+      localStorage.removeItem('useroxm');
+      
+      window.location.href = '/login';
+    }
+    
     const error = await response.text();
     throw new Error(error || response.statusText);
   }

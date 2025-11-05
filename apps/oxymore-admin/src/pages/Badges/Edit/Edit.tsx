@@ -16,11 +16,14 @@ interface BadgeFormData {
 const Edit = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const { register, handleSubmit, formState: { errors }, reset } = useForm<BadgeFormData>();
+  const { register, handleSubmit, formState: { errors }, reset, setValue, watch } = useForm<BadgeFormData>();
   const [dragActive, setDragActive] = useState(false);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [uploadingImage, setUploadingImage] = useState(false);
+  const [uploadedImageUrl, setUploadedImageUrl] = useState<string | null>(null);
+  const [oldImagePublicId, setOldImagePublicId] = useState<string | null>(null);
 
   useEffect(() => {
     fetchBadge();
@@ -39,11 +42,28 @@ const Edit = () => {
         image_url: data.image_url || ''
       });
       setPreviewImage(data.image_url);
+      setUploadedImageUrl(data.image_url);
+      
+      // Extract old public_id if exists
+      if (data.image_url && data.image_url.includes('cloudinary.com')) {
+        const publicId = extractPublicIdFromUrl(data.image_url);
+        setOldImagePublicId(publicId);
+      }
     } catch (err) {
       setError('Une erreur est survenue lors du chargement du badge');
       console.error('Error fetching badge:', err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const extractPublicIdFromUrl = (url: string): string | null => {
+    try {
+      // Cloudinary URL format: https://res.cloudinary.com/{cloud_name}/image/upload/{public_id}.{ext}
+      const match = url.match(/\/upload\/(?:v\d+\/)?(.+?)(?:\.[^.]+)?$/);
+      return match ? match[1] : null;
+    } catch {
+      return null;
     }
   };
 
@@ -68,11 +88,67 @@ const Edit = () => {
     }
   };
 
-  const handleImageFile = (file: File) => {
-    // Pour l'instant, on crée juste une URL locale pour la prévisualisation
-    // Plus tard, on utilisera Cloudinary ici
-    const previewUrl = URL.createObjectURL(file);
-    setPreviewImage(previewUrl);
+  const convertFileToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = error => reject(error);
+    });
+  };
+
+  const handleImageFile = async (file: File) => {
+    try {
+      setUploadingImage(true);
+      
+      // Check if user is authenticated
+      const token = localStorage.getItem('token');
+      if (!token) {
+        alert('You must be logged in to upload images. Please log in and try again.');
+        setPreviewImage(watch('image_url') || null);
+        return;
+      }
+      
+      // Create preview
+      const previewUrl = URL.createObjectURL(file);
+      setPreviewImage(previewUrl);
+
+      // Convert to base64
+      const base64Image = await convertFileToBase64(file);
+
+      // Extract old public_id if exists
+      const currentImageUrl = watch('image_url');
+      const oldPublicId = currentImageUrl && currentImageUrl.includes('cloudinary.com') 
+        ? extractPublicIdFromUrl(currentImageUrl)
+        : null;
+
+      // Upload to Cloudinary
+      const response = await apiService.post<{ url: string; public_id: string }>('/cloudinary/upload', {
+        image: base64Image,
+        folder: 'oxymore/badges',
+        type: 'badge',
+        oldPublicId: oldPublicId
+      });
+
+      // Set the Cloudinary URL
+      setUploadedImageUrl(response.url);
+      setValue('image_url', response.url);
+      setOldImagePublicId(response.public_id);
+    } catch (error: any) {
+      console.error('Error uploading image:', error);
+      setPreviewImage(watch('image_url') || null); // Keep old image if upload fails
+      
+      // Better error message
+      if (error?.response?.status === 403) {
+        alert('Access denied. Your session may have expired. Please log in again and try again.');
+      } else if (error?.response?.status === 401) {
+        alert('You must be logged in to upload images. Please log in and try again.');
+      } else {
+        alert('Failed to upload image. Please try again.');
+      }
+    } finally {
+      setUploadingImage(false);
+    }
   };
 
   const handleFileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -87,12 +163,13 @@ const Edit = () => {
     try {
       const formData = {
         ...data,
-        image_url: previewImage
+        image_url: uploadedImageUrl || previewImage || data.image_url
       };
       await apiService.patch(`/badges/${id}`, formData);
       navigate('/badges');
     } catch (error) {
       console.error('Error updating badge:', error);
+      alert('Failed to update badge. Please try again.');
     }
   };
 
@@ -162,7 +239,12 @@ const Edit = () => {
               onDragOver={handleDrag}
               onDrop={handleDrop}
             >
-              {previewImage ? (
+              {uploadingImage ? (
+                <div className="flex flex-col items-center gap-2">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-oxymore-purple"></div>
+                  <p className="text-[var(--text-secondary)]">Uploading image...</p>
+                </div>
+              ) : previewImage ? (
                 <div className="relative w-32 h-32 mx-auto">
                   <img
                     src={previewImage}
@@ -171,8 +253,23 @@ const Edit = () => {
                   />
                   <button
                     type="button"
-                    onClick={() => setPreviewImage(null)}
-                    className="absolute -top-2 -right-2 p-1 bg-red-500 text-white rounded-full text-sm"
+                    onClick={() => {
+                      // Get the original image URL from the form
+                      const originalImageUrl = watch('image_url');
+                      
+                      // If we uploaded a new image (different from original), reset to original
+                      if (uploadedImageUrl && uploadedImageUrl !== originalImageUrl) {
+                        setPreviewImage(originalImageUrl || null);
+                        setUploadedImageUrl(originalImageUrl || null);
+                        setValue('image_url', originalImageUrl || '');
+                      } else {
+                        // If it's the original image or no original, clear everything
+                        setPreviewImage(null);
+                        setUploadedImageUrl(null);
+                        setValue('image_url', '');
+                      }
+                    }}
+                    className="absolute -top-2 -right-2 p-1 bg-red-500 text-white rounded-full text-sm hover:bg-red-600 transition-colors"
                   >
                     ×
                   </button>
