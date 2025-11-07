@@ -17,7 +17,8 @@
   z-index: 9999;
   padding: rem-calc(20);
 
-  &:has(.oxm-modal--blue) {
+  &:has(.oxm-modal--blue),
+  &:has(.oxm-modal--large) {
     padding: rem-calc(10);
   }
 }
@@ -51,7 +52,14 @@
   }
 
   &--large {
-    max-width: rem-calc(800);
+    max-width: 98vw;
+    width: 98vw;
+    height: 95vh;
+    max-height: 95vh;
+    padding: 0;
+    background: rgb(255 255 255 / 5%);
+    border: 1px solid rgb(255 255 255 / 10%);
+    backdrop-filter: blur(20px);
   }
 
   &--blue {

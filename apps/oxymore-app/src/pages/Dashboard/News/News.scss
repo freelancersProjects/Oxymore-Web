@@ -119,3 +119,121 @@
         }
     }
 }
+
+@media (max-width: 1024px) {
+  .news-layout {
+    flex-direction: column;
+    gap: rem-calc(24);
+  }
+
+  .news-side {
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .news-layout {
+    gap: rem-calc(20);
+    margin-top: rem-calc(16);
+  }
+
+  .tournament-card {
+    height: rem-calc(350);
+    padding: rem-calc(24);
+    border-radius: rem-calc(24);
+
+    .overlay-img {
+      height: rem-calc(400);
+      right: rem-calc(10);
+    }
+
+    .tournament-content {
+      max-width: 100%;
+      margin-bottom: rem-calc(16);
+
+      .tournament-title {
+        font-size: rem-calc(32);
+        margin-bottom: rem-calc(12);
+      }
+
+      .tournament-desc {
+        font-size: rem-calc(14);
+        line-height: rem-calc(20);
+        margin-bottom: rem-calc(24);
+      }
+    }
+  }
+
+  .news-side {
+    gap: rem-calc(12);
+
+    .news-side-title {
+      font-size: rem-calc(16);
+    }
+
+    .news-box {
+      padding: rem-calc(12);
+      border-radius: rem-calc(16);
+
+      h4 {
+        font-size: rem-calc(13);
+      }
+
+      p {
+        font-size: rem-calc(11);
+        line-height: rem-calc(16);
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .tournament-card {
+    height: rem-calc(300);
+    padding: rem-calc(20);
+    border-radius: rem-calc(20);
+
+    .overlay-img {
+      height: rem-calc(350);
+      right: rem-calc(5);
+    }
+
+    .tournament-content {
+      .tournament-title {
+        font-size: rem-calc(24);
+        margin-bottom: rem-calc(10);
+      }
+
+      .tournament-desc {
+        font-size: rem-calc(13);
+        line-height: rem-calc(18);
+        margin-bottom: rem-calc(20);
+      }
+    }
+  }
+
+  .news-side {
+    .news-side-title {
+      font-size: rem-calc(15);
+    }
+
+    .news-box {
+      padding: rem-calc(10);
+      border-radius: rem-calc(12);
+
+      h4 {
+        font-size: rem-calc(12);
+        margin-bottom: rem-calc(4);
+      }
+
+      p {
+        font-size: rem-calc(10);
+        line-height: rem-calc(14);
+      }
+
+      .read-more {
+        font-size: rem-calc(11);
+      }
+    }
+  }
+}

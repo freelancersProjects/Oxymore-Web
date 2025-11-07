@@ -45,8 +45,8 @@
     }
 
     .modal-close-btn {
-      width: rem-calc(32);
-      height: rem-calc(32);
+      width: rem-calc(40);
+      height: rem-calc(40);
       border: none;
       border-radius: rem-calc(8);
       background: rgba($color-white, 0.05);
@@ -134,13 +134,13 @@
       }
 
       &.confirm {
-        background: $color-purple;
+        background: $color-blue;
         color: $color-white;
 
         &:hover {
-          background: darken($color-purple, 5%);
+          background: darken($color-blue, 5%);
           transform: translateY(rem-calc(-1));
-          box-shadow: 0 rem-calc(4) rem-calc(12) rgba(139, 92, 246, 0.3);
+          box-shadow: 0 rem-calc(4) rem-calc(12) rgba(21, 147, 206, 0.3);
         }
 
         &.danger {

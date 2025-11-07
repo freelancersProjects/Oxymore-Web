@@ -11,6 +11,11 @@
   display: flex;
   flex-direction: column;
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1200;
+
+  @media (min-width: 769px) {
+    transform: translateX(0) !important;
+  }
 
   &.collapsed {
     width: rem-calc(80);
@@ -46,6 +51,14 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: rem-calc(12);
+  }
+
+  &__header-content {
+    display: flex;
+    align-items: center;
+    gap: rem-calc(12);
+    flex: 1;
   }
 
   &__logo {
@@ -87,11 +100,14 @@
         display: flex;
         align-items: center;
         gap: rem-calc(8);
+        flex-wrap: nowrap;
+        white-space: nowrap;
 
         .plan-text {
           font-size: rem-calc(11);
           color: rgb(255 255 255 / 70%);
           font-weight: 500;
+          white-space: nowrap;
         }
 
         .upgrade-link {
@@ -103,6 +119,8 @@
           padding: rem-calc(2) rem-calc(6);
           border-radius: rem-calc(4);
           background: rgb(251 191 36 / 10%);
+          white-space: nowrap;
+          flex-shrink: 0;
 
           &:hover {
             color: $color-orange;
@@ -596,49 +614,179 @@
 @media (width <= 768px) {
   .oxm-sidebar {
     transform: translateX(-100%);
-    width: rem-calc(280);
+    width: 100vw;
+    max-width: 100%;
+    z-index: 9999;
 
     &.open {
       transform: translateX(0);
     }
 
-    .oxm-sidebar__header, .oxm-sidebar__logo, .oxm-sidebar__toggle { display: none !important; }
-    .oxm-sidebar__nav ul { flex-direction: column; gap: rem-calc(18); }
-    .oxm-sidebar__logout { display: flex !important; }
+    .oxm-sidebar__header {
+      display: flex !important;
+      padding: rem-calc(20) rem-calc(16);
+      align-items: flex-start;
+      gap: rem-calc(12);
+      position: relative;
+      flex-direction: column;
+    }
+
+    .oxm-sidebar__header-content {
+      display: flex;
+      align-items: flex-start;
+      gap: rem-calc(12);
+      flex: 1;
+      min-width: 0;
+      width: 100%;
+    }
+
+    .oxm-sidebar__logo {
+      display: none;
+    }
+
+    .oxm-sidebar__user-plan {
+      display: none;
+    }
+
+    .oxm-sidebar__logo {
+      display: flex !important;
+      flex-shrink: 0;
+    }
+
+    .oxm-sidebar__user-plan {
+      display: block !important;
+      min-width: 0;
+      margin: 0;
+    }
+
+    .oxm-sidebar__toggle {
+      display: none !important;
+    }
+
+    .oxm-sidebar__nav ul {
+      flex-direction: column;
+      gap: rem-calc(4);
+    }
+
+    .oxm-sidebar__logout {
+      display: flex !important;
+    }
+
+    .oxm-sidebar__current-game {
+      display: flex !important;
+    }
   }
-  .oxm-sidebar-burger { display: block; }
+
+.oxm-sidebar-burger {
+  display: block;
+  position: fixed;
+  top: rem-calc(20);
+  right: rem-calc(20);
+  z-index: 10;
+    background: rgb(30 20 50 / 95%);
+    border: 1px solid rgb(139 92 246 / 30%);
+    border-radius: rem-calc(12);
+    padding: rem-calc(10);
+    color: $color-white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 rem-calc(4) rem-calc(12) rgb(0 0 0 / 30%);
+    backdrop-filter: blur(10px);
+
+    &:hover {
+      background: rgb(80 12 173 / 95%);
+      transform: scale(1.05);
+      box-shadow: 0 rem-calc(6) rem-calc(16) rgb(139 92 246 / 40%);
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
+
+    svg {
+      width: rem-calc(24);
+      height: rem-calc(24);
+    }
+  }
 
   .oxm-sidebar-overlay {
     display: none;
     position: fixed;
     inset: 0;
-    background: rgb(10 10 30 / 55%);
-    z-index: 1199;
-    &.open { display: block; }
+    background: rgb(10 10 30 / 70%);
+    backdrop-filter: blur(4px);
+    z-index: 9998;
+    transition: opacity 0.3s ease;
+
+    &.open {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+  }
+
+  .oxm-sidebar-close {
+    position: absolute;
+    top: rem-calc(20);
+    right: rem-calc(16);
+    z-index: 10;
+    background: rgb(255 255 255 / 10%);
+    border: 1px solid rgb(255 255 255 / 20%);
+    border-radius: rem-calc(8);
+    padding: rem-calc(8);
+    color: $color-white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    flex-shrink: 0;
+
+    &:hover {
+      background: rgb(255 255 255 / 20%);
+      transform: scale(1.1);
+    }
+
+    svg {
+      width: rem-calc(24);
+      height: rem-calc(24);
+    }
+  }
+
+
+  .oxm-sidebar__user-plan {
+    .user-info {
+      .user-name {
+        font-size: rem-calc(14);
+        margin-bottom: rem-calc(6);
+      }
+
+      .plan-status {
+        display: flex;
+        align-items: center;
+        gap: rem-calc(8);
+        flex-wrap: nowrap;
+
+        .plan-text {
+          font-size: rem-calc(11);
+        }
+
+        .upgrade-link {
+          font-size: rem-calc(11);
+          padding: rem-calc(2) rem-calc(6);
+          white-space: nowrap;
+        }
+      }
+    }
   }
 }
 
-.oxm-sidebar-burger {
-  display: none;
-  position: fixed;
-  top: rem-calc(20);
-  left: rem-calc(20);
-  z-index: 1000;
-  background: rgb(30 20 50 / 95%);
-  border: none;
-  border-radius: rem-calc(8);
-  padding: rem-calc(8);
-  color: $color-white;
-  font-size: rem-calc(32);
-  box-shadow: 0 rem-calc(2) rem-calc(8) rgb(0 0 0 / 18%);
-  cursor: pointer;
-  transition: background 0.2s;
-  &:hover { background: rgb(80 12 173 / 18%); }
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
-.oxm-sidebar-burger {
-  z-index: 1000;
-}
 
 @keyframes slideIn {
   from {

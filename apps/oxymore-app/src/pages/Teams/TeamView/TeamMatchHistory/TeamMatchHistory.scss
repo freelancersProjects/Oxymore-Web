@@ -1,7 +1,25 @@
 @import '../../../../styles/global';
 
 .team-match-history-page {
-  padding: rem-calc(24);
+  padding: rem-calc(24) rem-calc(20);
+}
+
+@media (max-width: 1024px) {
+  .team-match-history-page {
+    padding: rem-calc(20) rem-calc(16);
+  }
+}
+
+@media (max-width: 768px) {
+  .team-match-history-page {
+    padding: rem-calc(16) rem-calc(12);
+  }
+}
+
+@media (max-width: 480px) {
+  .team-match-history-page {
+    padding: rem-calc(12) rem-calc(8);
+  }
 }
 
 
