@@ -23,6 +23,21 @@
   }
 }
 
+@media (max-width: 1024px) {
+  .team-search-content {
+    padding: rem-calc(60) rem-calc(16) rem-calc(32) rem-calc(16);
+
+    .all-teams-section {
+      padding: 0 rem-calc(16);
+    }
+  }
+
+  .teams-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: rem-calc(16);
+  }
+}
+
 .team-search-loading {
   display: flex;
   flex-direction: column;
@@ -757,34 +772,91 @@
 
 @media (max-width: 768px) {
   .team-search-container {
-    padding: rem-calc(16);
+    padding: 0;
+  }
+
+  .team-search-content {
+    padding: rem-calc(40) rem-calc(16) rem-calc(24) rem-calc(16);
+
+    .all-teams-section {
+      padding: 0;
+    }
   }
 
   .team-search-header {
-    margin-bottom: rem-calc(32);
+    margin-bottom: rem-calc(24);
+    gap: rem-calc(16);
 
     .header-content {
+      max-width: 100%;
+
       .page-title {
-        font-size: rem-calc(32);
+        font-size: rem-calc(28);
+        margin-bottom: rem-calc(8);
       }
 
       .page-description {
-        font-size: rem-calc(16);
+        font-size: rem-calc(14);
+        line-height: 1.5;
+        margin-bottom: rem-calc(12);
       }
     }
+
+    .header-actions {
+      width: 100%;
+
+      .create-team-btn {
+        width: 100%;
+        justify-content: center;
+        padding: rem-calc(14) rem-calc(24);
+        font-size: rem-calc(16);
+
+        svg {
+          width: rem-calc(18);
+          height: rem-calc(18);
+        }
+      }
+    }
+  }
+
+  .search-filters-section {
+    margin-bottom: rem-calc(24);
   }
 
   .search-container {
     flex-direction: column;
-    gap: rem-calc(16);
+    gap: rem-calc(12);
+    margin-bottom: rem-calc(16);
 
     .search-input-wrapper {
       width: 100%;
       min-width: auto;
+
+      .search-input {
+        padding: rem-calc(14) rem-calc(14) rem-calc(14) rem-calc(44);
+        font-size: rem-calc(14);
+      }
+
+      .search-icon {
+        left: rem-calc(14);
+        width: rem-calc(18);
+        height: rem-calc(18);
+      }
     }
 
     .view-controls {
       align-self: center;
+      gap: rem-calc(6);
+
+      .view-btn {
+        width: rem-calc(40);
+        height: rem-calc(40);
+
+        svg {
+          width: rem-calc(16);
+          height: rem-calc(16);
+        }
+      }
     }
   }
 
@@ -792,61 +864,519 @@
     justify-content: flex-start;
     overflow-x: auto;
     padding-bottom: rem-calc(8);
+    gap: rem-calc(8);
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+
+    &::-webkit-scrollbar {
+      height: rem-calc(4);
+    }
 
     .filter-btn {
       white-space: nowrap;
+      padding: rem-calc(10) rem-calc(16);
+      font-size: rem-calc(13);
+      flex-shrink: 0;
+
+      svg {
+        width: rem-calc(14);
+        height: rem-calc(14);
+      }
+    }
+  }
+
+  .all-teams-section {
+    .section-header {
+      margin-bottom: rem-calc(16);
+
+      .section-title {
+        font-size: rem-calc(20);
+        flex-wrap: wrap;
+        white-space: normal;
+        gap: rem-calc(8);
+
+        svg {
+          width: rem-calc(20);
+          height: rem-calc(20);
+        }
+
+        .team-count {
+          font-size: rem-calc(14);
+        }
+      }
     }
   }
 
   .teams-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: rem-calc(16);
-    max-width: rem-calc(800);
-    margin: 0;
-    padding: 0;
+    gap: rem-calc(12);
   }
 
-  .teams-list {
-    max-width: rem-calc(800);
-    margin: 0;
-    padding: 0;
-  }
+  .team-card {
+    padding: rem-calc(20);
+    min-height: rem-calc(200);
+    border-radius: rem-calc(12);
 
-  .section-title {
-    font-size: rem-calc(24);
-    flex-wrap: wrap;
-    white-space: normal;
+    .card-header {
+      margin-bottom: rem-calc(10);
+
+      .team-logo {
+        width: rem-calc(56);
+        height: rem-calc(56);
+        border-radius: rem-calc(14);
+
+        svg {
+          width: rem-calc(24);
+          height: rem-calc(24);
+        }
+      }
+
+      .team-badges {
+        gap: rem-calc(6);
+
+        .badge {
+          width: rem-calc(32);
+          height: rem-calc(32);
+
+          svg {
+            width: rem-calc(16);
+            height: rem-calc(16);
+          }
+        }
+      }
+    }
+
+    .card-content {
+      .team-name {
+        font-size: rem-calc(16);
+        margin-bottom: rem-calc(6);
+      }
+
+      .team-description {
+        font-size: rem-calc(12);
+        margin-bottom: rem-calc(12);
+        -webkit-line-clamp: 2;
+      }
+
+      .team-stats {
+        gap: rem-calc(12);
+        padding: rem-calc(10) 0;
+
+        .stat {
+          font-size: rem-calc(12);
+          gap: rem-calc(4);
+
+          svg {
+            width: rem-calc(12);
+            height: rem-calc(12);
+          }
+        }
+      }
+    }
+
+    .card-footer {
+      margin-top: rem-calc(12);
+      flex-wrap: wrap;
+      gap: rem-calc(8);
+
+      .captain-info {
+        font-size: rem-calc(11);
+
+        svg {
+          width: rem-calc(12);
+          height: rem-calc(12);
+        }
+      }
+
+      .recruiting-badge {
+        padding: rem-calc(6) rem-calc(10);
+        font-size: rem-calc(11);
+
+        svg {
+          width: rem-calc(12);
+          height: rem-calc(12);
+        }
+      }
+    }
   }
 
   .team-list-item {
+    padding: rem-calc(16);
+    border-radius: rem-calc(10);
+
     .list-content {
       .list-main {
         flex-direction: column;
         align-items: flex-start;
-        gap: rem-calc(16);
+        gap: rem-calc(12);
 
         .team-info {
           width: 100%;
+          gap: rem-calc(12);
+
+          .team-logo {
+            width: rem-calc(44);
+            height: rem-calc(44);
+            flex-shrink: 0;
+          }
+
+          .team-details {
+            min-width: 0;
+
+            .team-header {
+              gap: rem-calc(8);
+              margin-bottom: rem-calc(4);
+
+              .team-name {
+                font-size: rem-calc(16);
+              }
+
+              .team-badges {
+                gap: rem-calc(4);
+
+                .badge {
+                  width: rem-calc(18);
+                  height: rem-calc(18);
+
+                  svg {
+                    width: rem-calc(10);
+                    height: rem-calc(10);
+                  }
+                }
+              }
+            }
+
+            .team-description {
+              font-size: rem-calc(13);
+              margin-bottom: rem-calc(6);
+            }
+
+            .team-tags {
+              gap: rem-calc(4);
+            }
+          }
         }
 
         .team-stats {
           width: 100%;
           justify-content: space-between;
           flex-wrap: wrap;
-          gap: rem-calc(12);
+          gap: rem-calc(10);
+
+          .stat {
+            font-size: rem-calc(11);
+            gap: rem-calc(4);
+
+            svg {
+              width: rem-calc(12);
+              height: rem-calc(12);
+            }
+          }
         }
       }
 
       .list-footer {
         flex-direction: column;
         align-items: flex-start;
-        gap: rem-calc(12);
+        gap: rem-calc(10);
+        margin-top: rem-calc(12);
+
+        .captain-info {
+          font-size: rem-calc(11);
+
+          svg {
+            width: rem-calc(12);
+            height: rem-calc(12);
+          }
+        }
 
         .list-actions {
           width: 100%;
-          justify-content: flex-end;
+          justify-content: space-between;
+          gap: rem-calc(8);
+
+          .recruiting-badge {
+            padding: rem-calc(6) rem-calc(10);
+            font-size: rem-calc(11);
+
+            svg {
+              width: rem-calc(12);
+              height: rem-calc(12);
+            }
+          }
+
+          .view-btn {
+            padding: rem-calc(6) rem-calc(10);
+            font-size: rem-calc(11);
+
+            svg {
+              width: rem-calc(12);
+              height: rem-calc(12);
+            }
+          }
         }
       }
+    }
+  }
+
+  .no-results {
+    padding: rem-calc(40) rem-calc(16);
+
+    svg {
+      width: rem-calc(40);
+      height: rem-calc(40);
+      margin-bottom: rem-calc(12);
+    }
+
+    h3 {
+      font-size: rem-calc(20);
+      margin-bottom: rem-calc(6);
+    }
+
+    p {
+      font-size: rem-calc(14);
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .team-search-content {
+    padding: rem-calc(32) rem-calc(12) rem-calc(20) rem-calc(12);
+  }
+
+  .team-search-header {
+    margin-bottom: rem-calc(20);
+    gap: rem-calc(12);
+
+    .header-content {
+      .page-title {
+        font-size: rem-calc(24);
+        margin-bottom: rem-calc(6);
+      }
+
+      .page-description {
+        font-size: rem-calc(13);
+        margin-bottom: rem-calc(10);
+      }
+    }
+
+    .header-actions {
+      .create-team-btn {
+        padding: rem-calc(12) rem-calc(20);
+        font-size: rem-calc(14);
+
+        svg {
+          width: rem-calc(16);
+          height: rem-calc(16);
+        }
+      }
+    }
+  }
+
+  .search-filters-section {
+    margin-bottom: rem-calc(20);
+  }
+
+  .search-container {
+    gap: rem-calc(10);
+    margin-bottom: rem-calc(12);
+
+    .search-input-wrapper {
+      .search-input {
+        padding: rem-calc(12) rem-calc(12) rem-calc(12) rem-calc(40);
+        font-size: rem-calc(13);
+      }
+
+      .search-icon {
+        left: rem-calc(12);
+        width: rem-calc(16);
+        height: rem-calc(16);
+      }
+    }
+
+    .view-controls {
+      .view-btn {
+        width: rem-calc(36);
+        height: rem-calc(36);
+
+        svg {
+          width: rem-calc(14);
+          height: rem-calc(14);
+        }
+      }
+    }
+  }
+
+  .filters-container {
+    gap: rem-calc(6);
+
+    .filter-btn {
+      padding: rem-calc(8) rem-calc(14);
+      font-size: rem-calc(12);
+
+      svg {
+        width: rem-calc(12);
+        height: rem-calc(12);
+      }
+    }
+  }
+
+  .all-teams-section {
+    .section-header {
+      margin-bottom: rem-calc(12);
+
+      .section-title {
+        font-size: rem-calc(18);
+        gap: rem-calc(6);
+
+        svg {
+          width: rem-calc(18);
+          height: rem-calc(18);
+        }
+
+        .team-count {
+          font-size: rem-calc(13);
+        }
+      }
+    }
+  }
+
+  .teams-grid {
+    grid-template-columns: 1fr;
+    gap: rem-calc(12);
+  }
+
+  .team-card {
+    padding: rem-calc(16);
+    min-height: auto;
+    border-radius: rem-calc(10);
+
+    .card-header {
+      margin-bottom: rem-calc(8);
+
+      .team-logo {
+        width: rem-calc(48);
+        height: rem-calc(48);
+        border-radius: rem-calc(12);
+
+        svg {
+          width: rem-calc(20);
+          height: rem-calc(20);
+        }
+      }
+
+      .team-badges {
+        .badge {
+          width: rem-calc(28);
+          height: rem-calc(28);
+
+          svg {
+            width: rem-calc(14);
+            height: rem-calc(14);
+          }
+        }
+      }
+    }
+
+    .card-content {
+      .team-name {
+        font-size: rem-calc(15);
+        margin-bottom: rem-calc(4);
+      }
+
+      .team-description {
+        font-size: rem-calc(11);
+        margin-bottom: rem-calc(10);
+      }
+
+      .team-stats {
+        gap: rem-calc(10);
+        padding: rem-calc(8) 0;
+
+        .stat {
+          font-size: rem-calc(11);
+        }
+      }
+    }
+
+    .card-footer {
+      margin-top: rem-calc(10);
+      flex-direction: column;
+      align-items: flex-start;
+      gap: rem-calc(6);
+    }
+  }
+
+  .team-list-item {
+    padding: rem-calc(12);
+
+    .list-content {
+      .list-main {
+        gap: rem-calc(10);
+
+        .team-info {
+          gap: rem-calc(10);
+
+          .team-logo {
+            width: rem-calc(40);
+            height: rem-calc(40);
+          }
+
+          .team-details {
+            .team-header {
+              .team-name {
+                font-size: rem-calc(15);
+              }
+            }
+
+            .team-description {
+              font-size: rem-calc(12);
+            }
+          }
+        }
+
+        .team-stats {
+          gap: rem-calc(8);
+          flex-wrap: wrap;
+
+          .stat {
+            font-size: rem-calc(10);
+          }
+        }
+      }
+
+      .list-footer {
+        gap: rem-calc(8);
+        margin-top: rem-calc(10);
+
+        .list-actions {
+          flex-direction: column;
+          width: 100%;
+          gap: rem-calc(6);
+
+          .view-btn {
+            width: 100%;
+            justify-content: center;
+          }
+        }
+      }
+    }
+  }
+
+  .no-results {
+    padding: rem-calc(32) rem-calc(12);
+
+    svg {
+      width: rem-calc(36);
+      height: rem-calc(36);
+    }
+
+    h3 {
+      font-size: rem-calc(18);
+    }
+
+    p {
+      font-size: rem-calc(13);
     }
   }
 }

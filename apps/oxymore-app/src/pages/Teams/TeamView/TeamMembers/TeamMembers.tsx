@@ -471,7 +471,7 @@ const TeamMembers: React.FC<TeamMembersProps> = ({ teamId, teamData }) => {
               setShowAdminConfirmModal(false);
               setPendingRoleChange(null);
             }}>
-              <X size={20} />
+              <X size={24} />
             </button>
           </div>
 
@@ -543,7 +543,7 @@ const TeamMembers: React.FC<TeamMembersProps> = ({ teamId, teamData }) => {
               setShowDeleteConfirmModal(false);
               setMemberToDelete(null);
             }}>
-              <X size={20} />
+              <X size={24} />
             </button>
           </div>
 

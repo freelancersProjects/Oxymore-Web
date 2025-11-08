@@ -1,7 +1,7 @@
 @import '../../../../styles/global';
 
 .team-tournament-history-page {
-  padding: rem-calc(24);
+  padding: rem-calc(24) rem-calc(20);
 
   .tournament-history-header {
     display: flex;
@@ -15,6 +15,52 @@
       font-weight: 700;
       color: $color-white;
       margin: 0;
+    }
+  }
+}
+
+@media (max-width: 1024px) {
+  .team-tournament-history-page {
+    padding: rem-calc(20) rem-calc(16);
+  }
+
+  .tournament-history-header {
+    margin-bottom: rem-calc(20);
+
+    .tournament-history-title {
+      font-size: rem-calc(22);
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .team-tournament-history-page {
+    padding: rem-calc(16) rem-calc(12);
+  }
+
+  .tournament-history-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: rem-calc(12);
+    margin-bottom: rem-calc(16);
+
+    .tournament-history-title {
+      font-size: rem-calc(20);
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .team-tournament-history-page {
+    padding: rem-calc(12) rem-calc(8);
+  }
+
+  .tournament-history-header {
+    margin-bottom: rem-calc(12);
+    gap: rem-calc(10);
+
+    .tournament-history-title {
+      font-size: rem-calc(18);
     }
   }
 }

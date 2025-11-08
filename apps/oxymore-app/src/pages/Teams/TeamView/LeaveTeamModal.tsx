@@ -55,7 +55,7 @@ const LeaveTeamModal: React.FC<LeaveTeamModalProps> = ({
             </h3>
           </div>
           <button className="modal-close-btn" onClick={handleClose}>
-            <X size={20} />
+            <X size={24} />
           </button>
         </div>
 

@@ -239,7 +239,7 @@ const ImageCropperModal: React.FC<ImageCropperModalProps> = ({
   };
 
   return (
-    <OXMModal isOpen={isOpen} onClose={onClose} variant="blue">
+    <OXMModal isOpen={isOpen} onClose={onClose} variant="large">
       <div className="image-cropper-modal">
         <div className="image-cropper-modal__header">
           <h2>{title}</h2>

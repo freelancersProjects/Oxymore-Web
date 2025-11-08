@@ -168,3 +168,61 @@
     flex-direction: column;
   }
 }
+
+@media (max-width: 1024px) {
+  .dashboard-bottom-section {
+    flex-direction: column;
+    gap: rem-calc(20);
+
+    .leaderboard,
+    .community-highlights {
+      flex: 1;
+      width: 100%;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .container-dashboarda-app {
+    padding: 0 rem-calc(16);
+  }
+
+  .dashboard-separator {
+    margin: rem-calc(30) 0;
+
+    .expand-button {
+      width: rem-calc(44);
+      height: rem-calc(44);
+      margin: 0 rem-calc(16);
+
+      .expand-icon {
+        font-size: rem-calc(28);
+      }
+    }
+  }
+
+  .dashboard-bottom-section {
+    margin-top: rem-calc(30);
+    gap: rem-calc(16);
+  }
+}
+
+@media (max-width: 480px) {
+  .container-dashboarda-app {
+    padding: 0 rem-calc(12);
+  }
+
+  .dashboard-separator {
+    margin: rem-calc(24) 0;
+
+    .expand-button {
+      width: rem-calc(40);
+      height: rem-calc(40);
+      margin: 0 rem-calc(12);
+
+      .expand-icon {
+        font-size: rem-calc(24);
+      }
+    }
+  }
+}

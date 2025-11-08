@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { NavLink } from "react-router-dom";
-import { Home, Trophy, Layers, Play, Users, UserPlus, LogOut, ChevronLeft, Bot, Menu, X, Store, Users2, BookOpen, AlertTriangle, ChevronDown, ExternalLink } from "lucide-react";
+import { Home, Trophy, Layers, Play, Users, UserPlus, LogOut, ChevronLeft, Bot, Menu, X, Store, Users2, BookOpen, AlertTriangle, ChevronDown, ExternalLink, Settings, KeyRound, Shield } from "lucide-react";
 import { gameService } from "../../services/gameService";
 import { OXMBadge } from "@oxymore/ui";
 import Logo from "./../../assets/logo.png";
@@ -152,23 +152,48 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false, onToggle 
     window.open('https://store.oxymore.com', '_blank');
   };
 
+  const [isMobile, setIsMobile] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.innerWidth <= 768;
+    }
+    return false;
+  });
+
+  useEffect(() => {
+    const handleResize = () => {
+      const mobile = window.innerWidth <= 768;
+      setIsMobile(mobile);
+      if (!mobile && mobileOpen) {
+        setMobileOpen(false);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [mobileOpen]);
+
   return (
     <>
-      <button
-        className="oxm-sidebar-burger"
-        onClick={() => setMobileOpen(true)}
-      >
-        <Menu size={28} />
-      </button>
-      <div
-        className={`oxm-sidebar-overlay${mobileOpen ? " open" : ""}`}
-        onClick={() => setMobileOpen(false)}
-      />
-      {isCollapsed && !mobileOpen && (
+      {isMobile && (
+        <button
+          className="oxm-sidebar-burger"
+          onClick={() => setMobileOpen(true)}
+          aria-label="Open menu"
+        >
+          <Menu size={24} />
+        </button>
+      )}
+      {isMobile && (
+        <div
+          className={`oxm-sidebar-overlay${mobileOpen ? " open" : ""}`}
+          onClick={() => setMobileOpen(false)}
+        />
+      )}
+      {isCollapsed && !mobileOpen && !isMobile && (
         <div className="oxm-sidebar-collapsed-zone" onClick={onToggle} />
       )}
       <aside
-        className={`oxm-sidebar${isCollapsed ? " collapsed" : ""}${
+        className={`oxm-sidebar${isCollapsed && !isMobile ? " collapsed" : ""}${
           mobileOpen ? " open" : ""
         }`}
         onClick={(e) => {
@@ -179,37 +204,39 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false, onToggle 
           }
         }}
       >
-        {mobileOpen && (
-          <button
-            className="oxm-sidebar-close"
-            onClick={() => setMobileOpen(false)}
-          >
-            <X size={32} />
-          </button>
-        )}
-        <div className="oxm-sidebar__header">
-          <div className="oxm-sidebar__logo">
-            <NavLink to="/" onClick={handleNavClick}>
-              <img src={Logo} alt="Oxymore Logo" />
-            </NavLink>
-          </div>
-          <div className="oxm-sidebar__user-plan">
-            <div className="user-info">
-              <div className="user-name">Mathis Boulais</div>
-              <div className="plan-status">
-                <span className="plan-text">Free Plan</span>
-                <NavLink to="/subscription" className="upgrade-link" onClick={handleNavClick}>
-                  Upgrade
-                </NavLink>
-              </div>
-            </div>
-          </div>
-          {onToggle && !isCollapsed && (
-            <button className="oxm-sidebar__toggle" onClick={handleToggle}>
-              <ChevronLeft size={16} />
-            </button>
-          )}
-        </div>
+         <div className="oxm-sidebar__header">
+           {mobileOpen && (
+             <button
+               className="oxm-sidebar-close"
+               onClick={() => setMobileOpen(false)}
+             >
+               <X size={24} />
+             </button>
+           )}
+           <div className="oxm-sidebar__header-content">
+             <div className="oxm-sidebar__logo">
+               <NavLink to="/" onClick={handleNavClick}>
+                 <img src={Logo} alt="Oxymore Logo" />
+               </NavLink>
+             </div>
+             <div className="oxm-sidebar__user-plan">
+               <div className="user-info">
+                 <div className="user-name">Mathis Boulais</div>
+                 <div className="plan-status">
+                   <span className="plan-text">Free Plan</span>
+                   <NavLink to="/subscription" className="upgrade-link" onClick={handleNavClick}>
+                     Upgrade
+                   </NavLink>
+                 </div>
+               </div>
+             </div>
+           </div>
+           {onToggle && !isCollapsed && !isMobile && (
+             <button className="oxm-sidebar__toggle" onClick={handleToggle}>
+               <ChevronLeft size={16} />
+             </button>
+           )}
+         </div>
 
 
         <nav className="oxm-sidebar__nav" ref={navRef}>
@@ -296,6 +323,30 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false, onToggle 
               </li>
             </ul>
           </div>
+
+          {/* Section Paramètres - visible uniquement sur mobile */}
+          {isMobile && (
+            <div className="nav-section">
+              <div className="section-label">Paramètres</div>
+              <ul>
+                <li>
+                  <NavLink to="/settings" onClick={handleNavClick} className="oxm-sidebar-nav-link">
+                    <Settings size={20} /> <span>Settings</span>
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink to="/api-keys" onClick={handleNavClick} className="oxm-sidebar-nav-link">
+                    <KeyRound size={20} /> <span>API Access</span>
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink to="/security" onClick={handleNavClick} className="oxm-sidebar-nav-link">
+                    <Shield size={20} /> <span>Security</span>
+                  </NavLink>
+                </li>
+              </ul>
+            </div>
+          )}
 
           {showScrollArrow && (
             <div className="scroll-arrow-indicator">

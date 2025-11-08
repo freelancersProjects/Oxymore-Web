@@ -262,7 +262,7 @@ const TeamApplications: React.FC<TeamApplicationsProps> = ({ teamId, teamData, o
         <OXMModal
           isOpen={!!selectedCV}
           onClose={() => setSelectedCV(null)}
-          variant="blue"
+          variant="large"
         >
           <div className="cv-view-modal">
             <div className="cv-modal-header">
@@ -289,7 +289,7 @@ const TeamApplications: React.FC<TeamApplicationsProps> = ({ teamId, teamData, o
                 </div>
               </div>
               <button className="cv-close-btn" onClick={() => setSelectedCV(null)}>
-                <X size={20} />
+                <X size={24} />
               </button>
             </div>
 

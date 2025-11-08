@@ -16,3 +16,15 @@
   width: 100%;
   height: 100%;
 }
+
+@media (max-width: 768px) {
+  .teams-container {
+    padding: 0;
+    margin: 0;
+  }
+
+  .teams-content {
+    width: 100%;
+    padding: 0;
+  }
+}
