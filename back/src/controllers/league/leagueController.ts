@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import * as LeagueService from "../../services/league/leagueService";
+import * as LeagueTeamService from "../../services/league/leagueTeamService";
 import { createAdminNotificationForAction } from "../../services/admin/notificationAdminService";
 
 export const getAllLeagues = async (req: Request, res: Response) => {
@@ -91,4 +92,14 @@ export const deleteLeague = async (req: Request, res: Response) => {
   );
 
   res.status(204).send();
+};
+
+export const getLeagueTeams = async (req: Request, res: Response) => {
+  try {
+    const teams = await LeagueTeamService.getLeagueTeamsWithDetails(req.params.id);
+    res.json(teams);
+  } catch (error) {
+    console.error('Error getting league teams:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
 };

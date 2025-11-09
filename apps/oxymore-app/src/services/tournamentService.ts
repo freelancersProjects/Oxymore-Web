@@ -49,6 +49,16 @@ export const tournamentService = {
       console.error('Error deleting tournament:', error);
       throw error;
     }
+  },
+
+  getTournamentPageConfig: async (): Promise<{ show_category_cards: boolean; featured_tournament: Tournament | null }> => {
+    try {
+      const config = await apiService.get('/tournaments/config/page');
+      return config;
+    } catch (error) {
+      console.error('Error getting tournament page config:', error);
+      throw error;
+    }
   }
 };
 

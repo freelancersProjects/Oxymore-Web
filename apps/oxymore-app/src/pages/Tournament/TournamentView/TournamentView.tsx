@@ -383,7 +383,7 @@ const TournamentView: React.FC = () => {
                     <TeamSizeIcon className="tournament-view-detail-icon" />
                     <div className="tournament-view-detail-info">
                       <span className="tournament-view-detail-label">Team Size</span>
-                      <span className="tournament-view-detail-value">5V5</span>
+                      <span className="tournament-view-detail-value">{tournament.team_size || '5V5'}</span>
                     </div>
                   </div>
                   <div className="tournament-view-detail-row">

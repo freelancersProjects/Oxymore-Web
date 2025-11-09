@@ -4,13 +4,18 @@
   position: fixed;
   top: 0;
   left: rem-calc(274);
-  right: rem-calc(50);
+  right: rem-calc(380);
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 rem-calc(40);
   z-index: 100;
   height: rem-calc(95);
+  transition: left 0.3s ease, right 0.3s ease, width 0.3s ease;
+
+  .oxm-layout:not(.profile-panel-expanded) & {
+    right: rem-calc(80);
+  }
 
   &__search {
     flex: 0 0 auto;
@@ -94,6 +99,8 @@
     align-items: center;
     gap: rem-calc(20);
     position: relative;
+    flex-shrink: 0;
+    margin-left: auto;
 
     .icon-bell-wrapper {
       position: relative;
@@ -103,6 +110,7 @@
       margin-right: rem-calc(18);
       z-index: 10;
       transition: transform 0.3s ease;
+      flex-shrink: 0;
 
       .icon-bell { font-size: rem-calc(24); color: $color-white; transition: color 0.2s; }
       &:hover .icon-bell { color: $color-purple-light; }
@@ -150,10 +158,19 @@
 .oxia-avatar-inline { width: rem-calc(22); height: rem-calc(22); border-radius: 50%; object-fit: cover; margin-left: rem-calc(4); }
 
 .oxm-header.collapsed {
-  left: rem-calc(120);
+  left: rem-calc(80);
   padding-left: rem-calc(20);
-  width: calc(100% - rem-calc(100));
-  transition: left 0.3s, width 0.3s;
+  transition: left 0.3s ease, right 0.3s ease, width 0.3s ease;
+
+  .oxm-layout.profile-panel-expanded & {
+    right: rem-calc(380);
+    width: calc(100% - rem-calc(80) - rem-calc(380));
+  }
+
+  .oxm-layout:not(.profile-panel-expanded) & {
+    right: rem-calc(80);
+    width: calc(100% - rem-calc(80) - rem-calc(80));
+  }
 }
 
 @media (width <= 700px) {

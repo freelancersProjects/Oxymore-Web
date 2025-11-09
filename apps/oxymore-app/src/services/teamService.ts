@@ -21,7 +21,7 @@ const transformTeam = (team: BackendTeam): Team => ({
   entryType: team.entry_type,
   foundedDate: team.created_at || new Date().toISOString(),
   tags: [],
-  isRecruiting: team.entry_type === 'open',
+  isRecruiting: team.is_recruiting || false,
   requirements: []
 });
 
@@ -57,6 +57,7 @@ export const teamService = {
         entry_type: String(teamData.entryType || 'open'),
         id_captain: String(captainId),
         verified: Boolean(teamData.isVerified) || false,
+        is_recruiting: Boolean(teamData.isRecruiting) || false,
         region: String(teamData.region || ''),
         id_game: teamData.id_game ? String(teamData.id_game) : null
       };

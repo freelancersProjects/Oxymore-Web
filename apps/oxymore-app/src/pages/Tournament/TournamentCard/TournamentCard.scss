@@ -11,7 +11,7 @@
   max-width: 100%;
   border-radius: rem-calc(24);
   border: 1px solid rgb(255 255 255 / 10%);
-  background: linear-gradient(135deg, rgb(139 69 255 / 8%) 0%, rgb(0 0 0 / 60%) 50%, rgb(59 130 246 / 8%) 100%);
+  background: $tournament-card-gradient;
   padding: rem-calc(20);
   position: relative;
   box-sizing: border-box;
@@ -55,7 +55,7 @@
   &:hover {
     transform: translateY(rem-calc(-4));
     border-color: rgba($color-purple, 0.3);
-    background: linear-gradient(135deg, rgb(139 69 255 / 12%) 0%, rgb(0 0 0 / 65%) 50%, rgb(59 130 246 / 12%) 100%);
+    background: $tournament-card-gradient-hover;
     box-shadow: 0 10px 25px rgb(0 0 0 / 30%);
 
     &::after {
@@ -161,9 +161,6 @@
   z-index: 2;
   text-shadow: 0 2px 8px rgb(0 0 0 / 50%);
 
-  &:hover {
-    color: $color-purple;
-  }
 }
 
 .card-separator {

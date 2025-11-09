@@ -253,16 +253,15 @@
   width: 0;
 }
 
-// Content
+// 
 .tournament-view-content {
   margin-bottom: rem-calc(40);
 }
 
-// General Tab
 .tournament-view-general {
   display: grid;
   grid-template-columns: 1.5fr 1fr;
-  gap: rem-calc(24);
+  gap: rem-calc(44);
   align-items: start;
 
   @media (max-width: rem-calc(1024)) {
@@ -270,11 +269,10 @@
   }
 }
 
-// Left Column
 .tournament-view-left-column {
   display: flex;
   flex-direction: column;
-  gap: rem-calc(24);
+  gap: rem-calc(44);
 }
 
 .tournament-view-section {
@@ -519,10 +517,9 @@
   font-family: 'Orbitron', sans-serif;
 }
 
-// Information
 .tournament-view-information-text {
   color: rgba($color-white, 0.95);
-  font-size: rem-calc(22);
+  font-size: rem-calc(20);
   line-height: 2.2;
   margin: 0 0 rem-calc(32) 0;
   width: 100%;
@@ -531,7 +528,6 @@
   letter-spacing: 0.3px;
 }
 
-// Badge Container
 .tournament-view-badge-container {
   width: 100%;
   max-width: 100%;

@@ -17,10 +17,13 @@ import { Teams } from "./pages/Teams/Teams";
 import { CreateTeam } from "./pages/CreateTeam/CreateTeam";
 import { UploadVideo } from "./pages/UploadVideo/UploadVideo";
 import TeamView from "./pages/Teams/TeamView/TeamView";
+import TeamPublicView from "./pages/Teams/TeamPublicView/TeamPublicView";
 import League from "./pages/League/League";
 import TournamentPage from "./pages/Tournament/Tournament";
 import TournamentView from "./pages/Tournament/TournamentView/TournamentView";
 import Subscription from "./pages/Subscription/Subscription";
+import VerifyEmail from "./pages/VerifyEmail/VerifyEmail";
+import EmailVerificationBanner from "./components/EmailVerificationBanner/EmailVerificationBanner";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import ProtectedRoute from "./context/ProtectedRoute";
 import { OXMLoader } from "@oxymore/ui";
@@ -183,6 +186,7 @@ const AppContent: React.FC<{ isSidebarCollapsed: boolean; setSidebarCollapsed: (
                   <Routes>
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
+                    <Route path="/verify-email" element={<VerifyEmail />} />
 
                     <Route element={<ProtectedRoute />}>
                       <Route path="/" element={<Dashboard />} />
@@ -192,6 +196,7 @@ const AppContent: React.FC<{ isSidebarCollapsed: boolean; setSidebarCollapsed: (
                       <Route path="/teams" element={<Teams />} />
                       <Route path="/teams/create" element={<CreateTeam />} />
                       <Route path="/teams/:id" element={<TeamView />} />
+                      <Route path="/teams/public/:id" element={<TeamPublicView />} />
                       <Route path="/tournaments" element={<TournamentPage />} />
                       <Route path="/tournaments/:id" element={<TournamentView />} />
                       <Route path="/friends" element={<Friends />} />
@@ -205,6 +210,9 @@ const AppContent: React.FC<{ isSidebarCollapsed: boolean; setSidebarCollapsed: (
                     </Route>
                   </Routes>
                 </main>
+                {user && !user.verified && !isLoginPage && location.pathname !== '/verify-email' && (
+                  <EmailVerificationBanner />
+                )}
               </div>
             </div>
             {userId && (

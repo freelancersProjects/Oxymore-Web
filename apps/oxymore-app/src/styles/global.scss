@@ -43,6 +43,8 @@ $color-blue-indigo: #3B82F6;
 $color-purple-violet: #8B5CF6;
 $color-purple-dark-violet: #7C3AED;
 $color-blue-dark: #2563EB;
+$tournament-card-gradient: linear-gradient(135deg, rgb(139 69 255 / 8%) 0%, rgb(0 0 0 / 60%) 50%, rgb(59 130 246 / 8%) 100%);
+$tournament-card-gradient-hover: linear-gradient(135deg, rgb(139 69 255 / 12%) 0%, rgb(0 0 0 / 65%) 50%, rgb(59 130 246 / 12%) 100%);
 $base-font-size: 10;
 
 // rem vers px
@@ -97,7 +99,7 @@ td {
   position: fixed;
   top: rem-calc(20);
   right: rem-calc(20);
-  z-index: 999999 !important;
+  z-index: 100000 !important;
   display: flex;
   flex-direction: column;
   gap: rem-calc(15);

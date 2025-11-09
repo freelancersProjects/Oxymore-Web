@@ -14,7 +14,7 @@ import {
 import { apiService } from '../../api/apiService';
 import ConfirmationModal from '../../components/ConfirmationModal/ConfirmationModal';
 
-interface Notification {
+interface NotificationAdmin {
   id_notification: string;
   type: 'message' | 'success' | 'alert';
   title: string;
@@ -24,7 +24,7 @@ interface Notification {
 }
 
 const Notifications = () => {
-  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [notifications, setNotifications] = useState<NotificationAdmin[]>([]);
   const [loading, setLoading] = useState(true);
   const [sending, setSending] = useState(false);
   const [showForm, setShowForm] = useState(false);
@@ -42,7 +42,7 @@ const Notifications = () => {
   const loadGlobalNotifications = async () => {
     try {
       setLoading(true);
-      const allNotifications = await apiService.get<Notification[]>('/notifications');
+      const allNotifications = await apiService.get<NotificationAdmin[]>('/notifications');
       // Filtrer seulement les notifications globales (id_user IS NULL)
       const globalNotifications = allNotifications.filter(n => !n.id_user);
       setNotifications(globalNotifications);

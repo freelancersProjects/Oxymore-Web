@@ -208,7 +208,7 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed, onToggle, onNoti
     return (
       <div className="profile-panel collapsed" ref={panelRef}>
         <button className="profile-panel-toggle" onClick={onToggle}>
-          <ChevronRight size={16} />
+          <ChevronLeft size={16} />
         </button>
         <div className="profile-panel__collapsed">
           <div className="profile-panel__avatar-collapsed">
@@ -292,11 +292,11 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed, onToggle, onNoti
                   length: Math.max(
                     0,
                     5 -
-                      (1 + groupMembers.filter(
-                        (m) =>
-                          m.status === "accepted" &&
-                          m.id_user !== user?.id_user
-                      ).slice(0, 4).length)
+                    (1 + groupMembers.filter(
+                      (m) =>
+                        m.status === "accepted" &&
+                        m.id_user !== user?.id_user
+                    ).slice(0, 4).length)
                   ),
                 },
                 (_, index) => (
@@ -321,29 +321,28 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed, onToggle, onNoti
             <div className="online-friends-avatars">
 
               <div className="online-friends-avatars">
-              {onlineFriends.slice(0, 3).map((friend) => (
-                <div
-                  key={friend.id_friend}
-                  className="friend-avatar-collapsed"
-                  title={friend.username}
-                >
-                  <Avatar
-                    src={friend.avatar_url}
-                    username={friend.username}
-                    size={32}
-                  />
+                {onlineFriends.slice(0, 3).map((friend) => (
                   <div
-                    className={`status-indicator ${
-                      friend.online_status || "offline"
-                    }`}
-                  />
-                  <div className="friend-name-tooltip">{friend.username}</div>
+                    key={friend.id_friend}
+                    className="friend-avatar-collapsed"
+                    title={friend.username}
+                  >
+                    <Avatar
+                      src={friend.avatar_url}
+                      username={friend.username}
+                      size={32}
+                    />
+                    <div
+                      className={`status-indicator ${friend.online_status || "offline"
+                        }`}
+                    />
+                    <div className="friend-name-tooltip">{friend.username}</div>
+                  </div>
+                ))}
+                <div className="more-friends-indicator">
+                  <span>+{Math.max(0, totalFriends - 3)}</span>
                 </div>
-              ))}
-              <div className="more-friends-indicator">
-                <span>+{Math.max(0, totalFriends - 3)}</span>
               </div>
-            </div>
             </div>
           </div>
         </div>
@@ -357,7 +356,8 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed, onToggle, onNoti
         className="profile-panel-toggle"
         onClick={onToggle}
       >
-        <ChevronLeft size={16} />
+        <ChevronRight size={16} />
+
       </button>
 
       {!collapsed && (
@@ -448,11 +448,11 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed, onToggle, onNoti
                     length: Math.max(
                       0,
                       5 -
-                        (1 + groupMembers.filter(
-                          (m) =>
-                            m.status === "accepted" &&
-                            m.id_user !== user?.id_user
-                        ).slice(0, 4).length)
+                      (1 + groupMembers.filter(
+                        (m) =>
+                          m.status === "accepted" &&
+                          m.id_user !== user?.id_user
+                      ).slice(0, 4).length)
                     ),
                   },
                   (_, index) => (
@@ -514,9 +514,8 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed, onToggle, onNoti
                         size={32}
                       />
                       <div
-                        className={`status-indicator ${
-                          friend.online_status || "offline"
-                        }`}
+                        className={`status-indicator ${friend.online_status || "offline"
+                          }`}
                       />
                     </div>
                     <div className="friend-info">
@@ -626,9 +625,8 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed, onToggle, onNoti
                     size={32}
                   />
                   <div
-                    className={`status-indicator ${
-                      friend.online_status || "offline"
-                    }`}
+                    className={`status-indicator ${friend.online_status || "offline"
+                      }`}
                   />
                 </div>
                 <div className="friend-info">

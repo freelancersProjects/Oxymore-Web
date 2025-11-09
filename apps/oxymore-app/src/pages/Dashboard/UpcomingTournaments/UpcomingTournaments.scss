@@ -14,11 +14,18 @@
     }
 
     .cards {
-        display: flex;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
         gap: rem-calc(20);
-        flex-wrap: wrap;
-        justify-content: space-between;
         width: 100%;
+
+        @media (max-width: rem-calc(1024)) {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        @media (max-width: rem-calc(768)) {
+            grid-template-columns: 1fr;
+        }
     }
 
     .card {
@@ -27,12 +34,9 @@
         justify-content: center;
         align-items: flex-start;
         gap: rem-calc(15);
-        flex: 1;
-        min-width: rem-calc(280);
-        max-width: 100%;
         border-radius: rem-calc(20);
         border: 0.5px solid rgba($color-white, 0.5);
-        background: linear-gradient(135deg, rgba($color-purple, 0.1) 0%, rgba($color-blue, 0.05) 100%);
+        background: $tournament-card-gradient;
         padding: rem-calc(15);
         position: relative;
         box-sizing: border-box;
@@ -160,6 +164,14 @@
             font-weight: 500;
             width: 100% !important;
         }
+    }
+
+    .loading-text {
+        color: $color-white;
+        text-align: center;
+        padding: rem-calc(40);
+        font-size: rem-calc(16);
+        width: 100%;
     }
 }
 

@@ -54,7 +54,7 @@ export const createTeam = async (
   }
 
   await db.query(
-    "INSERT INTO team (id_team, team_name, team_logo_url, team_banner_url, description, max_members, entry_type, id_captain, created_at, verified, region, id_game) VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?, ?, ?)",
+    "INSERT INTO team (id_team, team_name, team_logo_url, team_banner_url, description, max_members, entry_type, id_captain, created_at, verified, is_recruiting, region, id_game) VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?, ?, ?, ?)",
     [
       String(id_team),
       String(data.team_name),
@@ -65,6 +65,7 @@ export const createTeam = async (
       String(data.entry_type),
       String(data.id_captain),
       data.verified || false,
+      data.is_recruiting || false,
       data.region || null,
       data.id_game || null,
     ]
@@ -98,6 +99,7 @@ export const updateTeam = async (
     "description",
     "max_members",
     "entry_type",
+    "is_recruiting",
     "region",
   ];
   const updateFields = Object.keys(data).filter((key) =>

@@ -14,6 +14,7 @@ export interface Team extends RowDataPacket {
   subscription_status?: boolean;
   created_at?: string;
   verified?: boolean;
+  is_recruiting?: boolean;
   region?: string;
   id_game?: string;
 }
@@ -29,6 +30,7 @@ export interface TeamData {
   id_captain: string;
   created_at?: string;
   verified?: boolean;
+  is_recruiting?: boolean;
   region?: string;
   id_game?: string;
 }

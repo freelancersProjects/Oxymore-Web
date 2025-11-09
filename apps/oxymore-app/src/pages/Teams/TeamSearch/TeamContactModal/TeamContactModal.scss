@@ -1,0 +1,101 @@
+@import '../../../../styles/global';
+
+.team-contact-modal {
+  padding: rem-calc(24);
+  color: $color-white;
+
+  .team-contact-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: rem-calc(24);
+
+    h2 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: rem-calc(24);
+      font-weight: 700;
+      color: $color-white;
+      margin: 0;
+    }
+
+    .close-button {
+      background: none;
+      border: none;
+      color: $color-white;
+      cursor: pointer;
+      padding: rem-calc(8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: rem-calc(8);
+      transition: background 0.2s ease;
+
+      &:hover {
+        background: rgba($color-white, 0.1);
+      }
+    }
+  }
+
+  .team-contact-form {
+    .form-group {
+      margin-bottom: rem-calc(20);
+
+      label {
+        display: block;
+        font-family: 'Outfit', sans-serif;
+        font-size: rem-calc(14);
+        font-weight: 600;
+        color: rgba($color-white, 0.9);
+        margin-bottom: rem-calc(8);
+      }
+
+      input,
+      textarea {
+        width: 100%;
+        padding: rem-calc(12) rem-calc(16);
+        background: rgba($color-white, 0.05);
+        border: 1px solid rgba($color-white, 0.1);
+        border-radius: rem-calc(8);
+        color: $color-white;
+        font-family: 'Outfit', sans-serif;
+        font-size: rem-calc(14);
+        transition: border-color 0.2s ease;
+
+        &:focus {
+          outline: none;
+          border-color: $color-blue;
+        }
+
+        &::placeholder {
+          color: rgba($color-white, 0.4);
+        }
+
+        &:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
+      }
+
+      textarea {
+        resize: vertical;
+        min-height: rem-calc(150);
+      }
+
+      .character-count {
+        display: block;
+        text-align: right;
+        font-size: rem-calc(12);
+        color: rgba($color-white, 0.5);
+        margin-top: rem-calc(4);
+      }
+    }
+
+    .form-actions {
+      display: flex;
+      gap: rem-calc(12);
+      justify-content: flex-end;
+      margin-top: rem-calc(24);
+    }
+  }
+}
+

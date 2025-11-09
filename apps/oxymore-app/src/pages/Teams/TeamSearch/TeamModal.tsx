@@ -14,15 +14,18 @@ import {
   Star,
   UserPlus,
   MessageCircle,
-  Share2
+  Share2,
+  Eye
 } from 'lucide-react';
 import { OXMChip, OXMModal, OXMLoader, OXMToast } from '@oxymore/ui';
 import type { Team } from '../../../types/team';
+import { DEFAULT_TEAM_LOGO } from '../../../constants/teamDefaults';
 import apiService from '../../../api/apiService';
 import { gameService } from '../../../services/gameService';
 import { teamService } from '../../../services/teamService';
 import { notificationService } from '../../../services/notificationService';
 import TeamCVModal from './TeamCVModal/TeamCVModal';
+import TeamContactModal from './TeamContactModal/TeamContactModal';
 import './TeamModal.scss';
 
 interface TeamModalProps {
@@ -45,6 +48,7 @@ const TeamModal: React.FC<TeamModalProps> = ({
   const [gameLogo, setGameLogo] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [showCVModal, setShowCVModal] = useState(false);
+  const [showContactModal, setShowContactModal] = useState(false);
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
 
   useEffect(() => {
@@ -172,11 +176,7 @@ const TeamModal: React.FC<TeamModalProps> = ({
         <div className="modal-header">
           <div className="modal-team-info">
             <div className="modal-logo">
-              {team.logo ? (
-                <img src={team.logo} alt={team.name} />
-                    ) : (
-                      <Shield />
-                    )}
+              <img src={team.logo || DEFAULT_TEAM_LOGO} alt={team.name} />
             </div>
             <div className="modal-title-section">
               <h1>{team.name}</h1>
@@ -214,24 +214,19 @@ const TeamModal: React.FC<TeamModalProps> = ({
             <div className="stat-card">
               <Trophy className="w-6 h-6" />
               <div className="stat-info">
-                <span className="stat-number">{team.rating}</span>
-                <span className="stat-label">Note</span>
-              </div>
-            </div>
-            <div className="stat-card">
-              <TrendingUp className="w-6 h-6" />
-              <div className="stat-info">
                 <span className="stat-number">{team.winRate}%</span>
                 <span className="stat-label">Victoires</span>
               </div>
             </div>
-            <div className="stat-card">
-              <Target className="w-6 h-6" />
-              <div className="stat-info">
-                <span className="stat-number">{team.gamesPlayed}</span>
-                <span className="stat-label">Parties</span>
+            {team.gamesPlayed > 0 && (
+              <div className="stat-card">
+                <Target className="w-6 h-6" />
+                <div className="stat-info">
+                  <span className="stat-number">{team.gamesPlayed}</span>
+                  <span className="stat-label">Parties</span>
+                </div>
               </div>
-            </div>
+            )}
           </div>
 
           <div className="modal-details">
@@ -315,13 +310,41 @@ const TeamModal: React.FC<TeamModalProps> = ({
               Rejoindre l'équipe
             </button>
           )}
-          <button className="action-button secondary" onClick={onContactTeam}>
+          <button 
+            className="action-button secondary" 
+            onClick={() => setShowContactModal(true)}
+          >
             <MessageCircle className="w-5 h-5" />
             Contacter
           </button>
-          <button className="action-button secondary">
+          <button 
+            className="action-button secondary"
+            onClick={() => {
+              const shareUrl = `${window.location.origin}/teams/public/${team.id}`;
+              if (navigator.share) {
+                navigator.share({
+                  title: team.name,
+                  text: `Découvrez cette équipe: ${team.name}`,
+                  url: shareUrl
+                });
+              } else {
+                navigator.clipboard.writeText(shareUrl);
+                setToast({ message: 'Lien copié dans le presse-papiers!', type: 'success' });
+              }
+            }}
+          >
             <Share2 className="w-5 h-5" />
             Partager
+          </button>
+          <button 
+            className="action-button secondary"
+            onClick={() => {
+              navigate(`/teams/public/${team.id}`);
+              onClose();
+            }}
+          >
+            <Eye className="w-5 h-5" />
+            Voir la page publique
           </button>
         </div>
       </motion.div>
@@ -340,6 +363,15 @@ const TeamModal: React.FC<TeamModalProps> = ({
         onSubmit={handleCVSubmit}
         teamName={team.name}
       />
+
+      {team.id_captain && (
+        <TeamContactModal
+          isOpen={showContactModal}
+          onClose={() => setShowContactModal(false)}
+          teamName={team.name}
+          captainId={team.id_captain}
+        />
+      )}
     </OXMModal>
   );
 };

@@ -15,6 +15,7 @@ export interface Tournament extends RowDataPacket {
   entry_fee?: number;
   max_participant?: number;
   min_participant?: number;
+  team_size?: string;
   is_premium?: boolean;
   image_url?: string;
   id_league: string;
@@ -36,6 +37,7 @@ export interface TournamentData {
   entry_fee?: number;
   max_participant?: number;
   min_participant?: number;
+  team_size?: string;
   is_premium?: boolean;
   image_url?: string;
   id_league: string;
@@ -56,6 +58,7 @@ export interface TournamentInput {
   entry_fee?: number;
   max_participant?: number;
   min_participant?: number;
+  team_size?: string;
   is_premium?: boolean;
   image_url?: string;
   id_league: string;
