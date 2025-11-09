@@ -21,6 +21,17 @@ api.interceptors.response.use(
   },
   (error) => {
     console.error('API Error:', error);
+    
+    // Auto logout on 401 (Unauthorized) - token expired or invalid
+    if (error.response?.status === 401) {
+      // Clear storage
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      
+      // Redirect to login
+      window.location.href = '/login';
+    }
+    
     return Promise.reject(error);
   }
 );

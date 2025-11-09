@@ -79,14 +79,7 @@
   }
 }
 
-@media (max-width: rem-calc(1400)) {
-  .tournament-grid:not(.list-view) {
-    grid-template-columns: repeat(3, 1fr);
-    gap: rem-calc(20);
-  }
-}
-
-@media (max-width: rem-calc(1200)) {
+@media (max-width: rem-calc(1024)) {
   .tournament-grid:not(.list-view) {
     grid-template-columns: repeat(2, 1fr);
     gap: rem-calc(18);

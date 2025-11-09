@@ -19,6 +19,7 @@ import { UploadVideo } from "./pages/UploadVideo/UploadVideo";
 import TeamView from "./pages/Teams/TeamView/TeamView";
 import League from "./pages/League/League";
 import TournamentPage from "./pages/Tournament/Tournament";
+import TournamentView from "./pages/Tournament/TournamentView/TournamentView";
 import Subscription from "./pages/Subscription/Subscription";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import ProtectedRoute from "./context/ProtectedRoute";

@@ -7,9 +7,11 @@ import { BadgeFormData } from '../../../types';
 
 const Create = () => {
   const navigate = useNavigate();
-  const { register, handleSubmit, formState: { errors } } = useForm<BadgeFormData>();
+  const { register, handleSubmit, formState: { errors }, setValue } = useForm<BadgeFormData>();
   const [dragActive, setDragActive] = useState(false);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const [uploadingImage, setUploadingImage] = useState(false);
+  const [uploadedImageUrl, setUploadedImageUrl] = useState<string | null>(null);
 
   const handleDrag = (e: React.DragEvent) => {
     e.preventDefault();
@@ -32,11 +34,60 @@ const Create = () => {
     }
   };
 
-  const handleImageFile = (file: File) => {
-    // Pour l'instant, on crée juste une URL locale pour la prévisualisation
-    // Plus tard, on utilisera Cloudinary ici
-    const previewUrl = URL.createObjectURL(file);
-    setPreviewImage(previewUrl);
+  const convertFileToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = error => reject(error);
+    });
+  };
+
+  const handleImageFile = async (file: File) => {
+    try {
+      setUploadingImage(true);
+      
+      // Check if user is authenticated
+      const token = localStorage.getItem('token');
+      if (!token) {
+        alert('You must be logged in to upload images. Please log in and try again.');
+        setPreviewImage(null);
+        return;
+      }
+      
+      // Create preview
+      const previewUrl = URL.createObjectURL(file);
+      setPreviewImage(previewUrl);
+
+      // Convert to base64
+      const base64Image = await convertFileToBase64(file);
+
+      // Upload to Cloudinary
+      const response = await apiService.post<{ url: string; public_id: string }>('/cloudinary/upload', {
+        image: base64Image,
+        folder: 'oxymore/badges',
+        type: 'badge'
+      });
+
+      // Set the Cloudinary URL
+      setUploadedImageUrl(response.url);
+      setValue('image_url', response.url);
+    } catch (error: any) {
+      console.error('Error uploading image:', error);
+      setPreviewImage(null);
+      setValue('image_url', '');
+      
+      // Better error message
+      if (error?.response?.status === 403) {
+        alert('Access denied. Your session may have expired. Please log in again and try again.');
+      } else if (error?.response?.status === 401) {
+        alert('You must be logged in to upload images. Please log in and try again.');
+      } else {
+        alert('Failed to upload image. Please try again.');
+      }
+    } finally {
+      setUploadingImage(false);
+    }
   };
 
   const handleFileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -48,16 +99,20 @@ const Create = () => {
 
   const onSubmit = async (data: BadgeFormData) => {
     try {
-      // Pour l'instant, on utilise l'URL de prévisualisation
-      // Plus tard, on utilisera l'URL Cloudinary ici
+      if (!uploadedImageUrl) {
+        alert('Please upload a badge image first.');
+        return;
+      }
+
       const formData = {
         ...data,
-        image_url: previewImage
+        image_url: uploadedImageUrl
       };
       await apiService.post('/badges', formData);
       navigate('/badges');
     } catch (error) {
       console.error('Error creating badge:', error);
+      alert('Failed to create badge. Please try again.');
     }
   };
 
@@ -95,7 +150,12 @@ const Create = () => {
               onDragOver={handleDrag}
               onDrop={handleDrop}
             >
-              {previewImage ? (
+              {uploadingImage ? (
+                <div className="flex flex-col items-center gap-2">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-oxymore-purple"></div>
+                  <p className="text-[var(--text-secondary)]">Uploading image...</p>
+                </div>
+              ) : previewImage ? (
                 <div className="relative w-32 h-32 mx-auto">
                   <img
                     src={previewImage}
@@ -104,8 +164,12 @@ const Create = () => {
                   />
                   <button
                     type="button"
-                    onClick={() => setPreviewImage(null)}
-                    className="absolute -top-2 -right-2 p-1 bg-red-500 text-white rounded-full text-sm"
+                    onClick={() => {
+                      setPreviewImage(null);
+                      setUploadedImageUrl(null);
+                      setValue('image_url', '');
+                    }}
+                    className="absolute -top-2 -right-2 p-1 bg-red-500 text-white rounded-full text-sm hover:bg-red-600 transition-colors"
                   >
                     ×
                   </button>

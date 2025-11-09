@@ -30,7 +30,7 @@ const router = Router();
  *                 description: Dossier dans Cloudinary (optionnel)
  *               type:
  *                 type: string
- *                 enum: [avatar, banner]
+ *                 enum: [avatar, banner, badge]
  *                 description: Type d'image (optionnel, détermine le folder par défaut)
  *     responses:
  *       200:

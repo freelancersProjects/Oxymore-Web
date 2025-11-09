@@ -24,6 +24,9 @@ const Edit = () => {
   const [selectedMaps, setSelectedMaps] = useState<GameMap[]>([]);
   const [dragActive, setDragActive] = useState(false);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const [uploadingImage, setUploadingImage] = useState(false);
+  const [uploadedImageUrl, setUploadedImageUrl] = useState<string | null>(null);
+  const [oldImagePublicId, setOldImagePublicId] = useState<string | null>(null);
 
   const {
     register,
@@ -55,10 +58,62 @@ const Edit = () => {
     }
   };
 
-  const handleImageFile = (file: File) => {
-    const previewUrl = URL.createObjectURL(file);
-    setPreviewImage(previewUrl);
-    setValue('image_url', previewUrl);
+  const convertFileToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = error => reject(error);
+    });
+  };
+
+  const extractPublicIdFromUrl = (url: string): string | null => {
+    try {
+      // Cloudinary URL format: https://res.cloudinary.com/{cloud_name}/image/upload/{public_id}.{ext}
+      const match = url.match(/\/upload\/(?:v\d+\/)?(.+?)(?:\.[^.]+)?$/);
+      return match ? match[1] : null;
+    } catch {
+      return null;
+    }
+  };
+
+  const handleImageFile = async (file: File) => {
+    try {
+      setUploadingImage(true);
+      
+      // Create preview
+      const previewUrl = URL.createObjectURL(file);
+      setPreviewImage(previewUrl);
+
+      // Convert to base64
+      const base64Image = await convertFileToBase64(file);
+
+      // Extract old public_id if exists
+      const currentImageUrl = watch('image_url');
+      const oldPublicId = currentImageUrl && currentImageUrl.includes('cloudinary.com') 
+        ? extractPublicIdFromUrl(currentImageUrl)
+        : null;
+
+      // Upload to Cloudinary
+      const response = await apiService.post<{ url: string; public_id: string }>('/cloudinary/upload', {
+        image: base64Image,
+        folder: 'oxymore/tournaments',
+        type: 'banner',
+        oldPublicId: oldPublicId
+      });
+
+      // Set the Cloudinary URL
+      setUploadedImageUrl(response.url);
+      setValue('image_url', response.url);
+      setOldImagePublicId(response.public_id);
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      setPreviewImage(null);
+      setValue('image_url', watch('image_url') || ''); // Keep old image if upload fails
+      alert('Failed to upload image. Please try again.');
+    } finally {
+      setUploadingImage(false);
+    }
   };
 
   const handleFileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -100,10 +155,21 @@ const Edit = () => {
       setValue('type', tournamentData.type);
       setValue('format', tournamentData.format);
       setValue('structure', tournamentData.structure);
-      // Format dates for input[type="date"] (YYYY-MM-DD)
-      setValue('start_date', tournamentData.start_date ? tournamentData.start_date.split('T')[0] : '');
-      setValue('end_date', tournamentData.end_date ? tournamentData.end_date.split('T')[0] : '');
-      setValue('check_in_date', tournamentData.check_in_date ? tournamentData.check_in_date.split('T')[0] : '');
+      // Format dates for input[type="datetime-local"] (YYYY-MM-DDTHH:mm)
+      const formatDateTimeLocal = (dateString: string | null): string => {
+        if (!dateString) return '';
+        const date = new Date(dateString);
+        // Get local date/time components
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        return `${year}-${month}-${day}T${hours}:${minutes}`;
+      };
+      setValue('start_date', formatDateTimeLocal(tournamentData.start_date));
+      setValue('end_date', formatDateTimeLocal(tournamentData.end_date));
+      setValue('check_in_date', formatDateTimeLocal(tournamentData.check_in_date));
       setValue('cash_prize', tournamentData.cash_prize || 0);
       setValue('entry_fee', tournamentData.entry_fee || 0);
       setValue('max_participant', tournamentData.max_participant || 0);
@@ -417,37 +483,56 @@ const Edit = () => {
                   <img
                     src={previewImage}
                     alt="Tournament preview"
-                    className="w-full h-full object-contain"
+                    className="w-full h-full object-contain rounded-lg"
                   />
                   <button
                     type="button"
                     onClick={() => {
                       setPreviewImage(null);
-                      setValue("image_url", "");
+                      setUploadedImageUrl(null);
+                      setValue("image_url", watch('image_url') || "");
+                      if (previewImage && previewImage.startsWith('blob:')) {
+                        URL.revokeObjectURL(previewImage);
+                      }
                     }}
-                    className="absolute -top-2 -right-2 p-1 bg-red-500 text-white rounded-full text-sm"
+                    className="absolute -top-2 -right-2 p-1 bg-red-500 text-white rounded-full text-sm hover:bg-red-600 transition-colors"
                   >
                     ×
                   </button>
+                  {uploadingImage && (
+                    <div className="absolute inset-0 bg-black/50 flex items-center justify-center rounded-lg">
+                      <div className="text-white text-sm">Uploading...</div>
+                    </div>
+                  )}
                 </div>
               ) : (
                 <div className="flex flex-col items-center gap-2">
-                  <Upload className="w-8 h-8 text-[var(--text-secondary)]" />
-                  <p className="text-[var(--text-secondary)]">
-                    Drag and drop an image, or{" "}
-                    <label className="text-oxymore-purple cursor-pointer">
-                      browse
-                      <input
-                        type="file"
-                        className="hidden"
-                        accept="image/*"
-                        onChange={handleFileInput}
-                      />
-                    </label>
-                  </p>
-                  <p className="text-sm text-[var(--text-muted)]">
-                    Recommended: 512x512px, max 2MB
-                  </p>
+                  {uploadingImage ? (
+                    <>
+                      <Loader />
+                      <p className="text-[var(--text-secondary)]">Uploading image...</p>
+                    </>
+                  ) : (
+                    <>
+                      <Upload className="w-8 h-8 text-[var(--text-secondary)]" />
+                      <p className="text-[var(--text-secondary)]">
+                        Drag and drop an image, or{" "}
+                        <label className="text-oxymore-purple cursor-pointer hover:text-oxymore-purple/80 transition-colors">
+                          browse
+                          <input
+                            type="file"
+                            className="hidden"
+                            accept="image/*"
+                            onChange={handleFileInput}
+                            disabled={uploadingImage}
+                          />
+                        </label>
+                      </p>
+                      <p className="text-sm text-[var(--text-muted)]">
+                        Recommended: 1200x675px, max 5MB
+                      </p>
+                    </>
+                  )}
                 </div>
               )}
             </div>
@@ -464,11 +549,11 @@ const Edit = () => {
             {/* Start Date */}
             <div>
               <label className="block text-sm font-medium text-secondary mb-2">
-                Start Date *
+                Start Date * (Date & Time)
               </label>
               <input
                 {...register("start_date", { required: true })}
-                type="date"
+                type="datetime-local"
                 className="input-base w-full"
               />
               {errors.start_date && (
@@ -481,11 +566,11 @@ const Edit = () => {
             {/* End Date */}
             <div>
               <label className="block text-sm font-medium text-secondary mb-2">
-                End Date *
+                End Date * (Date & Time)
               </label>
               <input
                 {...register("end_date", { required: true })}
-                type="date"
+                type="datetime-local"
                 className="input-base w-full"
               />
               {errors.end_date && (
@@ -498,11 +583,11 @@ const Edit = () => {
             {/* Check-in Date */}
             <div>
               <label className="block text-sm font-medium text-secondary mb-2">
-                Check-in Date
+                Check-in Date (Date & Time)
               </label>
               <input
                 {...register("check_in_date")}
-                type="date"
+                type="datetime-local"
                 className="input-base w-full"
               />
             </div>
