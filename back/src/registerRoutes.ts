@@ -5,6 +5,7 @@ import channelBotRoutes from "./routes/messaging/channelBot";
 import privateMessageRoutes from "./routes/messaging/privateMessage";
 import authRoutes from "./routes/user/auth";
 import roleRoutes from "./routes/admin/role";
+import notificationAdminRoutes from "./routes/admin/notificationAdmin";
 
 import messageBotRoutes from "./routes/messaging/messageBot";
 import userVideoRoutes from "./routes/user/userVideo";
@@ -31,6 +32,7 @@ import roomRoutes from "./routes/room/room";
 import shopItemRoutes from "./routes/shop/shopItem";
 import teamRoutes from "./routes/team/team";
 import teamChatRoutes from "./routes/team/teamChat";
+import teamChatReportRoutes from "./routes/team/teamChatReport";
 import teamMemberRoutes from "./routes/team/teamMember";
 import teamSubscriptionRoutes from "./routes/team/teamSubscription";
 import teamApplicationRoutes from "./routes/team/teamApplication";
@@ -41,6 +43,9 @@ import tournamentMapRoutes from "./routes/tournament/tournamentMap";
 import kanbanRoutes from "./routes/kanban/kanban";
 import calendarRoutes from "./routes/calendar/calendar";
 import gameRoutes from "./routes/game/game";
+import cloudinaryRoutes from "./routes/cloudinary/cloudinary";
+import reviewRoutes from "./routes/review/review";
+import emailRoutes from "./routes/email/email";
 
 export const registerRoutes = (app: Express) => {
   // Routes publiques
@@ -48,6 +53,7 @@ export const registerRoutes = (app: Express) => {
   app.use("/api/users", userRoutes);
   app.use("/api/roles", roleRoutes);
   app.use("/api/notifications", notificationRoutes);
+  app.use("/api/admin/notifications", notificationAdminRoutes);
   app.use("/api/channel-bots", channelBotRoutes);
   app.use("/api/private-messages", privateMessageRoutes);
   app.use("/api/message-bots", messageBotRoutes);
@@ -75,6 +81,7 @@ export const registerRoutes = (app: Express) => {
   app.use("/api/shop-items", shopItemRoutes);
   app.use("/api/teams", teamRoutes);
   app.use("/api/team-chats", teamChatRoutes);
+  app.use("/api/team-chat-reports", teamChatReportRoutes);
   app.use("/api/team-members", teamMemberRoutes);
   app.use("/api/team-subscriptions", teamSubscriptionRoutes);
   app.use("/api/team-applications", teamApplicationRoutes);
@@ -85,4 +92,7 @@ export const registerRoutes = (app: Express) => {
   app.use("/api/kanban", kanbanRoutes);
   app.use("/api/calendar", calendarRoutes);
   app.use("/api/games", gameRoutes);
+  app.use("/api/cloudinary", cloudinaryRoutes);
+  app.use("/api/reviews", reviewRoutes);
+  app.use("/api/email", emailRoutes);
 };

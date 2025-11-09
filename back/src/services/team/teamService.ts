@@ -98,6 +98,7 @@ export const updateTeam = async (
     "description",
     "max_members",
     "entry_type",
+    "region",
   ];
   const updateFields = Object.keys(data).filter((key) =>
     allowedFields.includes(key)

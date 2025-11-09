@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import * as UserService from "../../services/user/userService";
 import { db } from "../../config/db";
 import { RowDataPacket } from "mysql2";
+import { sendWelcomeEmail } from "../../services/email/emailService";
 
 interface Role extends RowDataPacket {
   id: string;
@@ -111,6 +112,20 @@ export const register = async (req: Request, res: Response) => {
       process.env.JWT_SECRET || "secret",
       { expiresIn: "1d" }
     );
+
+    const userName = newUser.first_name && newUser.last_name
+      ? `${newUser.first_name} ${newUser.last_name}`
+      : newUser.first_name || newUser.username || 'Utilisateur';
+
+    try {
+      await sendWelcomeEmail({
+        name: userName,
+        email: newUser.email,
+      });
+      console.log('Welcome email sent to:', newUser.email);
+    } catch (emailError) {
+      console.error('Error sending welcome email:', emailError);
+    }
 
     res.status(201).json({
       token,

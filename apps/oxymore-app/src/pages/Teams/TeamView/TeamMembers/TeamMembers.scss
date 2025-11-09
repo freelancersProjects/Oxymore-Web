@@ -1,7 +1,7 @@
 @import '../../../../styles/global';
 
 .team-members-page {
-  padding: rem-calc(24);
+  padding: rem-calc(24) rem-calc(20);
   min-height: rem-calc(400);
 }
 
@@ -40,8 +40,8 @@
 
   .team-info-badge {
     padding: rem-calc(8) rem-calc(16);
-    background: rgba($color-purple, 0.2);
-    border: 1px solid rgba($color-purple, 0.3);
+    background: rgba($color-blue, 0.2);
+    border: 1px solid rgba($color-blue, 0.3);
     border-radius: rem-calc(8);
     backdrop-filter: blur(10px);
 
@@ -95,15 +95,20 @@
   padding: rem-calc(16) rem-calc(20);
   backdrop-filter: blur(10px);
   transition: all 0.3s ease;
+  z-index: 1;
 
   &:hover {
     background: rgb(255 255 255 / 5%);
-    border-color: rgba($color-purple, 0.3);
+    border-color: rgba($color-blue, 0.3);
   }
 
   &.current-user {
-    border-color: rgba($color-purple, 0.5);
-    background: rgb(139 92 246 / 8%);
+    border-color: rgba($color-blue, 0.5);
+    background: rgb(21 147 206 / 8%);
+  }
+
+  &.dropdown-open {
+    z-index: 1001;
   }
 
   .member-avatar-wrapper {
@@ -137,7 +142,7 @@
       }
 
       &.admin {
-        background: linear-gradient(135deg, $color-purple, #6366f1);
+        background: linear-gradient(135deg, $color-blue, #6366f1);
         color: $color-white;
       }
     }
@@ -168,6 +173,8 @@
     align-items: center;
     gap: rem-calc(12);
     flex-shrink: 0;
+    position: relative;
+    z-index: 101;
 
     .member-role-display {
       display: flex;
@@ -227,7 +234,7 @@
 
         &:hover {
           background: rgba($color-white, 0.1);
-          border-color: rgba($color-purple, 0.3);
+          border-color: rgba($color-blue, 0.3);
         }
 
         .role-select-content {
@@ -285,7 +292,7 @@
         border-radius: rem-calc(8);
         backdrop-filter: blur(10px);
         box-shadow: 0 rem-calc(8) rem-calc(24) rgba(0, 0, 0, 0.3);
-        z-index: 100;
+        z-index: 1002;
         overflow: hidden;
 
         .role-option {
@@ -413,21 +420,28 @@
     }
 
     .modal-close-btn {
-      width: rem-calc(32);
-      height: rem-calc(32);
-      border: none;
+      width: rem-calc(40);
+      height: rem-calc(40);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: rem-calc(8);
-      background: rgba($color-white, 0.05);
-      color: rgba($color-white, 0.6);
+      background: rgba(255, 255, 255, 0.05);
+      color: rgba(255, 255, 255, 0.7);
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: all 0.2s ease;
+      transition: all 0.3s ease;
+      flex-shrink: 0;
 
       &:hover {
-        background: rgba($color-white, 0.1);
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(21, 147, 206, 0.5);
         color: $color-white;
+      }
+
+      svg {
+        width: rem-calc(24);
+        height: rem-calc(24);
       }
     }
   }
@@ -538,13 +552,13 @@
       }
 
       &.confirm {
-        background: $color-purple;
+        background: $color-blue;
         color: $color-white;
 
         &:hover {
-          background: darken($color-purple, 5%);
+          background: darken($color-blue, 5%);
           transform: translateY(rem-calc(-1));
-          box-shadow: 0 rem-calc(4) rem-calc(12) rgba(139, 92, 246, 0.3);
+          box-shadow: 0 rem-calc(4) rem-calc(12) rgba(21, 147, 206, 0.3);
         }
 
         &.delete {
@@ -563,6 +577,222 @@
           cursor: not-allowed;
           transform: none;
         }
+      }
+    }
+  }
+}
+
+@media (max-width: 1024px) {
+  .team-members-page {
+    padding: rem-calc(20) rem-calc(16);
+  }
+
+  .members-header {
+    margin-bottom: rem-calc(24);
+
+    .header-info {
+      .members-title {
+        font-size: rem-calc(24);
+      }
+
+      .members-count {
+        font-size: rem-calc(13);
+      }
+    }
+
+    .team-info-badge {
+      padding: rem-calc(6) rem-calc(14);
+
+      .max-members {
+        font-size: rem-calc(16);
+      }
+    }
+  }
+
+  .member-row {
+    padding: rem-calc(14) rem-calc(18);
+    gap: rem-calc(14);
+
+    .member-avatar-wrapper .member-avatar {
+      width: rem-calc(48);
+      height: rem-calc(48);
+    }
+
+    .member-info {
+      .member-username {
+        font-size: rem-calc(15);
+      }
+
+      .member-join-date {
+        font-size: rem-calc(11);
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .team-members-page {
+    padding: rem-calc(16) rem-calc(12);
+    padding-right: rem-calc(82);
+  }
+
+  .members-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: rem-calc(12);
+    margin-bottom: rem-calc(20);
+
+    .team-info-badge {
+      align-self: flex-start;
+    }
+
+    .header-info {
+      width: 100%;
+
+      .members-title {
+        font-size: rem-calc(22);
+        margin-bottom: rem-calc(6);
+      }
+
+      .members-count {
+        font-size: rem-calc(12);
+      }
+    }
+
+    .team-info-badge {
+      width: 100%;
+      justify-content: center;
+      padding: rem-calc(8) rem-calc(16);
+
+      .max-members {
+        font-size: rem-calc(16);
+      }
+    }
+  }
+
+  .member-row {
+    padding: rem-calc(12) rem-calc(16);
+    gap: rem-calc(12);
+    flex-wrap: wrap;
+
+    .member-avatar-wrapper {
+      .member-avatar {
+        width: rem-calc(44);
+        height: rem-calc(44);
+      }
+
+      .role-badge {
+        width: rem-calc(18);
+        height: rem-calc(18);
+        bottom: rem-calc(-1);
+        right: rem-calc(-1);
+      }
+    }
+
+    .member-info {
+      flex: 1;
+      min-width: rem-calc(120);
+
+      .member-username {
+        font-size: rem-calc(14);
+        margin-bottom: rem-calc(3);
+      }
+
+      .member-join-date {
+        font-size: rem-calc(11);
+      }
+    }
+
+    .member-actions {
+      width: 100%;
+      justify-content: space-between;
+      margin-top: rem-calc(8);
+      gap: rem-calc(8);
+
+      .member-role-display,
+      .role-dropdown-wrapper .role-select-btn {
+        padding: rem-calc(6) rem-calc(10);
+        font-size: rem-calc(12);
+      }
+
+      .remove-member-btn {
+        width: rem-calc(32);
+        height: rem-calc(32);
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .team-members-page {
+    padding: rem-calc(12) rem-calc(8);
+    padding-right: rem-calc(72);
+  }
+
+  .members-header {
+    margin-bottom: rem-calc(16);
+    gap: rem-calc(10);
+
+    .header-info {
+      .members-title {
+        font-size: rem-calc(20);
+        margin-bottom: rem-calc(4);
+      }
+
+      .members-count {
+        font-size: rem-calc(11);
+      }
+    }
+
+    .team-info-badge {
+      padding: rem-calc(6) rem-calc(12);
+
+      .max-members {
+        font-size: rem-calc(14);
+      }
+    }
+  }
+
+  .member-row {
+    padding: rem-calc(10) rem-calc(12);
+    gap: rem-calc(10);
+
+    .member-avatar-wrapper {
+      .member-avatar {
+        width: rem-calc(40);
+        height: rem-calc(40);
+      }
+
+      .role-badge {
+        width: rem-calc(16);
+        height: rem-calc(16);
+      }
+    }
+
+    .member-info {
+      .member-username {
+        font-size: rem-calc(13);
+        margin-bottom: rem-calc(2);
+      }
+
+      .member-join-date {
+        font-size: rem-calc(10);
+      }
+    }
+
+    .member-actions {
+      gap: rem-calc(6);
+      margin-top: rem-calc(6);
+
+      .member-role-display,
+      .role-dropdown-wrapper .role-select-btn {
+        padding: rem-calc(5) rem-calc(8);
+        font-size: rem-calc(11);
+      }
+
+      .remove-member-btn {
+        width: rem-calc(28);
+        height: rem-calc(28);
       }
     }
   }

@@ -1,17 +1,18 @@
 export type NotificationType = 'message' | 'success' | 'alert';
 
 export interface Notification {
-  id_notification: number;
+  id_notification: string;
   type: NotificationType;
   title: string;
   text: string;
   created_at: string;
+  id_user?: string;
 }
 
 export interface NotificationRead {
-  id_notification_read: number;
+  id_notification_read: string;
   id_user: string;
-  id_notification: number;
+  id_notification: string;
   read_at: string;
 }
 
@@ -19,6 +20,7 @@ export interface NotificationInput {
   type: NotificationType;
   title: string;
   text: string;
+  id_user?: string;
 }
 
 export interface NotificationUpdate {

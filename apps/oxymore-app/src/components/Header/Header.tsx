@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from "react";
 import "./Header.scss";
 import { Bell as BellIcon, Search } from 'lucide-react';
-import DrawerNotif from "./DrawerNotif/DrawerNotif";
 import apiService from '../../api/apiService';
 import ProfilePanel from './ProfilePanel/ProfilePanel';
+import { useAuth } from '../../context/AuthContext';
 
 interface HeaderProps {
   isSidebarCollapsed?: boolean;
   hideProfileSidebar?: boolean;
+  onNotificationClick?: () => void;
+  unreadCount?: number;
 }
 
-export const Header: React.FC<HeaderProps> = ({ isSidebarCollapsed = false, hideProfileSidebar = false }) => {
-  const [notifOpen, setNotifOpen] = useState(false);
+export const Header: React.FC<HeaderProps> = ({ isSidebarCollapsed = false, hideProfileSidebar = false, onNotificationClick, unreadCount = 0 }) => {
+  const { user } = useAuth();
   const [isScrolled, setIsScrolled] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [profileCollapsed, setProfileCollapsed] = useState(() => {
@@ -25,17 +27,6 @@ export const Header: React.FC<HeaderProps> = ({ isSidebarCollapsed = false, hide
 
     return isCollapsed;
   });
-  const [unreadCount, setUnreadCount] = useState(0);
-  const userId = "1";
-
-  const fetchUnreadCount = async () => {
-    try {
-      const res = await apiService.get(`/notifications/user/${userId}/unread-count`);
-      setUnreadCount(res.count);
-    } catch (e) {
-      setUnreadCount(0);
-    }
-  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -46,9 +37,6 @@ export const Header: React.FC<HeaderProps> = ({ isSidebarCollapsed = false, hide
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
-  useEffect(() => { fetchUnreadCount(); }, []);
-  useEffect(() => { if (!notifOpen) fetchUnreadCount(); }, [notifOpen]);
 
   const toggleProfile = () => {
     setProfileCollapsed((prev: boolean) => {
@@ -67,7 +55,9 @@ export const Header: React.FC<HeaderProps> = ({ isSidebarCollapsed = false, hide
   };
 
   const openNotif = () => {
-    setNotifOpen(true);
+    if (onNotificationClick) {
+      onNotificationClick();
+    }
   };
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -78,7 +68,21 @@ export const Header: React.FC<HeaderProps> = ({ isSidebarCollapsed = false, hide
     e.preventDefault();
   };
 
-  const isMobile = typeof window !== 'undefined' && window.innerWidth < 700;
+  const [isMobile, setIsMobile] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.innerWidth < 700;
+    }
+    return false;
+  });
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 700);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   return (
     <>
@@ -101,11 +105,10 @@ export const Header: React.FC<HeaderProps> = ({ isSidebarCollapsed = false, hide
             <BellIcon className="icon-bell" size={24} />
             {unreadCount > 0 && <span className="notif-badge-header">{unreadCount}</span>}
           </div>
-          <DrawerNotif open={notifOpen} onClose={() => setNotifOpen(false)} userId={userId} />
         </div>
       </header>
 
-      {!hideProfileSidebar && (
+      {!hideProfileSidebar && !isMobile && (
         <ProfilePanel
           collapsed={profileCollapsed}
           onToggle={toggleProfile}

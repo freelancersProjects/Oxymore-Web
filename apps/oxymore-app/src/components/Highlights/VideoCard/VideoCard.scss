@@ -1,0 +1,447 @@
+@import '../../../styles/global';
+
+.video-card {
+  display: flex;
+  gap: rem-calc(24);
+  width: 100%;
+  padding: rem-calc(20) rem-calc(24);
+  min-height: rem-calc(600);
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    min-height: auto;
+    padding: rem-calc(16);
+  }
+
+  &__left {
+    flex: 0 0 auto;
+    position: relative;
+  }
+
+  &__right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: rem-calc(12);
+    min-width: 0;
+  }
+
+  &__video-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: rem-calc(500);
+    aspect-ratio: 9 / 16;
+    border-radius: rem-calc(12);
+    overflow: hidden;
+    background: var(--bg-tertiary);
+    cursor: pointer;
+    flex-shrink: 0;
+    margin-bottom: rem-calc(24);
+    border: none;
+    transition: all 0.3s ease;
+
+    @media (max-width: 768px) {
+      max-width: 100%;
+      max-height: 60vh;
+      aspect-ratio: auto;
+    }
+
+    video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    &:hover .video-card__play-btn {
+      opacity: 1;
+    }
+  }
+
+  &__play-btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: rem-calc(80);
+    height: rem-calc(80);
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.7);
+    border: 3px solid white;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    z-index: 10;
+    opacity: 0.8;
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.9);
+      transform: translate(-50%, -50%) scale(1.1);
+      opacity: 1;
+    }
+  }
+
+  &__actions {
+    position: absolute;
+    right: rem-calc(12);
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: rem-calc(28);
+    align-items: center;
+    z-index: 10;
+    pointer-events: none;
+  }
+
+  &__action-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.6);
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 0;
+    border-radius: 50%;
+    width: rem-calc(56);
+    height: rem-calc(56);
+    transition: all 0.2s ease;
+    backdrop-filter: blur(8px);
+    pointer-events: auto;
+    position: relative;
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.8);
+      transform: scale(1.05);
+    }
+
+    svg {
+      transition: all 0.2s ease;
+      width: rem-calc(32);
+      height: rem-calc(32);
+      flex-shrink: 0;
+    }
+
+    span {
+      font-size: rem-calc(11);
+      font-weight: 600;
+      color: white;
+      position: absolute;
+      bottom: rem-calc(-20);
+      white-space: nowrap;
+      pointer-events: none;
+      width: 100%;
+      text-align: center;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    &.liked {
+      color: $color-blue;
+
+      span {
+        color: $color-blue;
+      }
+
+      svg {
+        animation: heartPop 0.3s ease;
+      }
+    }
+
+    &.saved {
+      color: var(--primary);
+
+      span {
+        color: var(--primary);
+      }
+
+      svg {
+        animation: bookmarkPop 0.3s ease;
+      }
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: rem-calc(12);
+  }
+
+  &__user {
+    display: flex;
+    align-items: center;
+    gap: rem-calc(12);
+    flex: 1;
+  }
+
+  &__avatar {
+    width: rem-calc(40);
+    height: rem-calc(40);
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+
+  &__avatar-placeholder {
+    width: rem-calc(40);
+    height: rem-calc(40);
+    border-radius: 50%;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: rem-calc(16);
+    flex-shrink: 0;
+  }
+
+  &__user-info {
+    display: flex;
+    flex-direction: column;
+    gap: rem-calc(4);
+    min-width: 0;
+  }
+
+  &__username {
+    font-size: rem-calc(14);
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  &__badge {
+    font-size: rem-calc(12);
+    font-weight: 600;
+    color: var(--primary);
+    font-family: 'Orbitron', sans-serif;
+  }
+
+  &__more-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: rem-calc(4);
+    border-radius: rem-calc(4);
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+
+    &:hover {
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+    }
+  }
+
+  &__title {
+    font-size: rem-calc(16);
+    font-weight: 500;
+    color: var(--text-primary);
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  &__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: rem-calc(8);
+    margin-top: rem-calc(4);
+  }
+
+  &__tag {
+    color: var(--primary);
+    font-size: rem-calc(14);
+    font-weight: 500;
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  &__comments {
+    margin-top: rem-calc(24);
+    padding-top: rem-calc(24);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  &__comments-header {
+    margin-bottom: rem-calc(16);
+  }
+
+  &__comments-title {
+    font-size: rem-calc(18);
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+    font-family: 'Orbitron', sans-serif;
+  }
+
+  &__comments-list {
+    max-height: rem-calc(400);
+    overflow-y: auto;
+    margin-bottom: rem-calc(16);
+    display: flex;
+    flex-direction: column;
+    gap: rem-calc(16);
+
+    &::-webkit-scrollbar {
+      width: rem-calc(6);
+    }
+
+    &::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: rem-calc(3);
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: $color-blue;
+      border-radius: rem-calc(3);
+
+      &:hover {
+        background: darken($color-blue, 10%);
+      }
+    }
+  }
+
+  &__comment-item {
+    display: flex;
+    gap: rem-calc(12);
+    align-items: flex-start;
+    padding: rem-calc(12);
+    border-radius: rem-calc(8);
+    background: rgba(255, 255, 255, 0.03);
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.05);
+    }
+  }
+
+  &__comment-avatar {
+    width: rem-calc(36);
+    height: rem-calc(36);
+    border-radius: 50%;
+    background: linear-gradient(135deg, $color-blue, $color-purple);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 700;
+    font-size: rem-calc(14);
+    flex-shrink: 0;
+  }
+
+  &__comment-content {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: rem-calc(4);
+  }
+
+  &__comment-author {
+    font-size: rem-calc(14);
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  &__comment-text {
+    font-size: rem-calc(14);
+    color: var(--text-secondary);
+    line-height: 1.4;
+    word-wrap: break-word;
+  }
+
+  &__comment-time {
+    font-size: rem-calc(12);
+    color: var(--text-secondary);
+    opacity: 0.7;
+  }
+
+  &__comments-empty {
+    color: var(--text-secondary);
+    font-size: rem-calc(14);
+    text-align: center;
+    padding: rem-calc(20);
+  }
+
+  &__comment-form {
+    display: flex;
+    gap: rem-calc(12);
+    align-items: center;
+  }
+
+  &__comment-input {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid $color-blue;
+    border-radius: rem-calc(8);
+    padding: rem-calc(12) rem-calc(16);
+    color: var(--text-primary);
+    font-size: rem-calc(14);
+    outline: none;
+    transition: all 0.2s ease;
+
+    &:focus {
+      border-color: $color-blue;
+      background: rgba(255, 255, 255, 0.08);
+      box-shadow: 0 0 rem-calc(10) rgba($color-blue, 0.3);
+    }
+
+    &::placeholder {
+      color: var(--text-secondary);
+    }
+  }
+
+  &__comment-submit {
+    background: $color-blue;
+    border: none;
+    border-radius: rem-calc(8);
+    padding: rem-calc(12) rem-calc(24);
+    color: white;
+    font-size: rem-calc(14);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: darken($color-blue, 10%);
+      transform: scale(1.02);
+    }
+
+    &:active {
+      transform: scale(0.98);
+    }
+  }
+}
+
+@keyframes heartPop {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.3);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes bookmarkPop {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}

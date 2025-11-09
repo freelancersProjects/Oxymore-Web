@@ -58,6 +58,7 @@ export interface TeamChat extends RowDataPacket {
   id_team: string;
   id_user: string;
   is_admin?: boolean;
+  reply_to?: string;
 }
 
 export interface TeamChatInput {

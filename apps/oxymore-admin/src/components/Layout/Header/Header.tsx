@@ -9,19 +9,20 @@ import {
   Menu,
   X,
   Sun,
-  Moon
+  Moon,
+  CheckCircle2,
+  AlertCircle,
+  MessageSquare,
+  CheckCheck
 } from 'lucide-react';
 import { useAuth } from '../../../context/AuthContext';
 import { useSidebar } from '../../../context/SidebarContext';
 import { useTheme } from '../../../context/ThemeContext';
 import ShortcutsModal from './ShortcutsModal';
 import SearchBar from '../../SearchBar/SearchBar';
-
-const notifications = [
-  { title: 'New Tournament Registration', desc: 'Team_Alpha joined CS2 Major', time: '2 min ago' },
-  { title: 'Match Starting Soon', desc: 'NextGen vs Team_Beta in 30min', time: '5 min ago' },
-  { title: 'New Report', desc: 'User reported for toxic behavior', time: '1h ago' }
-];
+import { notificationAdminService, NotificationAdmin } from '../../../services/notificationAdminService';
+import { formatDistanceToNow } from 'date-fns';
+import { fr } from 'date-fns/locale';
 
 const Header = () => {
   const { user, logout } = useAuth();
@@ -32,6 +33,9 @@ const Header = () => {
   const [showShortcuts, setShowShortcuts] = useState(false);
   const [showMobileSearch, setShowMobileSearch] = useState(false);
   const [showMobileNotifModal, setShowMobileNotifModal] = useState(false);
+  const [notifications, setNotifications] = useState<NotificationAdmin[]>([]);
+  const [unreadCount, setUnreadCount] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   const notifRef = useRef<HTMLDivElement>(null);
   const profileRef = useRef<HTMLDivElement>(null);
@@ -65,6 +69,30 @@ const Header = () => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isMobile, toggleMobileMenu]);
 
+  // Charger les notifications admin
+  const loadNotifications = async () => {
+    try {
+      setLoading(true);
+      const [notifs, count] = await Promise.all([
+        notificationAdminService.getAll(),
+        notificationAdminService.getUnreadCount()
+      ]);
+      setNotifications(notifs);
+      setUnreadCount(count);
+    } catch (error) {
+      console.error('Error loading admin notifications:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Charger les notifications au montage et toutes les 30 secondes
+  useEffect(() => {
+    loadNotifications();
+    const interval = setInterval(loadNotifications, 30000); // Actualiser toutes les 30 secondes
+    return () => clearInterval(interval);
+  }, []);
+
   // Gestionnaire de clic en dehors pour fermer les dropdowns
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -79,6 +107,60 @@ const Header = () => {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+
+  // Marquer une notification comme lue
+  const handleMarkAsRead = async (notificationId: string, e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    try {
+      await notificationAdminService.markAsRead(notificationId);
+      await loadNotifications();
+    } catch (error) {
+      console.error('Error marking notification as read:', error);
+    }
+  };
+
+  // Marquer toutes les notifications comme lues
+  const handleMarkAllAsRead = async () => {
+    try {
+      await notificationAdminService.markAllAsRead();
+      await loadNotifications();
+    } catch (error) {
+      console.error('Error marking all notifications as read:', error);
+    }
+  };
+
+  // Formater la date relative
+  const formatTime = (dateString: string) => {
+    try {
+      return formatDistanceToNow(new Date(dateString), { addSuffix: true, locale: fr });
+    } catch {
+      return dateString;
+    }
+  };
+
+  // Obtenir l'icône selon le type
+  const getNotificationIcon = (type: 'message' | 'success' | 'alert') => {
+    switch (type) {
+      case 'success':
+        return CheckCircle2;
+      case 'alert':
+        return AlertCircle;
+      default:
+        return MessageSquare;
+    }
+  };
+
+  // Obtenir la couleur selon le type
+  const getNotificationColor = (type: 'message' | 'success' | 'alert') => {
+    switch (type) {
+      case 'success':
+        return 'bg-green-500';
+      case 'alert':
+        return 'bg-red-500';
+      default:
+        return 'bg-blue-500';
+    }
+  };
 
   const handleLogout = () => {
     logout();
@@ -185,9 +267,11 @@ const Header = () => {
               className="relative p-2 bg-[var(--overlay-hover)] hover:bg-[var(--overlay-active)] rounded-xl transition-colors"
             >
               <Bell className="w-5 h-5 text-[var(--text-primary)]" />
-              <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full text-[10px] font-bold flex items-center justify-center text-white">
-                3
-              </span>
+              {unreadCount > 0 && (
+                <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] bg-red-500 rounded-full text-[10px] font-bold flex items-center justify-center text-white px-1">
+                  {unreadCount > 99 ? '99+' : unreadCount}
+                </span>
+              )}
             </motion.button>
 
             <AnimatePresence>
@@ -198,30 +282,58 @@ const Header = () => {
                   exit={{ opacity: 0, y: 10 }}
                   className="absolute right-0 mt-2 w-80 bg-[var(--card-background)] border border-[var(--border-color)] rounded-xl shadow-lg overflow-hidden"
                 >
-                  <div className="p-4 border-b border-[var(--border-color)]">
-                    <h3 className="text-[var(--text-primary)] font-semibold">Notifications</h3>
-                  </div>
-                  <div className="p-2">
-                    {notifications.map((notif, i) => (
-                      <motion.div
-                        key={i}
-                        initial={{ opacity: 0, x: -10 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: i * 0.1 }}
-                        className="p-3 hover:bg-[var(--overlay-hover)] rounded-lg cursor-pointer"
+                  <div className="p-4 border-b border-[var(--border-color)] flex items-center justify-between">
+                    <h3 className="text-[var(--text-primary)] font-semibold">Notifications Admin</h3>
+                    {unreadCount > 0 && (
+                      <button
+                        onClick={handleMarkAllAsRead}
+                        className="text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)] flex items-center gap-1 px-2 py-1 hover:bg-[var(--overlay-hover)] rounded-lg transition-colors"
                       >
-                        <div className="flex items-start gap-3">
-                          <div className="w-8 h-8 bg-gradient-oxymore rounded-lg flex items-center justify-center flex-shrink-0">
-                            <Bell className="w-4 h-4 text-white" />
-                          </div>
-                          <div>
-                            <h4 className="text-[var(--text-primary)] font-medium">{notif.title}</h4>
-                            <p className="text-sm text-[var(--text-secondary)]">{notif.desc}</p>
-                            <span className="text-xs text-[var(--text-muted)]">{notif.time}</span>
-                          </div>
-                        </div>
-                      </motion.div>
-                    ))}
+                        <CheckCheck className="w-3 h-3" />
+                        Tout lire
+                      </button>
+                    )}
+                  </div>
+                  <div className="max-h-[400px] overflow-y-auto p-2">
+                    {loading ? (
+                      <div className="p-4 text-center text-[var(--text-secondary)] text-sm">Chargement...</div>
+                    ) : notifications.length === 0 ? (
+                      <div className="p-4 text-center text-[var(--text-secondary)] text-sm">Aucune notification</div>
+                    ) : (
+                      notifications.map((notif) => {
+                        const Icon = getNotificationIcon(notif.type);
+                        const bgColor = getNotificationColor(notif.type);
+                        return (
+                          <motion.div
+                            key={notif.id_notification_admin}
+                            initial={{ opacity: 0, x: -10 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            className={`p-3 hover:bg-[var(--overlay-hover)] rounded-lg cursor-pointer transition-colors ${
+                              !notif.is_read ? 'bg-[var(--overlay-hover)]/50' : ''
+                            }`}
+                            onClick={() => !notif.is_read && handleMarkAsRead(notif.id_notification_admin)}
+                          >
+                            <div className="flex items-start gap-3">
+                              <div className={`w-8 h-8 ${bgColor} rounded-lg flex items-center justify-center flex-shrink-0`}>
+                                <Icon className="w-4 h-4 text-white" />
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <div className="flex items-start justify-between gap-2">
+                                  <h4 className={`text-sm font-medium ${!notif.is_read ? 'text-[var(--text-primary)] font-semibold' : 'text-[var(--text-primary)]'}`}>
+                                    {notif.title}
+                                  </h4>
+                                  {!notif.is_read && (
+                                    <div className="w-2 h-2 bg-red-500 rounded-full flex-shrink-0 mt-1" />
+                                  )}
+                                </div>
+                                <p className="text-xs text-[var(--text-secondary)] mt-1 line-clamp-2">{notif.text}</p>
+                                <span className="text-xs text-[var(--text-muted)] mt-1 block">{formatTime(notif.created_at)}</span>
+                              </div>
+                            </div>
+                          </motion.div>
+                        );
+                      })
+                    )}
                   </div>
                 </motion.div>
               )}
@@ -325,26 +437,56 @@ const Header = () => {
                 </button>
               </div>
               <div className="p-2 max-h-64 overflow-y-auto">
-                {notifications.map((notif, i) => (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, x: -10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: i * 0.1 }}
-                    className="p-3 hover:bg-[var(--overlay-hover)] rounded-lg cursor-pointer"
-                  >
-                    <div className="flex items-start gap-3">
-                      <div className="w-8 h-8 bg-gradient-oxymore rounded-lg flex items-center justify-center flex-shrink-0">
-                        <Bell className="w-4 h-4 text-white" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <h4 className="text-[var(--text-primary)] font-medium text-sm">{notif.title}</h4>
-                        <p className="text-sm text-[var(--text-secondary)] mt-1">{notif.desc}</p>
-                        <span className="text-xs text-[var(--text-muted)] mt-2 block">{notif.time}</span>
-                      </div>
-                    </div>
-                  </motion.div>
-                ))}
+                {loading ? (
+                  <div className="p-4 text-center text-[var(--text-secondary)] text-sm">Chargement...</div>
+                ) : notifications.length === 0 ? (
+                  <div className="p-4 text-center text-[var(--text-secondary)] text-sm">Aucune notification</div>
+                ) : (
+                  <>
+                    {unreadCount > 0 && (
+                      <button
+                        onClick={handleMarkAllAsRead}
+                        className="w-full mb-2 text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)] flex items-center justify-center gap-1 px-2 py-2 hover:bg-[var(--overlay-hover)] rounded-lg transition-colors"
+                      >
+                        <CheckCheck className="w-3 h-3" />
+                        Marquer tout comme lu
+                      </button>
+                    )}
+                    {notifications.map((notif) => {
+                      const Icon = getNotificationIcon(notif.type);
+                      const bgColor = getNotificationColor(notif.type);
+                      return (
+                        <motion.div
+                          key={notif.id_notification_admin}
+                          initial={{ opacity: 0, x: -10 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          className={`p-3 hover:bg-[var(--overlay-hover)] rounded-lg cursor-pointer transition-colors ${
+                            !notif.is_read ? 'bg-[var(--overlay-hover)]/50' : ''
+                          }`}
+                          onClick={() => !notif.is_read && handleMarkAsRead(notif.id_notification_admin)}
+                        >
+                          <div className="flex items-start gap-3">
+                            <div className={`w-8 h-8 ${bgColor} rounded-lg flex items-center justify-center flex-shrink-0`}>
+                              <Icon className="w-4 h-4 text-white" />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-start justify-between gap-2">
+                                <h4 className={`text-sm font-medium ${!notif.is_read ? 'text-[var(--text-primary)] font-semibold' : 'text-[var(--text-primary)]'}`}>
+                                  {notif.title}
+                                </h4>
+                                {!notif.is_read && (
+                                  <div className="w-2 h-2 bg-red-500 rounded-full flex-shrink-0 mt-1" />
+                                )}
+                              </div>
+                              <p className="text-xs text-[var(--text-secondary)] mt-1 line-clamp-2">{notif.text}</p>
+                              <span className="text-xs text-[var(--text-muted)] mt-1 block">{formatTime(notif.created_at)}</span>
+                            </div>
+                          </div>
+                        </motion.div>
+                      );
+                    })}
+                  </>
+                )}
               </div>
             </motion.div>
           </motion.div>

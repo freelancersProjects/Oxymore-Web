@@ -1,8 +1,10 @@
 export { default as OXMButton } from "./OXM/OXM.Button/Button";
 export { default as OXMCategorie } from "./OXM/OXM.Categorie/Categorie";
 export { default as OXMAccordion } from "./OXM/OXM.Accordion/Accordion";
+export { default as OXMAccordionInformation } from "./OXM/OXM.AccordionInformation/AccordionInformation";
 export { default as OXMGlowOrb } from "./OXM/OXM.GlowOrb/GlowOrb";
 export { default as OXMToast } from "./OXM/OXM.Toast/Toast";
+export { useToast } from "./OXM/OXM.Toast/useToast";
 export { default as OXMModal } from "./OXM/OXM.Modal/Modal";
 export { default as OXMTabSwitcher } from "./OXM/OXM.TabSwitcher/TabSwitcher";
 export { default as OXMDrawer } from "./OXM/OXM.Drawer/Drawer";

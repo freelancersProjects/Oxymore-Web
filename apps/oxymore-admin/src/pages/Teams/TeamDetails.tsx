@@ -181,8 +181,12 @@ const TeamDetails = () => {
           <div className="card-base p-4 md:p-6">
             <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
               <div className="flex items-center gap-3 md:gap-4">
-                <div className="w-12 h-12 md:w-16 md:h-16 rounded-xl md:rounded-2xl bg-gradient-oxymore flex items-center justify-center">
-                  <Shield className="w-6 h-6 md:w-8 md:h-8 text-white" />
+                <div className="w-12 h-12 md:w-16 md:h-16 rounded-xl md:rounded-2xl bg-gradient-oxymore flex items-center justify-center overflow-hidden">
+                  {teamDetails.team_logo_url ? (
+                    <img src={teamDetails.team_logo_url} alt={teamDetails.team_name} className="w-full h-full object-cover" />
+                  ) : (
+                    <Shield className="w-6 h-6 md:w-8 md:h-8 text-white" />
+                  )}
                 </div>
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">

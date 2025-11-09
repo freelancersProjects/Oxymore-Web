@@ -34,7 +34,7 @@ const PinnedMessagesModal: React.FC<PinnedMessagesModalProps> = ({
   };
 
   return (
-    <OXMModal isOpen={isOpen} onClose={onClose} variant="blue">
+    <OXMModal isOpen={isOpen} onClose={onClose} variant="large">
       <motion.div
         initial={{ opacity: 0, scale: 0.98 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -55,7 +55,7 @@ const PinnedMessagesModal: React.FC<PinnedMessagesModalProps> = ({
               </div>
             </div>
             <button className="close-button" onClick={onClose}>
-              <X size={20} />
+              <X size={24} />
             </button>
           </div>
 

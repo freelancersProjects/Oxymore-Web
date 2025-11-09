@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Crown, UserX, Shield, Users, ChevronDown, Info, X } from "lucide-react";
 import { teamService } from "../../../../services/teamService";
+import { notificationService } from "../../../../services/notificationService";
 import { OXMToast, OXMTooltip, OXMModal } from "@oxymore/ui";
 import type { Team, TeamMemberDetailed, TeamMemberResponse } from "../../../../types/team";
 import "./TeamMembers.scss";
@@ -149,6 +150,15 @@ const TeamMembers: React.FC<TeamMembersProps> = ({ teamId, teamData }) => {
       if (member?.id_team_member) {
         await teamService.removeTeamMember(member.id_team_member);
         setMembers(members.filter(m => m.id_user !== memberToDelete.id));
+        
+        const teamName = teamData?.name || 'l\'équipe';
+        await notificationService.createForUser(
+          `Vous avez été retiré de ${teamName}.`,
+          'alert',
+          member.id_user,
+          'Vous avez été exclu de l\'équipe'
+        );
+        
         setToast({ message: `${memberToDelete.username} a été retiré de l'équipe`, type: "success" });
       }
       setShowDeleteConfirmModal(false);
@@ -174,17 +184,52 @@ const TeamMembers: React.FC<TeamMembersProps> = ({ teamId, teamData }) => {
     try {
       setUpdatingRoleMemberId(memberId);
       const member = members.find(m => m.id_user === memberId);
-      if (member?.id_team_member) {
+      if (member?.id_team_member && member?.id_user) {
+        const oldRole = member.role || 'member';
+        
         await teamService.updateTeamMemberRole(member.id_team_member, newRole);
+        
         setMembers(members.map(m =>
           m.id_user === memberId ? { ...m, role: newRole } : m
         ));
+        
+        if (oldRole !== newRole && member.id_user) {
+          try {
+            const teamName = teamData?.name || 'l\'équipe';
+            const roleLabels: Record<string, string> = {
+              captain: 'Capitaine',
+              admin: 'Administrateur',
+              member: 'Membre'
+            };
+            
+            await notificationService.createForUser(
+              `Votre rôle dans ${teamName} a été changé en ${roleLabels[newRole] || newRole}.`,
+              'message',
+              member.id_user,
+              'Changement de rôle'
+            );
+            
+            console.log('Notification created successfully');
+          } catch (notifError) {
+            console.error('Error creating notification for role change:', notifError);
+            setToast({ 
+              message: "Rôle mis à jour mais erreur lors de l'envoi de la notification", 
+              type: "error" 
+            });
+          }
+        } else {
+          console.log('Role did not change or missing userId:', { oldRole, newRole, userId: member.id_user });
+        }
+        
         setToast({
           message: `Le rôle de ${memberUsername} a été mis à jour en ${getRoleLabel(newRole)}`,
           type: "success"
         });
+      } else {
+        console.error('Member not found or missing required fields:', { memberId, member });
       }
     } catch (error) {
+      console.error('Error updating team member role:', error);
       setToast({ message: "Erreur lors de la mise à jour du rôle", type: "error" });
     } finally {
       setUpdatingRoleMemberId(null);
@@ -286,7 +331,11 @@ const TeamMembers: React.FC<TeamMembersProps> = ({ teamId, teamData }) => {
         </div>
       ) : (
         <div className="members-list">
-          {members.map((member) => {
+          {[...members].sort((a, b) => {
+            if (a.id_user === currentUserId) return -1;
+            if (b.id_user === currentUserId) return 1;
+            return 0;
+          }).map((member) => {
             const isTargetMember = member.role === 'member';
             const isCurrentUserAdmin = currentUserMember?.role === 'admin';
 
@@ -302,7 +351,7 @@ const TeamMembers: React.FC<TeamMembersProps> = ({ teamId, teamData }) => {
             const isDropdownOpen = openRoleDropdown === member.id_user;
 
             return (
-              <div key={member.id_user} className={`member-row ${isCurrentUser ? 'current-user' : ''}`}>
+              <div key={member.id_user} className={`member-row ${isCurrentUser ? 'current-user' : ''} ${isDropdownOpen ? 'dropdown-open' : ''}`}>
                 <div className="member-avatar-wrapper">
                   <Avatar
                     src={member.avatar}
@@ -409,7 +458,7 @@ const TeamMembers: React.FC<TeamMembersProps> = ({ teamId, teamData }) => {
       <OXMModal isOpen={showAdminConfirmModal} onClose={() => {
         setShowAdminConfirmModal(false);
         setPendingRoleChange(null);
-      }}>
+      }} variant="default">
         <div className="admin-confirm-modal">
           <div className="modal-header">
             <div className="modal-header-content">
@@ -422,7 +471,7 @@ const TeamMembers: React.FC<TeamMembersProps> = ({ teamId, teamData }) => {
               setShowAdminConfirmModal(false);
               setPendingRoleChange(null);
             }}>
-              <X size={20} />
+              <X size={24} />
             </button>
           </div>
 
@@ -481,7 +530,7 @@ const TeamMembers: React.FC<TeamMembersProps> = ({ teamId, teamData }) => {
       <OXMModal isOpen={showDeleteConfirmModal} onClose={() => {
         setShowDeleteConfirmModal(false);
         setMemberToDelete(null);
-      }}>
+      }} variant="default">
         <div className="delete-confirm-modal">
           <div className="modal-header">
             <div className="modal-header-content">
@@ -494,7 +543,7 @@ const TeamMembers: React.FC<TeamMembersProps> = ({ teamId, teamData }) => {
               setShowDeleteConfirmModal(false);
               setMemberToDelete(null);
             }}>
-              <X size={20} />
+              <X size={24} />
             </button>
           </div>
 

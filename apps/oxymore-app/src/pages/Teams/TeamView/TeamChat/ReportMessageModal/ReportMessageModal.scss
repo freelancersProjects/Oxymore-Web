@@ -1,0 +1,85 @@
+@import '../../../../../styles/global';
+
+.report-modal-content {
+  border-radius: rem-calc(16);
+  padding: rem-calc(24);
+  width: 100%;
+}
+
+.report-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: rem-calc(24);
+
+  h2 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: rem-calc(20);
+    font-weight: 600;
+    color: $color-white;
+    margin: 0;
+  }
+}
+
+.report-modal-close {
+  background: transparent;
+  border: none;
+  color: rgba($color-white, 0.6);
+  cursor: pointer;
+  padding: rem-calc(4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+
+  &:hover {
+    color: $color-white;
+    transform: scale(1.1);
+  }
+}
+
+.report-modal-message-preview {
+  background: rgb(255 255 255 / 3%);
+  border: 1px solid rgb(255 255 255 / 10%);
+  border-radius: rem-calc(12);
+  padding: rem-calc(16);
+  margin-bottom: rem-calc(24);
+}
+
+.report-modal-message-sender {
+  font-size: rem-calc(12);
+  font-weight: 600;
+  color: rgba($color-white, 0.6);
+  margin-bottom: rem-calc(8);
+}
+
+.report-modal-message-text {
+  font-size: rem-calc(14);
+  color: $color-white;
+  line-height: 1.5;
+  word-wrap: break-word;
+}
+
+.report-modal-body {
+  margin-bottom: rem-calc(24);
+}
+
+.report-modal-label {
+  font-size: rem-calc(14);
+  font-weight: 500;
+  color: $color-white;
+  margin-bottom: rem-calc(16);
+}
+
+.report-modal-reasons {
+  display: flex;
+  flex-direction: column;
+  gap: rem-calc(12);
+}
+
+.report-modal-footer {
+  display: flex;
+  gap: rem-calc(12);
+  justify-content: flex-end;
+}
+

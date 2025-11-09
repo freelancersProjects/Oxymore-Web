@@ -161,5 +161,147 @@
             width: 100% !important;
         }
     }
+}
+
+@media (max-width: 1024px) {
+  .upcoming-tournaments {
+    margin-top: rem-calc(40);
+
+    .section-title {
+      font-size: rem-calc(26);
+      margin-bottom: rem-calc(20);
     }
+
+    .cards {
+      gap: rem-calc(16);
+    }
+
+    .card {
+      min-width: calc(50% - rem-calc(8));
+      max-width: calc(50% - rem-calc(8));
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .upcoming-tournaments {
+    margin-top: rem-calc(30);
+
+    .section-title {
+      font-size: rem-calc(24);
+      margin-bottom: rem-calc(16);
+    }
+
+    .cards {
+      flex-direction: column;
+      gap: rem-calc(16);
+    }
+
+    .card {
+      min-width: 100%;
+      max-width: 100%;
+      padding: rem-calc(12);
+
+      .card-image-container {
+        height: rem-calc(180);
+
+        .live-badge {
+          top: rem-calc(12);
+          left: rem-calc(12);
+          padding: rem-calc(6) rem-calc(12) rem-calc(6) rem-calc(10);
+          font-size: rem-calc(12);
+
+          svg {
+            width: rem-calc(14);
+            height: rem-calc(14);
+          }
+        }
+
+        .views {
+          bottom: rem-calc(12);
+          right: rem-calc(12);
+          padding: rem-calc(6) rem-calc(10) rem-calc(6) rem-calc(8);
+          font-size: rem-calc(12);
+
+          svg {
+            width: rem-calc(14);
+            height: rem-calc(14);
+          }
+        }
+      }
+
+      .tag {
+        padding: rem-calc(6) rem-calc(12);
+        font-size: rem-calc(12);
+
+        .dot {
+          width: rem-calc(5);
+          height: rem-calc(5);
+        }
+      }
+
+      .title {
+        font-size: rem-calc(18);
+      }
+
+      .meta {
+        font-size: rem-calc(12);
+      }
+
+      .card-buttons {
+        flex-direction: column;
+        gap: rem-calc(12);
+
+        .oxm-button {
+          height: rem-calc(48) !important;
+          min-height: rem-calc(48) !important;
+          font-size: rem-calc(14);
+          padding: rem-calc(12) rem-calc(20) !important;
+          line-height: 1.5;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .upcoming-tournaments {
+    .section-title {
+      font-size: rem-calc(20);
+      margin-bottom: rem-calc(12);
+    }
+
+    .card {
+      padding: rem-calc(10);
+      border-radius: rem-calc(16);
+
+      .card-image-container {
+        height: rem-calc(160);
+      }
+
+      .title {
+        font-size: rem-calc(16);
+      }
+
+      .meta {
+        font-size: rem-calc(11);
+        flex-direction: column;
+        align-items: flex-start;
+        gap: rem-calc(4);
+      }
+
+      .card-buttons {
+        gap: rem-calc(10);
+
+        .oxm-button {
+          height: rem-calc(46) !important;
+          min-height: rem-calc(46) !important;
+          font-size: rem-calc(13);
+          padding: rem-calc(12) rem-calc(18) !important;
+          line-height: 1.5;
+        }
+      }
+    }
+  }
+}
 

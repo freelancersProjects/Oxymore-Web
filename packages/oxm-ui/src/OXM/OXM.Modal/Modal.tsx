@@ -9,7 +9,7 @@ interface ModalProps {
   keyUrl?: string;
   persistOnRefresh?: boolean;
   urlValue?: string;
-  variant?: 'default' | 'blue';
+  variant?: 'default' | 'blue' | 'large';
 }
 
 const OXMModal: React.FC<ModalProps> = ({ isOpen, onClose, children, keyUrl, persistOnRefresh = false, urlValue, variant = 'default' }) => {
@@ -42,7 +42,7 @@ const OXMModal: React.FC<ModalProps> = ({ isOpen, onClose, children, keyUrl, per
 
   const content = (
     <div className="oxm-modal-backdrop" onClick={handleClose}>
-      <div className={`oxm-modal ${variant === 'blue' ? 'oxm-modal--blue' : ''}`} onClick={(e) => e.stopPropagation()}>
+      <div className={`oxm-modal ${variant === 'blue' ? 'oxm-modal--blue' : ''} ${variant === 'large' ? 'oxm-modal--large' : ''}`} onClick={(e) => e.stopPropagation()}>
         {children}
       </div>
     </div>

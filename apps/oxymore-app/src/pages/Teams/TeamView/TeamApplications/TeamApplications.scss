@@ -1,7 +1,7 @@
 @import '../../../../styles/global.scss';
 
 .team-applications-page {
-  padding: rem-calc(24);
+  padding: rem-calc(24) rem-calc(20);
 
   .applications-header {
     display: flex;
@@ -22,8 +22,8 @@
       font-size: rem-calc(14);
       color: rgba(255, 255, 255, 0.6);
       padding: rem-calc(6) rem-calc(12);
-      background: rgba(139, 92, 246, 0.2);
-      border: 1px solid rgba(139, 92, 246, 0.3);
+      background: rgba(21, 147, 206, 0.2);
+      border: 1px solid rgba(21, 147, 206, 0.3);
       border-radius: rem-calc(8);
     }
   }
@@ -56,7 +56,7 @@
   .application-row {
     position: relative;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
     gap: rem-calc(16);
     background: rgb(255 255 255 / 3%);
@@ -68,7 +68,7 @@
 
     &:hover {
       background: rgb(255 255 255 / 5%);
-      border-color: rgba($color-purple, 0.3);
+      border-color: rgba($color-blue, 0.3);
     }
 
     &.pending {
@@ -77,7 +77,7 @@
 
     .application-main {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       gap: rem-calc(16);
       flex: 1;
       min-width: 0;
@@ -88,6 +88,7 @@
         border-radius: 50%;
         border: 2px solid rgba(255, 255, 255, 0.1);
         flex-shrink: 0;
+        margin-top: rem-calc(2);
       }
 
       .application-user-info {
@@ -123,7 +124,7 @@
           margin-top: rem-calc(4);
 
           svg {
-            color: rgba(139, 92, 246, 0.7);
+            color: rgba(21, 147, 206, 0.7);
             flex-shrink: 0;
           }
 
@@ -147,11 +148,11 @@
 
           &.clickable {
             cursor: pointer;
-            color: rgba(139, 92, 246, 0.8);
+            color: rgba(21, 147, 206, 0.8);
             transition: color 0.2s ease;
 
             &:hover {
-              color: rgba(139, 92, 246, 1);
+              color: rgba(21, 147, 206, 1);
             }
 
             .view-cv-icon {
@@ -164,12 +165,14 @@
     }
 
     .application-status-badge {
-      padding: rem-calc(6) rem-calc(12);
+      padding: rem-calc(8) rem-calc(16);
       border-radius: rem-calc(8);
       font-family: 'Outfit', sans-serif;
-      font-size: rem-calc(12);
+      font-size: rem-calc(13);
       font-weight: 600;
       flex-shrink: 0;
+      align-self: flex-start;
+      margin-top: rem-calc(2);
 
       &.pending {
         background: rgba(251, 191, 36, 0.2);
@@ -313,13 +316,13 @@
 
       &:hover {
         background: rgba(255, 255, 255, 0.1);
-        border-color: rgba(139, 92, 246, 0.5);
+        border-color: rgba(21, 147, 206, 0.5);
         color: $color-white;
       }
 
       svg {
-        width: rem-calc(20);
-        height: rem-calc(20);
+        width: rem-calc(24);
+        height: rem-calc(24);
       }
     }
   }
@@ -347,7 +350,7 @@
         letter-spacing: rem-calc(1);
 
         svg {
-          color: rgba(139, 92, 246, 0.7);
+          color: rgba(21, 147, 206, 0.7);
         }
       }
 
@@ -360,14 +363,14 @@
         padding: rem-calc(16);
         background: rgba(255, 255, 255, 0.05);
         border-radius: rem-calc(8);
-        border-left: 3px solid rgba(139, 92, 246, 0.5);
+        border-left: 3px solid rgba(21, 147, 206, 0.5);
       }
 
       .cv-message-content {
         padding: rem-calc(16);
         background: rgba(255, 255, 255, 0.05);
         border-radius: rem-calc(8);
-        border-left: 3px solid rgba(139, 92, 246, 0.5);
+        border-left: 3px solid rgba(21, 147, 206, 0.5);
 
         p {
           font-family: 'Outfit', sans-serif;
@@ -377,6 +380,346 @@
           margin: 0;
           white-space: pre-wrap;
           word-wrap: break-word;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 1024px) {
+  .team-applications-page {
+    padding: rem-calc(20) rem-calc(16);
+  }
+
+  .applications-header {
+    margin-bottom: rem-calc(20);
+
+    .applications-title {
+      font-size: rem-calc(22);
+    }
+
+    .applications-count {
+      font-size: rem-calc(13);
+      padding: rem-calc(5) rem-calc(10);
+    }
+  }
+
+  .applications-container {
+    gap: rem-calc(24);
+  }
+
+  .application-row {
+    padding: rem-calc(14) rem-calc(18);
+    gap: rem-calc(12);
+  }
+}
+
+@media (max-width: 768px) {
+  .team-applications-page {
+    padding: rem-calc(16) rem-calc(12);
+  }
+
+  .applications-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: rem-calc(12);
+  }
+
+  .application-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: rem-calc(12);
+    padding: rem-calc(16);
+
+    .application-main {
+      width: 100%;
+    }
+
+    .application-status-badge {
+      align-self: flex-end;
+      margin-top: 0;
+      margin-bottom: rem-calc(4);
+    }
+  }
+
+  .applications-header {
+    .applications-title {
+      font-size: rem-calc(20);
+    }
+
+    .applications-count {
+      font-size: rem-calc(12);
+      padding: rem-calc(4) rem-calc(10);
+    }
+  }
+
+  .applications-container {
+    gap: rem-calc(20);
+  }
+
+  .applications-section {
+    .section-title {
+      font-size: rem-calc(16);
+      margin-bottom: rem-calc(12);
+    }
+  }
+
+  .application-row {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: rem-calc(12) rem-calc(16);
+    gap: rem-calc(12);
+
+    .application-main {
+      width: 100%;
+      gap: rem-calc(12);
+
+      .application-avatar {
+        width: rem-calc(44);
+        height: rem-calc(44);
+      }
+
+      .application-user-info {
+        gap: rem-calc(3);
+
+        .application-username {
+          font-size: rem-calc(15);
+        }
+
+        .application-date {
+          font-size: rem-calc(11);
+        }
+
+        .application-subject-line {
+          font-size: rem-calc(12);
+          margin-top: rem-calc(3);
+        }
+
+        .application-message-preview {
+          font-size: rem-calc(12);
+          margin-top: rem-calc(4);
+          max-width: 100%;
+        }
+      }
+    }
+
+    .application-status-badge {
+      padding: rem-calc(5) rem-calc(10);
+      font-size: rem-calc(11);
+    }
+
+    .application-actions {
+      width: 100%;
+      justify-content: flex-end;
+      gap: rem-calc(6);
+
+      .action-btn {
+        padding: rem-calc(6) rem-calc(12);
+        font-size: rem-calc(12);
+
+        svg {
+          width: rem-calc(14);
+          height: rem-calc(14);
+        }
+      }
+    }
+  }
+
+  .cv-view-modal {
+    .cv-modal-header {
+      padding: rem-calc(20);
+      flex-direction: column;
+      align-items: flex-start;
+      gap: rem-calc(12);
+
+      .cv-header-content {
+        width: 100%;
+        gap: rem-calc(12);
+
+        .cv-user-avatar {
+          width: rem-calc(56);
+          height: rem-calc(56);
+        }
+
+        .cv-user-info {
+          .cv-username {
+            font-size: rem-calc(18);
+          }
+
+          .cv-date {
+            font-size: rem-calc(12);
+          }
+        }
+      }
+
+      .cv-close-btn {
+        position: absolute;
+        top: rem-calc(20);
+        right: rem-calc(20);
+        width: rem-calc(36);
+        height: rem-calc(36);
+      }
+    }
+
+    .cv-modal-content {
+      padding: rem-calc(20);
+      gap: rem-calc(16);
+
+      .cv-subject-section,
+      .cv-message-section {
+        .cv-section-label {
+          font-size: rem-calc(13);
+          margin-bottom: rem-calc(10);
+        }
+
+        .cv-subject {
+          font-size: rem-calc(16);
+          padding: rem-calc(12);
+        }
+
+        .cv-message-content {
+          padding: rem-calc(12);
+
+          p {
+            font-size: rem-calc(13);
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .team-applications-page {
+    padding: rem-calc(12) rem-calc(8);
+  }
+
+  .applications-header {
+    margin-bottom: rem-calc(12);
+    gap: rem-calc(10);
+
+    .applications-title {
+      font-size: rem-calc(18);
+    }
+
+    .applications-count {
+      font-size: rem-calc(11);
+      padding: rem-calc(4) rem-calc(8);
+    }
+  }
+
+  .applications-container {
+    gap: rem-calc(16);
+  }
+
+  .applications-section {
+    .section-title {
+      font-size: rem-calc(14);
+      margin-bottom: rem-calc(10);
+    }
+  }
+
+  .application-row {
+    padding: rem-calc(10) rem-calc(12);
+    gap: rem-calc(10);
+
+    .application-main {
+      gap: rem-calc(10);
+
+      .application-avatar {
+        width: rem-calc(40);
+        height: rem-calc(40);
+      }
+
+      .application-user-info {
+        .application-username {
+          font-size: rem-calc(14);
+        }
+
+        .application-date {
+          font-size: rem-calc(10);
+        }
+
+        .application-subject-line {
+          font-size: rem-calc(11);
+        }
+
+        .application-message-preview {
+          font-size: rem-calc(11);
+        }
+      }
+    }
+
+    .application-status-badge {
+      padding: rem-calc(4) rem-calc(8);
+      font-size: rem-calc(10);
+    }
+
+    .application-actions {
+      flex-direction: column;
+      width: 100%;
+      gap: rem-calc(6);
+
+      .action-btn {
+        width: 100%;
+        justify-content: center;
+        padding: rem-calc(8) rem-calc(12);
+        font-size: rem-calc(11);
+      }
+    }
+  }
+
+  .cv-view-modal {
+    .cv-modal-header {
+      padding: rem-calc(16);
+
+      .cv-header-content {
+        .cv-user-avatar {
+          width: rem-calc(48);
+          height: rem-calc(48);
+        }
+
+        .cv-user-info {
+          .cv-username {
+            font-size: rem-calc(16);
+          }
+
+          .cv-date {
+            font-size: rem-calc(11);
+          }
+        }
+      }
+
+      .cv-close-btn {
+        top: rem-calc(16);
+        right: rem-calc(16);
+        width: rem-calc(32);
+        height: rem-calc(32);
+      }
+    }
+
+    .cv-modal-content {
+      padding: rem-calc(16);
+      gap: rem-calc(12);
+
+      .cv-subject-section,
+      .cv-message-section {
+        .cv-section-label {
+          font-size: rem-calc(12);
+          margin-bottom: rem-calc(8);
+        }
+
+        .cv-subject {
+          font-size: rem-calc(14);
+          padding: rem-calc(10);
+        }
+
+        .cv-message-content {
+          padding: rem-calc(10);
+
+          p {
+            font-size: rem-calc(12);
+          }
         }
       }
     }

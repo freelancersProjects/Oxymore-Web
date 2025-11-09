@@ -1,7 +1,7 @@
 @import '../../../../styles/global';
 
 .team-settings-page {
-  padding: rem-calc(24);
+  padding: rem-calc(24) rem-calc(20);
   width: 100%;
 
   &-loading {
@@ -90,7 +90,14 @@
   position: relative;
   cursor: pointer;
   overflow: hidden;
-  transition: all 0.2s;
+  transition: all 0.3s ease;
+
+  &.drag-over {
+    border-color: rgba(21, 147, 206, 0.8) !important;
+    background: rgba(21, 147, 206, 0.15) !important;
+    border-width: 3px !important;
+    box-shadow: 0 0 20px rgba(21, 147, 206, 0.3);
+  }
 
   &--logo {
     width: rem-calc(120);
@@ -203,10 +210,10 @@
     }
 
     &.active {
-      background: linear-gradient(135deg, $color-purple 0%, $color-purple-medium 100%);
-      border-color: $color-purple-light;
+      background: linear-gradient(135deg, $color-blue 0%, darken($color-blue, 10%) 100%);
+      border-color: lighten($color-blue, 10%);
       color: $color-white;
-      box-shadow: 0 rem-calc(2) rem-calc(8) rgba(139, 92, 246, 0.3);
+      box-shadow: 0 rem-calc(2) rem-calc(8) rgba(21, 147, 206, 0.3);
     }
   }
 }
@@ -283,6 +290,248 @@
 
     &:hover svg {
       transform: translateX(-2px);
+    }
+  }
+}
+
+@media (max-width: 1024px) {
+  .team-settings-page {
+    padding: rem-calc(20) rem-calc(16);
+  }
+
+  .team-settings-header {
+    margin-bottom: rem-calc(24);
+
+    .team-settings-title {
+      font-size: rem-calc(28);
+    }
+
+    .team-settings-subtitle {
+      font-size: rem-calc(15);
+    }
+  }
+
+  .team-settings-content {
+    gap: rem-calc(24);
+  }
+
+  .team-settings-section {
+    .section-title {
+      font-size: rem-calc(18);
+      margin-bottom: rem-calc(16);
+    }
+  }
+
+  .settings-fields {
+    gap: rem-calc(16);
+  }
+
+  .image-preview {
+    &--logo {
+      width: rem-calc(100);
+      height: rem-calc(100);
+    }
+
+    &--banner {
+      max-width: rem-calc(350);
+      height: rem-calc(100);
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .team-settings-page {
+    padding: rem-calc(16) rem-calc(12);
+  }
+
+  .team-settings-header {
+    margin-bottom: rem-calc(20);
+
+    .team-settings-title {
+      font-size: rem-calc(24);
+      margin-bottom: rem-calc(6);
+    }
+
+    .team-settings-subtitle {
+      font-size: rem-calc(14);
+    }
+  }
+
+  .team-settings-content {
+    gap: rem-calc(20);
+  }
+
+  .team-settings-section {
+    .section-title {
+      font-size: rem-calc(16);
+      margin-bottom: rem-calc(12);
+      padding-bottom: rem-calc(10);
+    }
+  }
+
+  .settings-fields {
+    gap: rem-calc(14);
+  }
+
+  .image-field {
+    padding: rem-calc(12);
+
+    &__label {
+      font-size: rem-calc(11);
+    }
+  }
+
+  .image-preview {
+    &--logo {
+      width: rem-calc(80);
+      height: rem-calc(80);
+    }
+
+    &--banner {
+      max-width: 100%;
+      height: rem-calc(80);
+    }
+  }
+
+  .readonly-field {
+    padding: rem-calc(12);
+
+    .editable-field__label {
+      font-size: rem-calc(11);
+    }
+
+    .editable-field__value {
+      font-size: rem-calc(14);
+    }
+  }
+
+  .entry-type-selector {
+    gap: rem-calc(8);
+
+    .entry-type-btn {
+      padding: rem-calc(8) rem-calc(16);
+      font-size: rem-calc(13);
+    }
+  }
+
+  .danger-field {
+    padding: rem-calc(12);
+
+    &__label {
+      font-size: rem-calc(14);
+      margin-bottom: rem-calc(3);
+    }
+
+    &__description {
+      font-size: rem-calc(13);
+    }
+
+    &__button {
+      padding: rem-calc(10) rem-calc(16);
+      font-size: rem-calc(13);
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .team-settings-page {
+    padding: rem-calc(12) rem-calc(8);
+  }
+
+  .team-settings-header {
+    margin-bottom: rem-calc(16);
+
+    .team-settings-title {
+      font-size: rem-calc(20);
+      margin-bottom: rem-calc(4);
+    }
+
+    .team-settings-subtitle {
+      font-size: rem-calc(13);
+    }
+  }
+
+  .team-settings-content {
+    gap: rem-calc(16);
+  }
+
+  .team-settings-section {
+    .section-title {
+      font-size: rem-calc(14);
+      margin-bottom: rem-calc(10);
+      padding-bottom: rem-calc(8);
+    }
+  }
+
+  .settings-fields {
+    gap: rem-calc(12);
+  }
+
+  .image-field {
+    padding: rem-calc(10);
+
+    &__label {
+      font-size: rem-calc(10);
+    }
+  }
+
+  .image-preview {
+    &--logo {
+      width: rem-calc(70);
+      height: rem-calc(70);
+    }
+
+    &--banner {
+      height: rem-calc(70);
+    }
+  }
+
+  .readonly-field {
+    padding: rem-calc(10);
+
+    .editable-field__label {
+      font-size: rem-calc(10);
+    }
+
+    .editable-field__value {
+      font-size: rem-calc(13);
+    }
+  }
+
+  .entry-type-selector {
+    gap: rem-calc(6);
+    flex-direction: column;
+
+    .entry-type-btn {
+      width: 100%;
+      padding: rem-calc(8) rem-calc(14);
+      font-size: rem-calc(12);
+    }
+  }
+
+  .danger-field {
+    padding: rem-calc(10);
+
+    &__content {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: rem-calc(12);
+    }
+
+    &__label {
+      font-size: rem-calc(13);
+      margin-bottom: rem-calc(2);
+    }
+
+    &__description {
+      font-size: rem-calc(12);
+    }
+
+    &__button {
+      width: 100%;
+      justify-content: center;
+      padding: rem-calc(10) rem-calc(14);
+      font-size: rem-calc(12);
     }
   }
 }

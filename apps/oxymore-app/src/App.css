@@ -7,6 +7,14 @@
 main {
   margin-top: 40px;
   padding: 0.5rem 2.5rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 700px) {
+  main {
+    padding: 0.5rem 0;
+  }
 }
 
 body {
@@ -24,6 +32,10 @@ body {
 .oxm-layout {
   display: flex;
   transition: margin-left 0.2s ease, margin-right 0.2s ease;
+  width: 100vw;
+  max-width: 100vw;
+  overflow-x: hidden;
+  box-sizing: border-box;
 }
 
 .oxm-main {
@@ -34,6 +46,9 @@ body {
   min-width: 0;
   position: relative;
   z-index: 1;
+  box-sizing: border-box;
+  flex: 1;
+  max-width: 100%;
 }
 
 .oxm-layout.sidebar-collapsed .oxm-main {
@@ -48,10 +63,14 @@ image.png.no-profile-sidebar .profile-panel {
 .no-profile-sidebar .oxm-main {
   width: calc(100vw - var(--sidebar-width-expanded)) !important;
   margin-right: 0 !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
 }
 
 .no-profile-sidebar.sidebar-collapsed .oxm-main {
   width: calc(100vw - var(--sidebar-width-collapsed)) !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
 }
 
 .no-profile-sidebar .oxm-header {
@@ -59,12 +78,18 @@ image.png.no-profile-sidebar .profile-panel {
 }
 
 @media (max-width: 768px) {
+  .oxm-layout {
+    margin-right: 0 !important;
+    width: 100vw;
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+
   .oxm-main {
     margin-left: 0;
+    margin-right: 0 !important;
     width: 100vw;
-  }
-  .oxm-layout .oxm-header {
-    padding-right: 10px;
+    max-width: 100vw;
   }
   .profile-toggle-button {
     display: none;
@@ -73,6 +98,8 @@ image.png.no-profile-sidebar .profile-panel {
 
 .oxm-main main {
   margin-top: 70px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .logo {
@@ -102,4 +129,15 @@ image.png.no-profile-sidebar .profile-panel {
 .oxm-main--full-background {
   margin: 0 !important;
   padding: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box;
+}
+
+.oxm-main--full-background * {
+  box-sizing: border-box;
+}
+
+.oxm-main--no-header-margin {
+  margin-top: 0 !important;
 }

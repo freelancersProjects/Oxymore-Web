@@ -168,3 +168,152 @@
     }
   }
 }
+
+@media (max-width: 768px) {
+  .leaderboard {
+    padding: rem-calc(20);
+    border-radius: rem-calc(16);
+
+    .leaderboard-header-dashboard {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: rem-calc(16);
+      margin-bottom: rem-calc(20);
+
+      .section-title {
+        font-size: rem-calc(24);
+      }
+
+      .oxm-dropdown {
+        width: 100%;
+        max-width: 100%;
+      }
+    }
+
+    .leaderboard-content {
+      .leaderboard-header-row {
+        padding: rem-calc(12) rem-calc(16);
+        font-size: rem-calc(14);
+        border-radius: rem-calc(10);
+
+        .header-rank {
+          flex: 0 0 rem-calc(50);
+        }
+
+        .header-elo {
+          flex: 0 0 rem-calc(80);
+        }
+      }
+
+      .leaderboard-entries {
+        .leaderboard-entry {
+          padding: rem-calc(12) rem-calc(16);
+
+          .entry-rank {
+            flex: 0 0 rem-calc(50);
+
+            .rank-number {
+              font-size: rem-calc(14);
+            }
+
+            .trophy-icon {
+              width: rem-calc(18);
+              height: rem-calc(18);
+            }
+          }
+
+          .entry-team {
+            font-size: rem-calc(16);
+          }
+
+          .entry-elo {
+            flex: 0 0 rem-calc(80);
+
+            .elo-badge {
+              padding: rem-calc(6) rem-calc(12);
+              font-size: rem-calc(14);
+              min-width: rem-calc(70);
+            }
+          }
+        }
+      }
+    }
+
+    .leaderboard-footer {
+      margin-top: rem-calc(20);
+
+      .view-full-btn {
+        width: 100%;
+        padding: rem-calc(12) rem-calc(24);
+        font-size: rem-calc(14);
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .leaderboard {
+    padding: rem-calc(16);
+    border-radius: rem-calc(12);
+
+    .leaderboard-header-dashboard {
+      .section-title {
+        font-size: rem-calc(20);
+      }
+    }
+
+    .leaderboard-content {
+      .leaderboard-header-row {
+        padding: rem-calc(10) rem-calc(12);
+        font-size: rem-calc(12);
+
+        .header-rank {
+          flex: 0 0 rem-calc(40);
+        }
+
+        .header-team {
+          font-size: rem-calc(12);
+        }
+
+        .header-elo {
+          flex: 0 0 rem-calc(70);
+        }
+      }
+
+      .leaderboard-entries {
+        .leaderboard-entry {
+          padding: rem-calc(10) rem-calc(12);
+
+          .entry-rank {
+            flex: 0 0 rem-calc(40);
+
+            .rank-number {
+              font-size: rem-calc(12);
+            }
+          }
+
+          .entry-team {
+            font-size: rem-calc(14);
+          }
+
+          .entry-elo {
+            flex: 0 0 rem-calc(70);
+
+            .elo-badge {
+              padding: rem-calc(5) rem-calc(10);
+              font-size: rem-calc(12);
+              min-width: rem-calc(60);
+            }
+          }
+        }
+      }
+    }
+
+    .leaderboard-footer {
+      .view-full-btn {
+        padding: rem-calc(10) rem-calc(20);
+        font-size: rem-calc(13);
+      }
+    }
+  }
+}

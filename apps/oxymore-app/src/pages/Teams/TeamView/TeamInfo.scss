@@ -26,7 +26,7 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background: linear-gradient(135deg, rgba(139, 92, 246, 0.3) 0%, rgba(59, 130, 246, 0.2) 100%);
+      background: linear-gradient(135deg, rgba(21, 147, 206, 0.3) 0%, rgba(59, 130, 246, 0.2) 100%);
     }
   }
 
@@ -79,7 +79,7 @@
 
 .info-section-card {
   background: rgba($color-gray-darkest, 0.5);
-  border: 1px solid rgba(139, 92, 246, 0.1);
+  border: 1px solid rgba(21, 147, 206, 0.1);
   border-radius: rem-calc(12);
   padding: rem-calc(24);
   backdrop-filter: blur(10px);
@@ -112,8 +112,8 @@
   flex-direction: column;
   gap: rem-calc(8);
   padding: rem-calc(16);
-  background: rgba(139, 92, 246, 0.08);
-  border: 1px solid rgba(139, 92, 246, 0.15);
+  background: rgba(21, 147, 206, 0.08);
+  border: 1px solid rgba(21, 147, 206, 0.15);
   border-radius: rem-calc(8);
 
   .stat-label {
