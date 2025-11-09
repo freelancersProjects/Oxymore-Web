@@ -21,9 +21,11 @@ import League from "./pages/League/League";
 import TournamentPage from "./pages/Tournament/Tournament";
 import TournamentView from "./pages/Tournament/TournamentView/TournamentView";
 import Subscription from "./pages/Subscription/Subscription";
-import { AuthProvider } from "./context/AuthContext";
+import { AuthProvider, useAuth } from "./context/AuthContext";
 import ProtectedRoute from "./context/ProtectedRoute";
 import { OXMLoader } from "@oxymore/ui";
+import DrawerNotif from "./components/Header/DrawerNotif/DrawerNotif";
+import apiService from "./api/apiService";
 
 import "./App.css";
 
@@ -97,6 +99,131 @@ const showLoaderAtFirstTime = () => {
   return loading;
 };
 
+const AppContent: React.FC<{ isSidebarCollapsed: boolean; setSidebarCollapsed: (value: boolean) => void }> = ({ isSidebarCollapsed, setSidebarCollapsed }) => {
+  const { user } = useAuth();
+  const [notifOpen, setNotifOpen] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
+  const userId = user?.id_user || '';
+
+  const fetchUnreadCount = async () => {
+    try {
+      const res = await apiService.get(`/notifications/user/${userId}/unread-count`);
+      setUnreadCount(res.count);
+    } catch (e) {
+      setUnreadCount(0);
+    }
+  };
+
+  useEffect(() => {
+    if (userId) {
+      fetchUnreadCount();
+    }
+  }, [userId]);
+  
+  useEffect(() => {
+    if (userId && !notifOpen) {
+      fetchUnreadCount();
+    }
+  }, [notifOpen, userId]);
+
+  return (
+    <LayoutManager>
+      {({ hideSidebar, hideHeader, hideProfileSidebar, isOxia }) => {
+        const location = useLocation();
+        const isLoginPage =
+          location.pathname === "/login" ||
+          location.pathname === "/register";
+        const isFullBackgroundPage =
+          location.pathname === "/leagues" ||
+          location.pathname === "/subscription" ||
+          location.pathname === "/teams" ||
+          location.pathname === "/teams/create" ||
+          location.pathname.startsWith("/teams/");
+        const isHighlightsPage = location.pathname === "/highlights";
+        return (
+          <>
+            <div
+              className={`oxm-layout${
+                isSidebarCollapsed ? " sidebar-collapsed" : ""
+              }${isOxia ? " oxia-mode" : ""}${
+                hideProfileSidebar ? " no-profile-sidebar" : ""
+              }`}
+            >
+              {!hideSidebar && (
+                <Sidebar
+                  isCollapsed={isSidebarCollapsed}
+                  onToggle={() => setSidebarCollapsed(!isSidebarCollapsed)}
+                />
+              )}
+              <div
+                className={`oxm-main${
+                  isLoginPage ? " oxm-main--no-margin" : ""
+                }`}
+              >
+                {!hideHeader && (
+                  <Header
+                    isSidebarCollapsed={isSidebarCollapsed}
+                    hideProfileSidebar={hideProfileSidebar}
+                    onNotificationClick={() => setNotifOpen(true)}
+                    unreadCount={unreadCount}
+                  />
+                )}
+                <main
+                  className={
+                    isLoginPage
+                      ? "oxm-main--no-margin"
+                      : isFullBackgroundPage
+                      ? "oxm-main--full-background"
+                      : isHighlightsPage
+                      ? "oxm-main--no-header-margin"
+                      : ""
+                  }
+                >
+                  <ScrollToTop />
+                  <Routes>
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/register" element={<Register />} />
+
+                    <Route element={<ProtectedRoute />}>
+                      <Route path="/" element={<Dashboard />} />
+                      <Route path="/api-keys" element={<ApiKeysPage />} />
+                      <Route path="/highlights" element={<Highlights />} />
+                      <Route path="/upload" element={<UploadVideo />} />
+                      <Route path="/teams" element={<Teams />} />
+                      <Route path="/teams/create" element={<CreateTeam />} />
+                      <Route path="/teams/:id" element={<TeamView />} />
+                      <Route path="/friends" element={<Friends />} />
+                      <Route path="/messages" element={<Messages />} />
+                      <Route path="/oxia" element={<OxiaChat />} />
+                      <Route path="/leagues" element={<League />} />
+                      <Route
+                        path="/tournaments"
+                        element={<TournamentPage />}
+                      />
+                      <Route
+                        path="/subscription"
+                        element={<Subscription />}
+                      />
+                    </Route>
+                  </Routes>
+                </main>
+              </div>
+            </div>
+            {userId && (
+              <DrawerNotif 
+                open={notifOpen} 
+                onClose={() => setNotifOpen(false)} 
+                userId={userId}
+                onMarkAllRead={fetchUnreadCount}
+              />
+            )}
+          </>
+        );
+      }}
+    </LayoutManager>
+  );
+};
+
 export default function App() {
   const [isSidebarCollapsed, setSidebarCollapsed] = useState(false);
 
@@ -108,91 +235,10 @@ export default function App() {
             <LayoutLoader />
           </>
         ) : (
-          <LayoutManager>
-            {({ hideSidebar, hideHeader, hideProfileSidebar, isOxia }) => {
-              const location = useLocation();
-              const isLoginPage =
-                location.pathname === "/login" ||
-                location.pathname === "/register";
-              const isFullBackgroundPage =
-                location.pathname === "/leagues" ||
-                location.pathname === "/subscription" ||
-                location.pathname === "/teams" ||
-                location.pathname === "/teams/create";
-              const isHighlightsPage = location.pathname === "/highlights";
-              return (
-                <div
-                  className={`oxm-layout${
-                    isSidebarCollapsed ? " sidebar-collapsed" : ""
-                  }${isOxia ? " oxia-mode" : ""}${
-                    hideProfileSidebar ? " no-profile-sidebar" : ""
-                  }`}
-                >
-                  {!hideSidebar && (
-                    <Sidebar
-                      isCollapsed={isSidebarCollapsed}
-                      onToggle={() => setSidebarCollapsed(!isSidebarCollapsed)}
-                    />
-                  )}
-                  <div
-                    className={`oxm-main${
-                      isLoginPage ? " oxm-main--no-margin" : ""
-                    }`}
-                  >
-                    {!hideHeader && (
-                      <Header
-                        isSidebarCollapsed={isSidebarCollapsed}
-                        hideProfileSidebar={hideProfileSidebar}
-                      />
-                    )}
-                    <main
-                      className={
-                        isLoginPage
-                          ? "oxm-main--no-margin"
-                          : isFullBackgroundPage
-                          ? "oxm-main--full-background"
-                          : isHighlightsPage
-                          ? "oxm-main--no-header-margin"
-                          : ""
-                      }
-                    >
-                      <ScrollToTop />
-                      <Routes>
-                        <Route path="/login" element={<Login />} />
-                        <Route path="/register" element={<Register />} />
-
-                        <Route element={<ProtectedRoute />}>
-                          <Route path="/" element={<Dashboard />} />
-                          <Route path="/api-keys" element={<ApiKeysPage />} />
-                          <Route path="/highlights" element={<Highlights />} />
-                          <Route path="/upload" element={<UploadVideo />} />
-                          <Route path="/teams" element={<Teams />} />
-                          <Route path="/teams/create" element={<CreateTeam />} />
-                          <Route path="/teams/:id" element={<TeamView />} />
-                          <Route path="/friends" element={<Friends />} />
-                          <Route path="/messages" element={<Messages />} />
-                          <Route path="/oxia" element={<OxiaChat />} />
-                          <Route path="/leagues" element={<League />} />
-                          <Route
-                            path="/tournaments"
-                            element={<TournamentPage />}
-                          />
-                          <Route
-                            path="/tournaments/:id"
-                            element={<TournamentView />}
-                          />
-                          <Route
-                            path="/subscription"
-                            element={<Subscription />}
-                          />
-                        </Route>
-                      </Routes>
-                    </main>
-                  </div>
-                </div>
-              );
-            }}
-          </LayoutManager>
+          <AppContent 
+            isSidebarCollapsed={isSidebarCollapsed} 
+            setSidebarCollapsed={setSidebarCollapsed} 
+          />
         )}
       </AuthProvider>
     </Router>

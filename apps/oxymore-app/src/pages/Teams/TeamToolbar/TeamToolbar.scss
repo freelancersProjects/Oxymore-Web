@@ -4,7 +4,7 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  padding: rem-calc(0) 0 rem-calc(20) 0;
+  padding: rem-calc(0) rem-calc(20) rem-calc(20) rem-calc(20);
 
   &__tabs {
     display: flex;
@@ -32,12 +32,12 @@
 
 
     &:hover {
-      background: rgba(139, 92, 246, 0.08);
+      background: rgba(21, 147, 206, 0.08);
       color: $color-white;
     }
 
     &.active {
-      background: $color-purple;
+      background: $color-blue;
       color: $color-white;
     }
   }
@@ -54,6 +54,104 @@
     align-items: center;
     justify-content: center;
   }
+}
 
+@media (max-width: 1024px) {
+  .team-toolbar {
+    padding: rem-calc(0) rem-calc(16) rem-calc(16) rem-calc(16);
+
+    &__tabs {
+      gap: rem-calc(2);
+      padding: rem-calc(4);
+      border-radius: rem-calc(14);
+    }
+
+    &__tab {
+      padding: rem-calc(10) rem-calc(14);
+
+      &__icon {
+        width: rem-calc(20);
+        height: rem-calc(20);
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .team-toolbar {
+    position: fixed;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    width: rem-calc(70);
+    z-index: 100;
+    background: transparent;
+    padding: rem-calc(12) rem-calc(8);
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: auto;
+
+    &__tabs {
+      flex-direction: column;
+      width: 100%;
+      justify-content: flex-start;
+      gap: rem-calc(4);
+      padding: rem-calc(4);
+      border-radius: rem-calc(12);
+      overflow-y: auto;
+      overflow-x: hidden;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+
+      &::-webkit-scrollbar {
+        width: rem-calc(4);
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: rem-calc(2);
+      }
+    }
+
+    &__tab {
+      padding: rem-calc(10) rem-calc(8);
+      width: 100%;
+      flex: 0 0 auto;
+      min-width: auto;
+      max-width: none;
+      justify-content: center;
+
+      &__icon {
+        width: rem-calc(20);
+        height: rem-calc(20);
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .team-toolbar {
+    width: rem-calc(60);
+    padding: rem-calc(10) rem-calc(6);
+
+    &__tabs {
+      gap: rem-calc(3);
+      padding: rem-calc(3);
+      border-radius: rem-calc(10);
+    }
+
+    &__tab {
+      padding: rem-calc(8) rem-calc(6);
+      min-width: auto;
+      max-width: none;
+
+      &__icon {
+        width: rem-calc(18);
+        height: rem-calc(18);
+      }
+    }
+  }
 }
 

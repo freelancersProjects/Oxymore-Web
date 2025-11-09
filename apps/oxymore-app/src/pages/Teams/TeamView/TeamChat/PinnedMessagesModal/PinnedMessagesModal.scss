@@ -88,7 +88,7 @@
 
       &:hover {
         background: rgba(255, 255, 255, 0.1);
-        border-color: rgba(139, 92, 246, 0.5);
+        border-color: rgba(21, 147, 206, 0.5);
         color: $color-white;
       }
 
@@ -128,7 +128,7 @@
   text-align: center;
 
   .empty-icon {
-    color: rgba(139, 92, 246, 0.4);
+    color: rgba(21, 147, 206, 0.4);
     margin-bottom: rem-calc(24);
   }
 
@@ -160,9 +160,9 @@
 
   &:hover {
     background: rgba(255, 255, 255, 0.08);
-    border-color: rgba(139, 92, 246, 0.4);
+    border-color: rgba(21, 147, 206, 0.4);
     transform: translateY(rem-calc(-2));
-    box-shadow: 0 rem-calc(10) rem-calc(20) rgba(139, 92, 246, 0.2);
+    box-shadow: 0 rem-calc(10) rem-calc(20) rgba(21, 147, 206, 0.2);
   }
 
   &:active {
@@ -266,12 +266,12 @@
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   font-family: 'Outfit', sans-serif;
   font-size: rem-calc(11);
-  color: rgba(139, 92, 246, 0.8);
+  color: rgba(21, 147, 206, 0.8);
   font-weight: 500;
 
   svg {
     width: rem-calc(12);
     height: rem-calc(12);
-    color: rgba(139, 92, 246, 0.8);
+    color: rgba(21, 147, 206, 0.8);
   }
 }

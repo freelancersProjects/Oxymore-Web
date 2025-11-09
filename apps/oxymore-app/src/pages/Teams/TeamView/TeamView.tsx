@@ -201,15 +201,17 @@ const TeamView: React.FC = () => {
           <div className="banner-overlay"></div>
         </div>
         <div className="team-info-overlay">
-          <img
-            src={teamData?.logo || "/default-team-logo.png"}
-            alt="Team Logo"
-            className="team-logo-banner"
-          />
           <div className="team-info-content">
-            <h2 className="team-name-banner">
-              {teamData?.name || "Loading..."}
-            </h2>
+            <div className="team-name-row">
+              <img
+                src={teamData?.logo || "/default-team-logo.png"}
+                alt="Team Logo"
+                className="team-logo-banner"
+              />
+              <h2 className="team-name-banner">
+                {teamData?.name || "Loading..."}
+              </h2>
+            </div>
             <p className="team-subtitle-banner">
               {teamData?.description || "no description"}
             </p>

@@ -1,7 +1,7 @@
 @import '../../../../styles/global.scss';
 
 .team-challenges-page {
-  padding: rem-calc(24);
+  padding: rem-calc(24) rem-calc(20);
 
   .challenges-header {
     display: flex;
@@ -22,8 +22,8 @@
       font-size: rem-calc(14);
       color: rgba(255, 255, 255, 0.6);
       padding: rem-calc(6) rem-calc(12);
-      background: rgba(139, 92, 246, 0.2);
-      border: 1px solid rgba(139, 92, 246, 0.3);
+      background: rgba(21, 147, 206, 0.2);
+      border: 1px solid rgba(21, 147, 206, 0.3);
       border-radius: rem-calc(8);
     }
   }
@@ -67,7 +67,7 @@
 
     &:hover {
       background: rgb(255 255 255 / 5%);
-      border-color: rgba($color-purple, 0.3);
+      border-color: rgba($color-blue, 0.3);
     }
 
     &.pending {
@@ -117,9 +117,9 @@
           width: rem-calc(32);
           height: rem-calc(32);
           border-radius: 50%;
-          background: rgba(139, 92, 246, 0.2);
-          border: 1px solid rgba(139, 92, 246, 0.3);
-          color: rgba(139, 92, 246, 0.8);
+          background: rgba(21, 147, 206, 0.2);
+          border: 1px solid rgba(21, 147, 206, 0.3);
+          color: rgba(21, 147, 206, 0.8);
           flex-shrink: 0;
         }
       }
@@ -148,9 +148,9 @@
         .challenge-direction {
           font-family: 'Outfit', sans-serif;
           font-size: rem-calc(12);
-          color: rgba(139, 92, 246, 0.8);
+          color: rgba(21, 147, 206, 0.8);
           padding: rem-calc(4) rem-calc(8);
-          background: rgba(139, 92, 246, 0.1);
+          background: rgba(21, 147, 206, 0.1);
           border-radius: rem-calc(4);
         }
       }
@@ -176,8 +176,8 @@
         transition: all 0.3s ease;
 
         &:hover {
-          border-color: rgba(139, 92, 246, 0.5);
-          background: rgba(139, 92, 246, 0.1);
+          border-color: rgba(21, 147, 206, 0.5);
+          background: rgba(21, 147, 206, 0.1);
         }
 
         &.accept {
@@ -223,6 +223,236 @@
         height: rem-calc(6);
         border-radius: 50%;
       }
+    }
+  }
+}
+
+@media (max-width: 1024px) {
+  .team-challenges-page {
+    padding: rem-calc(20) rem-calc(16);
+  }
+
+  .challenges-header {
+    margin-bottom: rem-calc(20);
+
+    .challenges-title {
+      font-size: rem-calc(22);
+    }
+
+    .challenges-count {
+      font-size: rem-calc(13);
+      padding: rem-calc(5) rem-calc(10);
+    }
+  }
+
+  .challenges-container {
+    gap: rem-calc(24);
+  }
+
+  .challenge-row {
+    padding: rem-calc(16) rem-calc(20);
+    gap: rem-calc(12);
+  }
+}
+
+@media (max-width: 768px) {
+  .team-challenges-page {
+    padding: rem-calc(16) rem-calc(12);
+  }
+
+  .challenges-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: rem-calc(12);
+    margin-bottom: rem-calc(16);
+
+    .challenges-title {
+      font-size: rem-calc(20);
+    }
+
+    .challenges-count {
+      font-size: rem-calc(12);
+      padding: rem-calc(4) rem-calc(10);
+    }
+  }
+
+  .challenges-container {
+    gap: rem-calc(20);
+  }
+
+  .challenges-section {
+    .section-title {
+      font-size: rem-calc(16);
+      margin-bottom: rem-calc(12);
+    }
+  }
+
+  .challenge-row {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: rem-calc(14) rem-calc(16);
+    gap: rem-calc(12);
+
+    .challenge-main {
+      width: 100%;
+      gap: rem-calc(10);
+
+      .challenge-teams {
+        gap: rem-calc(12);
+
+        .challenge-team {
+          gap: rem-calc(10);
+
+          .challenge-team-logo {
+            width: rem-calc(36);
+            height: rem-calc(36);
+          }
+
+          .challenge-team-name {
+            font-size: rem-calc(13);
+          }
+        }
+
+        .challenge-vs {
+          width: rem-calc(28);
+          height: rem-calc(28);
+        }
+      }
+
+      .challenge-info {
+        gap: rem-calc(12);
+        flex-wrap: wrap;
+
+        .challenge-date,
+        .challenge-scheduled {
+          font-size: rem-calc(11);
+
+          svg {
+            width: rem-calc(11);
+            height: rem-calc(11);
+          }
+        }
+
+        .challenge-direction {
+          font-size: rem-calc(11);
+          padding: rem-calc(3) rem-calc(6);
+        }
+      }
+    }
+
+    .challenge-actions {
+      width: 100%;
+      justify-content: flex-end;
+      gap: rem-calc(6);
+
+      .challenge-action-btn {
+        width: rem-calc(32);
+        height: rem-calc(32);
+
+        svg {
+          width: rem-calc(16);
+          height: rem-calc(16);
+        }
+      }
+    }
+
+    .challenge-status-badge {
+      padding: rem-calc(5) rem-calc(10);
+      font-size: rem-calc(11);
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .team-challenges-page {
+    padding: rem-calc(12) rem-calc(8);
+  }
+
+  .challenges-header {
+    margin-bottom: rem-calc(12);
+    gap: rem-calc(10);
+
+    .challenges-title {
+      font-size: rem-calc(18);
+    }
+
+    .challenges-count {
+      font-size: rem-calc(11);
+      padding: rem-calc(4) rem-calc(8);
+    }
+  }
+
+  .challenges-container {
+    gap: rem-calc(16);
+  }
+
+  .challenges-section {
+    .section-title {
+      font-size: rem-calc(14);
+      margin-bottom: rem-calc(10);
+    }
+  }
+
+  .challenge-row {
+    padding: rem-calc(12) rem-calc(14);
+    gap: rem-calc(10);
+
+    .challenge-main {
+      gap: rem-calc(8);
+
+      .challenge-teams {
+        gap: rem-calc(10);
+
+        .challenge-team {
+          gap: rem-calc(8);
+
+          .challenge-team-logo {
+            width: rem-calc(32);
+            height: rem-calc(32);
+          }
+
+          .challenge-team-name {
+            font-size: rem-calc(12);
+          }
+        }
+
+        .challenge-vs {
+          width: rem-calc(24);
+          height: rem-calc(24);
+        }
+      }
+
+      .challenge-info {
+        gap: rem-calc(8);
+
+        .challenge-date,
+        .challenge-scheduled {
+          font-size: rem-calc(10);
+        }
+
+        .challenge-direction {
+          font-size: rem-calc(10);
+        }
+      }
+    }
+
+    .challenge-actions {
+      gap: rem-calc(4);
+
+      .challenge-action-btn {
+        width: rem-calc(28);
+        height: rem-calc(28);
+
+        svg {
+          width: rem-calc(14);
+          height: rem-calc(14);
+        }
+      }
+    }
+
+    .challenge-status-badge {
+      padding: rem-calc(4) rem-calc(8);
+      font-size: rem-calc(10);
     }
   }
 }

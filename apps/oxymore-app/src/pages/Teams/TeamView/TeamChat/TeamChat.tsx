@@ -45,6 +45,7 @@ const TeamChat: React.FC<TeamChatProps> = ({ teamId, teamData, onUnreadCountChan
   const [shouldAutoScroll, setShouldAutoScroll] = useState(true);
   const [hasInitiallyScrolled, setHasInitiallyScrolled] = useState(false);
   const [showLeaveTeamModal, setShowLeaveTeamModal] = useState(false);
+  const [showEmptyMessageHint, setShowEmptyMessageHint] = useState(false);
   const isInitialLoadRef = useRef(true);
   const previousMessagesLengthRef = useRef(0);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -309,7 +310,15 @@ const TeamChat: React.FC<TeamChatProps> = ({ teamId, teamData, onUnreadCountChan
 
     const cleanedText = newMessageText.trim().replace(/\n{3,}/g, '\n\n');
 
-    if (!cleanedText || !currentUserId || isSending) return;
+    if (!cleanedText || !currentUserId || isSending) {
+      if (!cleanedText) {
+        setShowEmptyMessageHint(true);
+        setTimeout(() => {
+          setShowEmptyMessageHint(false);
+        }, 5000);
+      }
+      return;
+    }
 
     setIsSending(true);
     setShouldAutoScroll(true);
@@ -652,6 +661,7 @@ const TeamChat: React.FC<TeamChatProps> = ({ teamId, teamData, onUnreadCountChan
       </div>
 
       <div className="team-chat-main">
+        <h2 className="team-chat-title">Team Chat</h2>
         <div className="chat-messages" ref={chatMessagesRef}>
           {messages.length === 0 ? (
             <div className="empty-chat">
@@ -817,6 +827,11 @@ const TeamChat: React.FC<TeamChatProps> = ({ teamId, teamData, onUnreadCountChan
             </button>
           </div>
         )}
+        {showEmptyMessageHint && (
+          <div className="chat-input-hint">
+            <p>Votre message est vide. Veuillez saisir votre message avant d'envoyer.</p>
+          </div>
+        )}
         <form className="chat-input-wrapper" onSubmit={handleSendMessage}>
           <textarea
             placeholder={editingMessageId ? "Edit your message..." : replyingToMessageId ? "Répondre..." : "Type Your Message"}
@@ -828,6 +843,13 @@ const TeamChat: React.FC<TeamChatProps> = ({ teamId, teamData, onUnreadCountChan
             onKeyDown={(e: React.KeyboardEvent<HTMLTextAreaElement>) => {
               if (e.key === 'Enter' && !e.shiftKey && !isSending) {
                 e.preventDefault();
+                if (!newMessageText.trim()) {
+                  setShowEmptyMessageHint(true);
+                  setTimeout(() => {
+                    setShowEmptyMessageHint(false);
+                  }, 5000);
+                  return;
+                }
                 const syntheticEvent = {
                   ...e,
                   preventDefault: () => e.preventDefault(),
@@ -843,7 +865,20 @@ const TeamChat: React.FC<TeamChatProps> = ({ teamId, teamData, onUnreadCountChan
               Cancel
             </button>
           )}
-          <button type="submit" className="send-button" disabled={isSending || !newMessageText.trim()}>
+          <button 
+            type="submit" 
+            className="send-button" 
+            disabled={isSending}
+            onClick={(e) => {
+              if (!newMessageText.trim()) {
+                e.preventDefault();
+                setShowEmptyMessageHint(true);
+                setTimeout(() => {
+                  setShowEmptyMessageHint(false);
+                }, 5000);
+              }
+            }}
+          >
             <Send size={20} />
           </button>
         </form>
