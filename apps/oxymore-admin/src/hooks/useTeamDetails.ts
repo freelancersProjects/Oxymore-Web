@@ -37,6 +37,7 @@ export interface TeamDetails {
   subscription_status?: boolean;
   created_at?: string;
   verified?: boolean;
+  is_recruiting?: boolean;
 }
 
 export interface TeamDetailsComplete extends TeamDetails {

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -189,13 +189,21 @@ const TeamDetails = () => {
                   )}
                 </div>
                 <div className="min-w-0 flex-1">
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 flex-wrap">
                     <h2 className="text-lg md:text-xl font-bold text-[var(--text-primary)] truncate">{teamDetails.team_name}</h2>
                     {teamDetails.subscription_status && (
                       <Star className="w-4 h-4 md:w-5 md:h-5 text-yellow-400 flex-shrink-0" />
                     )}
                     {teamDetails.verified && (
-                      <Crown className="w-4 h-4 md:w-5 md:h-5 text-green-400 flex-shrink-0" />
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-500/10 text-blue-400 border border-blue-500/20">
+                        <Shield className="w-3 h-3 mr-1" />
+                        Vérifié
+                      </span>
+                    )}
+                    {teamDetails.is_recruiting && (
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-500/10 text-blue-400 border border-blue-500/20">
+                        On recrute
+                      </span>
                     )}
                   </div>
                   <p className="text-[var(--text-secondary)] mt-1 text-sm md:text-base">{teamDetails.description || 'No description'}</p>

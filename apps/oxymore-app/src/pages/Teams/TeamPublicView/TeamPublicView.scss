@@ -1,0 +1,447 @@
+@import '../../../styles/global';
+
+.team-public-view-container {
+  min-height: 100vh;
+  background: $color-background;
+  color: $color-white;
+  padding: rem-calc(20) rem-calc(20) 0;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  position: relative;
+  z-index: 0;
+  box-sizing: border-box;
+}
+
+.team-public-view-loading,
+.team-public-view-error {
+  text-align: center;
+  padding: rem-calc(80) rem-calc(20);
+  font-size: rem-calc(18);
+  color: $color-white;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.team-public-view-error {
+  color: #ef4444;
+}
+
+.team-public-view-banner {
+  position: relative;
+  width: 100%;
+  height: rem-calc(400);
+  margin: rem-calc(70) 0 rem-calc(32) 0;
+  border-radius: rem-calc(16);
+  overflow: hidden;
+  z-index: 1;
+
+  .team-public-view-banner-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+    border-radius: rem-calc(16);
+
+    .banner-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.7) 100%);
+      z-index: 1;
+    }
+  }
+
+  .team-public-view-banner-content {
+    position: relative;
+    z-index: 10;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: rem-calc(40) rem-calc(20);
+    max-width: 100%;
+    margin: 0;
+
+    .team-public-view-banner-main {
+      display: flex;
+      align-items: flex-end;
+      gap: rem-calc(24);
+      margin-bottom: rem-calc(24);
+
+      .team-public-view-logo {
+        width: rem-calc(140);
+        height: rem-calc(140);
+        border-radius: rem-calc(20);
+        border: rem-calc(4) solid $color-white;
+        object-fit: cover;
+        box-shadow: 0 rem-calc(12) rem-calc(40) rgba(0, 0, 0, 0.5);
+        flex-shrink: 0;
+      }
+
+      .team-public-view-banner-info {
+        flex: 1;
+        padding-bottom: rem-calc(8);
+
+        .team-public-view-title {
+          font-family: 'Orbitron', sans-serif;
+          font-size: rem-calc(48);
+          font-weight: 700;
+          color: $color-white;
+          margin: 0 0 rem-calc(16) 0;
+          text-shadow: 0 rem-calc(4) rem-calc(12) rgba(0, 0, 0, 0.5);
+          letter-spacing: rem-calc(1);
+        }
+
+        .team-public-view-badges {
+          display: flex;
+          gap: rem-calc(12);
+
+          .badge {
+            display: flex;
+            align-items: center;
+            gap: rem-calc(8);
+            padding: rem-calc(8) rem-calc(16);
+            border-radius: rem-calc(12);
+            font-size: rem-calc(14);
+            font-weight: 600;
+            font-family: 'Outfit', sans-serif;
+            backdrop-filter: blur(10px);
+
+            &.verified {
+              background: rgba(34, 197, 94, 0.25);
+              color: #22c55e;
+              border: 1px solid rgba(34, 197, 94, 0.4);
+            }
+
+            &.premium {
+              background: rgba(251, 191, 36, 0.25);
+              color: #fbbf24;
+              border: 1px solid rgba(251, 191, 36, 0.4);
+            }
+          }
+        }
+      }
+    }
+
+    .team-public-view-banner-actions {
+      display: flex;
+      gap: rem-calc(12);
+      align-items: center;
+      flex-wrap: wrap;
+
+      .team-public-view-share-btn,
+      .team-public-view-contact-btn {
+        width: rem-calc(56);
+        height: rem-calc(56);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba($color-white, 0.1);
+        border: 1px solid rgba($color-white, 0.2);
+        border-radius: rem-calc(16);
+        color: $color-white;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        backdrop-filter: blur(10px);
+
+        &:hover {
+          background: rgba($color-white, 0.2);
+          border-color: rgba($color-white, 0.3);
+          transform: translateY(rem-calc(-2));
+        }
+      }
+    }
+  }
+}
+
+.team-public-view-content {
+  max-width: 100%;
+  margin: 0;
+  padding: 0 rem-calc(20) rem-calc(20);
+  display: grid;
+  grid-template-columns: 1fr rem-calc(320);
+  gap: rem-calc(32);
+  align-items: start;
+  position: relative;
+  z-index: 2;
+
+  @media (max-width: rem-calc(1024)) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.team-public-view-main {
+  display: flex;
+  flex-direction: column;
+  gap: rem-calc(32);
+}
+
+.team-public-view-section {
+  padding: rem-calc(32);
+  background: rgba($color-white, 0.03);
+  border: 1px solid rgba($color-white, 0.1);
+  border-radius: rem-calc(20);
+  backdrop-filter: blur(10px);
+
+  .team-public-view-section-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: rem-calc(28);
+    font-weight: 700;
+    color: $color-white;
+    margin: 0 0 rem-calc(24) 0;
+    padding: 0 rem-calc(20);
+    letter-spacing: rem-calc(1);
+  }
+
+  .team-public-view-description {
+    font-size: rem-calc(18);
+    line-height: 1.8;
+    color: rgba($color-white, 0.9);
+    margin: 0;
+    padding: 0 rem-calc(20);
+    font-family: 'Outfit', sans-serif;
+    letter-spacing: 0.3px;
+  }
+
+  .team-public-view-info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: rem-calc(20);
+    padding: 0 rem-calc(20);
+
+    @media (max-width: rem-calc(768)) {
+      grid-template-columns: 1fr;
+    }
+
+    .info-item {
+      display: flex;
+      align-items: center;
+      gap: rem-calc(16);
+      padding: rem-calc(24) rem-calc(28);
+      background: rgba($color-white, 0.05);
+      border: 1px solid rgba($color-white, 0.1);
+      border-radius: rem-calc(16);
+      transition: all 0.2s ease;
+
+      &:hover {
+        background: rgba($color-white, 0.08);
+        border-color: rgba($color-white, 0.15);
+      }
+
+      .info-icon {
+        width: rem-calc(48);
+        height: rem-calc(48);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba($color-blue, 0.15);
+        border-radius: rem-calc(12);
+        color: $color-blue;
+        flex-shrink: 0;
+      }
+
+      .info-content {
+        display: flex;
+        flex-direction: column;
+        gap: rem-calc(6);
+        flex: 1;
+        padding-left: rem-calc(4);
+
+        .info-label {
+          font-size: rem-calc(12);
+          color: rgba($color-white, 0.6);
+          font-family: 'Outfit', sans-serif;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+          margin-bottom: rem-calc(2);
+        }
+
+        .info-value {
+          font-size: rem-calc(16);
+          color: $color-white;
+          font-family: 'Orbitron', sans-serif;
+          font-weight: 600;
+        }
+      }
+    }
+  }
+
+  .requirements-list {
+    list-style: none;
+    padding: 0 rem-calc(20);
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: rem-calc(12);
+
+    li {
+      padding: rem-calc(16) rem-calc(20);
+      background: rgba($color-white, 0.05);
+      border-left: rem-calc(4) solid $color-blue;
+      border-radius: rem-calc(8);
+      color: rgba($color-white, 0.9);
+      font-size: rem-calc(15);
+      font-family: 'Outfit', sans-serif;
+      line-height: 1.6;
+      transition: all 0.2s ease;
+
+      &:hover {
+        background: rgba($color-white, 0.08);
+        border-left-color: lighten($color-blue, 10%);
+      }
+    }
+  }
+}
+
+.team-public-view-sidebar {
+  position: sticky;
+  top: rem-calc(20);
+
+  .stats-card {
+    padding: rem-calc(32);
+    background: rgba($color-white, 0.03);
+    border: 1px solid rgba($color-white, 0.1);
+    border-radius: rem-calc(20);
+    backdrop-filter: blur(10px);
+    display: flex;
+    flex-direction: column;
+    gap: rem-calc(24);
+
+    .stat-item-large {
+      display: flex;
+      align-items: center;
+      gap: rem-calc(20);
+      padding: rem-calc(24);
+      background: rgba($color-white, 0.05);
+      border: 1px solid rgba($color-white, 0.1);
+      border-radius: rem-calc(16);
+      transition: all 0.2s ease;
+
+      &:hover {
+        background: rgba($color-white, 0.08);
+        border-color: rgba($color-white, 0.15);
+        transform: translateY(rem-calc(-2));
+      }
+
+      .stat-icon-large {
+        width: rem-calc(64);
+        height: rem-calc(64);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%);
+        border-radius: rem-calc(16);
+        color: $color-blue;
+        flex-shrink: 0;
+      }
+
+      .stat-content-large {
+        display: flex;
+        flex-direction: column;
+        gap: rem-calc(4);
+
+        .stat-value-large {
+          font-family: 'Orbitron', sans-serif;
+          font-size: rem-calc(32);
+          font-weight: 700;
+          color: $color-white;
+        }
+
+        .stat-label-large {
+          font-size: rem-calc(14);
+          color: rgba($color-white, 0.6);
+          font-family: 'Outfit', sans-serif;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: rem-calc(768)) {
+  .team-public-view-banner {
+    height: rem-calc(300);
+
+    .team-public-view-banner-content {
+      padding: rem-calc(24);
+
+      .team-public-view-banner-main {
+        .team-public-view-logo {
+          width: rem-calc(100);
+          height: rem-calc(100);
+        }
+
+        .team-public-view-banner-info {
+          .team-public-view-title {
+            font-size: rem-calc(32);
+          }
+        }
+      }
+
+      .team-public-view-banner-actions {
+        .team-public-view-share-btn,
+        .team-public-view-contact-btn {
+          width: rem-calc(48);
+          height: rem-calc(48);
+        }
+      }
+    }
+  }
+
+  .team-public-view-content {
+    padding: 0 rem-calc(20) rem-calc(20);
+    gap: rem-calc(24);
+  }
+
+  .team-public-view-container {
+    padding: rem-calc(20) rem-calc(20) 0;
+  }
+
+  .team-public-view-section {
+    padding: rem-calc(24);
+
+    .team-public-view-section-title {
+      font-size: rem-calc(24);
+    }
+
+    .team-public-view-description {
+      font-size: rem-calc(16);
+      padding: 0 rem-calc(16);
+    }
+  }
+
+  .team-public-view-banner-content {
+    padding: rem-calc(24) rem-calc(20);
+  }
+
+  .team-public-view-sidebar {
+    position: static;
+
+    .stats-card {
+      padding: rem-calc(24);
+
+      .stat-item-large {
+        padding: rem-calc(20);
+
+        .stat-icon-large {
+          width: rem-calc(56);
+          height: rem-calc(56);
+        }
+
+        .stat-content-large {
+          .stat-value-large {
+            font-size: rem-calc(28);
+          }
+        }
+      }
+    }
+  }
+}

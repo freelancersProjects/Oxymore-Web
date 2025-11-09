@@ -1,8 +1,9 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Users, Trophy, TrendingUp, Shield } from 'lucide-react';
+import { Users, Trophy, TrendingUp } from 'lucide-react';
 import { OXMChip } from "@oxymore/ui";
-import type { Team } from './types';
+import { DEFAULT_TEAM_LOGO } from '../../../constants/teamDefaults';
+import type { Team } from '../../../types/team';
 
 interface TeamTooltipProps {
   team: Team | null;
@@ -30,11 +31,7 @@ const TeamTooltip: React.FC<TeamTooltipProps> = ({ team, mousePosition }) => {
       <div className="tooltip-content">
         <div className="tooltip-header">
           <div className="tooltip-logo">
-            {team.logo ? (
-              <img src={team.logo} alt={team.name} />
-            ) : (
-              <Shield className="w-8 h-8" />
-            )}
+            <img src={team.logo || DEFAULT_TEAM_LOGO} alt={team.name} />
           </div>
           <div className="tooltip-info">
             <h3>{team.name}</h3>
@@ -48,12 +45,14 @@ const TeamTooltip: React.FC<TeamTooltipProps> = ({ team, mousePosition }) => {
           </div>
           <div className="stat">
             <Trophy className="w-4 h-4" />
-            <span>{team.rating}</span>
-          </div>
-          <div className="stat">
-            <TrendingUp className="w-4 h-4" />
             <span>{team.winRate}%</span>
           </div>
+          {team.gamesPlayed > 0 && (
+            <div className="stat">
+              <TrendingUp className="w-4 h-4" />
+              <span>{team.gamesPlayed} parties</span>
+            </div>
+          )}
         </div>
         <div className="tooltip-tags">
           {team.tags.slice(0, 3).map(tag => (

@@ -143,3 +143,13 @@ export const deleteTournament = async (req: Request, res: Response) => {
     res.status(500).json({ message: 'Internal server error', error: error.message });
   }
 };
+
+export const getTournamentPageConfig = async (req: Request, res: Response) => {
+  try {
+    const config = await TournamentService.getTournamentPageConfig();
+    res.json(config);
+  } catch (error: any) {
+    console.error('Error fetching tournament page config:', error);
+    res.status(500).json({ message: 'Internal server error', error: error.message });
+  }
+};

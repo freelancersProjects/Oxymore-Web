@@ -1,5 +1,6 @@
 import { LeagueTeam } from "../../models/league/leagueTeamModel";
 import { LeagueStats } from "../../interfaces/league/leagueTeamInterfaces";
+import { LeagueTeamWithDetails } from "../../interfaces/league/leagueInterfaces";
 import { db } from "../../config/db";
 import crypto from "crypto";
 
@@ -158,5 +159,33 @@ export const getLeagueStats = async (leagueId: string): Promise<LeagueStats> => 
   );
   const result = rows as LeagueStats[];
   return result[0];
+};
+
+export const getLeagueTeamsWithDetails = async (leagueId: string): Promise<LeagueTeamWithDetails[]> => {
+  const [rows] = await db.query(
+    `SELECT
+      lt.id,
+      lt.league_id,
+      lt.team_id,
+      lt.current_position as rank,
+      lt.points,
+      t.team_name,
+      t.team_logo_url,
+      t.team_banner_url,
+      lt.matches_played,
+      lt.matches_won,
+      lt.matches_drawn,
+      lt.matches_lost,
+      lt.goals_for,
+      lt.goals_against,
+      lt.status
+    FROM league_teams lt
+    LEFT JOIN team t ON lt.team_id = t.id_team
+    WHERE lt.league_id = ? AND lt.status = 'active'
+    ORDER BY lt.points DESC, (lt.goals_for - lt.goals_against) DESC, lt.goals_for DESC
+    LIMIT 10`,
+    [leagueId]
+  );
+  return rows as LeagueTeamWithDetails[];
 };
 

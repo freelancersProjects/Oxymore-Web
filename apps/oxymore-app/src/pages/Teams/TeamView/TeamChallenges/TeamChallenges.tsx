@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Sword, Calendar, Check, X, Clock, Users, Trophy } from "lucide-react";
-import { avatarService } from "../../../../services/avatarService";
+import { DEFAULT_TEAM_LOGO } from "../../../../constants/teamDefaults";
 import EmptyState from "../../../../components/EmptyState/EmptyState";
 import type { Team } from "../../../../types/team";
 import "./TeamChallenges.scss";
@@ -153,10 +153,7 @@ const TeamChallenges: React.FC<TeamChallengesProps> = ({ teamId, teamData }) => 
                       <div className="challenge-teams">
                         <div className="challenge-team">
                           <img
-                            src={avatarService.getAvatarUrl(
-                              isIncoming ? teamData?.name : challenge.challenger_team_name,
-                              isIncoming ? teamData?.logo : challenge.challenger_team_logo_url
-                            )}
+                            src={isIncoming ? (teamData?.logo || DEFAULT_TEAM_LOGO) : (challenge.challenger_team_logo_url || DEFAULT_TEAM_LOGO)}
                             alt={isIncoming ? teamData?.name : challenge.challenger_team_name}
                             className="challenge-team-logo"
                           />
@@ -169,10 +166,7 @@ const TeamChallenges: React.FC<TeamChallengesProps> = ({ teamId, teamData }) => 
                         </div>
                         <div className="challenge-team">
                           <img
-                            src={avatarService.getAvatarUrl(
-                              isIncoming ? opponentTeam.name : teamData?.name || "",
-                              isIncoming ? opponentTeam.logo : teamData?.logo
-                            )}
+                            src={isIncoming ? (opponentTeam.logo || DEFAULT_TEAM_LOGO) : (teamData?.logo || DEFAULT_TEAM_LOGO)}
                             alt={isIncoming ? opponentTeam.name : teamData?.name}
                             className="challenge-team-logo"
                           />
@@ -237,10 +231,7 @@ const TeamChallenges: React.FC<TeamChallengesProps> = ({ teamId, teamData }) => 
                       <div className="challenge-teams">
                         <div className="challenge-team">
                           <img
-                            src={avatarService.getAvatarUrl(
-                              isIncoming ? teamData?.name : challenge.challenger_team_name,
-                              isIncoming ? teamData?.logo : challenge.challenger_team_logo_url
-                            )}
+                            src={isIncoming ? (teamData?.logo || DEFAULT_TEAM_LOGO) : (challenge.challenger_team_logo_url || DEFAULT_TEAM_LOGO)}
                             alt={isIncoming ? teamData?.name : challenge.challenger_team_name}
                             className="challenge-team-logo"
                           />
@@ -253,10 +244,7 @@ const TeamChallenges: React.FC<TeamChallengesProps> = ({ teamId, teamData }) => 
                         </div>
                         <div className="challenge-team">
                           <img
-                            src={avatarService.getAvatarUrl(
-                              isIncoming ? opponentTeam.name : teamData?.name || "",
-                              isIncoming ? opponentTeam.logo : teamData?.logo
-                            )}
+                            src={isIncoming ? (opponentTeam.logo || DEFAULT_TEAM_LOGO) : (teamData?.logo || DEFAULT_TEAM_LOGO)}
                             alt={isIncoming ? opponentTeam.name : teamData?.name}
                             className="challenge-team-logo"
                           />

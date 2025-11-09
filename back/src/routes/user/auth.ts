@@ -1,6 +1,6 @@
 import { Router } from "express";
 import type { Handler } from "express";
-import { register, login, getProfile } from "../../controllers/user/authController";
+import { register, login, getProfile, sendVerificationEmailController, verifyEmail } from "../../controllers/user/authController";
 import { authenticateToken } from "../../middleware/auth";
 
 const router = Router();
@@ -86,5 +86,45 @@ router.post("/login", login as Handler);
  *         description: Non autorisé
  */
 router.get("/profile", authenticateToken, getProfile as Handler);
+
+/**
+ * @openapi
+ * /api/auth/send-verification-email:
+ *   post:
+ *     tags:
+ *       - Auth
+ *     summary: Envoyer un email de vérification
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Email de vérification envoyé avec succès
+ *       400:
+ *         description: Email déjà vérifié
+ *       401:
+ *         description: Non autorisé
+ */
+router.post("/send-verification-email", authenticateToken, sendVerificationEmailController as Handler);
+
+/**
+ * @openapi
+ * /api/auth/verify-email:
+ *   get:
+ *     tags:
+ *       - Auth
+ *     summary: Vérifier l'email via un token
+ *     parameters:
+ *       - in: query
+ *         name: token
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Email vérifié avec succès
+ *       400:
+ *         description: Token invalide ou expiré
+ */
+router.get("/verify-email", verifyEmail as Handler);
 
 export default router;

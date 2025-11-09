@@ -23,7 +23,7 @@ const Edit = () => {
   const [error, setError] = useState<string | null>(null);
   const [uploadingImage, setUploadingImage] = useState(false);
   const [uploadedImageUrl, setUploadedImageUrl] = useState<string | null>(null);
-  const [oldImagePublicId, setOldImagePublicId] = useState<string | null>(null);
+  const [currentImagePublicId, setCurrentImagePublicId] = useState<string | null>(null);
 
   useEffect(() => {
     fetchBadge();
@@ -44,10 +44,12 @@ const Edit = () => {
       setPreviewImage(data.image_url);
       setUploadedImageUrl(data.image_url);
       
-      // Extract old public_id if exists
+      // Extract and store public_id for Cloudinary deletion
       if (data.image_url && data.image_url.includes('cloudinary.com')) {
         const publicId = extractPublicIdFromUrl(data.image_url);
-        setOldImagePublicId(publicId);
+        setCurrentImagePublicId(publicId);
+      } else {
+        setCurrentImagePublicId(null);
       }
     } catch (err) {
       setError('Une erreur est survenue lors du chargement du badge');
@@ -116,13 +118,12 @@ const Edit = () => {
       // Convert to base64
       const base64Image = await convertFileToBase64(file);
 
-      // Extract old public_id if exists
-      const currentImageUrl = watch('image_url');
-      const oldPublicId = currentImageUrl && currentImageUrl.includes('cloudinary.com') 
-        ? extractPublicIdFromUrl(currentImageUrl)
-        : null;
+      // Use stored public_id or extract from current image URL
+      const oldPublicId = currentImagePublicId || (watch('image_url') && watch('image_url').includes('cloudinary.com') 
+        ? extractPublicIdFromUrl(watch('image_url'))
+        : null);
 
-      // Upload to Cloudinary
+      // Upload to Cloudinary (this will delete oldPublicId if provided)
       const response = await apiService.post<{ url: string; public_id: string }>('/cloudinary/upload', {
         image: base64Image,
         folder: 'oxymore/badges',
@@ -130,10 +131,10 @@ const Edit = () => {
         oldPublicId: oldPublicId
       });
 
-      // Set the Cloudinary URL
+      // Set the Cloudinary URL and store new public_id
       setUploadedImageUrl(response.url);
       setValue('image_url', response.url);
-      setOldImagePublicId(response.public_id);
+      setCurrentImagePublicId(response.public_id);
     } catch (error: any) {
       console.error('Error uploading image:', error);
       setPreviewImage(watch('image_url') || null); // Keep old image if upload fails
@@ -262,11 +263,17 @@ const Edit = () => {
                         setPreviewImage(originalImageUrl || null);
                         setUploadedImageUrl(originalImageUrl || null);
                         setValue('image_url', originalImageUrl || '');
+                        // Restore original public_id if it was a Cloudinary image
+                        if (originalImageUrl && originalImageUrl.includes('cloudinary.com')) {
+                          const publicId = extractPublicIdFromUrl(originalImageUrl);
+                          setCurrentImagePublicId(publicId);
+                        }
                       } else {
                         // If it's the original image or no original, clear everything
                         setPreviewImage(null);
                         setUploadedImageUrl(null);
                         setValue('image_url', '');
+                        setCurrentImagePublicId(null);
                       }
                     }}
                     className="absolute -top-2 -right-2 p-1 bg-red-500 text-white rounded-full text-sm hover:bg-red-600 transition-colors"

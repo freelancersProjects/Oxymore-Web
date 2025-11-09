@@ -173,11 +173,19 @@
       flex-shrink: 0;
       align-self: flex-start;
       margin-top: rem-calc(2);
+      height: rem-calc(36);
+      box-sizing: border-box;
 
       &.pending {
         background: rgba(251, 191, 36, 0.2);
         color: #fbbf24;
         border: 1px solid rgba(251, 191, 36, 0.3);
+        min-width: rem-calc(110);
+        text-align: center;
+        white-space: nowrap;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
 
       &.accepted {

@@ -37,16 +37,16 @@ const TournamentFilters: React.FC<TournamentFiltersProps> = ({
 
   const teamSizes = [
     { label: 'Team Sizes', value: 'all' },
-    { label: '1v1', value: '1v1' },
-    { label: '2v2', value: '2v2' },
-    { label: '5v5', value: '5v5' }
+    { label: '1V1', value: '1V1' },
+    { label: '2V2', value: '2V2' },
+    { label: '5V5', value: '5V5' }
   ];
 
   const prizePools = [
     { label: 'Prize Pools', value: 'all' },
-    { label: '0-1000€', value: 'low' },
-    { label: '1000-10000€', value: 'medium' },
-    { label: '10000€+', value: 'high' }
+    { label: '0-50€', value: 'low' },
+    { label: '100-1000€', value: 'medium' },
+    { label: '1000€+', value: 'high' }
   ];
 
   const accessTypes = [
@@ -74,13 +74,14 @@ const TournamentFilters: React.FC<TournamentFiltersProps> = ({
         options: prizePools,
         value: prizePool,
         onChange: (value: string) => setPrizePool(value),
-        placeholder: "Prize Pool"
+        placeholder: "Prize Pool",
+
       })}
       {React.createElement(OXMDropdown as any, {
         options: accessTypes,
         value: accessType,
         onChange: (value: string) => setAccessType(value),
-        placeholder: "Access Type"
+        placeholder: "Access Type",
       })}
 
       <div className="view-toggle">

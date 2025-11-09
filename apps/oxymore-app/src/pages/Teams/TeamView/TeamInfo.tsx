@@ -1,6 +1,7 @@
 import React from 'react';
 import { OXMButton } from '@oxymore/ui';
 import type { Team } from '../../../types/team';
+import { DEFAULT_TEAM_LOGO, DEFAULT_TEAM_BANNER } from '../../../constants/teamDefaults';
 import './TeamInfo.scss';
 
 interface TeamInfoProps {
@@ -13,7 +14,7 @@ const TeamInfo: React.FC<TeamInfoProps> = ({ teamData }) => {
       <div className="team-banner">
         <div className="team-banner-content">
           <img
-            src={teamData?.banner || teamData?.logo || '/default-banner.jpg'}
+            src={teamData?.banner || teamData?.logo || DEFAULT_TEAM_BANNER}
             alt="Team Banner"
             className="banner-image"
           />
@@ -21,7 +22,7 @@ const TeamInfo: React.FC<TeamInfoProps> = ({ teamData }) => {
         </div>
         <div className="team-banner-info">
           <img
-            src={teamData?.logo || '/default-team-logo.png'}
+            src={teamData?.logo || DEFAULT_TEAM_LOGO}
             alt="Team Logo"
             className="team-logo-large"
           />

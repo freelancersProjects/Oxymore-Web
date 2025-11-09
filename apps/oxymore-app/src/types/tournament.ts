@@ -13,6 +13,7 @@ export interface Tournament {
   entry_fee?: number;
   max_participant?: number;
   min_participant?: number;
+  team_size?: string; // '1V1' | '2V2' | '5V5'
   is_premium?: boolean;
   image_url?: string;
   id_league: string;

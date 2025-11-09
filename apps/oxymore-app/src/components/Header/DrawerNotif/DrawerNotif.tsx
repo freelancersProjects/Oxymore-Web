@@ -83,6 +83,9 @@ const DrawerNotif: React.FC<DrawerNotifProps> = ({ open, onClose, userId, onMark
             : n
         )
       );
+      if (onMarkAllRead) {
+        onMarkAllRead();
+      }
     } catch (error) {
       console.error('Error marking notification as read:', error);
     }
@@ -100,6 +103,9 @@ const DrawerNotif: React.FC<DrawerNotifProps> = ({ open, onClose, userId, onMark
     try {
       await notificationService.deleteForUser(userId, notificationId);
       setNotifications(prev => prev.filter(n => n.id_notification !== notificationId));
+      if (onMarkAllRead) {
+        onMarkAllRead();
+      }
     } catch (error) {
       console.error('Error deleting notification:', error);
     }
@@ -151,7 +157,7 @@ const DrawerNotif: React.FC<DrawerNotifProps> = ({ open, onClose, userId, onMark
     }
   };
 
-  const unreadCount = notifications.filter(n => !n.is_read && n.type === 'message' && n.title === 'Nouvelle réponse').length;
+  const unreadCount = notifications.filter(n => !n.is_read).length;
 
   return (
     <OXMDrawer open={open} onClose={onClose} side="right" width={420} className="drawer-notif">

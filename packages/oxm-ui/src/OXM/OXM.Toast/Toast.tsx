@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import ReactDOM from "react-dom";
 import { CheckCircle2, XCircle, Info, X } from "lucide-react";
 import "./Toast.scss";
 
@@ -18,18 +19,24 @@ const Toast: React.FC<ToastProps> = ({
   const [visible, setVisible] = useState(true);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setVisible(false);
-    }, duration);
+    if (duration > 0) {
+      const timer = setTimeout(() => {
+        setVisible(false);
+      }, duration);
 
-    return () => clearTimeout(timer);
-  }, [duration]);
-
-  const handleAnimationEnd = () => {
-    if (!visible) {
-      onClose();
+      return () => clearTimeout(timer);
     }
-  };
+  }, [duration, message]);
+
+  useEffect(() => {
+    if (!visible) {
+      const animationTimer = setTimeout(() => {
+        onClose();
+      }, 250);
+
+      return () => clearTimeout(animationTimer);
+    }
+  }, [visible, onClose]);
 
   const getIcon = () => {
     switch (type) {
@@ -44,12 +51,11 @@ const Toast: React.FC<ToastProps> = ({
     }
   };
 
-  return (
+  const content = (
     <div
       className={`oxm-toast oxm-toast--${type} ${
         visible ? "slide-in" : "slide-out"
       }`}
-      onAnimationEnd={handleAnimationEnd}
     >
       <div className="oxm-toast__content">
         <div className="oxm-toast__icon">{getIcon()}</div>
@@ -64,6 +70,8 @@ const Toast: React.FC<ToastProps> = ({
       </button>
     </div>
   );
+
+  return ReactDOM.createPortal(content, document.body);
 };
 
 export default Toast;

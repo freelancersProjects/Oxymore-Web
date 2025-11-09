@@ -19,6 +19,7 @@ import {
 import { OXMChip, OXMSkeleton } from "@oxymore/ui";
 import type { Team, TeamSearchProps } from '../../../types/team';
 import { teamService } from '../../../services/teamService';
+import { DEFAULT_TEAM_LOGO } from '../../../constants/teamDefaults';
 import TeamTooltip from './TeamTooltip';
 import TeamModal from './TeamModal';
 import TeamCardSkeleton from './TeamCardSkeleton/TeamCardSkeleton';
@@ -77,7 +78,7 @@ const TeamSearch: React.FC<TeamSearchProps> = () => {
         filtered = filtered.filter(team => team.isVerified);
         break;
       case 'high-rated':
-        filtered = filtered.filter(team => team.rating >= 4.5);
+        filtered = filtered.filter(team => team.winRate >= 70);
         break;
     }
 
@@ -110,15 +111,10 @@ const TeamSearch: React.FC<TeamSearchProps> = () => {
     navigate('/teams/create');
   };
 
-  const getRatingColor = (rating: number) => {
-    if (rating >= 4.5) return 'text-green-400';
-    if (rating >= 4.0) return 'text-yellow-400';
-    return 'text-orange-400';
-  };
-
   const getWinRateColor = (winRate: number) => {
     if (winRate >= 80) return 'text-green-400';
     if (winRate >= 70) return 'text-yellow-400';
+    if (winRate >= 50) return 'text-orange-400';
     return 'text-red-400';
   };
 
@@ -309,11 +305,7 @@ const TeamSearch: React.FC<TeamSearchProps> = () => {
                         <>
                           <div className="card-header">
                             <div className="team-logo">
-                              {team.logo ? (
-                                <img src={team.logo} alt={team.name} />
-                              ) : (
-                                <Shield className="w-6 h-6" />
-                              )}
+                              <img src={team.logo || DEFAULT_TEAM_LOGO} alt={team.name} />
                             </div>
                             <div className="team-badges">
                               {team.isVerified && (
@@ -344,8 +336,8 @@ const TeamSearch: React.FC<TeamSearchProps> = () => {
                               </div>
                               <div className="stat">
                                 <Trophy className="w-4 h-4" />
-                                <span className={getRatingColor(team.rating)}>
-                                  {team.rating}
+                                <span className={getWinRateColor(team.winRate)}>
+                                  {team.winRate}%
                                 </span>
                               </div>
                             </div>
@@ -356,11 +348,36 @@ const TeamSearch: React.FC<TeamSearchProps> = () => {
                               <Crown className="w-4 h-4" />
                               <span>{team.captain}</span>
                             </div>
-                            {team.isRecruiting && (
-                              <div className="recruiting-badge">
-                                <UserPlus />
-                                <span>Recrute</span>
-                              </div>
+                            {team.isRecruiting ? (
+                              <span style={{
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                padding: '0.375rem 1rem',
+                                borderRadius: '0.5rem',
+                                fontSize: '1rem',
+                                fontWeight: 500,
+                                fontFamily: 'Outfit, sans-serif',
+                                background: 'rgba(59, 130, 246, 0.2)',
+                                border: '1px solid rgba(59, 130, 246, 0.3)',
+                                color: 'rgba(255, 255, 255, 0.8)'
+                              }}>
+                                On recrute
+                              </span>
+                            ) : (
+                              <span style={{
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                padding: '0.375rem 1rem',
+                                borderRadius: '0.5rem',
+                                fontSize: '1rem',
+                                fontWeight: 500,
+                                fontFamily: 'Outfit, sans-serif',
+                                background: 'rgba(139, 92, 246, 0.2)',
+                                border: '1px solid rgba(139, 92, 246, 0.3)',
+                                color: 'rgba(255, 255, 255, 0.8)'
+                              }}>
+                                On ne recrute pas
+                              </span>
                             )}
                           </div>
                         </>
@@ -369,11 +386,7 @@ const TeamSearch: React.FC<TeamSearchProps> = () => {
                           <div className="list-main">
                             <div className="team-info">
                               <div className="team-logo">
-                                {team.logo ? (
-                                  <img src={team.logo} alt={team.name} />
-                                ) : (
-                                  <Shield className="w-6 h-6" />
-                                )}
+                                <img src={team.logo || DEFAULT_TEAM_LOGO} alt={team.name} />
                               </div>
                               <div className="team-details">
                                 <div className="team-header">
@@ -421,16 +434,16 @@ const TeamSearch: React.FC<TeamSearchProps> = () => {
                               </div>
                               <div className="stat">
                                 <Trophy className="w-4 h-4" />
-                                <span className={getRatingColor(team.rating)}>
-                                  {team.rating}
-                                </span>
-                              </div>
-                              <div className="stat">
-                                <TrendingUp className="w-4 h-4" />
                                 <span className={getWinRateColor(team.winRate)}>
                                   {team.winRate}%
                                 </span>
                               </div>
+                              {team.gamesPlayed > 0 && (
+                                <div className="stat">
+                                  <TrendingUp className="w-4 h-4" />
+                                  <span>{team.gamesPlayed} parties</span>
+                                </div>
+                              )}
                               <div className="stat">
                                 <MapPin className="w-4 h-4" />
                                 <span>{team.region}</span>
@@ -444,11 +457,28 @@ const TeamSearch: React.FC<TeamSearchProps> = () => {
                               <span>{team.captain}</span>
                             </div>
                             <div className="list-actions">
-                              {team.isRecruiting && (
-                                <div className="recruiting-badge">
-                                  <UserPlus className="w-4 h-4" />
-                                  <span>Recrute</span>
-                                </div>
+                              {team.isRecruiting ? (
+                                <span style={{
+                                  display: 'inline-flex',
+                                  alignItems: 'center',
+                                  padding: '0.25rem 0.75rem',
+                                  borderRadius: '0.5rem',
+                                  fontSize: '0.875rem',
+                                  fontWeight: 500,
+                                  fontFamily: 'Outfit, sans-serif',
+                                  background: 'rgba(59, 130, 246, 0.2)',
+                                  border: '1px solid rgba(59, 130, 246, 0.3)',
+                                  color: 'rgba(255, 255, 255, 0.8)'
+                                }}>
+                                  On recrute
+                                </span>
+                              ) : (
+                                <OXMChip 
+                                  variant="default" 
+                                  size="small"
+                                >
+                                  On ne recrute pas
+                                </OXMChip>
                               )}
                               <button className="view-btn">
                                 <Eye className="w-4 h-4" />
