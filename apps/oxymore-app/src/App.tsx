@@ -192,14 +192,12 @@ const AppContent: React.FC<{ isSidebarCollapsed: boolean; setSidebarCollapsed: (
                       <Route path="/teams" element={<Teams />} />
                       <Route path="/teams/create" element={<CreateTeam />} />
                       <Route path="/teams/:id" element={<TeamView />} />
+                      <Route path="/tournaments" element={<TournamentPage />} />
+                      <Route path="/tournaments/:id" element={<TournamentView />} />
                       <Route path="/friends" element={<Friends />} />
                       <Route path="/messages" element={<Messages />} />
                       <Route path="/oxia" element={<OxiaChat />} />
                       <Route path="/leagues" element={<League />} />
-                      <Route
-                        path="/tournaments"
-                        element={<TournamentPage />}
-                      />
                       <Route
                         path="/subscription"
                         element={<Subscription />}
