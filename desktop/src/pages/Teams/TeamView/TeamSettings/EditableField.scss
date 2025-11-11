@@ -1,0 +1,152 @@
+@import '../../../../styles/global';
+
+.editable-field {
+  display: flex;
+  flex-direction: column;
+  gap: rem-calc(8);
+  padding: rem-calc(16);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: rem-calc(8);
+  transition: all 0.2s;
+  position: relative;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+
+  &.editing {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: $color-purple-light;
+  }
+
+  &__label {
+    font-family: 'Outfit', sans-serif;
+    font-size: rem-calc(12);
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.6);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  &__content {
+    position: relative;
+  }
+
+  &__value-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: rem-calc(12);
+    min-height: rem-calc(24);
+  }
+
+  &__value {
+    font-family: 'Outfit', sans-serif;
+    font-size: rem-calc(16);
+    color: $color-white;
+    flex: 1;
+    word-break: break-word;
+
+    .placeholder {
+      color: rgba(255, 255, 255, 0.4);
+      font-style: italic;
+    }
+  }
+
+  &__edit-icon {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: rem-calc(6);
+    padding: rem-calc(6);
+    color: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    transition: all 0.2s;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.2);
+      color: $color-white;
+      transform: translateY(-1px);
+    }
+  }
+
+  &__input-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: rem-calc(12);
+  }
+
+  &__input {
+    font-family: 'Outfit', sans-serif;
+    font-size: rem-calc(16);
+    color: $color-white;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: rem-calc(6);
+    padding: rem-calc(10) rem-calc(12);
+    width: 100%;
+    transition: all 0.2s;
+
+    &:focus {
+      outline: none;
+      border-color: $color-purple-light;
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    &::placeholder {
+      color: rgba(255, 255, 255, 0.4);
+    }
+  }
+
+  &__actions {
+    display: flex;
+    gap: rem-calc(8);
+    align-self: flex-end;
+  }
+
+  .action-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: rem-calc(6);
+    padding: rem-calc(6) rem-calc(10);
+    color: $color-white;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover:not(:disabled) {
+      transform: translateY(-1px);
+    }
+
+    &.save {
+      background: $color-green-success;
+      border-color: $color-green-success;
+
+      &:hover:not(:disabled) {
+        background: darken($color-green-success, 10%);
+      }
+    }
+
+    &.cancel {
+      background: rgba(255, 255, 255, 0.1);
+
+      &:hover:not(:disabled) {
+        background: rgba(255, 255, 255, 0.2);
+      }
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+}
+
+

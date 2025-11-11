@@ -1,0 +1,35 @@
+@import "../../../styles/global";
+
+.friends-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: rem-calc(32);
+  padding: 0 rem-calc(20);
+
+  .header-content {
+    .friends-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: rem-calc(42);
+      font-weight: 700;
+      margin: 0 0 rem-calc(8) 0;
+      background: linear-gradient(135deg, $color-white 0%, rgba($color-white, 0.8) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .friends-subtitle {
+      font-size: rem-calc(16);
+      color: rgba($color-white, 0.7);
+      margin: 0;
+    }
+  }
+
+  .header-actions {
+    display: flex;
+    gap: rem-calc(12);
+  }
+}
+
+

@@ -8,24 +8,95 @@ export const getAllFriends = async (): Promise<Friend[]> => {
 };
 
 export const getFriendsByUserId = async (userId: string): Promise<FriendWithUser[]> => {
-  const [rows] = await db.query(`
-    SELECT
-      f.*,
-      u.id_user as user_id,
-      u.username,
-      u.avatar_url,
-      u.elo,
-      u.is_premium,
-      u.verified,
-      u.online_status,
-      u.last_seen
-    FROM friends f
-    JOIN user u ON (f.id_user_sender = u.id_user OR f.id_user_receiver = u.id_user)
-    WHERE (f.id_user_sender = ? OR f.id_user_receiver = ?)
-    AND f.status = 'accepted'
-    AND u.id_user != ?
-  `, [userId, userId, userId]);
-  return rows as FriendWithUser[];
+  try {
+    const [tableCheck] = await db.query(`
+      SELECT COUNT(*) as count
+      FROM information_schema.tables
+      WHERE table_schema = DATABASE()
+      AND table_name = 'favorite_friends'
+    `);
+    const tableExists = (tableCheck as any[])[0]?.count > 0;
+
+    if (tableExists) {
+      const [rows] = await db.query(`
+        SELECT
+          f.*,
+          u.id_user as user_id,
+          u.username,
+          u.avatar_url,
+          u.elo,
+          u.is_premium,
+          u.verified,
+          u.online_status,
+          u.last_seen,
+          CASE WHEN ff.id_favorite_friend IS NOT NULL THEN 1 ELSE 0 END as is_favorite,
+          fdn.display_name
+        FROM friends f
+        JOIN user u ON (f.id_user_sender = u.id_user OR f.id_user_receiver = u.id_user)
+        LEFT JOIN favorite_friends ff ON ff.id_friend COLLATE utf8mb4_unicode_ci = f.id_friend COLLATE utf8mb4_unicode_ci AND ff.id_user COLLATE utf8mb4_unicode_ci = ? COLLATE utf8mb4_unicode_ci
+        LEFT JOIN friend_display_names fdn ON fdn.id_friend COLLATE utf8mb4_unicode_ci = f.id_friend COLLATE utf8mb4_unicode_ci AND fdn.id_user COLLATE utf8mb4_unicode_ci = ? COLLATE utf8mb4_unicode_ci
+        WHERE (f.id_user_sender = ? OR f.id_user_receiver = ?)
+        AND f.status = 'accepted'
+        AND u.id_user != ?
+      `, [userId, userId, userId, userId, userId]);
+      
+      return (rows as any[]).map((row: any) => ({
+        ...row,
+        is_favorite: row.is_favorite === 1 || row.is_favorite === true || row.is_favorite === '1'
+      }));
+    } else {
+      const [rows] = await db.query(`
+        SELECT
+          f.*,
+          u.id_user as user_id,
+          u.username,
+          u.avatar_url,
+          u.elo,
+          u.is_premium,
+          u.verified,
+          u.online_status,
+          u.last_seen,
+          0 as is_favorite,
+          fdn.display_name
+        FROM friends f
+        JOIN user u ON (f.id_user_sender = u.id_user OR f.id_user_receiver = u.id_user)
+        LEFT JOIN friend_display_names fdn ON fdn.id_friend COLLATE utf8mb4_unicode_ci = f.id_friend COLLATE utf8mb4_unicode_ci AND fdn.id_user COLLATE utf8mb4_unicode_ci = ? COLLATE utf8mb4_unicode_ci
+        WHERE (f.id_user_sender = ? OR f.id_user_receiver = ?)
+        AND f.status = 'accepted'
+        AND u.id_user != ?
+      `, [userId, userId, userId, userId]);
+      return (rows as any[]).map((row: any) => ({
+        ...row,
+        is_favorite: false
+      }));
+    }
+  } catch (error: any) {
+    console.error('Error in getFriendsByUserId:', error);
+    const [rows] = await db.query(`
+      SELECT
+        f.*,
+        u.id_user as user_id,
+        u.username,
+        u.avatar_url,
+        u.elo,
+        u.is_premium,
+        u.verified,
+        u.online_status,
+        u.last_seen,
+        0 as is_favorite,
+        fdn.display_name
+      FROM friends f
+      JOIN user u ON (f.id_user_sender = u.id_user OR f.id_user_receiver = u.id_user)
+      LEFT JOIN friend_display_names fdn ON fdn.id_friend COLLATE utf8mb4_unicode_ci = f.id_friend COLLATE utf8mb4_unicode_ci AND fdn.id_user COLLATE utf8mb4_unicode_ci = ? COLLATE utf8mb4_unicode_ci
+      WHERE (f.id_user_sender = ? OR f.id_user_receiver = ?)
+      AND f.status = 'accepted'
+      AND u.id_user != ?
+    `, [userId, userId, userId, userId]);
+    return (rows as any[]).map((row: any) => ({
+      ...row,
+      is_favorite: false
+    }));
+  }
 };
 
 export const getPendingFriendRequests = async (userId: string): Promise<FriendWithUser[]> => {
@@ -86,13 +157,12 @@ export const createFriend = async (data: FriendInput): Promise<FriendData> => {
   const now = new Date().toISOString();
 
   await db.query(
-    "INSERT INTO friends (id_friend, id_user_sender, id_user_receiver, status, is_favorite, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)",
+    "INSERT INTO friends (id_friend, id_user_sender, id_user_receiver, status, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)",
     [
       id,
       data.id_user_sender,
       data.id_user_receiver,
       data.status || 'pending',
-      data.is_favorite || false,
       now,
       now
     ]
@@ -103,7 +173,6 @@ export const createFriend = async (data: FriendInput): Promise<FriendData> => {
     id_user_sender: data.id_user_sender,
     id_user_receiver: data.id_user_receiver,
     status: data.status || 'pending',
-    is_favorite: data.is_favorite || false,
     created_at: now,
     updated_at: now
   };
@@ -118,11 +187,6 @@ export const updateFriend = async (id: string, data: Partial<FriendInput>): Prom
   if (data.status !== undefined) {
     updateFields.push("status = ?");
     updateValues.push(data.status);
-  }
-
-  if (data.is_favorite !== undefined) {
-    updateFields.push("is_favorite = ?");
-    updateValues.push(data.is_favorite);
   }
 
   updateFields.push("updated_at = ?");
@@ -163,9 +227,6 @@ export const blockUser = async (id: string): Promise<Friend | null> => {
   return updateFriend(id, { status: 'blocked' });
 };
 
-export const toggleFavorite = async (id: string, isFavorite: boolean): Promise<Friend | null> => {
-  return updateFriend(id, { is_favorite: isFavorite });
-};
 
 export const searchUsersForFriends = async (userId: string, searchTerm: string): Promise<any[]> => {
   const [rows] = await db.query(`
@@ -192,5 +253,49 @@ export const searchUsersForFriends = async (userId: string, searchTerm: string):
   `, [userId, userId, userId, `%${searchTerm}%`]);
 
   return rows as any[];
+};
+
+export const updateFriendDisplayName = async (userId: string, friendId: string, displayName: string): Promise<{ display_name: string }> => {
+  try {
+    // Vérifier si le display_name existe déjà
+    const [existing] = await db.query(`
+      SELECT id_friend_display_name FROM friend_display_names
+      WHERE id_user = ? AND id_friend = ?
+    `, [userId, friendId]);
+
+    if ((existing as any[]).length > 0) {
+      // Mettre à jour le display_name existant
+      await db.query(`
+        UPDATE friend_display_names
+        SET display_name = ?, updated_at = NOW()
+        WHERE id_user = ? AND id_friend = ?
+      `, [displayName, userId, friendId]);
+    } else {
+      // Créer un nouveau display_name
+      const id = crypto.randomUUID();
+      await db.query(`
+        INSERT INTO friend_display_names (id_friend_display_name, id_user, id_friend, display_name)
+        VALUES (?, ?, ?, ?)
+      `, [id, userId, friendId, displayName]);
+    }
+
+    return { display_name: displayName };
+  } catch (error: any) {
+    console.error('Error updating friend display name:', error);
+    throw error;
+  }
+};
+
+export const deleteFriendDisplayName = async (userId: string, friendId: string): Promise<boolean> => {
+  try {
+    const [result] = await db.query(`
+      DELETE FROM friend_display_names
+      WHERE id_user = ? AND id_friend = ?
+    `, [userId, friendId]);
+    return (result as any).affectedRows > 0;
+  } catch (error: any) {
+    console.error('Error deleting friend display name:', error);
+    throw error;
+  }
 };
 

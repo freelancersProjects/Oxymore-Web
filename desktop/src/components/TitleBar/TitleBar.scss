@@ -1,0 +1,69 @@
+@import "../../styles/global";
+
+.title-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: rem-calc(32);
+  background: rgba(10, 10, 10, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  -webkit-app-region: drag;
+  user-select: none;
+  z-index: 10000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.title-bar-drag-region {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding-left: rem-calc(12);
+  -webkit-app-region: drag;
+}
+
+.title-bar-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: rem-calc(12);
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.8);
+  letter-spacing: rem-calc(0.5);
+}
+
+.title-bar-controls {
+  display: flex;
+  align-items: center;
+  -webkit-app-region: no-drag;
+}
+
+.title-bar-button {
+  width: rem-calc(46);
+  height: rem-calc(32);
+  border: none;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 1);
+  }
+
+  &.close:hover {
+    background: rgba(239, 68, 68, 0.8);
+    color: rgba(255, 255, 255, 1);
+  }
+
+  svg {
+    pointer-events: none;
+  }
+}
+
+

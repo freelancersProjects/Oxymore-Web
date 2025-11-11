@@ -12,9 +12,11 @@ import {
   rejectFriendRequest,
   cancelFriendRequest,
   blockUser,
-  toggleFavorite,
   searchUsersForFriends,
+  updateFriendDisplayName,
+  deleteFriendDisplayName,
 } from "../../controllers/user/friendController";
+import { authenticateToken } from "../../middleware/auth";
 
 const router = Router();
 
@@ -266,14 +268,21 @@ router.put("/:id/block", blockUser);
 
 /**
  * @openapi
- * /api/friends/{id}/favorite:
+ * /api/friends/{userId}/{friendId}/display-name:
  *   put:
  *     tags:
  *       - Friends
- *     summary: Toggle le statut favori
+ *     summary: Met à jour le nom d'affichage d'un ami
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
+ *       - in: path
+ *         name: friendId
  *         required: true
  *         schema:
  *           type: string
@@ -284,14 +293,46 @@ router.put("/:id/block", blockUser);
  *           schema:
  *             type: object
  *             properties:
- *               is_favorite:
- *                 type: boolean
+ *               display_name:
+ *                 type: string
+ *             required:
+ *               - display_name
  *     responses:
  *       200:
- *         description: Statut favori mis à jour
+ *         description: Nom d'affichage mis à jour
+ *       400:
+ *         description: Requête invalide
  *       404:
  *         description: Ami non trouvé
  */
-router.put("/:id/favorite", toggleFavorite);
+router.put("/:userId/:friendId/display-name", authenticateToken, updateFriendDisplayName);
+
+/**
+ * @openapi
+ * /api/friends/{userId}/{friendId}/display-name:
+ *   delete:
+ *     tags:
+ *       - Friends
+ *     summary: Supprime le nom d'affichage personnalisé d'un ami
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
+ *       - in: path
+ *         name: friendId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       204:
+ *         description: Nom d'affichage supprimé
+ *       404:
+ *         description: Nom d'affichage non trouvé
+ */
+router.delete("/:userId/:friendId/display-name", authenticateToken, deleteFriendDisplayName);
 
 export default router;

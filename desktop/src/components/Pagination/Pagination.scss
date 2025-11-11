@@ -1,0 +1,64 @@
+@import '../../styles/global';
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: rem-calc(8);
+  margin-top: rem-calc(40);
+}
+
+.pagination-btn {
+  display: flex;
+  align-items: center;
+  gap: rem-calc(4);
+  padding: rem-calc(8) rem-calc(12);
+  background: rgb(255 255 255 / 5%);
+  border: 0.5px solid rgb(255 255 255 / 30%);
+  border-radius: rem-calc(6);
+  color: $color-white;
+  font-size: rem-calc(14);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover:not(:disabled) {
+    background: rgb(255 255 255 / 10%);
+    border-color: rgb(255 255 255 / 50%);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &.active {
+    background: linear-gradient(135deg, $color-primary, lighten($color-primary, 10%));
+    border-color: $color-primary;
+    color: $color-white;
+  }
+}
+
+.pagination-pages {
+  display: flex;
+  align-items: center;
+  gap: rem-calc(4);
+}
+
+.pagination-dots {
+  padding: rem-calc(8) rem-calc(4);
+  color: $color-gray-medium;
+  font-size: rem-calc(14);
+}
+
+@media (max-width: rem-calc(768)) {
+  .pagination {
+    flex-wrap: wrap;
+    gap: rem-calc(4);
+  }
+
+  .pagination-btn {
+    padding: rem-calc(6) rem-calc(8);
+    font-size: rem-calc(12);
+  }
+}

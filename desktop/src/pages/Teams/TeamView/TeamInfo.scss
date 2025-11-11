@@ -1,0 +1,144 @@
+@import '../../../styles/global';
+
+.team-info-page {
+  color: $color-white;
+}
+
+.team-banner {
+  position: relative;
+  margin-bottom: rem-calc(32);
+  border-radius: rem-calc(16);
+  overflow: hidden;
+
+  .team-banner-content {
+    position: relative;
+    height: rem-calc(300);
+    overflow: hidden;
+
+    .banner-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .banner-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, rgba(21, 147, 206, 0.3) 0%, rgba(59, 130, 246, 0.2) 100%);
+    }
+  }
+
+  .team-banner-info {
+    position: absolute;
+    bottom: rem-calc(40);
+    left: rem-calc(40);
+    right: rem-calc(40);
+    display: flex;
+    align-items: flex-end;
+    gap: rem-calc(24);
+
+    .team-logo-large {
+      width: rem-calc(120);
+      height: rem-calc(120);
+      border-radius: rem-calc(16);
+      border: rem-calc(4) solid $color-white;
+      object-fit: cover;
+      box-shadow: 0 rem-calc(8) rem-calc(24) rgba(0, 0, 0, 0.3);
+    }
+
+    > div {
+      flex: 1;
+
+      .team-name-large {
+        font-family: 'Orbitron', sans-serif;
+        font-size: rem-calc(32);
+        font-weight: 700;
+        color: $color-white;
+        margin: 0 0 rem-calc(8) 0;
+        text-shadow: 0 rem-calc(2) rem-calc(8) rgba(0, 0, 0, 0.3);
+      }
+
+      .team-description-short {
+        font-family: 'Outfit', sans-serif;
+        font-size: rem-calc(16);
+        color: rgba($color-white, 0.9);
+        margin: 0;
+        text-shadow: 0 rem-calc(2) rem-calc(8) rgba(0, 0, 0, 0.3);
+      }
+    }
+  }
+}
+
+.team-info-sections {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: rem-calc(24);
+}
+
+.info-section-card {
+  background: rgba($color-gray-darkest, 0.5);
+  border: 1px solid rgba(21, 147, 206, 0.1);
+  border-radius: rem-calc(12);
+  padding: rem-calc(24);
+  backdrop-filter: blur(10px);
+
+  h3 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: rem-calc(18);
+    font-weight: 600;
+    color: $color-white;
+    margin: 0 0 rem-calc(16) 0;
+  }
+
+  p {
+    font-family: 'Outfit', sans-serif;
+    font-size: rem-calc(14);
+    color: rgba($color-white, 0.8);
+    line-height: 1.6;
+    margin: 0;
+  }
+}
+
+.team-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: rem-calc(16);
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  gap: rem-calc(8);
+  padding: rem-calc(16);
+  background: rgba(21, 147, 206, 0.08);
+  border: 1px solid rgba(21, 147, 206, 0.15);
+  border-radius: rem-calc(8);
+
+  .stat-label {
+    font-family: 'Outfit', sans-serif;
+    font-size: rem-calc(12);
+    color: rgba($color-white, 0.6);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .stat-value {
+    font-family: 'Orbitron', sans-serif;
+    font-size: rem-calc(20);
+    font-weight: 700;
+    color: $color-white;
+  }
+}
+
+.empty-state {
+  text-align: center;
+  padding: rem-calc(32);
+  color: rgba($color-white, 0.5);
+  font-family: 'Outfit', sans-serif;
+  font-size: rem-calc(14);
+}
+
