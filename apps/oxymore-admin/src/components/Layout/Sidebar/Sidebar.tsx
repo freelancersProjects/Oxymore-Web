@@ -20,7 +20,8 @@ import {
   Zap,
   Hash,
   Bell,
-  MessageSquare
+  MessageSquare,
+  FileText
 } from 'lucide-react';
 import { useSidebar } from '../../../context/SidebarContext';
 import { useAuth } from '../../../context/AuthContext';
@@ -68,7 +69,6 @@ const useThemeDetector = () => {
       mediaQuery.removeEventListener('change', handleSystemThemeChange);
     };
   }, []);
-            console.log(import.meta.env.PASS_SIDEBAR)
 
   return currentTheme;
 };
@@ -154,6 +154,7 @@ const Sidebar = () => {
     { label: 'Matches', icon: Calendar, path: '/matches', badge: 'LIVE', color: 'bg-red-500' },
     { label: 'Badges', icon: Star, path: '/badges' },
     { label: 'Reviews', icon: MessageSquare, path: '/reviews', color: 'bg-gradient-purple' },
+    { label: 'Articles', icon: FileText, path: '/articles', color: 'bg-gradient-blue' },
     { label: 'Notifications', icon: Bell, path: '/notifications', color: 'bg-gradient-blue' },
     { label: 'Calendrier', icon: Calendar, path: '/calendar' },
     { label: 'Jira', icon: CheckSquare, path: '/jira', color: 'bg-gradient-blue' },

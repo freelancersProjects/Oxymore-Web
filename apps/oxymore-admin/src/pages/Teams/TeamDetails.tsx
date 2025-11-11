@@ -15,11 +15,10 @@ import {
   Send,
   Loader2
 } from 'lucide-react';
-import { useTeamDetails } from '../../hooks/useTeamDetails';
+import { useTeamDetails, type TeamDetailsType } from '../../hooks/useTeamDetails';
 import ConfirmationModal from '../../components/ConfirmationModal/ConfirmationModal';
 import TeamEditModal from '../../components/TeamEditModal/TeamEditModal';
 import { apiService } from '../../api/apiService';
-import type { TeamDetails } from '../../hooks/useTeamDetails';
 
 const TeamDetails = () => {
   const navigate = useNavigate();
@@ -94,7 +93,7 @@ const TeamDetails = () => {
 
   const captain = teamDetails.members.find(m => m.role === 'captain' || m.id_user === teamDetails.id_captain);
 
-  const handleEditTeam = async (data: Partial<TeamDetails>) => {
+  const handleEditTeam = async (data: Partial<TeamDetailsType>) => {
     if (!id) return;
 
     try {
