@@ -1,0 +1,664 @@
+@import '../../styles/global';
+
+.oxia-chat-layout {
+  display: flex;
+  height: 100vh;
+  background: linear-gradient(120deg, $color-gray-darkest 0%, $color-background 100%);
+  color: $color-white;
+
+  small{
+    color: $color-gray-light;
+    font-size: rem-calc(14);
+    text-align: right;
+  }
+}
+
+.oxia-chat-sidebar {
+  width: rem-calc(270);
+  height: 100vh;
+  background: rgb(255 255 255 / 3%);
+  border-right: 1px solid rgb(255 255 255 / 7%);
+  display: flex;
+  flex-direction: column;
+  padding: rem-calc(32) 0 0;
+  align-items: center;
+  gap: rem-calc(32);
+  position: relative;
+  z-index: 2;
+}
+
+.oxia-chat-sidebar__header {
+  display: flex;
+  align-items: center;
+  gap: rem-calc(12);
+  font-size: rem-calc(22);
+  font-weight: 700;
+  margin-bottom: rem-calc(12);
+
+  img {
+    width: rem-calc(40);
+    height: rem-calc(40);
+    border-radius: 50%;
+    object-fit: cover;
+  }
+}
+
+.oxia-chat-title {
+  font-family: Orbitron, sans-serif;
+  font-size: rem-calc(22);
+  background: linear-gradient(90deg, $color-purple 0%, $color-blue 100%);
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.oxia-beta-chip {
+  background: $color-purple;
+  color: $color-white;
+  font-size: rem-calc(12);
+  font-weight: 600;
+  border-radius: rem-calc(8);
+  padding: rem-calc(2) rem-calc(10);
+  margin-left: rem-calc(4);
+  letter-spacing: rem-calc(1);
+  box-shadow: 0 rem-calc(2) rem-calc(8) rgb(80 12 173 / 15%);
+}
+
+.oxia-chat-channels {
+  width: 100%;
+  padding: 0 rem-calc(24);
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.oxia-chat-channels-title {
+  color: $color-gray;
+  font-size: rem-calc(13);
+  font-weight: 600;
+  margin-bottom: rem-calc(10);
+  letter-spacing: rem-calc(1);
+}
+
+.oxia-chat-channels ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: rem-calc(8);
+}
+
+.oxia-chat-channels li {
+  display: flex;
+  align-items: center;
+  gap: rem-calc(10);
+  padding: rem-calc(8) rem-calc(12);
+  border-radius: rem-calc(8);
+  color: $color-white;
+  font-size: rem-calc(16);
+  cursor: pointer;
+  transition: background 0.2s;
+
+  &.active, &:hover {
+    background: rgb(80 12 173 / 13%);
+    color: $color-purple;
+  }
+}
+
+.oxia-chat-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  position: relative;
+  background: none;
+}
+
+.oxia-chat-header {
+  height: rem-calc(70);
+  display: flex;
+  align-items: center;
+  padding: 0 rem-calc(40);
+  border-bottom: 1px solid rgb(255 255 255 / 7%);
+  font-size: rem-calc(20);
+  font-weight: 600;
+  background: rgb(0 0 0 / 10%);
+}
+
+.oxia-chat-header-title {
+  display: flex;
+  align-items: center;
+  gap: rem-calc(10);
+  font-family: Orbitron, sans-serif;
+
+  @media (width <= 700px) {
+    justify-content: center;
+    width: 100%;
+  }
+}
+
+.oxia-chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: rem-calc(40) 0 rem-calc(20);
+  display: flex;
+  flex-direction: column;
+  gap: rem-calc(18);
+  background: none;
+  width: 100%;
+  align-items: flex-start;
+}
+
+.oxia-message-bubble {
+  display: flex;
+  padding: rem-calc(15);
+  flex-direction: row;
+  align-items: flex-end;
+  gap: rem-calc(10);
+  border-radius: rem-calc(13);
+  max-width: 100%;
+  min-width: 0;
+  font-size: rem-calc(16);
+  line-height: 1.4;
+  box-shadow: 0 rem-calc(2) rem-calc(12) rgb(0 0 0 / 8%);
+  position: relative;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  animation: fadeIn 0.3s;
+  width: auto;
+}
+
+.oxia-message-left {
+  background: rgb(255 255 255 / 5%);
+  border-radius: 0 rem-calc(13) rem-calc(13);
+  margin-left: rem-calc(30);
+  align-self: flex-start;
+  max-width: rem-calc(800);
+  width: 100%;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  padding: rem-calc(18) rem-calc(22);
+  font-size: rem-calc(16);
+  line-height: 1.6;
+}
+
+.oxia-message-right {
+  background: $color-purple;
+  border-radius: rem-calc(13) 0 rem-calc(13) rem-calc(13);
+  color: $color-white;
+  max-width: rem-calc(800);
+  padding: rem-calc(18) rem-calc(22);
+  font-size: rem-calc(16);
+  line-height: 1.6;
+  width: 100%;
+  word-break: break-word;
+  margin-left: auto;
+  margin-right: rem-calc(30);
+  align-self: flex-end;
+}
+
+.oxia-avatar {
+  width: rem-calc(32);
+  height: rem-calc(32);
+  border-radius: 50%;
+  object-fit: cover;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  margin-right: rem-calc(6);
+  margin-bottom: rem-calc(10);
+}
+
+.oxia-message-content {
+  display: flex;
+  flex-direction: column;
+  gap: rem-calc(4);
+}
+
+.oxia-message-text {
+  font-size: rem-calc(16);
+  color: inherit;
+}
+
+.oxia-message-meta {
+  display: flex;
+  gap: rem-calc(8);
+  font-size: rem-calc(12);
+  color: $color-gray;
+  margin-top: rem-calc(2);
+}
+
+.oxia-message-author {
+  font-weight: 600;
+  color: $color-gray-light;
+}
+
+.oxia-message-time {
+  color: $color-gray;
+}
+
+.oxia-message-text strong {
+  font-weight: 700;
+  color: $color-purple-light;
+}
+
+.oxia-message-text ol {
+  margin: rem-calc(10) 0 rem-calc(10) rem-calc(20);
+  padding-left: rem-calc(18);
+}
+
+.oxia-message-text li {
+  margin-bottom: rem-calc(4);
+  line-height: 1.5;
+}
+
+.oxia-message-text br {
+  display: block;
+  margin-bottom: rem-calc(6);
+}
+
+.oxia-chat-input-row {
+  display: flex;
+  align-items: center;
+  gap: rem-calc(12);
+  padding: rem-calc(18) rem-calc(40);
+  border-top: 1px solid rgb(255 255 255 / 7%);
+  background: rgb(0 0 0 / 10%);
+
+  @media (width <= 1000px) {
+    padding: rem-calc(12);
+    gap: rem-calc(8);
+  }
+
+  @media (width <= 700px) {
+    padding: rem-calc(8) rem-calc(6);
+    gap: rem-calc(6);
+    border-top-width: 1.5px;
+    background: rgb(0 0 0 / 18%);
+  }
+}
+
+.oxia-chat-input {
+  flex: 1;
+  padding: rem-calc(14) rem-calc(18);
+  border-radius: rem-calc(10);
+  border: none;
+  background: rgb(255 255 255 / 8%);
+  color: $color-white;
+  font-size: rem-calc(16);
+  outline: none;
+  transition: background 0.2s;
+  margin: 0 !important;
+
+  &::placeholder {
+    color: $color-gray;
+  }
+
+  @media (width <= 1000px) {
+    font-size: rem-calc(15);
+    padding: rem-calc(10) rem-calc(12);
+  }
+
+  @media (width <= 700px) {
+    font-size: rem-calc(14);
+    padding: rem-calc(8);
+    border-radius: rem-calc(7);
+    background: rgb(255 255 255 / 13%);
+  }
+}
+
+.oxia-chat-send-btn {
+  background: $color-purple;
+  color: $color-white;
+  border: none;
+  border-radius: rem-calc(10);
+  padding: rem-calc(12) rem-calc(22);
+  font-size: rem-calc(16);
+  font-weight: 600;
+  margin-right: rem-calc(10);
+  cursor: pointer;
+  transition: background 0.2s;
+  box-shadow: 0 rem-calc(2) rem-calc(8) rgb(80 12 173 / 10%);
+
+  &:hover {
+    background: lighten($color-purple, 10%);
+  }
+
+  &.oxia-chat-btn-cancel {
+    background: $color-secondary;
+    color: $color-white;
+
+    &:hover {
+      background: lighten($color-secondary, 10%);
+    }
+  }
+
+  &.oxia-chat-btn-delete {
+    background: $color-danger;
+    margin-right: rem-calc(12);
+
+    &:hover {
+      background: lighten($color-danger, 10%);
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(rem-calc(10)); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.oxia-chat-messages::-webkit-scrollbar {
+  width: rem-calc(8);
+  background: $color-black;
+}
+
+.oxia-chat-messages::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, $color-purple 0%, $color-blue 100%);
+  border-radius: rem-calc(8);
+}
+
+.oxia-chat-messages::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, lighten($color-purple, 10%) 0%, lighten($color-blue, 10%) 100%);
+}
+
+.oxia-chat-messages::-webkit-scrollbar-corner {
+  background: $color-gray-darkest;
+}
+
+@media (width <= 900px) {
+  .oxia-chat-layout {
+    flex-direction: column;
+  }
+
+  .oxia-chat-sidebar {
+    width: 100%;
+    flex-direction: row;
+    padding: rem-calc(16) 0;
+    gap: rem-calc(16);
+    border-right: none;
+    border-bottom: 1px solid rgb(255 255 255 / 7%);
+  }
+
+  .oxia-chat-main {
+    height: calc(100vh - rem-calc(80));
+  }
+}
+
+@media (width <= 700px) {
+  .oxia-message-bubble.oxia-message-left {
+    max-width: 90vw;
+    min-width: rem-calc(60);
+    padding: rem-calc(14) rem-calc(10);
+    font-size: rem-calc(15);
+  }
+}
+
+.oxia-message-bubble.oxia-message-left {
+  display: inline-block;
+  max-width: rem-calc(600);
+  min-width: rem-calc(80);
+  width: auto;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  padding: rem-calc(18) rem-calc(22);
+  font-size: rem-calc(16);
+  line-height: 1.6;
+  background: rgba($color-white, 0.05);
+  color: $color-white;
+}
+
+.oxia-chat-toast {
+  position: fixed;
+  top: 32;
+  right: 32;
+  min-width: 320;
+  max-width: 400;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.oxia-message-bubble.oxia-message-right {
+  display: inline-block;
+  max-width: rem-calc(600);
+  min-width: rem-calc(80);
+  width: auto;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  padding: rem-calc(18) rem-calc(22);
+  font-size: rem-calc(16);
+  line-height: 1.6;
+  background: $color-purple;
+  color: $color-white;
+}
+
+.oxia-message-text strong {
+  font-weight: 700;
+  color: $color-purple-light;
+}
+
+.oxia-message-text ol {
+  margin: rem-calc(10) 0 rem-calc(10) rem-calc(20);
+  padding-left: rem-calc(18);
+}
+
+.oxia-message-text li {
+  margin-bottom: rem-calc(4);
+  line-height: 1.5;
+}
+
+.oxia-message-text br {
+  display: block;
+  margin-bottom: rem-calc(6);
+}
+
+.oxia-message-author {
+  display: flex;
+  align-items: center;
+  gap: rem-calc(8);
+}
+
+.oxia-avatar-inline {
+  width: rem-calc(22);
+  height: rem-calc(22);
+  border-radius: 50%;
+  object-fit: cover;
+  margin-left: rem-calc(4);
+}
+
+.oxia-chat-loader-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  min-height: rem-calc(400);
+}
+
+.oxia-chat-loader {
+  width: rem-calc(64);
+  height: rem-calc(64);
+  animation: oxia-spin 1.2s linear infinite;
+  margin-bottom: rem-calc(18);
+}
+
+.oxia-chat-loader-text {
+  color: $color-gray-light;
+  font-size: 1.2rem;
+  font-weight: 500;
+  letter-spacing: 1px;
+}
+
+@keyframes oxia-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@media (width <= 1000px) {
+  .oxia-chat-sidebar {
+    width: rem-calc(120);
+    padding: rem-calc(12) 0 0;
+    gap: rem-calc(12);
+  }
+
+  .oxia-chat-header, .oxia-chat-input-row {
+    padding-left: rem-calc(12);
+    padding-right: rem-calc(12);
+  }
+
+  .oxia-chat-messages {
+    padding-left: rem-calc(8);
+    padding-right: rem-calc(8);
+  }
+}
+
+@media (width <= 700px) {
+  .oxia-chat-layout {
+    flex-direction: column;
+    height: 100dvh;
+  }
+
+  .oxia-chat-sidebar {
+    width: 100vw;
+    height: rem-calc(54);
+    min-width: 0;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 0 rem-calc(4);
+    border-radius: 0;
+    border-right: none;
+    border-bottom: 1px solid rgb(255 255 255 / 7%);
+    gap: rem-calc(8);
+    .oxia-chat-sidebar__header, .oxia-chat-title, .oxia-beta-chip { display: none !important; }
+
+    .oxia-chat-channels {
+      flex-direction: row;
+      padding: 0 rem-calc(4);
+      ul { flex-direction: row; gap: 0; }
+      li { flex: 1 1 0; justify-content: center; padding: 0 rem-calc(4); font-size: rem-calc(14); }
+    }
+  }
+
+  .oxia-chat-main {
+    height: calc(100dvh - #{rem-calc(54)});
+    padding: 0;
+  }
+
+  .oxia-chat-header, .oxia-chat-input-row {
+    padding: 0 rem-calc(6);
+    font-size: rem-calc(15);
+    height: rem-calc(44);
+  }
+
+  .oxia-chat-messages {
+    padding: rem-calc(8) 0;
+    gap: rem-calc(8);
+    font-size: rem-calc(14);
+  }
+
+  .oxia-message-bubble, .oxia-message-bubble.oxia-message-left, .oxia-message-bubble.oxia-message-right {
+    font-size: rem-calc(14);
+    padding: rem-calc(10) rem-calc(8);
+    max-width: 95vw;
+  }
+
+  .oxia-avatar, .oxia-avatar-inline {
+    width: rem-calc(20);
+    height: rem-calc(20);
+  }
+
+  .oxia-chat-send-btn {
+    padding: rem-calc(8) rem-calc(12);
+    font-size: rem-calc(14);
+    margin-right: rem-calc(2);
+  }
+}
+
+.oxia-chat-burger {
+  display: none;
+}
+
+.oxia-chat-sidebar-mobile {
+  display: none;
+}
+
+.oxia-chat-sidebar-overlay {
+  display: none;
+}
+
+@media (width <= 700px) {
+  .oxia-chat-burger {
+    display: block;
+    position: fixed;
+    top: rem-calc(18);
+    left: rem-calc(18);
+    z-index: 1202;
+    background: rgb(30 20 50 / 95%);
+    border: none;
+    border-radius: rem-calc(8);
+    padding: rem-calc(10) rem-calc(12);
+    color: $color-white;
+    font-size: rem-calc(28);
+    box-shadow: 0 rem-calc(2) rem-calc(8) rgb(0 0 0 / 18%);
+    cursor: pointer;
+    transition: background 0.2s;
+    &:hover { background: rgb(80 12 173 / 18%); }
+  }
+
+  .oxia-chat-sidebar-desktop {
+    display: none !important;
+  }
+
+  .oxia-chat-sidebar-mobile {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100dvh;
+    background: linear-gradient(120deg, $color-gray-darkest 0%, $color-gray-darker 100%);
+    z-index: 1203;
+    box-shadow: rem-calc(2) 0 rem-calc(24) rgb(0 0 0 / 18%);
+    animation: oxiaSidebarIn 0.32s cubic-bezier(.4,1.4,.6,1);
+    overflow-y: auto;
+  }
+
+  .oxia-chat-sidebar-close {
+    position: absolute;
+    top: rem-calc(18);
+    right: rem-calc(18);
+    z-index: 1204;
+    background: rgb(30 20 50 / 95%);
+    border: none;
+    border-radius: rem-calc(8);
+    padding: rem-calc(8);
+    color: $color-white;
+    font-size: rem-calc(32);
+    box-shadow: 0 rem-calc(2) rem-calc(8) rgb(0 0 0 / 18%);
+    cursor: pointer;
+    transition: background 0.2s;
+    &:hover { background: rgb(80 12 173 / 18%); }
+  }
+
+  .oxia-chat-sidebar-overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgb(10 10 30 / 55%);
+    z-index: 1201;
+    animation: oxiaSidebarOverlayIn 0.22s;
+  }
+}
+
+@keyframes oxiaSidebarIn {
+  from { transform: translateX(-100vw); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes oxiaSidebarOverlayIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

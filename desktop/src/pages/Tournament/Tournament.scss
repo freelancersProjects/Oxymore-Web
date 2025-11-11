@@ -1,0 +1,40 @@
+@import '../../styles/global';
+
+.tournament-container {
+  padding: rem-calc(20);
+  margin: 0 auto;
+}
+
+.tournament-header {
+  margin-bottom: rem-calc(40);
+}
+
+.tournament-title {
+  color: $color-white;
+  font-family: Orbitron, sans-serif;
+  font-size: rem-calc(35);
+  font-weight: 600;
+  margin-bottom: rem-calc(40);
+}
+
+.tournament-loading,
+.tournament-error {
+  text-align: center;
+  font-size: rem-calc(18);
+  color: $color-white;
+  padding: rem-calc(40);
+}
+
+.tournament-error {
+  color: $color-danger;
+}
+
+@media (max-width: rem-calc(768)) {
+  .tournament-container {
+    padding: rem-calc(16);
+  }
+
+  .tournament-title {
+    font-size: rem-calc(28);
+  }
+}

@@ -1,0 +1,202 @@
+@import '../../../styles/global';
+
+.category-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: rem-calc(20);
+  margin-bottom: rem-calc(40);
+
+  .category-card {
+    animation: tournamentCardSlideIn 0.6s ease-out;
+
+    &:nth-child(1) {
+      animation-delay: 0.1s;
+    }
+
+    &:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    &:nth-child(3) {
+      animation-delay: 0.3s;
+    }
+
+    border-radius: rem-calc(30);
+    border: 0.5px solid rgb(255 255 255 / 50%);
+    background: rgb(255 255 255 / 5%);
+    padding: rem-calc(30);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    height: rem-calc(250);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(10px);
+
+    &:hover,
+    &.active {
+      transform: translateY(rem-calc(-10)) scale(1.02);
+      border-color: rgb(255 255 255 / 90%);
+      box-shadow: 0 20px 40px rgb(0 0 0 / 30%);
+    }
+
+    .category-image {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      opacity: 0;
+      z-index: 1;
+      transition: all 0.4s ease;
+      filter: brightness(0.3) saturate(1.2);
+    }
+
+    .category-title {
+      color: $color-white;
+      font-size: rem-calc(48);
+      font-weight: 700;
+      position: relative;
+      z-index: 3;
+      text-shadow: 2px 2px 4px rgb(0 0 0 / 50%);
+      transition: all 0.3s ease;
+    }
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgb(255 255 255 / 10%),
+        transparent
+      );
+      transition: left 0.6s ease;
+      z-index: 2;
+    }
+
+    &:hover::before {
+      left: 100%;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: radial-gradient(circle, rgb(255 255 255 / 10%) 0%, transparent 70%);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: all 0.6s ease;
+      z-index: 0;
+    }
+
+    &:hover::after {
+      width: rem-calc(200);
+      height: rem-calc(200);
+    }
+
+    &:hover .category-image,
+    &.active .category-image {
+      opacity: 0.8;
+    }
+
+    &:not(:hover) .category-image {
+      opacity: 0;
+    }
+
+    &:hover .category-title,
+    &.active .category-title {
+      transform: scale(1.05);
+      text-shadow: 0 4px 8px rgb(0 0 0 / 70%);
+    }
+
+    &.minor {
+      .category-image {
+        background-image: url('../../../assets/images/tournament-bg-image.webp');
+      }
+
+      &:hover .category-image,
+      &.active .category-image {
+        background-image:
+          linear-gradient(135deg, rgb(100 100 100 / 40%), rgb(100 100 100 / 60%)),
+          url('../../../assets/images/tournament-bg-image.webp');
+      }
+    }
+
+    &.major {
+      .category-image {
+        background-image: url('../../../assets/images/tournament-bg-image.webp');
+      }
+
+      &:hover .category-image,
+      &.active .category-image {
+        background-image:
+          linear-gradient(135deg, rgba($color-primary, 0.4), rgba($color-primary, 0.6)),
+          url('../../../assets/images/tournament-bg-image.webp');
+      }
+    }
+
+    &.external {
+      .category-image {
+        background-image: url('../../../assets/images/tournament-bg-image.webp');
+      }
+
+      &:hover .category-image,
+      &.active .category-image {
+        background-image:
+          linear-gradient(135deg, rgb(255 165 0 / 40%), rgb(255 165 0 / 60%)),
+          url('../../../assets/images/tournament-bg-image.webp');
+      }
+    }
+  }
+}
+
+@keyframes tournamentCardSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(rem-calc(30));
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: rem-calc(768)) {
+  .category-cards {
+    grid-template-columns: 1fr;
+    gap: rem-calc(15);
+
+    .category-card {
+      height: rem-calc(200);
+      padding: rem-calc(20);
+
+      .category-title {
+        font-size: rem-calc(36);
+      }
+
+      &:hover {
+        transform: translateY(rem-calc(-5)) scale(1.01);
+      }
+
+      .category-image {
+        background-size: cover;
+      }
+    }
+  }
+}
+
+
+

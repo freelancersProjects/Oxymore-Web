@@ -1,0 +1,41 @@
+@import '../../../styles/global';
+
+.tournament-promo-banner {
+  position: relative;
+  width: calc(100% + rem-calc(40));
+  min-height: rem-calc(400);
+  border-radius: rem-calc(24);
+  overflow: hidden;
+  margin: 0 rem-calc(-20) rem-calc(32) rem-calc(-20);
+  padding: 0;
+  box-shadow: 0 rem-calc(8) rem-calc(32) rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  border: 2px solid rgba(59, 130, 246, 0.5);
+  background: $tournament-card-gradient;
+  cursor: pointer;
+
+  @media (max-width: rem-calc(768)) {
+    width: calc(100% + rem-calc(32));
+    margin: 0 rem-calc(-16) rem-calc(32) rem-calc(-16);
+  }
+
+  &:hover {
+    transform: translateY(rem-calc(-2));
+    box-shadow: 0 rem-calc(12) rem-calc(40) rgba(59, 130, 246, 0.4);
+    border-color: rgba(59, 130, 246, 0.8);
+  }
+
+  .tournament-promo-banner-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: var(--image-url, linear-gradient(135deg, rgba(139, 92, 246, 0.8) 0%, rgba(59, 130, 246, 0.8) 100%));
+  }
+}
+

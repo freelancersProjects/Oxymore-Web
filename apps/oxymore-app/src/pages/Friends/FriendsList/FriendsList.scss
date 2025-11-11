@@ -1,0 +1,93 @@
+@import "../../../styles/global";
+
+.friends-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(rem-calc(280), 1fr));
+  gap: rem-calc(20);
+  margin-bottom: rem-calc(32);
+  position: relative;
+  z-index: 1;
+
+  &.list-view {
+    grid-template-columns: 1fr;
+    gap: rem-calc(12);
+
+    .friend-card {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      padding: rem-calc(16) rem-calc(24);
+
+      .friend-header {
+        flex: 1;
+        margin-bottom: 0;
+        align-items: center;
+      }
+
+      .friend-details {
+        margin: 0 rem-calc(24);
+        padding: 0;
+        border: none;
+        flex-shrink: 0;
+      }
+
+      .friend-actions {
+        flex-shrink: 0;
+      }
+    }
+  }
+
+  &.card-view {
+    grid-template-columns: repeat(auto-fill, minmax(rem-calc(280), 1fr));
+    gap: rem-calc(20);
+  }
+}
+
+.friend-card {
+  &.pending-request {
+    border: 1px solid rgb(139 92 246 / 30%);
+    background: rgb(139 92 246 / 5%);
+
+    .request-status {
+      font-size: rem-calc(11);
+      color: $color-primary;
+      font-weight: 500;
+      margin-top: rem-calc(2);
+    }
+  }
+}
+
+.empty-state {
+  text-align: center;
+  padding: rem-calc(60) rem-calc(20);
+  background: rgb(255 255 255 / 2%);
+  border: 1px solid rgb(255 255 255 / 5%);
+  border-radius: rem-calc(16);
+  backdrop-filter: blur(10px);
+
+  .empty-icon {
+    font-size: rem-calc(48) !important;
+    color: rgba($color-white, 0.3) !important;
+    margin-bottom: rem-calc(16);
+    filter: drop-shadow(0 4px 8px rgb(0 0 0 / 30%));
+  }
+
+  h3 {
+    font-family: Orbitron, sans-serif;
+    font-size: rem-calc(20);
+    color: $color-white;
+    margin-bottom: rem-calc(10);
+  }
+
+  p {
+    font-family: Outfit, sans-serif;
+    font-size: rem-calc(15);
+    color: rgba($color-white, 0.7);
+    margin-bottom: rem-calc(24);
+    max-width: rem-calc(400);
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+

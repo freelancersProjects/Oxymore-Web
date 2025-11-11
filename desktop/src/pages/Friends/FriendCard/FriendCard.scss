@@ -1,0 +1,377 @@
+@import "../../../styles/global";
+
+.friend-card {
+  position: relative;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba($color-blue, 0.15);
+  border-radius: rem-calc(20);
+  padding: rem-calc(24);
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  overflow: visible;
+  z-index: 1;
+  animation: cardSlideIn 0.5s ease-out;
+
+  &:has(.friend-menu-dropdown) {
+    z-index: 99998;
+  }
+
+  &:hover {
+    border-color: rgba($color-blue, 0.3);
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  @keyframes cardSlideIn {
+    from {
+      opacity: 0;
+      transform: translateY(rem-calc(20));
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .friend-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: rem-calc(12);
+    gap: rem-calc(12);
+
+    .friend-header-actions {
+      display: flex;
+      align-items: center;
+      gap: rem-calc(8);
+      margin-left: auto;
+    }
+
+    .friend-menu-wrapper {
+      position: relative;
+      z-index: 10000;
+    }
+
+    .friend-menu-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: rem-calc(32);
+      height: rem-calc(32);
+      background: transparent;
+      border: 1px solid rgba($color-white, 0.1);
+      border-radius: rem-calc(8);
+      color: rgba($color-white, 0.6);
+      cursor: pointer;
+      transition: all 0.3s ease;
+
+      &:hover {
+        background: rgba($color-white, 0.05);
+        border-color: rgba($color-white, 0.2);
+        color: $color-white;
+      }
+    }
+
+    .friend-menu-dropdown {
+      position: absolute;
+      top: calc(100% + rem-calc(8));
+      right: 0;
+      min-width: rem-calc(220);
+      background: rgba($color-black, 0.9);
+      border: 1.5px solid rgba($color-blue, 0.13);
+      border-radius: rem-calc(18);
+      backdrop-filter: blur(rem-calc(14));
+      padding: rem-calc(8);
+      z-index: 99999;
+      box-shadow: 0 rem-calc(8) rem-calc(24) rgba(0, 0, 0, 0.4);
+      animation: dropdown-fade-in 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+
+      .friend-menu-item {
+        display: flex;
+        align-items: center;
+        gap: rem-calc(12);
+        width: 100%;
+        padding: rem-calc(12) rem-calc(16);
+        background: none;
+        border: none;
+        border-radius: rem-calc(12);
+        color: $color-white;
+        font-size: rem-calc(15);
+        font-weight: 500;
+        font-family: 'Outfit', sans-serif;
+        cursor: pointer;
+        transition: all 0.18s ease;
+        text-align: left;
+
+        &:hover {
+          background: rgba($color-blue, 0.18);
+          color: $color-blue;
+        }
+
+        &.delete {
+          color: $color-red-soft;
+
+          &:hover {
+            background: rgba($color-red, 0.18);
+            color: $color-red-soft;
+          }
+        }
+
+        svg {
+          flex-shrink: 0;
+        }
+      }
+    }
+
+    @keyframes dropdown-fade-in {
+      from {
+        opacity: 0;
+        transform: translateY(rem-calc(-8));
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .friend-avatar {
+      position: relative;
+      width: rem-calc(64);
+      height: rem-calc(64);
+      background: linear-gradient(135deg, rgba($color-blue, 0.8), rgba($color-blue-indigo, 0.8));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: all 0.3s ease;
+      border: 2px solid rgba($color-blue, 0.3);
+
+      .avatar-icon {
+        font-size: rem-calc(28) !important;
+        color: $color-white !important;
+        filter: drop-shadow(0 2px 8px rgb(0 0 0 / 40%));
+        z-index: 2;
+        position: relative;
+      }
+
+      .status-indicator {
+        position: absolute;
+        bottom: rem-calc(4);
+        right: rem-calc(4);
+        width: rem-calc(18);
+        height: rem-calc(18);
+        border-radius: 50%;
+        border: 3px solid $color-background;
+        box-shadow: 0 0 0 2px rgba($color-white, 0.1), 0 rem-calc(4) rem-calc(8) rgba(0, 0, 0, 0.3);
+        z-index: 3;
+        animation: pulseStatus 2s ease-in-out infinite;
+      }
+    }
+
+    @keyframes pulseStatus {
+      0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+      50% {
+        transform: scale(1.15);
+        opacity: 0.9;
+      }
+    }
+
+    .friend-info {
+      flex: 1;
+      min-width: 0;
+      position: relative;
+      z-index: 2;
+
+      .friend-name {
+        font-family: Orbitron, sans-serif;
+        font-size: rem-calc(20);
+        font-weight: 700;
+        color: $color-white;
+        margin: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        transition: all 0.3s ease;
+        max-width: 100%;
+        display: block;
+      }
+    }
+
+    .favorite-badge {
+      position: relative;
+      z-index: 2;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: rem-calc(8);
+      border-radius: rem-calc(8);
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      svg {
+        font-size: rem-calc(24) !important;
+        transition: all 0.3s ease;
+      }
+
+      &:hover {
+        background: rgba($color-blue, 0.1);
+        transform: scale(1.1);
+      }
+
+      &.active {
+        svg {
+          color: $color-blue !important;
+          fill: $color-blue !important;
+          filter: drop-shadow(0 0 rem-calc(8) rgba($color-blue, 0.6));
+        }
+      }
+    }
+  }
+
+  .friend-details {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: rem-calc(16);
+    padding: rem-calc(12) 0;
+    border-top: 1px solid rgba($color-white, 0.1);
+    border-bottom: 1px solid rgba($color-white, 0.1);
+
+    .status-info {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: rem-calc(4);
+
+      .status-text {
+        font-family: Orbitron, sans-serif;
+        font-size: rem-calc(13);
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: rem-calc(6);
+        padding: rem-calc(6) rem-calc(12);
+        border-radius: rem-calc(20);
+        background: rgba($color-blue, 0.1);
+        border: 1px solid rgba($color-blue, 0.2);
+        color: $color-white;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+
+        &::before {
+          content: '';
+          width: rem-calc(8);
+          height: rem-calc(8);
+          border-radius: 50%;
+          background: currentColor;
+          box-shadow: 0 0 rem-calc(8) currentColor;
+        }
+      }
+
+      .last-seen {
+        font-family: Outfit, sans-serif;
+        font-size: rem-calc(11);
+        color: rgba($color-white, 0.5);
+        font-style: italic;
+      }
+    }
+  }
+
+  .friend-actions {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    gap: rem-calc(12);
+
+    button {
+      flex: 1;
+      height: rem-calc(44);
+      background: rgba($color-blue, 0.1);
+      border: 1px solid rgba($color-blue, 0.3);
+      border-radius: rem-calc(12);
+      color: $color-blue;
+      font-family: Orbitron, sans-serif;
+      font-size: rem-calc(13);
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: rem-calc(8);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+
+      svg {
+        font-size: rem-calc(18) !important;
+        transition: transform 0.3s ease;
+      }
+
+      &:hover {
+        background: rgba($color-blue, 0.2);
+        border-color: rgba($color-blue, 0.5);
+        color: $color-white;
+
+        svg {
+          transform: scale(1.1);
+        }
+      }
+
+      &:active {
+        transform: translateY(0);
+      }
+    }
+  }
+
+  &.list-item {
+    display: flex;
+    align-items: center;
+    padding: rem-calc(16) rem-calc(20);
+    gap: rem-calc(16);
+
+    .friend-header {
+      margin-bottom: 0;
+      flex: 1;
+      min-width: 0;
+
+      .friend-avatar {
+        width: rem-calc(50);
+        height: rem-calc(50);
+
+        .avatar-icon {
+          font-size: rem-calc(24) !important;
+        }
+      }
+
+      .friend-info {
+        .friend-name {
+          font-size: rem-calc(18);
+          font-weight: 700;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          max-width: 100%;
+          display: block;
+        }
+      }
+    }
+
+    .friend-details {
+      margin-bottom: 0;
+      flex: 0 0 auto;
+      min-width: rem-calc(120);
+    }
+
+    .friend-actions {
+      flex: 0 0 auto;
+      gap: rem-calc(8);
+    }
+  }
+}
+

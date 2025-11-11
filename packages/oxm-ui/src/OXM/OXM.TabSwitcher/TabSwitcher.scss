@@ -1,61 +1,93 @@
 @import "../../styles/global.scss";
 
-.oxm-tabswitcher {
+.oxm-tabswitcher-wrapper {
   position: relative;
-  display: inline-flex;
-  border: 1px solid rgba($color-white, 0.2);
-  background: rgba($color-white, 0.05);
-  border-radius: rem-calc(12);
-  overflow: hidden;
+  margin-bottom: rem-calc(40);
+}
 
-  &__slider {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    background: linear-gradient(135deg, $color-purple 0%, $color-purple-light 100%);
-    z-index: 1;
-    transition: transform 0.3s ease, width 0.3s ease, border-radius 0.3s ease;
-    pointer-events: none;
+.oxm-tabswitcher {
+  display: flex;
+  gap: rem-calc(36);
+  margin-bottom: 0;
+  padding: 0;
+  position: relative;
+  width: 100%;
+
+  @media (max-width: rem-calc(768)) {
+    gap: rem-calc(18);
+    overflow-x: auto;
+    padding-bottom: rem-calc(8);
   }
 
   &__tab {
-    position: relative;
-    flex: 1 1 auto;
-    padding: rem-calc(10) rem-calc(24);
-    background: transparent;
+    background: none;
     border: none;
-    color: $color-white;
-    font-family: "Orbitron", sans-serif;
+    padding: rem-calc(16) 0;
+    font-family: Orbitron, sans-serif;
+    font-size: rem-calc(20);
     font-weight: 600;
-    font-size: rem-calc(14);
+    color: rgba($color-white, 0.7);
     cursor: pointer;
-    z-index: 2;
-    overflow: hidden;
+    position: relative;
+    transition: color 0.3s ease;
+    white-space: nowrap;
+    flex: 0 0 auto;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: rem-calc(8);
 
-    &:before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: rgba($color-white, 0.04);
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-
-    &:hover:before {
-      opacity: 1;
+    &:hover {
+      color: $color-white;
     }
 
     &.active {
-      color: $color-white;
+      color: $color-blue;
     }
   }
 
-  @media (max-width: 768px) {
-    flex-wrap: wrap;
+  &__tab__icon {
+    display: flex;
+    align-items: center;
+    width: rem-calc(20);
+    height: rem-calc(20);
+  }
 
-    &__tab {
-      text-align: center;
-    }
+  &__tab__label {
+    display: flex;
+    align-items: center;
+  }
+
+  &__tab__badge {
+    background: $color-purple;
+    color: $color-white;
+    font-size: rem-calc(12);
+    font-weight: 700;
+    padding: rem-calc(2) rem-calc(8);
+    border-radius: rem-calc(10);
+    min-width: rem-calc(20);
+    text-align: center;
+    line-height: 1.2;
   }
 }
+
+.oxm-tabswitcher__separator {
+  width: 100%;
+  height: rem-calc(2);
+  background: rgb(255 255 255 / 10%);
+  border: none;
+  margin: rem-calc(-2) 0 0 0;
+  position: relative;
+}
+
+.oxm-tabswitcher__indicator {
+  position: absolute;
+  bottom: rem-calc(0);
+  height: rem-calc(2);
+  background: $color-blue;
+  transition: all 0.3s ease;
+  z-index: 1;
+}
+
+
+

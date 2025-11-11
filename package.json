@@ -3,7 +3,8 @@
   "private": true,
   "workspaces": [
     "apps/*",
-    "packages/*"
+    "packages/*",
+    "desktop"
   ],
   "scripts": {
     "dev:admin": "npm run dev --workspace=oxymore-admin",
@@ -11,6 +12,7 @@
     "dev:site": "npm run dev --workspace=oxymore-site",
     "dev:back": "npm run dev --prefix back",
     "dev:templates": "npm run dev --prefix apps/templates/server",
+    "dev:desktop": "npm run electron:dev --workspace=@oxymore/desktop",
     "dev": "concurrently \"npm run dev:back\" \"npm run dev:admin\" \"npm run dev:app\" \"npm run dev:site\"",
     "build": "npm run build --workspace=@oxymore/ui",
     "build:admin": "npm run build --workspace=oxymore-admin",
@@ -49,6 +51,7 @@
     "canvas-confetti": "^1.9.3",
     "fs-extra": "^11.3.2",
     "lucide-react": "^0.522.0",
+    "react-router-dom": "^7.9.5",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1"
   }

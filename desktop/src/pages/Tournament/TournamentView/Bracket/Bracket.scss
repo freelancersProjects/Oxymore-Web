@@ -1,0 +1,19 @@
+@import '../../../../styles/global';
+
+.tournament-view-bracket {
+  width: 100%;
+}
+
+.tournament-view-bracket-content {
+  margin-top: rem-calc(20);
+  padding: rem-calc(20);
+  background: rgb(255 255 255 / 5%);
+  border: 1px solid rgb(255 255 255 / 10%);
+  border-radius: rem-calc(8);
+  backdrop-filter: blur(10px);
+  color: rgba($color-white, 0.9);
+}
+
+
+
+

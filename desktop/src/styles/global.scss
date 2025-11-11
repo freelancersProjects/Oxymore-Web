@@ -1,0 +1,149 @@
+@use "sass:color";
+@use "sass:math";
+
+$color-purple: #500CAD;
+$color-white: #fff;
+$color-background: #0a0a0f;
+$color-gray: #B0B0B0;
+$color-gray-light: #E0E0E0;
+$color-gray-dark: #333;
+$color-gray-darker: #1A1A1A;
+$color-gray-medium: #888;
+$color-gray-darkest: #0A0A1E;
+$color-black: #000;
+$color-blue: #1593CE;
+$color-red: #F00;
+$color-primary: #6D28D9;
+$color-purple-light: #8B5CF6;
+$color-danger: #ff4747;
+$color-secondary: #23223a;
+$color-yellow: #FACC15;
+$color-green: #4ADE80;
+$color-bronze: #CD7F32;
+$color-gray-lightest: #CCC;
+$color-gray-very-light: #EEE;
+$color-purple-accent: #6C47FF;
+$color-pink: #EC4899;
+$color-gray-medium-dark: #71717A;
+$color-gray-medium-light: #A1A1AA;
+$color-purple-dark: #9333EA;
+$color-purple-medium: #7B36D9;
+$color-deep-bg-start: #18182A;
+$color-deep-bg-end: #1A1333;
+$color-white-soft: #BDBFFF;
+$color-red-dark: #E03A3A;
+$color-red-soft: #F87171;
+$color-yellow-dark: #fbbf24;
+$color-orange: #f59e0b;
+$color-red-error: #ef4444;
+$color-red-light: #fca5a5;
+$color-green-success: #22c55e;
+$color-green-emerald: #10B981;
+$color-blue-indigo: #3B82F6;
+$color-purple-violet: #8B5CF6;
+$color-purple-dark-violet: #7C3AED;
+$color-blue-dark: #2563EB;
+$tournament-card-gradient: linear-gradient(135deg, rgb(139 69 255 / 8%) 0%, rgb(0 0 0 / 60%) 50%, rgb(59 130 246 / 8%) 100%);
+$tournament-card-gradient-hover: linear-gradient(135deg, rgb(139 69 255 / 12%) 0%, rgb(0 0 0 / 65%) 50%, rgb(59 130 246 / 12%) 100%);
+$base-font-size: 10;
+
+// rem vers px
+@function rem-calc($px) {
+  @return math.div($px, $base-font-size) * 1rem;
+}
+
+@function lighten($color, $amount) {
+    @return color.scale($color, $lightness: $amount);
+}
+
+h1 {
+    font-family: Orbitron, sans-serif;
+    font-size: rem-calc(42);
+    font-weight: 600;
+    color: $color-white;
+}
+
+p,
+span,
+label,
+td {
+    font-size: rem-calc(16);
+    color: $color-white;
+}
+
+.orbitron {
+    font-family: Orbitron, sans-serif;
+}
+
+.outfit {
+    font-family: Outfit, sans-serif;
+}
+
+.purple {
+    color: $color-purple;
+}
+
+.blue {
+    color: $color-blue;
+}
+
+.modal-actions{
+  margin-top: rem-calc(20);
+}
+
+.z10000{
+  z-index: 10000;
+}
+
+.toast-container {
+  position: fixed;
+  top: rem-calc(20);
+  right: rem-calc(20);
+  z-index: 100000 !important;
+  display: flex;
+  flex-direction: column;
+  gap: rem-calc(15);
+}
+
+.tdnone{
+  text-decoration: none !important;
+}
+
+::-webkit-scrollbar {
+  width: rem-calc(10);
+  background: $color-gray-darkest;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, $color-purple 0%, $color-blue 100%);
+  border-radius: rem-calc(8);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, lighten($color-purple, 10%) 0%, lighten($color-blue, 10%) 100%);
+}
+
+::-webkit-scrollbar-corner {
+  background: $color-gray-darkest;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: $color-gray $color-gray-darkest;
+}
+
+html, body, #root {
+  overflow-x: hidden !important;
+  width: 100%;
+  max-width: 100vw;
+  margin: 0;
+  padding: 0;
+}
+
+@media (max-width: 768px) {
+  html, body, #root {
+    width: 100vw;
+    max-width: 100vw;
+    overflow-x: hidden !important;
+  }
+}
