@@ -1,8 +1,39 @@
-import { app, BrowserWindow, screen } from 'electron';
+import { app, BrowserWindow, screen, ipcMain } from 'electron';
 import { join } from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
+
+// Chemin vers l'icône de l'application
+const getIconPath = () => {
+  // En développement, __dirname pointe vers dist-electron
+  // En production, il pointe aussi vers dist-electron
+  const iconDir = process.env.VITE_DEV_SERVER_URL 
+    ? join(process.cwd(), 'build') 
+    : join(__dirname, '../build');
+  
+  // Utiliser le logo violet (PNG) pour tous les systèmes
+  // Electron peut utiliser PNG même sur Windows
+  const iconPath = join(iconDir, 'icon.png');
+  
+  // Si le fichier .ico existe sur Windows, l'utiliser en priorité
+  if (process.platform === 'win32') {
+    const icoPath = join(iconDir, 'icon.ico');
+    try {
+      const fs = require('fs');
+      if (fs.existsSync(icoPath)) {
+        return icoPath;
+      }
+    } catch (e) {
+      // Ignorer l'erreur et utiliser PNG
+    }
+    return iconPath;
+  } else if (process.platform === 'darwin') {
+    return join(iconDir, 'icon.icns');
+  } else {
+    return iconPath;
+  }
+};
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling
 if (process.platform === 'win32') {
@@ -25,6 +56,7 @@ const createSplashWindow = () => {
     alwaysOnTop: true,
     resizable: false,
     show: false, // Ne pas afficher immédiatement
+    icon: getIconPath(),
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
@@ -59,6 +91,7 @@ const createMainWindow = () => {
     titleBarStyle: 'hidden',
     backgroundColor: '#0a0a0a',
     show: false, // Ne pas afficher avant que la splash screen soit fermée
+    icon: getIconPath(),
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
@@ -122,6 +155,29 @@ app.on('activate', () => {
   if (BrowserWindow.getAllWindows().length === 0) {
     createSplashWindow();
     createMainWindow();
+  }
+});
+
+// Gestion des contrôles de fenêtre
+ipcMain.on('window-minimize', () => {
+  if (mainWindow) {
+    mainWindow.minimize();
+  }
+});
+
+ipcMain.on('window-maximize', () => {
+  if (mainWindow) {
+    if (mainWindow.isMaximized()) {
+      mainWindow.unmaximize();
+    } else {
+      mainWindow.maximize();
+    }
+  }
+});
+
+ipcMain.on('window-close', () => {
+  if (mainWindow) {
+    mainWindow.close();
   }
 });
 

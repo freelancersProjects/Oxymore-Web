@@ -1,0 +1,84 @@
+@import "../../../styles/global";
+
+.message-menu-btn-wrapper {
+  position: absolute;
+  left: rem-calc(-40);
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  z-index: 10;
+}
+
+.message-menu-btn {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+  font-size: rem-calc(20);
+  padding: rem-calc(4);
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    color: $color-white;
+  }
+}
+
+.message-menu-dropdown {
+  position: absolute;
+  background: rgba($color-black, 0.9);
+  border: 1px solid rgba($color-blue, 0.13);
+  border-radius: rem-calc(12);
+  backdrop-filter: blur(rem-calc(10));
+  padding: rem-calc(6);
+  z-index: 10;
+  box-shadow: 0 rem-calc(4) rem-calc(12) rgba(0, 0, 0, 0.3);
+  min-width: rem-calc(150);
+  display: flex;
+  flex-direction: column;
+  top: 50%;
+  transform: translateY(-50%);
+  left: rem-calc(30);
+
+  &.message-menu-dropdown--bottom {
+    top: auto;
+    bottom: 0;
+    transform: translateY(0);
+  }
+
+  &.message-menu-dropdown--top {
+    top: 0;
+    bottom: auto;
+    transform: translateY(0);
+  }
+
+  .message-menu-item {
+    background: none;
+    border: none;
+    color: $color-white;
+    padding: rem-calc(8) rem-calc(12);
+    text-align: left;
+    cursor: pointer;
+    border-radius: rem-calc(8);
+    transition: background 0.2s ease;
+    font-size: rem-calc(13);
+
+    &:hover {
+      background: rgba($color-blue, 0.15);
+    }
+
+    &--danger {
+      color: $color-red-soft;
+
+      &:hover {
+        background: rgba($color-red, 0.15);
+      }
+    }
+  }
+}
+
+
+

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Crown, UserX, Shield, Users, ChevronDown, Info, X } from "lucide-react";
 import { teamService } from "../../../../services/teamService";
 import { notificationService } from "../../../../services/notificationService";
-import { OXMToast, OXMTooltip, OXMModal } from "@oxymore/ui";
+import { OXMToast, OXMTooltip, OXMModal, OXMLoader } from "@oxymore/ui";
 import type { Team, TeamMemberDetailed, TeamMemberResponse } from "../../../../types/team";
 import "./TeamMembers.scss";
 
@@ -294,10 +294,8 @@ const TeamMembers: React.FC<TeamMembersProps> = ({ teamId, teamData }) => {
 
   if (loading) {
     return (
-      <div className="team-members-page">
-        <div className="loading-container">
-          <p>Chargement des membres...</p>
-        </div>
+      <div className="team-members-page" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '50vh' }}>
+        <OXMLoader type="logo" />
       </div>
     );
   }

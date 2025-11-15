@@ -29,3 +29,5 @@ Thumbs.db
 .idea/
 *.sublime-project
 *.sublime-workspace
+
+kill-port-3000.ps1

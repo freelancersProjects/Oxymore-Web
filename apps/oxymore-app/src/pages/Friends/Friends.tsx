@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { friendService } from "../../services/friendService";
 import type { FriendWithUser } from "../../types/friend";
 import { toLowerCase } from "../../utils";
+import { usePresenceSocket } from "../../hooks/usePresenceSocket";
+import { useFriendRequestSocket } from "../../hooks/useFriendRequestSocket";
 import FriendsHeader from "./FriendsHeader/FriendsHeader";
 import FriendsFilters from "./FriendsFilters/FriendsFilters";
 import FriendsStats from "./FriendsStats/FriendsStats";
@@ -13,12 +15,28 @@ import RenameFriendModal from "./RenameFriendModal";
 import DeleteConfirmModal from "./DeleteConfirmModal/DeleteConfirmModal";
 import "./Friends.scss";
 
+const VALID_TABS = ["all", "online", "favorites", "pending", "sent"];
+const VALID_VIEW_MODES = ["card", "list"];
+
 const Friends = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState("all");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [activeTab, setActiveTab] = useState(() => {
+    const tabFromUrl = searchParams.get('tab');
+    if (tabFromUrl && VALID_TABS.includes(tabFromUrl)) {
+      return tabFromUrl;
+    }
+    return "all";
+  });
   const [searchQuery, setSearchQuery] = useState("");
-  const [viewMode, setViewMode] = useState<"card" | "list">("list");
+  const [viewMode, setViewMode] = useState<"card" | "list">(() => {
+    const viewModeFromUrl = searchParams.get('view');
+    if (viewModeFromUrl && VALID_VIEW_MODES.includes(viewModeFromUrl)) {
+      return viewModeFromUrl as "card" | "list";
+    }
+    return "list";
+  });
   const [openedMenuId, setOpenedMenuId] = useState<string | null>(null);
 
   const [showAddFriendModal, setShowAddFriendModal] = useState(false);
@@ -29,6 +47,27 @@ const Friends = () => {
   const [renamingFriend, setRenamingFriend] = useState<FriendWithUser | null>(null);
   const [showDeleteConfirmModal, setShowDeleteConfirmModal] = useState(false);
   const [friendToDelete, setFriendToDelete] = useState<FriendWithUser | null>(null);
+
+  useEffect(() => {
+    const tabFromUrl = searchParams.get('tab');
+    if (tabFromUrl && VALID_TABS.includes(tabFromUrl)) {
+      setActiveTab(tabFromUrl);
+    } else if (!tabFromUrl) {
+      setActiveTab("all");
+      setSearchParams({ tab: "all" }, { replace: true });
+    }
+  }, [searchParams, setSearchParams]);
+
+  useEffect(() => {
+    const viewModeFromUrl = searchParams.get('view');
+    if (viewModeFromUrl && VALID_VIEW_MODES.includes(viewModeFromUrl)) {
+      setViewMode(viewModeFromUrl as "card" | "list");
+    } else if (!viewModeFromUrl) {
+      setViewMode("list");
+      const currentParams = Object.fromEntries(searchParams);
+      setSearchParams({ ...currentParams, view: "list" }, { replace: true });
+    }
+  }, [searchParams, setSearchParams]);
 
   useEffect(() => {
     if (!user?.id_user) return;
@@ -44,12 +83,65 @@ const Friends = () => {
         setPendingRequests(pendingData);
         setSentRequests(sentData);
       } catch (error) {
-        console.error('Error loading friends data:', error);
       }
     };
 
     loadData();
   }, [user]);
+
+  usePresenceSocket({
+    onUserOnline: (data) => {
+      setFriends(prevFriends =>
+        prevFriends.map(friend =>
+          friend.user_id === data.user_id
+            ? { ...friend, online_status: 'online' }
+            : friend
+        )
+      );
+    },
+    onUserOffline: (data) => {
+      setFriends(prevFriends =>
+        prevFriends.map(friend =>
+          friend.user_id === data.user_id
+            ? { ...friend, online_status: 'offline' }
+            : friend
+        )
+      );
+    }
+  });
+
+  useFriendRequestSocket({
+    onFriendRequestReceived: async (friendRequest) => {
+      if (user?.id_user) {
+        if (friendRequest.id_user_receiver === user.id_user) {
+          const pending = await friendService.getPendingRequests(user.id_user);
+          setPendingRequests(pending);
+        }
+        if (friendRequest.id_user_sender === user.id_user) {
+          const sent = await friendService.getSentRequests(user.id_user);
+          setSentRequests(sent);
+        }
+      }
+    },
+    onFriendRequestAccepted: async (friendData) => {
+      if (user?.id_user) {
+        const [friendsData, pendingData, sentData] = await Promise.all([
+          friendService.getAllFriends(user.id_user),
+          friendService.getPendingRequests(user.id_user),
+          friendService.getSentRequests(user.id_user)
+        ]);
+        setFriends(friendsData);
+        setPendingRequests(pendingData);
+        setSentRequests(sentData);
+      }
+    },
+    onFriendRequestRejected: async (data) => {
+      if (user?.id_user) {
+        const sent = await friendService.getSentRequests(user.id_user);
+        setSentRequests(sent);
+      }
+    }
+  });
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -104,7 +196,6 @@ const Friends = () => {
         )
       );
     } catch (error) {
-      console.error('Error toggling favorite:', error);
       if (user?.id_user) {
         const friends = await friendService.getAllFriends(user.id_user);
         setFriends(friends);
@@ -130,7 +221,6 @@ const Friends = () => {
       setShowDeleteConfirmModal(false);
       setFriendToDelete(null);
     } catch (error) {
-      console.error('Error deleting friend:', error);
     }
   };
 
@@ -153,8 +243,13 @@ const Friends = () => {
     try {
       await friendService.addFriend(user.id_user, userId);
       setShowAddFriendModal(false);
+      
+      const sent = await friendService.getSentRequests(user.id_user);
+      setSentRequests(sent);
+      
+      setActiveTab("sent");
+      setSearchParams({ tab: "sent" }, { replace: true });
     } catch (error) {
-      console.error('Error adding friend:', error);
     }
   };
 
@@ -166,7 +261,6 @@ const Friends = () => {
         setSentRequests(requests);
       }
     } catch (error) {
-      console.error('Error canceling friend request:', error);
     }
   };
 
@@ -182,7 +276,6 @@ const Friends = () => {
         setFriends(friendsData);
       }
     } catch (error) {
-      console.error('Error accepting friend request:', error);
     }
   };
 
@@ -194,7 +287,6 @@ const Friends = () => {
         setPendingRequests(requests);
       }
     } catch (error) {
-      console.error('Error rejecting friend request:', error);
     }
   };
 
@@ -208,11 +300,21 @@ const Friends = () => {
 
       <FriendsFilters
         activeTab={activeTab}
-        onTabChange={setActiveTab}
+        onTabChange={(tab) => {
+          setActiveTab(tab);
+          const currentParams = Object.fromEntries(searchParams);
+          setSearchParams({ ...currentParams, tab }, { replace: true });
+        }}
         viewMode={viewMode}
-        onViewModeChange={setViewMode}
+        onViewModeChange={(mode) => {
+          setViewMode(mode);
+          const currentParams = Object.fromEntries(searchParams);
+          setSearchParams({ ...currentParams, view: mode }, { replace: true });
+        }}
         searchQuery={searchQuery}
         onSearchQueryChange={setSearchQuery}
+        sentRequestsCount={sentRequests.length}
+        pendingRequestsCount={pendingRequests.length}
       />
 
       <FriendsStats

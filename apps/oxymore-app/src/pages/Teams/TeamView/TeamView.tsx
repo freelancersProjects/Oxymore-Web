@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
-import { OXMButton } from '@oxymore/ui';
+import { OXMButton, OXMLoader } from '@oxymore/ui';
 import { Eye, Sword, ChevronDown } from 'lucide-react';
 import { teamService } from '../../../services/teamService';
 import TeamToolbar, { type TeamTab } from '../TeamToolbar/TeamToolbar';
@@ -182,10 +182,8 @@ const TeamView: React.FC = () => {
 
   if (teamLoading) {
     return (
-      <div className="team-view-container">
-        <div style={{ textAlign: 'center', padding: '40px' }}>
-          Chargement...
-        </div>
+      <div className="team-view-container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
+        <OXMLoader type="spinner" />
       </div>
     );
   }

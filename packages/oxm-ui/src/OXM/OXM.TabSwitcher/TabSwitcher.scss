@@ -53,21 +53,15 @@
     height: rem-calc(20);
   }
 
-  &__tab__label {
+  &__tab__label-wrapper {
+    position: relative;
     display: flex;
     align-items: center;
   }
 
-  &__tab__badge {
-    background: $color-purple;
-    color: $color-white;
-    font-size: rem-calc(12);
-    font-weight: 700;
-    padding: rem-calc(2) rem-calc(8);
-    border-radius: rem-calc(10);
-    min-width: rem-calc(20);
-    text-align: center;
-    line-height: 1.2;
+  &__tab__label {
+    display: flex;
+    align-items: center;
   }
 }
 

@@ -1,0 +1,110 @@
+@import "../../../styles/global";
+
+.conversation-item {
+  display: flex;
+  align-items: center;
+  gap: rem-calc(12);
+  padding: rem-calc(12) rem-calc(16);
+  border-radius: rem-calc(12);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: rem-calc(8);
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid transparent;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba($color-blue, 0.2);
+  }
+
+  &.active {
+    background: rgba($color-blue, 0.1);
+    border-color: rgba($color-blue, 0.3);
+  }
+
+  .conversation-avatar {
+    position: relative;
+    flex-shrink: 0;
+
+    .avatar-image {
+      width: rem-calc(48);
+      height: rem-calc(48);
+      border: 2px solid rgba($color-blue, 0.3);
+    }
+
+    .status-indicator {
+      position: absolute;
+      bottom: rem-calc(0);
+      right: rem-calc(0);
+      width: rem-calc(14);
+      height: rem-calc(14);
+      border-radius: 50%;
+      border: 2px solid $color-background;
+      z-index: 3;
+    }
+  }
+
+  .conversation-info {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+
+    .conversation-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: rem-calc(4);
+
+      .conversation-name {
+        font-family: Orbitron, sans-serif;
+        font-size: rem-calc(16);
+        font-weight: 600;
+        color: $color-white;
+        margin: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        flex: 1;
+      }
+
+      .conversation-time {
+        font-family: Outfit, sans-serif;
+        font-size: rem-calc(11);
+        color: rgba($color-white, 0.5);
+        flex-shrink: 0;
+        margin-left: rem-calc(8);
+      }
+    }
+
+    .conversation-preview {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: rem-calc(8);
+
+      .last-message {
+        font-family: Outfit, sans-serif;
+        font-size: rem-calc(13);
+        color: rgba($color-white, 0.6);
+        margin: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        flex: 1;
+      }
+
+      .unread-badge {
+        background: $color-blue;
+        color: $color-white;
+        font-size: rem-calc(11);
+        font-weight: 700;
+        padding: rem-calc(2) rem-calc(8);
+        border-radius: rem-calc(12);
+        flex-shrink: 0;
+      }
+    }
+  }
+}
+
+
+

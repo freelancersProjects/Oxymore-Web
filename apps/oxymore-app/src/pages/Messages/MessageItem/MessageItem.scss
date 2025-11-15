@@ -1,0 +1,135 @@
+@import "../../../styles/global";
+
+.message {
+  display: flex;
+  align-items: flex-start;
+  gap: rem-calc(12);
+  margin-bottom: rem-calc(16);
+  padding: rem-calc(8) rem-calc(12);
+  border-radius: rem-calc(12);
+  transition: all 0.3s ease;
+  position: relative;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.02);
+  }
+
+  &--highlighted {
+    background: rgba($color-blue, 0.15);
+    animation: highlightPulse 2s ease;
+  }
+
+  &--me {
+    justify-content: flex-end;
+
+    .message-content {
+      align-items: flex-end;
+      max-width: 60%;
+      min-width: 0;
+
+      .message-bubble {
+        background: $color-blue;
+        border-radius: rem-calc(18) rem-calc(18) rem-calc(2) rem-calc(18);
+      }
+
+      .message-footer {
+        text-align: right;
+        margin-top: rem-calc(6);
+        padding-right: rem-calc(8);
+      }
+    }
+  }
+
+  &--other {
+    justify-content: flex-start;
+
+    .message-content {
+      align-items: flex-start;
+      max-width: 60%;
+      min-width: 0;
+
+      .message-bubble {
+        background: rgb(255 255 255 / 8%);
+        border-radius: rem-calc(18) rem-calc(18) rem-calc(18) rem-calc(2);
+
+        .message-menu-btn-wrapper {
+          left: auto;
+          right: rem-calc(-40);
+        }
+      }
+
+      .message-footer {
+        text-align: left;
+        margin-top: rem-calc(6);
+        padding-left: rem-calc(8);
+      }
+    }
+  }
+}
+
+.message-avatar {
+  flex-shrink: 0;
+
+  .avatar-image {
+    width: rem-calc(36);
+    height: rem-calc(36);
+    border-radius: 50%;
+    object-fit: cover;
+  }
+}
+
+.message-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  position: relative;
+}
+
+.message-bubble {
+  padding: rem-calc(12) rem-calc(16);
+  display: flex;
+  align-items: center;
+  position: relative;
+  max-width: 100%;
+  overflow: visible;
+
+  .message-text {
+    font-size: rem-calc(14);
+    line-height: 1.5;
+    color: $color-white;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    flex: 1;
+    max-width: 100%;
+    white-space: pre-wrap;
+  }
+}
+
+.message-footer {
+  display: flex;
+  gap: rem-calc(8);
+  font-size: rem-calc(12);
+  margin-top: rem-calc(6);
+
+  .message-sender {
+    font-weight: 600;
+    color: $color-white;
+  }
+
+  .message-timestamp {
+    color: rgba($color-white, 0.5);
+  }
+}
+
+@keyframes highlightPulse {
+  0%, 100% {
+    background: rgba($color-blue, 0.15);
+  }
+  50% {
+    background: rgba($color-blue, 0.25);
+  }
+}
+
+
+

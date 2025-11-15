@@ -15,6 +15,8 @@ interface FriendsFiltersProps {
   onViewModeChange: (mode: "card" | "list") => void;
   searchQuery: string;
   onSearchQueryChange: (query: string) => void;
+  sentRequestsCount?: number;
+  pendingRequestsCount?: number;
 }
 
 const FriendsFilters = ({
@@ -23,7 +25,9 @@ const FriendsFilters = ({
   viewMode,
   onViewModeChange,
   searchQuery,
-  onSearchQueryChange
+  onSearchQueryChange,
+  sentRequestsCount = 0,
+  pendingRequestsCount = 0
 }: FriendsFiltersProps) => {
   const [showSearch, setShowSearch] = useState(false);
   const [searchAnimation, setSearchAnimation] = useState(false);
@@ -32,8 +36,8 @@ const FriendsFilters = ({
     { value: "all", label: "All Friends" },
     { value: "online", label: "Online" },
     { value: "favorites", label: "Favorites" },
-    { value: "pending", label: "Pending" },
-    { value: "sent", label: "Sent" },
+    { value: "pending", label: "Pending", badge: pendingRequestsCount > 0 ? pendingRequestsCount : undefined },
+    { value: "sent", label: "Sent", badge: sentRequestsCount > 0 ? sentRequestsCount : undefined },
   ];
 
   const handleToggleSearch = () => {
@@ -46,7 +50,7 @@ const FriendsFilters = ({
     <div className="friends-tabs-search">
       <div className="tabs-container">
         <OXMTabSwitcher
-          tabs={tabs.map(tab => ({ label: tab.label, value: tab.value })) as Tab[]}
+          tabs={tabs.map(tab => ({ label: tab.label, value: tab.value, badge: tab.badge })) as Tab[]}
           value={activeTab}
           onChange={onTabChange}
         />

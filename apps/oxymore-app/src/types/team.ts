@@ -92,6 +92,7 @@ export interface TeamMemberDetailed {
   role?: string;
   id_team_member?: string;
   join_date?: string;
+  online_status?: 'online' | 'offline' | 'in-game';
 }
 
 export interface TeamApplication {

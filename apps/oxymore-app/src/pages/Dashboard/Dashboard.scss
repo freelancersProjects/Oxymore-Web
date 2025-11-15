@@ -76,7 +76,6 @@
     border: 2px solid rgba($color-white, 0.2);
     backdrop-filter: blur(10px);
     cursor: pointer;
-    transition: all 0.3s ease;
     margin: 0 rem-calc(20);
     position: relative;
     z-index: 2;
@@ -94,11 +93,8 @@
     }
 
     &:hover {
-      transform: scale(1.1);
-      border-color: rgba($color-blue, 0.6);
-      box-shadow:
-        0 0 rem-calc(15) rgba($color-blue, 0.2),
-        0 0 rem-calc(25) rgba($color-white, 0.1);
+      border-color: rgba($color-blue, 1);
+      
 
       &::before {
         opacity: 0.2;
@@ -106,7 +102,6 @@
 
       .expand-icon {
         color: $color-blue;
-        transform: scale(1.1);
       }
     }
 

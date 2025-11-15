@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import Badge from "../OXM.Badge/Badge";
 import "./TabSwitcher.scss";
 
 export interface Tab {
@@ -65,10 +66,12 @@ const TabSwitcher: React.FC<TabSwitcherProps> = ({
             onClick={() => onChange(tab.value)}
           >
             {tab.icon && <span className="oxm-tabswitcher__tab__icon">{tab.icon}</span>}
-            <span className="oxm-tabswitcher__tab__label">{tab.label}</span>
-            {tab.badge !== undefined && tab.badge > 0 && (
-              <span className="oxm-tabswitcher__tab__badge">{tab.badge}</span>
-            )}
+            <span className="oxm-tabswitcher__tab__label-wrapper">
+              <span className="oxm-tabswitcher__tab__label">{tab.label}</span>
+              {tab.badge !== undefined && tab.badge > 0 && (
+                <Badge count={tab.badge} variant="toolbar" />
+              )}
+            </span>
           </button>
         ))}
       </nav>

@@ -19,7 +19,7 @@ const OXMButton = ({
   className = "",
 }: ButtonProps) => {
   const classes = [
-    "oxm-button",
+    "oxm-button outfit",
     `oxm-button--${variant}`,
     `oxm-button--${size}`,
     className,

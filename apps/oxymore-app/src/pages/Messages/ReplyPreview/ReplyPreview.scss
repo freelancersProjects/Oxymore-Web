@@ -1,0 +1,65 @@
+@import "../../../styles/global";
+
+.message-reply-preview {
+  display: flex;
+  flex-direction: column;
+  gap: rem-calc(6);
+  padding: rem-calc(10) rem-calc(12);
+  background: rgba(0, 0, 0, 0.3);
+  border-left: 3px solid $color-blue;
+  border-radius: rem-calc(8);
+  margin-bottom: rem-calc(8);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.4);
+    border-left-color: lighten($color-blue, 10%);
+    transform: translateX(rem-calc(2));
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: rem-calc(-3);
+    top: 0;
+    bottom: 0;
+    width: rem-calc(3);
+    background: linear-gradient(180deg, $color-blue 0%, lighten($color-blue, 10%) 100%);
+    border-radius: rem-calc(8) 0 0 rem-calc(8);
+  }
+}
+
+.message-reply-preview-info {
+  display: flex;
+  align-items: center;
+  gap: rem-calc(8);
+  font-size: rem-calc(11);
+}
+
+.message-reply-preview-label {
+  color: rgba($color-white, 0.6);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: rem-calc(10);
+}
+
+.message-reply-preview-sender {
+  font-size: rem-calc(12);
+  font-weight: 600;
+  color: $color-blue;
+}
+
+.message-reply-preview-text {
+  font-size: rem-calc(12);
+  color: rgba($color-white, 0.7);
+  line-height: 1.4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
+

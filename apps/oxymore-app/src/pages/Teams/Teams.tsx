@@ -1,14 +1,12 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { OXMLoader } from "@oxymore/ui";
 import TeamSearch from "./TeamSearch/TeamSearch";
 import { teamService } from "../../services/teamService";
 import "./Teams.scss";
 
 export const Teams: React.FC = () => {
   const navigate = useNavigate();
-  const [hasTeam, setHasTeam] = useState(false);
   const [checkingTeam, setCheckingTeam] = useState(true);
 
   useEffect(() => {
@@ -25,10 +23,8 @@ export const Teams: React.FC = () => {
             }
           }
         }
-        setHasTeam(false);
       } catch (error) {
         console.error("Error checking user team:", error);
-        setHasTeam(false);
       } finally {
         setCheckingTeam(false);
       }
@@ -38,21 +34,7 @@ export const Teams: React.FC = () => {
   }, [navigate]);
 
   if (checkingTeam) {
-    return (
-      <div className="teams-container">
-        <div
-          className="teams-content"
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            minHeight: "50vh",
-          }}
-        >
-          <OXMLoader type="normal" text="Chargement des équipes..." />
-        </div>
-      </div>
-    );
+    return null;
   }
 
   return (

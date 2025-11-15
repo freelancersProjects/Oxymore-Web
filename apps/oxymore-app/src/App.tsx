@@ -25,6 +25,8 @@ import Subscription from "./pages/Subscription/Subscription";
 import VerifyEmail from "./pages/VerifyEmail/VerifyEmail";
 import EmailVerificationBanner from "./components/EmailVerificationBanner/EmailVerificationBanner";
 import { AuthProvider, useAuth } from "./context/AuthContext";
+import { WebSocketProvider } from "./contexts/WebSocketContext";
+import { useNotificationSocket } from "./hooks/useNotificationSocket";
 import ProtectedRoute from "./context/ProtectedRoute";
 import { OXMLoader } from "@oxymore/ui";
 import DrawerNotif from "./components/Header/DrawerNotif/DrawerNotif";
@@ -128,6 +130,14 @@ const AppContent: React.FC<{ isSidebarCollapsed: boolean; setSidebarCollapsed: (
       fetchUnreadCount();
     }
   }, [notifOpen, userId]);
+
+  useNotificationSocket({
+    onNotification: (notification) => {
+      if (userId && (notification.id_user === userId || notification.id_user === null)) {
+        fetchUnreadCount();
+      }
+    }
+  });
 
   return (
     <LayoutManager>
@@ -236,16 +246,18 @@ export default function App() {
   return (
     <Router>
       <AuthProvider>
-        {showLoaderAtFirstTime() ? (
-          <>
-            <LayoutLoader />
-          </>
-        ) : (
-          <AppContent 
-            isSidebarCollapsed={isSidebarCollapsed} 
-            setSidebarCollapsed={setSidebarCollapsed} 
-          />
-        )}
+        <WebSocketProvider>
+          {showLoaderAtFirstTime() ? (
+            <>
+              <LayoutLoader />
+            </>
+          ) : (
+            <AppContent 
+              isSidebarCollapsed={isSidebarCollapsed} 
+              setSidebarCollapsed={setSidebarCollapsed} 
+            />
+          )}
+        </WebSocketProvider>
       </AuthProvider>
     </Router>
   );

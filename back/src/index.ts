@@ -5,6 +5,7 @@ import swaggerUi from "swagger-ui-express";
 import swaggerJSDoc from "swagger-jsdoc";
 import { createServer } from "http";
 import { registerRoutes } from "./registerRoutes";
+import { initializeSocketServer } from "./websocket/socketServer";
 
 dotenv.config();
 
@@ -106,6 +107,8 @@ app.use((err: Error, req: express.Request, res: express.Response, next: express.
     error: err.message
   });
 });
+
+initializeSocketServer(server);
 
 server.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);

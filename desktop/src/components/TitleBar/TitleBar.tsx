@@ -1,6 +1,16 @@
 import { Minus, Square, X } from 'lucide-react';
 import './TitleBar.scss';
 
+declare global {
+  interface Window {
+    electronAPI?: {
+      minimize: () => void;
+      maximize: () => void;
+      close: () => void;
+    };
+  }
+}
+
 const TitleBar = () => {
   const handleMinimize = () => {
     if (window.electronAPI) {
