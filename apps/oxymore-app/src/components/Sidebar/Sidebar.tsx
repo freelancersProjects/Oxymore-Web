@@ -1,11 +1,15 @@
 import React, { useState, useEffect, useRef } from "react";
 import { NavLink } from "react-router-dom";
-import { Home, Trophy, Layers, Play, Users, UserPlus, LogOut, ChevronLeft, Bot, Menu, X, Store, Users2, BookOpen, AlertTriangle, ChevronDown, ExternalLink, Settings, KeyRound, Shield } from "lucide-react";
+import { Home, Trophy, Layers, Play, Users, UserPlus, LogOut, ChevronLeft, Bot, Menu, X, Store, Users2, BookOpen, AlertTriangle, ChevronDown, ExternalLink, Settings, KeyRound, Shield, MessageSquare } from "lucide-react";
 import { gameService } from "../../services/gameService";
 import { OXMBadge } from "@oxymore/ui";
 import Logo from "./../../assets/logo.png";
 import { teamService } from "../../services/teamService";
 import { notificationService } from "../../services/notificationService";
+import { friendService } from "../../services/friendService";
+import { privateMessageService } from "../../services/privateMessageService";
+import { useFriendRequestSocket } from "../../hooks/useFriendRequestSocket";
+import { usePrivateMessageSocket } from "../../hooks/usePrivateMessageSocket";
 import "./Sidebar.scss";
 
 interface SidebarProps {
@@ -23,6 +27,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false, onToggle 
 
   const [hasTeam, setHasTeam] = useState(false);
   const [teamNotificationsCount, setTeamNotificationsCount] = useState(0);
+  const [pendingFriendRequestsCount, setPendingFriendRequestsCount] = useState(0);
+  const [unreadMessagesCount, setUnreadMessagesCount] = useState(0);
   const [currentGame] = useState({ name: 'Counter-Strike 2', logo: gameService.getGameLogoByName('Counter-Strike 2') });
   const navRef = useRef<HTMLElement>(null);
 
@@ -108,6 +114,94 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false, onToggle 
 
     return () => clearInterval(interval);
   }, []);
+
+  useEffect(() => {
+    const loadPendingFriendRequests = async () => {
+      try {
+        const userStr = localStorage.getItem("useroxm");
+        if (userStr) {
+          const user = JSON.parse(userStr);
+          if (user.id_user) {
+            const pendingRequests = await friendService.getPendingRequests(user.id_user);
+            setPendingFriendRequestsCount(pendingRequests.length);
+          }
+        }
+      } catch (error) {
+      }
+    };
+
+    loadPendingFriendRequests();
+  }, []);
+
+  useEffect(() => {
+    const loadUnreadMessagesCount = async () => {
+      try {
+        const userStr = localStorage.getItem("useroxm");
+        if (userStr) {
+          const user = JSON.parse(userStr);
+          if (user?.id_user) {
+            const conversations = await privateMessageService.getConversations();
+            const totalUnread = conversations.reduce((sum, conv) => sum + (conv.unread_count || 0), 0);
+            setUnreadMessagesCount(totalUnread);
+          }
+        }
+      } catch (error) {
+      }
+    };
+
+    loadUnreadMessagesCount();
+  }, []);
+
+  useFriendRequestSocket({
+    onFriendRequestReceived: async (friendRequest) => {
+      const userStr = localStorage.getItem("useroxm");
+      if (userStr) {
+        const user = JSON.parse(userStr);
+        if (user?.id_user && friendRequest.id_user_receiver === user.id_user) {
+          const pendingRequests = await friendService.getPendingRequests(user.id_user);
+          setPendingFriendRequestsCount(pendingRequests.length);
+        }
+      }
+    },
+    onFriendRequestAccepted: async () => {
+      const userStr = localStorage.getItem("useroxm");
+      if (userStr) {
+        const user = JSON.parse(userStr);
+        if (user?.id_user) {
+          const pendingRequests = await friendService.getPendingRequests(user.id_user);
+          setPendingFriendRequestsCount(pendingRequests.length);
+        }
+      }
+    },
+    onFriendRequestRejected: async () => {
+      const userStr = localStorage.getItem("useroxm");
+      if (userStr) {
+        const user = JSON.parse(userStr);
+        if (user?.id_user) {
+          const pendingRequests = await friendService.getPendingRequests(user.id_user);
+          setPendingFriendRequestsCount(pendingRequests.length);
+        }
+      }
+    }
+  });
+
+  usePrivateMessageSocket({
+    friendId: null,
+    onMessage: async (wsMessage) => {
+      const userStr = localStorage.getItem("useroxm");
+      if (userStr) {
+        const user = JSON.parse(userStr);
+        if (user?.id_user && wsMessage.receiver_id === user.id_user) {
+          try {
+            const conversations = await privateMessageService.getConversations();
+            const totalUnread = conversations.reduce((sum, conv) => sum + (conv.unread_count || 0), 0);
+            setUnreadMessagesCount(totalUnread);
+          } catch (error) {
+          }
+        }
+      }
+    }
+  });
 
   useEffect(() => {
     const checkScrollable = () => {
@@ -302,6 +396,13 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false, onToggle 
               <li>
                 <NavLink to="/friends" onClick={handleNavClick} className="oxm-sidebar-nav-link">
                   <UserPlus size={20} /> <span>Friends</span>
+                  <OXMBadge count={pendingFriendRequestsCount} variant="sidebar" />
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/messages" onClick={handleNavClick} className="oxm-sidebar-nav-link">
+                  <MessageSquare size={20} /> <span>Messages</span>
+                  <OXMBadge count={unreadMessagesCount} variant="sidebar" />
                 </NavLink>
               </li>
             </ul>

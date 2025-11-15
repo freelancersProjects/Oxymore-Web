@@ -68,17 +68,19 @@ export const StatsProvider = ({ children }: { children: ReactNode }) => {
       setLoading(true);
 
       // Récupérer les données en parallèle
-      const [usersResponse, tournamentsResponse, teamsResponse, leaguesResponse] = await Promise.all([
+      const [usersResponse, tournamentsResponse, teamsResponse, leaguesResponse, activeUsersResponse] = await Promise.all([
         apiService.get<User[]>('/users'),
         apiService.get<Tournament[]>('/tournaments'),
         apiService.get<Team[]>('/teams'),
-        apiService.get<League[]>('/leagues')
+        apiService.get<League[]>('/leagues'),
+        apiService.get<{ activeUsers: number }>('/stats/active-users')
       ]);
 
       const users = usersResponse || [];
       const tournaments = tournamentsResponse || [];
       const teams = teamsResponse || [];
       const leagues = leaguesResponse || [];
+      const activeUsers = activeUsersResponse?.activeUsers || 0;
 
       // Calculer le total du cash prize des tournois
       const totalCashPrize = tournaments.reduce((sum, tournament) => {
@@ -90,8 +92,8 @@ export const StatsProvider = ({ children }: { children: ReactNode }) => {
         totalTournaments: tournaments.length,
         totalTeams: teams.length,
         totalLeagues: leagues.length,
-        activeMatches: 24, // Pour l'instant, on garde une valeur fixe
-        activeUsers: Math.floor(users.length * 0.1), // 10% des utilisateurs actifs
+        activeMatches: 24,
+        activeUsers: activeUsers,
         totalCashPrize
       });
     } catch (error) {

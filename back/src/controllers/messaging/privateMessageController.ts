@@ -6,13 +6,14 @@ import {
   getMessagesBetweenUsers,
   getConversationsForUser,
   markMessagesAsRead,
+  updatePrivateMessage,
   deletePrivateMessage
 } from "../../services/messaging/privateMessageService";
 
 export const sendPrivateMessage = async (req: Request, res: Response) => {
   try {
-    const { content, receiver_id } = req.body;
-    const sender_id = (req as any).user.id_user;
+    const { content, receiver_id, reply_to } = req.body;
+    const sender_id = (req as any).user?.id || (req as any).user?.id_user;
 
     if (!content || !receiver_id) {
       return res.status(400).json({ error: "Content and receiver_id are required" });
@@ -26,7 +27,8 @@ export const sendPrivateMessage = async (req: Request, res: Response) => {
       content: content.trim(),
       receiver_id,
       sender_id,
-      is_read: false
+      is_read: false,
+      reply_to: reply_to || undefined
     };
 
     const newMessage = await createPrivateMessage(messageData);
@@ -40,7 +42,11 @@ export const sendPrivateMessage = async (req: Request, res: Response) => {
 export const getPrivateMessages = async (req: Request, res: Response) => {
   try {
     const { friendId } = req.params;
-    const userId = (req as any).user.id_user;
+    const userId = (req as any).user?.id || (req as any).user?.id_user;
+
+    if (!userId || !friendId) {
+      return res.status(400).json({ error: "User ID and Friend ID are required" });
+    }
 
     const messages = await getMessagesBetweenUsers(userId, friendId);
 
@@ -56,7 +62,12 @@ export const getPrivateMessages = async (req: Request, res: Response) => {
 
 export const getConversations = async (req: Request, res: Response) => {
   try {
-    const userId = (req as any).user.id_user;
+    const userId = (req as any).user?.id || (req as any).user?.id_user;
+
+    if (!userId) {
+      return res.status(400).json({ error: "User ID is required" });
+    }
+
     const conversations = await getConversationsForUser(userId);
     res.json(conversations);
   } catch (error) {
@@ -76,12 +87,38 @@ export const getPrivateMessage = async (req: Request, res: Response) => {
   }
 };
 
+export const updateMessage = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { content } = req.body;
+    const userId = (req as any).user?.id || (req as any).user?.id_user;
+
+    if (!content) {
+      return res.status(400).json({ error: "Content is required" });
+    }
+
+    if (content.length > 500) {
+      return res.status(400).json({ error: "Message content cannot exceed 500 characters" });
+    }
+
+    const message = await getPrivateMessageById(id);
+    if (message.sender_id !== userId) {
+      return res.status(403).json({ error: "You can only edit your own messages" });
+    }
+
+    const updatedMessage = await updatePrivateMessage(id, content.trim());
+    res.status(200).json(updatedMessage);
+  } catch (error) {
+    console.error("Error updating message:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
 export const deleteMessage = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const userId = (req as any).user.id_user;
+    const userId = (req as any).user?.id || (req as any).user?.id_user;
 
-    // Vérifier que l'utilisateur est le propriétaire du message
     const message = await getPrivateMessageById(id);
     if (message.sender_id !== userId) {
       return res.status(403).json({ error: "You can only delete your own messages" });

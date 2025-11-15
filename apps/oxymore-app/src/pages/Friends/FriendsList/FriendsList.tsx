@@ -1,10 +1,10 @@
 import { OXMButton } from "@oxymore/ui";
 import { Group as GroupIcon } from "@mui/icons-material";
-import { Person as PersonIcon, Message as MessageIcon } from "@mui/icons-material";
 import { Check as CheckIcon, Close as CloseIcon } from "@mui/icons-material";
 import type { FriendWithUser } from "../../../types/friend";
 import { truncate } from "../../../utils";
 import FriendCard from "../FriendCard/FriendCard";
+import Avatar from "../../../components/Avatar/Avatar";
 import "./FriendsList.scss";
 
 interface FriendsListProps {
@@ -71,7 +71,7 @@ const FriendsList = ({
   return (
     <>
       <div className={`friends-grid ${viewMode === "list" ? "list-view" : "card-view"}`}>
-        {activeTab === 'all' && filteredFriends.map((friend) => (
+        {(activeTab === 'all' || activeTab === 'online' || activeTab === 'favorites') && filteredFriends.map((friend) => (
           <FriendCard
             key={friend.id_friend}
             friend={friend}
@@ -89,30 +89,47 @@ const FriendsList = ({
           <div key={request.id_friend} className={`friend-card pending-request ${viewMode === "list" ? "list-item" : ""}`}>
             <div className="friend-header">
               <div className="friend-avatar">
-                <PersonIcon className="avatar-icon" />
+                <Avatar
+                  username={request.username}
+                  avatarUrl={request.avatar_url}
+                  size={viewMode === "list" ? 50 : 64}
+                  className="avatar-image"
+                />
                 <div
                   className="status-indicator"
                   style={{ backgroundColor: getStatusColor(request.online_status || "offline") }}
                 />
               </div>
               <div className="friend-info">
-                <h3 className="friend-name">{truncate(request.username, 30)}</h3>
+                <div className="friend-name-wrapper">
+                  <h3 className="friend-name">{truncate(request.username, 30)}</h3>
+                </div>
                 <div className="request-status">Friend request</div>
               </div>
             </div>
 
-            <div className="friend-details">
-              <div className="status-info">
+            {viewMode === "card" && (
+              <div className="friend-details">
+                <div className="status-info">
+                  <span
+                    className="status-text"
+                    style={{ color: getStatusColor(request.online_status || "offline") }}
+                  >
+                    {getStatusText(request.online_status || "offline")}
+                  </span>
+                </div>
+              </div>
+            )}
+
+            <div className="friend-actions">
+              {viewMode === "list" && (
                 <span
-                  className="status-text"
+                  className="status-text-inline"
                   style={{ color: getStatusColor(request.online_status || "offline") }}
                 >
                   {getStatusText(request.online_status || "offline")}
                 </span>
-              </div>
-            </div>
-
-            <div className="friend-actions">
+              )}
               <OXMButton
                 variant="primary"
                 size="small"
@@ -137,30 +154,47 @@ const FriendsList = ({
           <div key={request.id_friend} className={`friend-card pending-request ${viewMode === "list" ? "list-item" : ""}`}>
             <div className="friend-header">
               <div className="friend-avatar">
-                <PersonIcon className="avatar-icon" />
+                <Avatar
+                  username={request.username}
+                  avatarUrl={request.avatar_url}
+                  size={viewMode === "list" ? 50 : 64}
+                  className="avatar-image"
+                />
                 <div
                   className="status-indicator"
                   style={{ backgroundColor: getStatusColor(request.online_status || "offline") }}
                 />
               </div>
               <div className="friend-info">
-                <h3 className="friend-name">{truncate(request.username, 30)}</h3>
+                <div className="friend-name-wrapper">
+                  <h3 className="friend-name">{truncate(request.username, 30)}</h3>
+                </div>
                 <div className="request-status">Request sent</div>
               </div>
             </div>
 
-            <div className="friend-details">
-              <div className="status-info">
+            {viewMode === "card" && (
+              <div className="friend-details">
+                <div className="status-info">
+                  <span
+                    className="status-text"
+                    style={{ color: getStatusColor(request.online_status || "offline") }}
+                  >
+                    {getStatusText(request.online_status || "offline")}
+                  </span>
+                </div>
+              </div>
+            )}
+
+            <div className="friend-actions">
+              {viewMode === "list" && (
                 <span
-                  className="status-text"
+                  className="status-text-inline"
                   style={{ color: getStatusColor(request.online_status || "offline") }}
                 >
                   {getStatusText(request.online_status || "offline")}
                 </span>
-              </div>
-            </div>
-
-            <div className="friend-actions">
+              )}
               <OXMButton
                 variant="secondary"
                 size="small"

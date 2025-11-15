@@ -318,7 +318,7 @@
   }
 
   &.card-view {
-    grid-template-columns: repeat(auto-fill, minmax(rem-calc(280), 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(rem-calc(320), 1fr));
     gap: rem-calc(20);
   }
 }
@@ -478,8 +478,8 @@
 
       .status-indicator {
         position: absolute;
-        bottom: rem-calc(4);
-        right: rem-calc(4);
+        bottom: rem-calc(0);
+        right: rem-calc(0);
         width: rem-calc(18);
         height: rem-calc(18);
         border-radius: 50%;
@@ -1154,9 +1154,6 @@
     font-weight: 700;
     color: $color-white;
     margin: 0 0 rem-calc(6);
-    background: linear-gradient(135deg, $color-purple 0%, $color-blue 100%);
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
   }
 
   .add-friend-modal-subtitle {

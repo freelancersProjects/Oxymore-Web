@@ -46,7 +46,8 @@ export const getTeamMembersByTeamId = async (id_team: string): Promise<any[]> =>
       tm.id_team,
       tm.id_user,
       u.username,
-      u.avatar_url
+      u.avatar_url,
+      u.online_status
     FROM team_member tm
     LEFT JOIN user u ON tm.id_user = u.id_user
     WHERE tm.id_team = ?`,

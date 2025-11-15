@@ -7,6 +7,10 @@ export interface PrivateMessage extends RowDataPacket {
   receiver_id: string;
   sender_id: string;
   is_read: boolean;
+  reply_to?: string;
+  reply_username?: string;
+  reply_content?: string;
+  reply_sender_id?: string;
 }
 
 export interface PrivateMessageInput {
@@ -14,6 +18,7 @@ export interface PrivateMessageInput {
   receiver_id: string;
   sender_id: string;
   is_read?: boolean;
+  reply_to?: string;
 }
 
 export interface PrivateMessageUpdate {

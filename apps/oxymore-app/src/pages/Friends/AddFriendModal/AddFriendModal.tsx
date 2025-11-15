@@ -1,12 +1,6 @@
 import { useState, useRef, useCallback, useEffect } from "react";
-import { OXMModal } from "@oxymore/ui";
-import {
-  Close as CloseIcon,
-  Search as SearchIcon,
-  Clear as ClearIcon,
-  Add as AddIcon,
-  Person as PersonIcon
-} from "@mui/icons-material";
+import { OXMModal, OXMButton } from "@oxymore/ui";
+import { X, Search, UserPlus } from "lucide-react";
 import { friendService } from "../../../services/friendService";
 import type { UserSearchResult } from "../../../types/friend";
 import "./AddFriendModal.scss";
@@ -62,103 +56,115 @@ const AddFriendModal = ({ isOpen, onClose, userId, onAddFriend }: AddFriendModal
       onClose={handleClose}
       variant="default"
     >
-      <div className="add-friend-modal-header">
-        <div>
-          <h2 className="add-friend-modal-title">Find New Friends</h2>
-          <p className="add-friend-modal-subtitle">Search and connect with players around the world</p>
-        </div>
-        <button className="add-friend-modal-close" onClick={handleClose}>
-          <CloseIcon />
-        </button>
-      </div>
       <div className="add-friend-modal">
-        <div className="search-section">
-          <div className="search-input-wrapper">
-            <SearchIcon className="search-icon" />
-            <input
-              type="text"
-              placeholder="Search for players..."
-              value={userSearchQuery}
-              onChange={(e) => {
-                const value = e.target.value;
-                setUserSearchQuery(value);
-
-                if (searchTimeoutRef.current) {
-                  clearTimeout(searchTimeoutRef.current);
-                }
-
-                if (value.trim()) {
-                  searchTimeoutRef.current = setTimeout(() => {
-                    handleSearchUsers(value);
-                  }, 300);
-                } else {
-                  setSearchResults([]);
-                }
-              }}
-              className="user-search-input"
-            />
-            {userSearchQuery && (
-              <button
-                className="clear-search-btn"
-                onClick={() => {
-                  setUserSearchQuery("");
-                  setSearchResults([]);
-                }}
-              >
-                <ClearIcon />
-              </button>
-            )}
-          </div>
-        </div>
-
-        <div className="search-results">
-          {isSearching && (
-            <div className="loading-results">
-              <p>Searching...</p>
+        <div className="add-friend-modal-header">
+          <div className="modal-header-content">
+            <div className="modal-icon-wrapper">
+              <UserPlus size={24} />
             </div>
-          )}
+            <h2 className="add-friend-modal-title">Ajouter un ami</h2>
+          </div>
+          <button className="close-button" onClick={handleClose}>
+            <X size={20} />
+          </button>
+        </div>
+        
+        <div className="add-friend-modal-content">
+          <p className="add-friend-modal-subtitle">
+            Recherchez et connectez-vous avec des joueurs du monde entier
+          </p>
+          
+          <div className="search-section">
+            <div className="search-input-wrapper">
+              <Search className="search-icon" size={18} />
+              <input
+                type="text"
+                placeholder="Rechercher des joueurs..."
+                value={userSearchQuery}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setUserSearchQuery(value);
 
-          {!isSearching && searchResults.length > 0 && (
-            <div className="results-list">
-              {searchResults.map((user) => (
-                <div key={user.id_user} className="user-result-item">
-                  <div className="user-info">
-                    <PersonIcon className="user-avatar" />
-                    <div className="user-details">
-                      <h4 className="user-name">{user.username}</h4>
+                  if (searchTimeoutRef.current) {
+                    clearTimeout(searchTimeoutRef.current);
+                  }
+
+                  if (value.trim()) {
+                    searchTimeoutRef.current = setTimeout(() => {
+                      handleSearchUsers(value);
+                    }, 300);
+                  } else {
+                    setSearchResults([]);
+                  }
+                }}
+                className="user-search-input"
+              />
+              {userSearchQuery && (
+                <button
+                  className="clear-search-btn"
+                  onClick={() => {
+                    setUserSearchQuery("");
+                    setSearchResults([]);
+                  }}
+                >
+                  <X size={16} />
+                </button>
+              )}
+            </div>
+          </div>
+
+          <div className="search-results">
+            {isSearching && (
+              <div className="loading-results">
+                <p>Recherche en cours...</p>
+              </div>
+            )}
+
+            {!isSearching && searchResults.length > 0 && (
+              <div className="results-list">
+                {searchResults.map((user) => (
+                  <div key={user.id_user} className="user-result-item">
+                    <div className="user-info">
+                      <div className="user-avatar">
+                        <UserPlus size={20} />
+                      </div>
+                      <div className="user-details">
+                        <h4 className="user-name">{user.username}</h4>
+                      </div>
+                    </div>
+                    <div className="user-actions">
+                      {user.friend_status === 'pending' ? (
+                        <span className="status-badge pending">Demande envoyée</span>
+                      ) : user.friend_status === 'accepted' ? (
+                        <span className="status-badge accepted">Déjà amis</span>
+                      ) : (
+                        <OXMButton
+                          variant="primary"
+                          size="small"
+                          onClick={() => onAddFriend(user.id_user)}
+                        >
+                          <UserPlus size={16} />
+                          Ajouter
+                        </OXMButton>
+                      )}
                     </div>
                   </div>
-                  <div className="user-actions">
-                    {user.friend_status === 'pending' ? (
-                      <span className="status-badge pending">Request Sent</span>
-                    ) : user.friend_status === 'accepted' ? (
-                      <span className="status-badge accepted">Already Friends</span>
-                    ) : (
-                      <button
-                        className="add-friend-btn"
-                        onClick={() => onAddFriend(user.id_user)}
-                      >
-                        <AddIcon />
-                        Add Friend
-                      </button>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
+                ))}
+              </div>
+            )}
 
-          {!isSearching && userSearchQuery && searchResults.length === 0 && !userId && (
-            <div className="no-results">
-              <p>Please log in to search for users</p>
-            </div>
-          )}
+            {!isSearching && userSearchQuery && searchResults.length === 0 && !userId && (
+              <div className="no-results">
+                <p>Veuillez vous connecter pour rechercher des utilisateurs</p>
+              </div>
+            )}
 
-          {!isSearching && userSearchQuery && searchResults.length === 0 && userId && (
-            <div className="no-results">
-              <p>No users found matching "{userSearchQuery}"</p>
-            </div>
-          )}
+            {!isSearching && userSearchQuery && searchResults.length === 0 && userId && (
+              <div className="no-results">
+                <p>Aucun utilisateur trouvé pour "{userSearchQuery}"</p>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </OXMModal>

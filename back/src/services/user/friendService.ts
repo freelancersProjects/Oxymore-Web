@@ -71,7 +71,6 @@ export const getFriendsByUserId = async (userId: string): Promise<FriendWithUser
       }));
     }
   } catch (error: any) {
-    console.error('Error in getFriendsByUserId:', error);
     const [rows] = await db.query(`
       SELECT
         f.*,
@@ -156,17 +155,24 @@ export const createFriend = async (data: FriendInput): Promise<FriendData> => {
   const id = crypto.randomUUID();
   const now = new Date().toISOString();
 
-  await db.query(
-    "INSERT INTO friends (id_friend, id_user_sender, id_user_receiver, status, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)",
-    [
-      id,
-      data.id_user_sender,
-      data.id_user_receiver,
-      data.status || 'pending',
-      now,
-      now
-    ]
-  );
+  try {
+    await db.query(
+      "INSERT INTO friends (id_friend, id_user_sender, id_user_receiver, status, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)",
+      [
+        id,
+        data.id_user_sender,
+        data.id_user_receiver,
+        data.status || 'pending',
+        now,
+        now
+      ]
+    );
+  } catch (error: any) {
+    if (error.code === 'ER_DUP_ENTRY' || error.code === 1062) {
+      throw new Error('Friend request already exists');
+    }
+    throw error;
+  }
 
   return {
     id_friend: id,
@@ -281,7 +287,6 @@ export const updateFriendDisplayName = async (userId: string, friendId: string, 
 
     return { display_name: displayName };
   } catch (error: any) {
-    console.error('Error updating friend display name:', error);
     throw error;
   }
 };
@@ -294,7 +299,6 @@ export const deleteFriendDisplayName = async (userId: string, friendId: string):
     `, [userId, friendId]);
     return (result as any).affectedRows > 0;
   } catch (error: any) {
-    console.error('Error deleting friend display name:', error);
     throw error;
   }
 };

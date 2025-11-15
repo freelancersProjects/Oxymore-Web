@@ -1,8 +1,9 @@
 import { OXMButton } from "@oxymore/ui";
-import { Person as PersonIcon, Message as MessageIcon } from "@mui/icons-material";
+import { Message as MessageIcon } from "@mui/icons-material";
 import { Heart, MoreVertical, Trash2, Edit2 } from "lucide-react";
 import type { FriendWithUser } from "../../../types/friend";
 import { truncate } from "../../../utils";
+import Avatar from "../../../components/Avatar/Avatar";
 import "./FriendCard.scss";
 
 interface FriendCardProps {
@@ -56,14 +57,29 @@ const FriendCard = ({
     <div className={`friend-card ${viewMode === "list" ? "list-item" : ""}`}>
       <div className="friend-header">
         <div className="friend-avatar">
-          <PersonIcon className="avatar-icon" />
+          <Avatar
+            username={friend.display_name || friend.username}
+            avatarUrl={friend.avatar_url}
+            size={viewMode === "list" ? 50 : 64}
+            className="avatar-image"
+          />
           <div
             className="status-indicator"
             style={{ backgroundColor: getStatusColor(friend.online_status || "offline") }}
           />
         </div>
         <div className="friend-info">
-          <h3 className="friend-name">{truncate(friend.display_name || friend.username, 30)}</h3>
+          <div className="friend-name-wrapper">
+            <h3 className="friend-name">{truncate(friend.display_name || friend.username, viewMode === "card" ? 15 : 30)}</h3>
+            {viewMode === "list" && (
+              <span
+                className="status-text-inline"
+                style={{ color: getStatusColor(friend.online_status || "offline") }}
+              >
+                {getStatusText(friend.online_status || "offline")}
+              </span>
+            )}
+          </div>
         </div>
         <div className="friend-header-actions">
           <button
@@ -111,19 +127,7 @@ const FriendCard = ({
         </div>
       </div>
 
-      <div className="friend-details">
-        <div className="status-info">
-          <span
-            className="status-text"
-            style={{ color: getStatusColor(friend.online_status || "offline") }}
-          >
-            {getStatusText(friend.online_status || "offline")}
-          </span>
-          {friend.online_status === "offline" && friend.last_seen && (
-            <span className="last-seen">{friend.last_seen}</span>
-          )}
-        </div>
-      </div>
+      {viewMode === "card" && <hr className="friend-separator" />}
 
       <div className="friend-actions">
         <OXMButton

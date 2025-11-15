@@ -177,6 +177,20 @@ export const deleteTeamChatById = async (id_team_chat: string): Promise<void> =>
   await db.query("DELETE FROM team_chat WHERE id_team_chat = ?", [id_team_chat]);
 };
 
+export const getTeamChatById = async (id_team_chat: string): Promise<TeamChat> => {
+  const [rows] = await db.query("SELECT * FROM team_chat WHERE id_team_chat = ?", [id_team_chat]);
+  const chats = rows as TeamChat[];
+  if (chats.length === 0) {
+    throw new Error("Team chat message not found");
+  }
+  return chats[0];
+};
+
+export const updateTeamChat = async (id_team_chat: string, message: string): Promise<TeamChat> => {
+  await db.query("UPDATE team_chat SET message = ? WHERE id_team_chat = ?", [message, id_team_chat]);
+  return await getTeamChatById(id_team_chat);
+};
+
 export const updateTeamChatById = async (id_team_chat: string, message: string): Promise<void> => {
   await db.query("UPDATE team_chat SET message = ? WHERE id_team_chat = ?", [message, id_team_chat]);
 };

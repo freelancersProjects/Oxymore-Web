@@ -644,11 +644,27 @@
   gap: rem-calc(12);
   padding: rem-calc(8);
 
-  img {
-    width: rem-calc(32);
-    height: rem-calc(32);
-    border-radius: 50%;
-    object-fit: cover;
+  .member-avatar-wrapper {
+    position: relative;
+    flex-shrink: 0;
+
+    img {
+      width: rem-calc(32);
+      height: rem-calc(32);
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .status-indicator {
+      position: absolute;
+      bottom: rem-calc(0);
+      right: rem-calc(0);
+      width: rem-calc(10);
+      height: rem-calc(10);
+      border-radius: 50%;
+      border: 2px solid $color-background;
+      z-index: 3;
+    }
   }
 
   .member-info {
@@ -666,15 +682,18 @@
     font-size: rem-calc(11);
     font-weight: 600;
     text-transform: capitalize;
+    flex-shrink: 0;
 
     &.online {
       background: rgba($color-green, 0.2);
-      color: $color-green;
     }
 
     &.offline {
       background: rgba($color-gray, 0.2);
-      color: $color-gray;
+    }
+
+    &.in-game {
+      background: rgba($color-yellow, 0.2);
     }
   }
 }

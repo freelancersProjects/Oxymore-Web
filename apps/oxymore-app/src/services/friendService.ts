@@ -21,7 +21,6 @@ export const friendService = {
         };
       });
     } catch (error) {
-      console.error('Error getting friends:', error);
       return [];
     }
   },
@@ -31,7 +30,6 @@ export const friendService = {
       const requests = await apiService.get(`/friends/pending/${userId}`);
       return requests;
     } catch (error) {
-      console.error('Error getting pending requests:', error);
       return [];
     }
   },
@@ -41,7 +39,6 @@ export const friendService = {
       const requests = await apiService.get(`/friends/sent/${userId}`);
       return requests;
     } catch (error) {
-      console.error('Error getting sent requests:', error);
       return [];
     }
   },
@@ -51,7 +48,6 @@ export const friendService = {
       const results = await apiService.get(`/friends/search/${userId}?q=${encodeURIComponent(query)}`);
       return results;
     } catch (error) {
-      console.error('Error searching users:', error);
       return [];
     }
   },
@@ -64,7 +60,6 @@ export const friendService = {
         status: 'pending'
       });
     } catch (error) {
-      console.error('Error adding friend:', error);
       throw error;
     }
   },
@@ -74,7 +69,6 @@ export const friendService = {
       const result = await apiService.post(`/favorite-friends/${userId}/${friendId}/toggle`);
       return result;
     } catch (error) {
-      console.error('Error toggling favorite:', error);
       throw error;
     }
   },
@@ -83,7 +77,6 @@ export const friendService = {
     try {
       await apiService.delete(`/friends/${friendId}`);
     } catch (error) {
-      console.error('Error deleting friend:', error);
       throw error;
     }
   },
@@ -92,7 +85,6 @@ export const friendService = {
     try {
       await apiService.put(`/friends/${friendId}/accept`);
     } catch (error) {
-      console.error('Error accepting friend request:', error);
       throw error;
     }
   },
@@ -101,7 +93,6 @@ export const friendService = {
     try {
       await apiService.put(`/friends/${friendId}/reject`);
     } catch (error) {
-      console.error('Error rejecting friend request:', error);
       throw error;
     }
   },
@@ -110,7 +101,6 @@ export const friendService = {
     try {
       await apiService.delete(`/friends/${friendId}/cancel`);
     } catch (error) {
-      console.error('Error canceling friend request:', error);
       throw error;
     }
   },
@@ -122,7 +112,6 @@ export const friendService = {
       });
       return result;
     } catch (error) {
-      console.error('Error updating friend display name:', error);
       throw error;
     }
   },
@@ -131,7 +120,6 @@ export const friendService = {
     try {
       await apiService.delete(`/friends/${userId}/${friendId}/display-name`);
     } catch (error) {
-      console.error('Error deleting friend display name:', error);
       throw error;
     }
   }
