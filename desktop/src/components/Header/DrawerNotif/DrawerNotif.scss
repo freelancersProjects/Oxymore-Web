@@ -1,0 +1,419 @@
+@import '../../../styles/global';
+
+.oxm-drawer {
+  z-index: 50001 !important;
+}
+
+.drawer-notif-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: rem-calc(24);
+  color: $color-white;
+  gap: rem-calc(12);
+  padding-right: rem-calc(45);
+  position: relative;
+
+  .drawer-notif-title-section {
+    display: flex;
+    align-items: center;
+    gap: rem-calc(10);
+
+    .drawer-notif-header-icon {
+      color: $color-purple-light;
+    }
+
+    .drawer-notif-title-main {
+      font-size: rem-calc(22);
+      font-weight: 700;
+      color: $color-white;
+      font-family: 'Orbitron', sans-serif;
+      display: flex;
+      align-items: center;
+      gap: rem-calc(8);
+
+      .notif-count {
+        color: $color-purple-light;
+        font-weight: 600;
+        font-size: rem-calc(18);
+      }
+    }
+  }
+
+  .drawer-notif-mark-all-btn {
+    display: flex;
+    align-items: center;
+    gap: rem-calc(4);
+    padding: rem-calc(6) rem-calc(10);
+    background: rgba(139, 92, 246, 0.15);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    border-radius: rem-calc(6);
+    color: $color-purple-light;
+    font-size: rem-calc(12);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    margin-right: rem-calc(0);
+    flex-shrink: 0;
+
+    &:hover {
+      background: rgba(139, 92, 246, 0.25);
+      border-color: rgba(139, 92, 246, 0.5);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+
+    svg {
+      flex-shrink: 0;
+      width: rem-calc(14);
+      height: rem-calc(14);
+    }
+
+    span {
+      font-size: rem-calc(11);
+    }
+  }
+}
+
+.drawer-notif-separator {
+  margin-bottom: rem-calc(20);
+
+  .separator-line {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  }
+}
+
+.drawer-notif-list {
+  display: flex;
+  flex-direction: column;
+  gap: rem-calc(12);
+}
+
+.drawer-notif-item {
+  display: flex;
+  align-items: flex-start;
+  gap: rem-calc(14);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: rem-calc(12);
+  padding: rem-calc(16);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: transparent;
+    transition: all 0.3s ease;
+  }
+
+  &.unread {
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.12) 0%, rgba(59, 130, 246, 0.08) 100%);
+    border-color: rgba(139, 92, 246, 0.2);
+
+    &::before {
+      background: linear-gradient(180deg, $color-purple-violet, $color-blue-indigo);
+    }
+  }
+
+  &.notif-success {
+    &::before {
+      background: linear-gradient(180deg, $color-green-success, $color-green-emerald);
+    }
+  }
+
+  &.notif-alert {
+    &::before {
+      background: linear-gradient(180deg, $color-red-error, $color-orange);
+    }
+  }
+
+  &.notif-info {
+    &::before {
+      background: linear-gradient(180deg, $color-blue-indigo, $color-blue);
+    }
+  }
+
+  &.notif-message {
+    &::before {
+      background: linear-gradient(180deg, $color-purple-violet, $color-purple-light);
+    }
+  }
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(139, 92, 246, 0.3);
+    transform: translateX(rem-calc(4));
+  }
+
+  &.expanded {
+    background: rgba(255, 255, 255, 0.05);
+    
+    .drawer-notif-chevron {
+      transform: rotate(180deg);
+    }
+  }
+
+  &.read {
+    background: rgba(255, 255, 255, 0.02);
+    border-color: rgba(255, 255, 255, 0.04);
+
+    &::before {
+      background: transparent;
+    }
+
+    .drawer-notif-title {
+      color: rgba(255, 255, 255, 0.6);
+      font-weight: 500;
+    }
+
+    .drawer-notif-icon {
+      opacity: 0.5;
+    }
+
+    .drawer-notif-time {
+      color: rgba(255, 255, 255, 0.3);
+    }
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.04);
+      border-color: rgba(255, 255, 255, 0.08);
+
+      .drawer-notif-title {
+        color: rgba(255, 255, 255, 0.8);
+      }
+
+      .drawer-notif-icon {
+        opacity: 0.7;
+      }
+    }
+  }
+}
+
+.drawer-notif-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: rem-calc(8);
+  position: relative;
+}
+
+.drawer-notif-icon {
+  flex-shrink: 0;
+  width: rem-calc(40);
+  height: rem-calc(40);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: rem-calc(10);
+  transition: all 0.3s ease;
+
+  &.notif-icon-success {
+    color: $color-green-success;
+    background: rgba(34, 197, 94, 0.15);
+  }
+
+  &.notif-icon-alert {
+    color: $color-red-error;
+    background: rgba(239, 68, 68, 0.15);
+  }
+
+  &.notif-icon-info {
+    color: $color-blue-indigo;
+    background: rgba(59, 130, 246, 0.15);
+  }
+
+  &.notif-icon-message {
+    color: $color-purple-light;
+    background: rgba(139, 92, 246, 0.15);
+  }
+}
+
+
+.drawer-notif-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: rem-calc(8);
+  min-width: 0;
+}
+
+.drawer-notif-header-item {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: rem-calc(12);
+}
+
+.drawer-notif-title {
+  font-size: rem-calc(16);
+  font-weight: 600;
+  color: $color-white;
+  line-height: 1.4;
+  flex: 1;
+}
+
+.drawer-notif-actions {
+  display: flex;
+  gap: rem-calc(4);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.drawer-notif-item:hover .drawer-notif-actions {
+  opacity: 1;
+}
+
+.drawer-notif-trash-btn {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  padding: rem-calc(6);
+  border-radius: rem-calc(6);
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  &:hover {
+    color: $color-red-error;
+    background: rgba(239, 68, 68, 0.15);
+  }
+}
+
+.drawer-notif-text {
+  font-size: rem-calc(14);
+  color: $color-gray-light;
+  line-height: 1.6;
+  padding-top: rem-calc(8);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    max-height: 0;
+  }
+  to {
+    opacity: 1;
+    max-height: 500px;
+  }
+}
+
+.drawer-notif-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: rem-calc(4);
+}
+
+.drawer-notif-time {
+  font-size: rem-calc(12);
+  color: $color-gray;
+  font-weight: 500;
+}
+
+.drawer-notif-chevron {
+  color: $color-gray;
+  transition: transform 0.3s ease;
+  flex-shrink: 0;
+}
+
+.drawer-notif-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: rem-calc(300);
+  gap: rem-calc(16);
+}
+
+.drawer-notif-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: $color-gray;
+  padding: rem-calc(60) rem-calc(20);
+  gap: rem-calc(20);
+
+  .empty-icon {
+    color: $color-gray;
+    opacity: 0.4;
+  }
+
+  h3 {
+    font-size: rem-calc(20);
+    font-weight: 600;
+    color: $color-white;
+    margin: 0;
+    font-family: 'Orbitron', sans-serif;
+  }
+
+  p {
+    font-size: rem-calc(14);
+    line-height: 1.6;
+    margin: 0;
+    max-width: rem-calc(280);
+    color: $color-gray-medium;
+  }
+}
+
+@media (max-width: 600px) {
+  .drawer-notif-header {
+    flex-direction: row;
+    align-items: center;
+    gap: rem-calc(8);
+
+    .drawer-notif-title-main {
+      font-size: rem-calc(18);
+    }
+
+    .drawer-notif-mark-all-btn {
+      padding: rem-calc(5) rem-calc(8);
+      
+      span {
+        display: none;
+      }
+    }
+
+    .notif-badge-right {
+      font-size: rem-calc(12);
+      min-width: rem-calc(24);
+      height: rem-calc(24);
+      padding: 0 rem-calc(8);
+    }
+  }
+
+  .drawer-notif-item {
+    padding: rem-calc(12);
+    gap: rem-calc(12);
+  }
+
+  .drawer-notif-icon {
+    width: rem-calc(36);
+    height: rem-calc(36);
+  }
+
+  .drawer-notif-title {
+    font-size: rem-calc(15);
+  }
+
+  .drawer-notif-text {
+    font-size: rem-calc(13);
+  }
+}

@@ -1,0 +1,51 @@
+@import "../../../styles/global";
+
+.friends-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: rem-calc(20);
+  margin-bottom: rem-calc(40);
+
+  .stat-card {
+    position: relative;
+    flex: 1;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba($color-blue, 0.2);
+    border-radius: rem-calc(20);
+    padding: rem-calc(24);
+    text-align: center;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    overflow: hidden;
+    cursor: pointer;
+
+    &:hover {
+      border-color: rgba($color-blue, 0.4);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .stat-number {
+      position: relative;
+      z-index: 2;
+      font-family: Orbitron, sans-serif;
+      font-size: rem-calc(42);
+      font-weight: 700;
+      color: $color-white;
+      margin-bottom: rem-calc(8);
+      transition: all 0.3s ease;
+      line-height: 1;
+    }
+
+    .stat-label {
+      position: relative;
+      z-index: 2;
+      font-family: Orbitron, sans-serif;
+      font-size: rem-calc(14);
+      font-weight: 600;
+      color: rgba($color-white, 0.8);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+  }
+}
+

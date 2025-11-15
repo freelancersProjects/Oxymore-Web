@@ -5,6 +5,7 @@ import {
   getLeagueById,
   updateLeague,
   deleteLeague,
+  getLeagueTeams,
 } from "../../controllers/league/leagueController";
 
 const router = Router();
@@ -43,6 +44,25 @@ router.get("/", getAllLeagues);
  *         description: League créée
  */
 router.post("/", createLeague);
+
+/**
+ * @openapi
+ * /api/leagues/{id}/teams:
+ *   get:
+ *     tags:
+ *       - Leagues
+ *     summary: Récupère les équipes d'une league
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Liste des équipes de la league
+ */
+router.get("/:id/teams", getLeagueTeams);
 
 /**
  * @openapi

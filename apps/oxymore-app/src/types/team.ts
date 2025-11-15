@@ -41,6 +41,7 @@ export interface BackendTeam {
   subscription_status?: boolean;
   created_at?: string;
   verified?: boolean;
+  is_recruiting?: boolean;
   region?: string;
   id_game?: string;
 }
@@ -91,6 +92,7 @@ export interface TeamMemberDetailed {
   role?: string;
   id_team_member?: string;
   join_date?: string;
+  online_status?: 'online' | 'offline' | 'in-game';
 }
 
 export interface TeamApplication {

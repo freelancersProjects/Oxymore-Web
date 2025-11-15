@@ -17,7 +17,7 @@ const Create = () => {
   const [dragActive, setDragActive] = useState(false);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [uploadingImage, setUploadingImage] = useState(false);
-  const [uploadedImageUrl, setUploadedImageUrl] = useState<string | null>(null);
+  const [, setUploadedImageUrl] = useState<string | null>(null);
 
   const {
     register,

@@ -9,6 +9,7 @@ import {
   EmailTemplateMap,
   ContactEmailData,
   WelcomeEmailData,
+  EmailVerificationData,
 } from '../../interfaces/email/emailInterfaces';
 
 dotenv.config();
@@ -93,6 +94,11 @@ export const renderTemplate = <T extends EmailTemplateName>(
     const welcomeData = data as WelcomeEmailData;
     html = html.replace(/{{name}}/g, welcomeData.name);
     html = html.replace(/{{email}}/g, welcomeData.email);
+  } else if (templateName === 'email-verification') {
+    const verificationData = data as EmailVerificationData;
+    html = html.replace(/{{name}}/g, verificationData.name);
+    html = html.replace(/{{email}}/g, verificationData.email);
+    html = html.replace(/{{verificationLink}}/g, verificationData.verificationLink);
   }
 
   return html;
@@ -239,6 +245,41 @@ You are receiving this email because you signed up for Oxymore with the address 
       from: 'Oxymore',
       to: data.email,
       subject: 'Welcome to Oxymore!',
+      text,
+      html,
+    },
+    'no-reply'
+  );
+};
+
+export const sendVerificationEmail = async (data: EmailVerificationData): Promise<void> => {
+  const html = renderTemplate('email-verification', data);
+
+  const text = `
+Verify your email address
+
+Hello ${data.name},
+
+Thank you for signing up for Oxymore! To complete your registration and verify your email address, please click on the link below:
+
+${data.verificationLink}
+
+This link will expire in 24 hours.
+
+If you did not create an account with Oxymore, please ignore this email.
+
+Best regards,
+The Oxymore Team
+
+---
+You are receiving this email because you signed up for Oxymore with the address ${data.email}.
+  `;
+
+  await sendEmail(
+    {
+      from: 'Oxymore',
+      to: data.email,
+      subject: 'Verify your email address - Oxymore',
       text,
       html,
     },

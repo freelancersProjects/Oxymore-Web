@@ -1,9 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
+import Badge from "../OXM.Badge/Badge";
 import "./TabSwitcher.scss";
 
 export interface Tab {
   label: string;
   value: string;
+  icon?: React.ReactNode;
+  badge?: number;
 }
 
 interface TabSwitcherProps {
@@ -20,58 +23,67 @@ const TabSwitcher: React.FC<TabSwitcherProps> = ({
   className,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [sliderStyle, setSliderStyle] = useState({
-    width: "0px",
-    transform: "translateX(0px)",
-    borderRadius: "12px",
+  const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const [indicatorStyle, setIndicatorStyle] = useState({
+    width: 0,
+    left: 0,
   });
 
   useEffect(() => {
     const index = tabs.findIndex((tab) => tab.value === value);
-    const container = containerRef.current;
-    if (container) {
-      const activeButton = container.querySelectorAll("button")[
-        index
-      ] as HTMLButtonElement;
-      if (activeButton) {
-        const { offsetLeft, offsetWidth } = activeButton;
-        const radius =
-          index === 0
-            ? "12px 0 0 12px"
-            : index === tabs.length - 1
-            ? "0 12px 12px 0"
-            : "0";
-        setSliderStyle({
-          width: `${offsetWidth}px`,
-          transform: `translateX(${offsetLeft}px)`,
-          borderRadius: radius,
-        });
-      }
+    const activeTab = tabRefs.current[index];
+    
+    if (activeTab && containerRef.current) {
+      const containerRect = containerRef.current.getBoundingClientRect();
+      const tabRect = activeTab.getBoundingClientRect();
+      
+      setIndicatorStyle({
+        width: tabRect.width,
+        left: tabRect.left - containerRect.left,
+      });
     }
   }, [value, tabs]);
 
   return (
-    <nav
-      ref={containerRef}
-      className={`oxm-tabswitcher ${className || ""}`}
-      role="tablist"
-    >
-      <div className="oxm-tabswitcher__slider" style={sliderStyle} />
-      {tabs.map((tab) => (
-        <button
-          key={tab.value}
-          className={`oxm-tabswitcher__tab${
-            value === tab.value ? " active" : ""
-          }`}
-          role="tab"
-          aria-selected={value === tab.value}
-          tabIndex={value === tab.value ? 0 : -1}
-          onClick={() => onChange(tab.value)}
-        >
-          {tab.label}
-        </button>
-      ))}
-    </nav>
+    <div className={`oxm-tabswitcher-wrapper ${className || ""}`}>
+      <nav
+        ref={containerRef}
+        className="oxm-tabswitcher"
+        role="tablist"
+      >
+        {tabs.map((tab, index) => (
+          <button
+            key={tab.value}
+            ref={(el) => {
+              tabRefs.current[index] = el;
+            }}
+            className={`oxm-tabswitcher__tab${
+              value === tab.value ? " active" : ""
+            }`}
+            role="tab"
+            aria-selected={value === tab.value}
+            tabIndex={value === tab.value ? 0 : -1}
+            onClick={() => onChange(tab.value)}
+          >
+            {tab.icon && <span className="oxm-tabswitcher__tab__icon">{tab.icon}</span>}
+            <span className="oxm-tabswitcher__tab__label-wrapper">
+              <span className="oxm-tabswitcher__tab__label">{tab.label}</span>
+              {tab.badge !== undefined && tab.badge > 0 && (
+                <Badge count={tab.badge} variant="toolbar" />
+              )}
+            </span>
+          </button>
+        ))}
+      </nav>
+      <hr className="oxm-tabswitcher__separator" />
+      <div
+        className="oxm-tabswitcher__indicator"
+        style={{
+          width: `${indicatorStyle.width}px`,
+          transform: `translateX(${indicatorStyle.left}px)`,
+        }}
+      />
+    </div>
   );
 };
 

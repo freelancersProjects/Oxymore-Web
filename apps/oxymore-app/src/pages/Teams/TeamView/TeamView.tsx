@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
-import { OXMButton } from '@oxymore/ui';
+import { OXMButton, OXMLoader } from '@oxymore/ui';
+import { Eye, Sword, ChevronDown } from 'lucide-react';
 import { teamService } from '../../../services/teamService';
 import TeamToolbar, { type TeamTab } from '../TeamToolbar/TeamToolbar';
 import TeamChat from './TeamChat/TeamChat';
@@ -11,6 +12,8 @@ import TeamApplications from './TeamApplications/TeamApplications';
 import TeamTournamentHistory from './TeamTournamentHistory/TeamTournamentHistory';
 import TeamSettings from './TeamSettings/TeamSettings';
 import type { Team, TeamMemberResponse, TeamApplication } from '../../../types/team';
+import DEFAULT_TEAM_BANNER from '../../../assets/images/team/default_banner.png';
+import DEFAULT_TEAM_LOGO from '../../../assets/images/team/default_logo.png';
 import './TeamView.scss';
 
 const VALID_TABS: TeamTab[] = ['messages', 'members', 'challenges', 'matchHistory', 'applications', 'tournamentHistory', 'settings'];
@@ -29,6 +32,8 @@ const TeamView: React.FC = () => {
   const [pendingApplicationsCount, setPendingApplicationsCount] = useState(0);
   const [unreadMessagesCount, setUnreadMessagesCount] = useState(0);
   const [pendingChallengesCount, setPendingChallengesCount] = useState(0);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!id) return;
@@ -159,12 +164,26 @@ const TeamView: React.FC = () => {
     }
   }, [activeTab, id]);
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    if (isDropdownOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isDropdownOpen]);
+
   if (teamLoading) {
     return (
-      <div className="team-view-container">
-        <div style={{ textAlign: 'center', padding: '40px' }}>
-          Chargement...
-        </div>
+      <div className="team-view-container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
+        <OXMLoader type="spinner" />
       </div>
     );
   }
@@ -193,7 +212,7 @@ const TeamView: React.FC = () => {
           style={{
             backgroundImage: teamData?.banner
               ? `url(${teamData.banner})`
-              : `url(${teamData?.logo || "/default-banner.jpg"})`,
+              : `url(${DEFAULT_TEAM_BANNER})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}
@@ -201,22 +220,54 @@ const TeamView: React.FC = () => {
           <div className="banner-overlay"></div>
         </div>
         <div className="team-info-overlay">
+          <img
+            src={teamData?.logo || DEFAULT_TEAM_LOGO}
+            alt="Team Logo"
+            className="team-logo-banner"
+          />
           <div className="team-info-content">
-            <div className="team-name-row">
-              <img
-                src={teamData?.logo || "/default-team-logo.png"}
-                alt="Team Logo"
-                className="team-logo-banner"
-              />
-              <h2 className="team-name-banner">
-                {teamData?.name || "Loading..."}
-              </h2>
-            </div>
+            <h2 className="team-name-banner">
+              {teamData?.name || "Loading..."}
+            </h2>
             <p className="team-subtitle-banner">
               {teamData?.description || "no description"}
             </p>
           </div>
-          <OXMButton variant="primary">View Public Team Profile</OXMButton>
+          <div className="team-actions-dropdown" ref={dropdownRef}>
+            <button
+              className="team-actions-dropdown-toggle"
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+            >
+              Actions
+              <ChevronDown size={18} className={isDropdownOpen ? 'open' : ''} />
+            </button>
+            {isDropdownOpen && (
+              <div className="team-actions-dropdown-menu">
+                <button
+                  className="team-actions-dropdown-item"
+                  onClick={() => {
+                    if (id) {
+                      navigate(`/teams/public/${id}`);
+                    }
+                    setIsDropdownOpen(false);
+                  }}
+                >
+                  <Eye size={18} />
+                  Voir la page publique
+                </button>
+                <button
+                  className="team-actions-dropdown-item"
+                  onClick={() => {
+                    navigate('/teams');
+                    setIsDropdownOpen(false);
+                  }}
+                >
+                  <Sword size={18} />
+                  Défier des équipes
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 

@@ -16,10 +16,14 @@ export const getNotificationsByUserId = async (userId: string): Promise<Notifica
     FROM notification n
     LEFT JOIN notification_read nr ON n.id_notification = nr.id_notification AND nr.id_user COLLATE utf8mb4_general_ci = ?
     LEFT JOIN notification_hidden nh ON n.id_notification = nh.id_notification AND nh.id_user COLLATE utf8mb4_general_ci = ?
-    WHERE (n.id_user IS NULL OR n.id_user COLLATE utf8mb4_general_ci = ?)
+    LEFT JOIN user u ON u.id_user COLLATE utf8mb4_general_ci = ?
+    WHERE (
+      (n.id_user IS NULL AND n.created_at >= u.created_at) 
+      OR n.id_user COLLATE utf8mb4_general_ci = ?
+    )
     AND nh.id_notification_hidden IS NULL
     ORDER BY n.created_at DESC
-  `, [userId, userId, userId]);
+  `, [userId, userId, userId, userId]);
 
   return (rows as any[]).map((row: any) => ({
     id_notification: row.id_notification,
@@ -39,12 +43,14 @@ export const getUnreadNotificationsCount = async (userId: string): Promise<numbe
     FROM notification n
     LEFT JOIN notification_read nr ON n.id_notification = nr.id_notification AND nr.id_user COLLATE utf8mb4_general_ci = ?
     LEFT JOIN notification_hidden nh ON n.id_notification = nh.id_notification AND nh.id_user COLLATE utf8mb4_general_ci = ?
-    WHERE (n.id_user IS NULL OR n.id_user COLLATE utf8mb4_general_ci = ?)
-    AND n.type = 'message'
-    AND n.title = 'Nouvelle réponse'
+    LEFT JOIN user u ON u.id_user COLLATE utf8mb4_general_ci = ?
+    WHERE (
+      (n.id_user IS NULL AND n.created_at >= u.created_at) 
+      OR n.id_user COLLATE utf8mb4_general_ci = ?
+    )
     AND nr.id_notification_read IS NULL
     AND nh.id_notification_hidden IS NULL
-  `, [userId, userId, userId]);
+  `, [userId, userId, userId, userId]);
 
   return (rows as any)[0].count;
 };
@@ -107,12 +113,16 @@ export const markAllNotificationsAsRead = async (userId: string): Promise<void> 
   const [unreadNotifications] = await db.query(`
     SELECT n.id_notification FROM notification n
     LEFT JOIN notification_hidden nh ON n.id_notification = nh.id_notification AND nh.id_user COLLATE utf8mb4_general_ci = ?
-    WHERE (n.id_user IS NULL OR n.id_user COLLATE utf8mb4_general_ci = ?)
+    LEFT JOIN user u ON u.id_user COLLATE utf8mb4_general_ci = ?
+    WHERE (
+      (n.id_user IS NULL AND n.created_at >= u.created_at) 
+      OR n.id_user COLLATE utf8mb4_general_ci = ?
+    )
     AND nh.id_notification_hidden IS NULL
     AND n.id_notification NOT IN (
       SELECT id_notification FROM notification_read WHERE id_user COLLATE utf8mb4_general_ci = ?
     )
-  `, [userId, userId, userId]);
+  `, [userId, userId, userId, userId]);
 
   if (Array.isArray(unreadNotifications) && unreadNotifications.length > 0) {
     const readAt = new Date().toISOString();

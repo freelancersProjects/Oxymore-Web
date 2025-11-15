@@ -1,0 +1,167 @@
+@import '../../styles/global';
+
+.email-verification-banner {
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  margin: 0;
+  padding: rem-calc(16);
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+
+  .email-verification-banner-content {
+    max-width: rem-calc(600);
+    width: 100%;
+    margin: 0 auto;
+    padding: rem-calc(10) rem-calc(16);
+    background: rgba(251, 191, 36, 0.15);
+    border: 1px solid rgba(251, 191, 36, 0.3);
+    border-radius: rem-calc(12);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 rem-calc(-2) rem-calc(10) rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    gap: rem-calc(12);
+    flex-wrap: nowrap;
+    pointer-events: auto;
+    box-sizing: border-box;
+
+    &.dismissed {
+      display: none !important;
+    }
+
+    @media (max-width: rem-calc(768)) {
+      flex-wrap: wrap;
+      gap: rem-calc(8);
+    }
+  }
+
+  .email-verification-banner-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: rem-calc(28);
+    height: rem-calc(28);
+    background: rgba(251, 191, 36, 0.25);
+    border-radius: rem-calc(6);
+    color: #fbbf24;
+    flex-shrink: 0;
+
+    svg {
+      width: rem-calc(16);
+      height: rem-calc(16);
+    }
+  }
+
+  .email-verification-banner-text {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: rem-calc(8);
+    overflow: hidden;
+
+    .email-verification-banner-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: rem-calc(13);
+      font-weight: 600;
+      color: #fbbf24;
+      margin: 0;
+      white-space: normal;
+      word-wrap: break-word;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      line-height: 1.4;
+      max-width: 100%;
+    }
+
+    .email-verification-banner-message {
+      font-family: 'Outfit', sans-serif;
+      font-size: rem-calc(13);
+      font-weight: 600;
+      color: #22c55e;
+      margin: 0;
+      white-space: normal;
+      word-wrap: break-word;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      line-height: 1.4;
+      max-width: 100%;
+    }
+
+    .email-verification-banner-description {
+      display: none;
+    }
+  }
+
+  .email-verification-banner-actions {
+    display: flex;
+    align-items: center;
+    gap: rem-calc(8);
+    flex-shrink: 0;
+
+    .email-verification-banner-button {
+      padding: rem-calc(6) rem-calc(16);
+      background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+      border: none;
+      border-radius: rem-calc(6);
+      color: #000;
+      font-family: 'Outfit', sans-serif;
+      font-size: rem-calc(12);
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+
+      &:hover:not(:disabled) {
+        transform: translateY(rem-calc(-1));
+        box-shadow: 0 rem-calc(2) rem-calc(8) rgba(251, 191, 36, 0.4);
+        background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      }
+
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+    }
+
+    .email-verification-banner-close {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: rem-calc(24);
+      height: rem-calc(24);
+      background: rgba(251, 191, 36, 0.2);
+      border: 1px solid rgba(251, 191, 36, 0.3);
+      border-radius: rem-calc(4);
+      color: #fbbf24;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+
+      svg {
+        width: rem-calc(14);
+        height: rem-calc(14);
+      }
+
+      &:hover {
+        background: rgba(251, 191, 36, 0.3);
+        border-color: rgba(251, 191, 36, 0.4);
+        color: #f59e0b;
+      }
+    }
+  }
+}
+

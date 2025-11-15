@@ -1,0 +1,30 @@
+@import '../../styles/global';
+
+.teams-container {
+  min-height: 100vh;
+  background: $color-background;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  position: relative;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.teams-content {
+  width: 100%;
+  height: 100%;
+}
+
+@media (max-width: 768px) {
+  .teams-container {
+    padding: 0;
+    margin: 0;
+  }
+
+  .teams-content {
+    width: 100%;
+    padding: 0;
+  }
+}

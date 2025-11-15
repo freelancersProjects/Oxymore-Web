@@ -26,14 +26,29 @@
       justify-content: center;
     }
 
+    .oxm-sidebar__header-content {
+      justify-content: center;
+      width: 100%;
+    }
+
     .oxm-sidebar__logo {
+      justify-content: center;
+      width: 100%;
+      
       span {
         display: none;
+      }
+
+      a {
+        display: flex;
+        justify-content: center;
+        width: 100%;
       }
 
       img {
         width: rem-calc(32);
         height: rem-calc(32);
+        margin: 0 auto;
       }
     }
 
@@ -535,7 +550,7 @@
           position: absolute;
           top: rem-calc(6);
           right: rem-calc(6);
-          margin-left: 0;
+          margin-left: 10px;
         }
 
         &.active {
@@ -574,7 +589,7 @@
 
   .oxm-sidebar__current-game {
     margin-top: rem-calc(16);
-    padding: 0;
+    padding: rem-calc(16) rem-calc(8);
     border-top: 1px solid rgb(255 255 255 / 6%);
     display: flex;
     justify-content: center;

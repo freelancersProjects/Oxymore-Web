@@ -4,6 +4,7 @@ import {
   getPrivateMessages,
   getConversations,
   getPrivateMessage,
+  updateMessage,
   deleteMessage
 } from '../../controllers/messaging/privateMessageController';
 import { authenticateToken } from '../../middleware/auth';
@@ -106,6 +107,43 @@ router.get('/:friendId', authenticateToken, getPrivateMessages as RequestHandler
  *         description: Message non trouvé
  */
 router.get('/message/:id', authenticateToken, getPrivateMessage as RequestHandler);
+
+/**
+ * @openapi
+ * /api/private-messages/{id}:
+ *   put:
+ *     tags:
+ *       - Private Messages
+ *     summary: Modifier un message
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - content
+ *             properties:
+ *               content:
+ *                 type: string
+ *                 maxLength: 500
+ *     responses:
+ *       200:
+ *         description: Message modifié avec succès
+ *       403:
+ *         description: Non autorisé
+ *       404:
+ *         description: Message non trouvé
+ */
+router.put('/:id', authenticateToken, updateMessage as RequestHandler);
 
 /**
  * @openapi

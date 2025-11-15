@@ -23,7 +23,7 @@ export interface TeamChat {
   is_admin?: boolean;
 }
 
-export interface TeamDetails {
+export interface TeamDetailsType {
   id_team: string;
   team_name: string;
   team_logo_url?: string;
@@ -37,9 +37,10 @@ export interface TeamDetails {
   subscription_status?: boolean;
   created_at?: string;
   verified?: boolean;
+  is_recruiting?: boolean;
 }
 
-export interface TeamDetailsComplete extends TeamDetails {
+export interface TeamDetailsComplete extends TeamDetailsType {
   members: TeamMember[];
   chats: TeamChat[];
 }
@@ -61,7 +62,7 @@ export const useTeamDetails = (teamId: string | undefined) => {
 
       // Fetch team basic info, members, and chats in parallel
       const [team, members, chats] = await Promise.all([
-        apiService.get<TeamDetails>(`/teams/${teamId}`),
+        apiService.get<TeamDetailsType>(`/teams/${teamId}`),
         apiService.get<TeamMember[]>(`/team-members/team/${teamId}`),
         apiService.get<TeamChat[]>(`/team-chats/team/${teamId}`)
       ]);

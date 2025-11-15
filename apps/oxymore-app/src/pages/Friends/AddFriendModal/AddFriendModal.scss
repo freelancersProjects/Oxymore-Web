@@ -1,0 +1,244 @@
+@import "../../../styles/global";
+
+.add-friend-modal {
+  border-radius: rem-calc(16);
+  padding: rem-calc(24);
+  max-width: rem-calc(600);
+  width: 100%;
+  color: $color-white;
+  font-family: 'Outfit', sans-serif;
+
+  .add-friend-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: rem-calc(24);
+
+    .modal-header-content {
+      display: flex;
+      align-items: center;
+      gap: rem-calc(12);
+
+      .modal-icon-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        color: $color-white;
+      }
+
+      .add-friend-modal-title {
+        font-size: rem-calc(20);
+        font-weight: 700;
+        color: $color-white !important;
+        margin: 0;
+        padding: 0;
+        font-family: 'Orbitron', sans-serif;
+        text-align: left;
+      }
+    }
+
+    .close-button {
+      width: rem-calc(40);
+      height: rem-calc(40);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: rem-calc(8);
+      background: rgba(255, 255, 255, 0.05);
+      color: rgba(255, 255, 255, 0.7);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      flex-shrink: 0;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(21, 147, 206, 0.5);
+        color: $color-white;
+      }
+
+      svg {
+        width: rem-calc(20);
+        height: rem-calc(20);
+      }
+    }
+  }
+
+  .add-friend-modal-content {
+    .add-friend-modal-subtitle {
+      font-size: rem-calc(14);
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: rem-calc(20);
+    }
+
+    .search-section {
+      margin-bottom: rem-calc(24);
+
+      .search-input-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+
+        .search-icon {
+          position: absolute;
+          left: rem-calc(15);
+          top: 50%;
+          transform: translateY(-50%);
+          color: rgba($color-white, 0.5);
+          pointer-events: none;
+          z-index: 2;
+        }
+
+        .user-search-input {
+          width: 100%;
+          padding: rem-calc(12) rem-calc(16) rem-calc(12) rem-calc(45);
+          background: rgba(255, 255, 255, 0.05);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: rem-calc(12);
+          color: $color-white;
+          font-family: Outfit, sans-serif;
+          font-size: rem-calc(15);
+          transition: all 0.2s ease;
+
+          &::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+          }
+
+          &:focus {
+            outline: none;
+            border-color: rgba($color-blue, 0.5);
+            background: rgba(255, 255, 255, 0.08);
+          }
+        }
+
+        .clear-search-btn {
+          position: absolute;
+          right: rem-calc(15);
+          top: 50%;
+          transform: translateY(-50%);
+          background: none;
+          border: none;
+          color: rgba($color-white, 0.5);
+          cursor: pointer;
+          padding: rem-calc(5);
+          border-radius: 50%;
+          transition: all 0.2s ease;
+          z-index: 2;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          &:hover {
+            color: $color-white;
+            background: rgba($color-white, 0.1);
+          }
+        }
+      }
+    }
+
+    .search-results {
+      max-height: rem-calc(400);
+      overflow-y: auto;
+
+      .loading-results {
+        text-align: center;
+        padding: rem-calc(20);
+        color: rgba($color-white, 0.7);
+        font-family: Outfit, sans-serif;
+      }
+
+      .no-results {
+        text-align: center;
+        padding: rem-calc(20);
+        color: rgba($color-white, 0.7);
+        font-family: Outfit, sans-serif;
+      }
+
+      .results-list {
+        display: flex;
+        flex-direction: column;
+        gap: rem-calc(12);
+
+        .user-result-item {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: rem-calc(15);
+          background: rgba(255, 255, 255, 0.03);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: rem-calc(12);
+          transition: all 0.3s ease;
+
+          &:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.2);
+          }
+
+          .user-info {
+            display: flex;
+            align-items: center;
+            gap: rem-calc(12);
+            flex: 1;
+
+            .user-avatar {
+              width: rem-calc(40);
+              height: rem-calc(40);
+              background: rgba(255, 255, 255, 0.1);
+              border-radius: 50%;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              color: $color-white;
+              flex-shrink: 0;
+            }
+
+            .user-details {
+              display: flex;
+              flex-direction: column;
+              gap: rem-calc(4);
+
+              .user-name {
+                font-family: Outfit, sans-serif;
+                font-size: rem-calc(16);
+                font-weight: 600;
+                color: $color-white;
+                margin: 0;
+              }
+            }
+          }
+
+          .user-actions {
+            display: flex;
+            align-items: center;
+            gap: rem-calc(10);
+
+            .status-badge {
+              padding: rem-calc(6) rem-calc(12);
+              border-radius: rem-calc(20);
+              font-family: Outfit, sans-serif;
+              font-size: rem-calc(12);
+              font-weight: 500;
+              text-transform: uppercase;
+              letter-spacing: 0.5px;
+
+              &.pending {
+                background: rgba($color-yellow, 0.2);
+                color: $color-yellow;
+                border: 1px solid rgba($color-yellow, 0.3);
+              }
+
+              &.accepted {
+                background: rgba($color-green, 0.2);
+                color: $color-green;
+                border: 1px solid rgba($color-green, 0.3);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+

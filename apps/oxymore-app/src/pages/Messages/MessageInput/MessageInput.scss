@@ -1,0 +1,80 @@
+@import "../../../styles/global";
+
+.chat-input-wrapper {
+  display: flex;
+  gap: rem-calc(8);
+  margin-top: auto;
+  align-items: center;
+  padding-top: rem-calc(16);
+}
+
+.chat-input {
+  flex: 1;
+  background: rgb(255 255 255 / 5%);
+  border: 1px solid rgb(255 255 255 / 10%);
+  border-radius: rem-calc(50);
+  padding: rem-calc(14) rem-calc(20);
+  color: $color-white;
+  font-size: rem-calc(14);
+  resize: none;
+  overflow: hidden;
+  min-height: rem-calc(50);
+
+  &::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+  }
+
+  &:focus {
+    outline: none;
+    border-color: rgba($color-blue, 0.5);
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.send-button {
+  width: rem-calc(50);
+  height: rem-calc(50);
+  border-radius: 50%;
+  background: $color-blue;
+  border: none;
+  color: $color-white;
+  font-size: rem-calc(20);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  &:hover:not(:disabled) {
+    background: lighten($color-blue, 10%);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.cancel-edit-button {
+  padding: rem-calc(14) rem-calc(20);
+  border-radius: rem-calc(50);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: $color-white;
+  font-size: rem-calc(14);
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+}
+
+
+

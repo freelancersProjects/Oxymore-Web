@@ -1,0 +1,82 @@
+{
+  "name": "@oxymore/desktop",
+  "version": "1.0.0",
+  "description": "Oxymore Desktop Application",
+  "main": "dist-electron/main.js",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "copy-preload": "node -e \"const fs = require('fs'); if (fs.existsSync('electron/preload.js')) { fs.copyFileSync('electron/preload.js', 'dist-electron/preload.js'); }\"",
+    "build": "tsc && vite build && electron-builder",
+    "preview": "vite preview",
+    "electron:dev": "concurrently \"npm run dev\" \"wait-on http://localhost:5173 && electron .\"",
+    "electron": "electron .",
+    "electron:pack": "electron-builder"
+  },
+  "build": {
+    "appId": "com.oxymore.desktop",
+    "productName": "Oxymore",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "dist-electron/**/*",
+      "node_modules/**/*"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "build/icon.ico"
+    },
+    "mac": {
+      "target": "dmg",
+      "icon": "build/icon.icns"
+    },
+    "linux": {
+      "target": "AppImage",
+      "icon": "build/icon.png"
+    }
+  },
+  "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@mui/icons-material": "^7.2.0",
+    "@mui/material": "^7.2.0",
+    "@oxymore/types": "1.0.0",
+    "@oxymore/ui": "1.0.0",
+    "framer-motion": "^12.23.22",
+    "lucide-react": "^0.535.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-icons": "^5.5.0",
+    "react-router-dom": "^7.7.1",
+    "vite-plugin-svgr": "^4.3.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.25.0",
+    "@types/node": "^20.11.0",
+    "@types/react": "^18.2.66",
+    "@types/react-dom": "^18.2.22",
+    "@typescript-eslint/eslint-plugin": "^7.2.0",
+    "@typescript-eslint/parser": "^7.2.0",
+    "@vitejs/plugin-react": "^4.2.1",
+    "concurrently": "^9.2.1",
+    "electron": "^28.1.0",
+    "electron-builder": "^24.9.1",
+    "eslint": "^8.57.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.6",
+    "globals": "^16.0.0",
+    "sass": "^1.72.0",
+    "stylelint": "^16.2.1",
+    "stylelint-config-standard-scss": "^13.1.0",
+    "stylelint-scss": "^6.1.0",
+    "typescript": "^5.3.3",
+    "vite": "^5.1.0",
+    "vite-plugin-electron": "^0.28.0",
+    "vite-plugin-electron-renderer": "^0.14.5",
+    "vite-plugin-svgr": "^4.3.0",
+    "wait-on": "^7.2.0"
+  }
+}
+

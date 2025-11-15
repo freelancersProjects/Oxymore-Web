@@ -5,6 +5,7 @@ import {
   createTournament,
   updateTournament,
   deleteTournament,
+  getTournamentPageConfig,
 } from "../../controllers/tournament/tournamentController";
 
 const router = Router();
@@ -21,6 +22,19 @@ const router = Router();
  *         description: Liste des tournois
  */
 router.get("/", getAllTournaments);
+
+/**
+ * @openapi
+ * /api/tournaments/config/page:
+ *   get:
+ *     tags:
+ *       - Tournaments
+ *     summary: Récupère la configuration de la page tournois
+ *     responses:
+ *       200:
+ *         description: Configuration de la page tournois
+ */
+router.get("/config/page", getTournamentPageConfig);
 
 /**
  * @openapi

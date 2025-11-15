@@ -1,0 +1,194 @@
+@import "../../../styles/global";
+
+.friends-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(rem-calc(280), 1fr));
+  gap: rem-calc(20);
+  margin-bottom: rem-calc(32);
+  position: relative;
+  z-index: 1;
+
+  &.list-view {
+    grid-template-columns: 1fr;
+    gap: rem-calc(12);
+
+    .friend-card {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      padding: rem-calc(16) rem-calc(24);
+
+      .friend-header {
+        flex: 1;
+        margin-bottom: 0;
+        align-items: center;
+
+        .friend-info {
+          flex: 1;
+          min-width: 0;
+          overflow: hidden;
+          display: flex;
+          flex-direction: column;
+          gap: rem-calc(4);
+
+          .friend-name-wrapper {
+            display: flex;
+            align-items: center;
+            gap: rem-calc(12);
+            flex-wrap: nowrap;
+            width: 100%;
+          }
+
+          .friend-name {
+            font-size: rem-calc(18);
+            font-weight: 700;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            flex: 1;
+            min-width: 0;
+            display: block;
+          }
+
+          .status-text-inline {
+            font-family: Orbitron, sans-serif;
+            font-size: rem-calc(12);
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: rem-calc(6);
+            padding: rem-calc(3) rem-calc(8);
+            border-radius: rem-calc(20);
+            background: rgba($color-blue, 0.1);
+            border: 1px solid rgba($color-blue, 0.2);
+            color: $color-white;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            white-space: nowrap;
+            flex-shrink: 0;
+
+            &::before {
+              content: '';
+              width: rem-calc(8);
+              height: rem-calc(8);
+              border-radius: 50%;
+              background: currentColor;
+              box-shadow: 0 0 rem-calc(8) currentColor;
+            }
+          }
+
+          .request-status {
+            width: 100%;
+            text-align: left;
+            margin-top: 0;
+          }
+        }
+      }
+
+      .friend-details {
+        margin: 0 rem-calc(24);
+        padding: 0;
+        border: none;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+
+        .status-info {
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
+        }
+      }
+
+      .friend-actions {
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        gap: rem-calc(12);
+
+        .status-text-inline {
+          font-family: Orbitron, sans-serif;
+          font-size: rem-calc(12);
+          font-weight: 600;
+          display: inline-flex;
+          align-items: center;
+          gap: rem-calc(6);
+          padding: rem-calc(3) rem-calc(8);
+          border-radius: rem-calc(20);
+          background: rgba($color-blue, 0.1);
+          border: 1px solid rgba($color-blue, 0.2);
+          color: $color-white;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+          white-space: nowrap;
+          flex-shrink: 0;
+          margin-right: rem-calc(8);
+
+          &::before {
+            content: '';
+            width: rem-calc(8);
+            height: rem-calc(8);
+            border-radius: 50%;
+            background: currentColor;
+            box-shadow: 0 0 rem-calc(8) currentColor;
+          }
+        }
+      }
+    }
+  }
+
+  &.card-view {
+    grid-template-columns: repeat(auto-fill, minmax(rem-calc(280), 1fr));
+    gap: rem-calc(20);
+  }
+}
+
+.friend-card {
+  &.pending-request {
+    border: 1px solid rgb(139 92 246 / 30%);
+    background: rgb(139 92 246 / 5%);
+
+    .request-status {
+      font-size: rem-calc(11);
+      color: $color-primary;
+      font-weight: 500;
+      margin-top: rem-calc(2);
+    }
+  }
+}
+
+.empty-state {
+  text-align: center;
+  padding: rem-calc(60) rem-calc(20);
+  background: rgb(255 255 255 / 2%);
+  border: 1px solid rgb(255 255 255 / 5%);
+  border-radius: rem-calc(16);
+  backdrop-filter: blur(10px);
+
+  .empty-icon {
+    font-size: rem-calc(48) !important;
+    color: rgba($color-white, 0.3) !important;
+    margin-bottom: rem-calc(16);
+    filter: drop-shadow(0 4px 8px rgb(0 0 0 / 30%));
+  }
+
+  h3 {
+    font-family: Orbitron, sans-serif;
+    font-size: rem-calc(20);
+    color: $color-white;
+    margin-bottom: rem-calc(10);
+  }
+
+  p {
+    font-family: Outfit, sans-serif;
+    font-size: rem-calc(15);
+    color: rgba($color-white, 0.7);
+    margin-bottom: rem-calc(24);
+    max-width: rem-calc(400);
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+

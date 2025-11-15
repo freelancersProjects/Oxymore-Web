@@ -79,6 +79,12 @@
   overflow-y: auto;
   flex: 1;
   color: $color-white;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 @media (max-width: 600px) {

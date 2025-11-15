@@ -4,7 +4,8 @@ import jwt from "jsonwebtoken";
 import * as UserService from "../../services/user/userService";
 import { db } from "../../config/db";
 import { RowDataPacket } from "mysql2";
-import { sendWelcomeEmail } from "../../services/email/emailService";
+import { sendWelcomeEmail, sendVerificationEmail } from "../../services/email/emailService";
+import * as EmailVerificationService from "../../services/email/emailVerificationService";
 
 interface Role extends RowDataPacket {
   id: string;
@@ -215,6 +216,81 @@ export const login = async (req: Request, res: Response) => {
     });
   } catch (error) {
     console.error("Error in login:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const sendVerificationEmailController = async (req: Request, res: Response) => {
+  try {
+    const userId = (req as any).user?.id;
+
+    if (!userId) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const user = await UserService.getUserById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (user.verified) {
+      return res.status(400).json({ message: "Email already verified" });
+    }
+
+    const token = EmailVerificationService.createVerificationToken(userId);
+    const verificationLink = `${process.env.FRONTEND_URL || 'http://localhost:5173'}/verify-email?token=${token}`;
+
+    const userName = user.first_name && user.last_name
+      ? `${user.first_name} ${user.last_name}`
+      : user.first_name || user.username || 'Utilisateur';
+
+    try {
+      await sendVerificationEmail({
+        name: userName,
+        email: user.email,
+        verificationLink,
+      });
+      res.json({ message: "Verification email sent successfully" });
+    } catch (emailError) {
+      console.error('Error sending verification email:', emailError);
+      res.status(500).json({ message: "Error sending verification email" });
+    }
+  } catch (error) {
+    console.error("Error in sendVerificationEmailController:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const verifyEmail = async (req: Request, res: Response) => {
+  try {
+    const { token } = req.query;
+
+    if (!token || typeof token !== 'string') {
+      return res.status(400).json({ message: "Token is required" });
+    }
+
+    const decoded = EmailVerificationService.verifyToken(token);
+    if (!decoded) {
+      return res.status(400).json({ message: "Invalid or expired token" });
+    }
+
+    const user = await UserService.getUserById(decoded.userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (user.verified) {
+      return res.status(400).json({ message: "Email already verified" });
+    }
+
+    await db.execute(
+      "UPDATE user SET verified = ? WHERE id_user = ?",
+      [true, decoded.userId]
+    );
+
+    res.json({ message: "Email verified successfully" });
+  } catch (error) {
+    console.error("Error in verifyEmail:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 };

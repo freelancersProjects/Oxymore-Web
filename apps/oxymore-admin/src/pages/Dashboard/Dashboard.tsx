@@ -182,12 +182,12 @@ const Dashboard = (): React.JSX.Element => {
             color: 'bg-gradient-oxymore'
           },
           {
-            title: 'Live Matches',
-            value: loading ? '...' : stats.activeMatches.toString(),
-            change: '+2',
+            title: 'Active Users',
+            value: loading ? '...' : formatNumber(stats.activeUsers),
+            change: '+5%',
             trend: 'up',
             icon: Activity,
-            color: 'bg-[linear-gradient(135deg,#ff6b6b,#ee5253)]'
+            color: 'bg-[linear-gradient(135deg,#10b981,#059669)]'
           }
         ].map((stat, index) => (
           <motion.div

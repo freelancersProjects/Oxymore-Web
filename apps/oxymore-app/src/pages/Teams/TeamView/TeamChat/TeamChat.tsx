@@ -4,11 +4,13 @@ import { OXMCheckbox, OXMTooltip, OXMToast } from "@oxymore/ui";
 import { MessageSquare, Trash2, Send, Pin, X } from "lucide-react";
 import { teamService } from "../../../../services/teamService";
 import { userService } from "../../../../services/userService";
-import { avatarService } from "../../../../services/avatarService";
+import Avatar from "../../../../components/Avatar/Avatar";
 import { notificationService } from "../../../../services/notificationService";
 import { truncate } from "../../../../utils/truncate";
 import type { Team, TeamChatResponse, PinnedMessageTeam, TeamMemberDetailed, TeamMemberResponse } from "../../../../types/team";
 import type { Message } from "../../../../types/message";
+import { useTeamChatSocket } from "../../../../hooks/useTeamChatSocket";
+import { usePresenceSocket } from "../../../../hooks/usePresenceSocket";
 import PinnedMessagesModal from "./PinnedMessagesModal/PinnedMessagesModal";
 import ReportMessageModal from "./ReportMessageModal/ReportMessageModal";
 import LeaveTeamModal from "../LeaveTeamModal";
@@ -21,6 +23,23 @@ interface TeamChatProps {
   isActive?: boolean;
 }
 
+interface ChatMessageInput {
+  id_team_chat?: string;
+  id_message?: string;
+  message?: string;
+  content?: string;
+  sent_at?: string;
+  created_at?: string;
+  id_user?: string | null;
+  username?: string;
+  avatar_url?: string;
+  is_admin?: boolean;
+  reply_to?: string;
+  reply_message?: string;
+  reply_id_user?: string | null;
+  reply_username?: string;
+}
+
 const TeamChat: React.FC<TeamChatProps> = ({ teamId, teamData, onUnreadCountChange, isActive = false }) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [pinnedMessages, setPinnedMessages] = useState<PinnedMessageTeam[]>([]);
@@ -29,6 +48,7 @@ const TeamChat: React.FC<TeamChatProps> = ({ teamId, teamData, onUnreadCountChan
   const [loading, setLoading] = useState(false);
   const [teamMembers, setTeamMembers] = useState<TeamMemberDetailed[]>([]);
   const [currentUserId, setCurrentUserId] = useState<string>("");
+  const [currentUsername, setCurrentUsername] = useState<string>("");
   const [hoveredMessageId, setHoveredMessageId] = useState<string | null>(null);
   const [openedMenuId, setOpenedMenuId] = useState<string | null>(null);
   const [hoveredOtherMessageId, setHoveredOtherMessageId] = useState<string | null>(null);
@@ -55,6 +75,90 @@ const TeamChat: React.FC<TeamChatProps> = ({ teamId, teamData, onUnreadCountChan
   const previousIsActiveRef = useRef<boolean>(false);
   const navigate = useNavigate();
 
+  const transformChatToMessage = (chat: ChatMessageInput | TeamChatResponse, currentUserId: string, currentUsername?: string): Message => {
+    const sentDate = new Date(chat.sent_at || (chat as ChatMessageInput).created_at || '');
+    const isAdmin = chat.is_admin || chat.id_user === null || chat.id_user === 'admin';
+    const chatInput = chat as ChatMessageInput;
+    return {
+      id: chat.id_team_chat || chatInput.id_message || '',
+      sender: isAdmin ? "Admin" : (chat.id_user === currentUserId ? "You" : (chat.username || "Unknown")),
+      senderAvatar: chat.avatar_url || '',
+      senderUsernameForAvatar: isAdmin ? "Admin" : (chat.id_user === currentUserId ? (currentUsername || "You") : (chat.username || "Unknown")),
+      timestamp: sentDate.toLocaleTimeString("fr-FR", {
+        hour: "2-digit",
+        minute: "2-digit",
+        timeZone: "Europe/Paris",
+      }),
+      text: chat.message || chatInput.content || '',
+      isFromMe: chat.id_user === currentUserId && !isAdmin,
+      isAdmin: isAdmin,
+      replyTo: chatInput.reply_to && chatInput.reply_message ? {
+        id: chatInput.reply_to,
+        text: chatInput.reply_message,
+        sender: (chatInput.reply_id_user === null || chatInput.reply_id_user === 'admin') ? "Admin" : (chatInput.reply_username || chatInput.reply_id_user || "Unknown")
+      } : undefined,
+    };
+  };
+
+  const { sendMessage: sendWebSocketMessage, editMessage: editWebSocketMessage, deleteMessage: deleteWebSocketMessage, isConnected: isWebSocketConnected } = useTeamChatSocket({
+    teamId: teamId || null,
+    onMessage: (wsMessage) => {
+      if (!currentUserId) return;
+      const newMessage = transformChatToMessage({
+        id_team_chat: wsMessage.id_message,
+        message: wsMessage.content,
+        sent_at: wsMessage.created_at,
+        id_user: wsMessage.user_id,
+        username: wsMessage.username,
+        avatar_url: wsMessage.avatar_url,
+        is_admin: false
+      }, currentUserId, currentUsername);
+
+      setMessages(prev => {
+        const exists = prev.some(m => m.id === newMessage.id || (m.id.startsWith('temp-') && m.text === newMessage.text && m.isFromMe));
+        if (exists) {
+          return prev.map(m => 
+            (m.id.startsWith('temp-') && m.text === newMessage.text && m.isFromMe) ? newMessage : m
+          );
+        }
+        return [...prev, newMessage].sort((a, b) => {
+          const dateA = new Date(a.timestamp).getTime();
+          const dateB = new Date(b.timestamp).getTime();
+          return dateA - dateB;
+        });
+      });
+
+      if (shouldAutoScroll) {
+        setTimeout(() => {
+          messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+        }, 100);
+      }
+    },
+    onMessageEdited: (wsMessage) => {
+      if (!currentUserId) return;
+      const newMessage = transformChatToMessage({
+        id_team_chat: wsMessage.id_message,
+        message: wsMessage.content,
+        sent_at: wsMessage.created_at,
+        id_user: wsMessage.user_id,
+        username: wsMessage.username,
+        avatar_url: wsMessage.avatar_url,
+        is_admin: false
+      }, currentUserId, currentUsername);
+
+      setMessages(prev =>
+        prev.map(msg =>
+          msg.id === wsMessage.id_message ? newMessage : msg
+        )
+      );
+    },
+    onMessageDeleted: (data) => {
+      setMessages(prev => prev.filter(msg => msg.id !== data.message_id));
+    },
+    onError: (error) => {
+      setToast({ message: error, type: "error" });
+    }
+  });
 
   useEffect(() => {
     const loadMessages = async () => {
@@ -65,39 +169,17 @@ const TeamChat: React.FC<TeamChatProps> = ({ teamId, teamData, onUnreadCountChan
 
         if (user) {
           setCurrentUserId(user.id_user);
+          setCurrentUsername(user.username || "");
           setIsMuted(user.team_chat_is_muted || false);
         }
 
-        // Sort messages by sent_at to ensure chronological order
         const sortedChats = [...chats].sort((a, b) => {
           const dateA = new Date(a.sent_at).getTime();
           const dateB = new Date(b.sent_at).getTime();
           return dateA - dateB;
         });
 
-        const transformedMessages: Message[] = sortedChats.map((chat: any) => {
-          const sentDate = new Date(chat.sent_at);
-          // Check if message is from admin: is_admin flag or id_user is null
-          const isAdmin = chat.is_admin || chat.id_user === null || chat.id_user === 'admin';
-          return {
-            id: chat.id_team_chat,
-            sender: isAdmin ? "Admin" : (chat.id_user === user?.id_user ? "You" : (chat.username || "Unknown")),
-            senderAvatar: isAdmin ? avatarService.getAvatarUrl("Admin") : avatarService.getAvatarUrl(chat.username, chat.avatar_url),
-            timestamp: sentDate.toLocaleTimeString("fr-FR", {
-              hour: "2-digit",
-              minute: "2-digit",
-              timeZone: "Europe/Paris",
-            }),
-            text: chat.message,
-            isFromMe: chat.id_user === user?.id_user && !isAdmin,
-            isAdmin: isAdmin,
-            replyTo: chat.reply_to && chat.reply_message ? {
-              id: chat.reply_to,
-              text: chat.reply_message,
-              sender: (chat.reply_id_user === null || chat.reply_id_user === 'admin') ? "Admin" : (chat.reply_username || chat.reply_id_user || "Unknown")
-            } : undefined,
-          };
-        });
+        const transformedMessages: Message[] = sortedChats.map((chat: TeamChatResponse) => transformChatToMessage(chat, user?.id_user || "", user?.username));
 
         setMessages(transformedMessages);
 
@@ -137,6 +219,7 @@ const TeamChat: React.FC<TeamChatProps> = ({ teamId, teamData, onUnreadCountChan
           name: member.name,
           avatar: member.avatar_url,
           role: member.role,
+          online_status: 'offline' as const,
         }));
         setTeamMembers(detailedMembers);
       } catch (error) {
@@ -158,17 +241,28 @@ const TeamChat: React.FC<TeamChatProps> = ({ teamId, teamData, onUnreadCountChan
       loadTeamMembers();
       loadPinnedMessages();
     }
-
-    const interval = setInterval(() => {
-      if (teamId) {
-        loadMessages();
-      }
-    }, 5000);
-
-    return () => {
-      clearInterval(interval);
-    };
   }, [teamId, onUnreadCountChange]);
+
+  usePresenceSocket({
+    onUserOnline: (data) => {
+      setTeamMembers(prevMembers =>
+        prevMembers.map(member =>
+          member.id_user === data.user_id
+            ? { ...member, online_status: 'online' }
+            : member
+        )
+      );
+    },
+    onUserOffline: (data) => {
+      setTeamMembers(prevMembers =>
+        prevMembers.map(member =>
+          member.id_user === data.user_id
+            ? { ...member, online_status: 'offline' }
+            : member
+        )
+      );
+    }
+  });
 
   useEffect(() => {
     if (isActive && !previousIsActiveRef.current && messages.length > 0 && chatMessagesRef.current) {
@@ -325,47 +419,55 @@ const TeamChat: React.FC<TeamChatProps> = ({ teamId, teamData, onUnreadCountChan
 
     try {
       if (editingMessageId) {
-        await teamService.updateTeamChat(editingMessageId, cleanedText);
-        const updatedMessages = messages.map(msg =>
-          msg.id === editingMessageId ? { ...msg, text: cleanedText } : msg
-        );
-        setMessages(updatedMessages);
+        if (isWebSocketConnected) {
+          editWebSocketMessage(editingMessageId, cleanedText);
+          setMessages(prev =>
+            prev.map(msg =>
+              msg.id === editingMessageId ? { ...msg, text: cleanedText } : msg
+            )
+          );
+        } else {
+          await teamService.updateTeamChat(editingMessageId, cleanedText);
+          setMessages(prev =>
+            prev.map(msg =>
+              msg.id === editingMessageId ? { ...msg, text: cleanedText } : msg
+            )
+          );
+        }
         setEditingMessageId(null);
         setToast({ message: "Message modifié", type: "success" });
       } else {
-        await teamService.createTeamChat(cleanedText, teamId, currentUserId, replyingToMessageId || undefined);
-        const chats = await teamService.getTeamChats(teamId);
-        
-        // Sort messages by sent_at to ensure chronological order
-        const sortedChats = [...chats].sort((a, b) => {
-          const dateA = new Date(a.sent_at).getTime();
-          const dateB = new Date(b.sent_at).getTime();
-          return dateA - dateB;
-        });
-
-        const transformedMessages: Message[] = sortedChats.map((chat: any) => {
-          const sentDate = new Date(chat.sent_at);
-          const isAdmin = chat.is_admin || chat.id_user === null || chat.id_user === 'admin';
-          return {
-            id: chat.id_team_chat,
-            sender: isAdmin ? "Admin" : (chat.id_user === currentUserId ? "You" : (chat.username || "Unknown")),
-            senderAvatar: isAdmin ? avatarService.getAvatarUrl("Admin") : avatarService.getAvatarUrl(chat.username, chat.avatar_url),
-            timestamp: sentDate.toLocaleTimeString("fr-FR", {
+        if (isWebSocketConnected) {
+          sendWebSocketMessage(cleanedText, replyingToMessageId || undefined);
+          const userStr = localStorage.getItem("useroxm");
+          const user = userStr ? JSON.parse(userStr) : null;
+          const optimisticMessage: Message = {
+            id: `temp-${Date.now()}`,
+            sender: "You",
+            senderUsernameForAvatar: user?.username || "You",
+            senderAvatar: '',
+            timestamp: new Date().toLocaleTimeString("fr-FR", {
               hour: "2-digit",
               minute: "2-digit",
               timeZone: "Europe/Paris",
             }),
-            text: chat.message,
-            isFromMe: chat.id_user === currentUserId && !isAdmin,
-            isAdmin: isAdmin,
-            replyTo: chat.reply_to && chat.reply_message ? {
-              id: chat.reply_to,
-              text: chat.reply_message,
-              sender: (chat.reply_id_user === null || chat.reply_id_user === 'admin') ? "Admin" : (chat.reply_username || chat.reply_id_user || "Unknown")
-            } : undefined,
+            text: cleanedText,
+            isFromMe: true,
+            isAdmin: false,
+            replyTo: replyingToMessageId ? messages.find(m => m.id === replyingToMessageId)?.replyTo : undefined
           };
-        });
-        setMessages(transformedMessages);
+          setMessages(prev => [...prev, optimisticMessage]);
+        } else {
+          await teamService.createTeamChat(cleanedText, teamId, currentUserId, replyingToMessageId || undefined);
+          const chats = await teamService.getTeamChats(teamId);
+          const sortedChats = [...chats].sort((a, b) => {
+            const dateA = new Date(a.sent_at).getTime();
+            const dateB = new Date(b.sent_at).getTime();
+            return dateA - dateB;
+          });
+          const transformedMessages: Message[] = sortedChats.map((chat: TeamChatResponse) => transformChatToMessage(chat, currentUserId, currentUsername));
+          setMessages(transformedMessages);
+        }
         setShouldAutoScroll(true);
         setTimeout(() => {
           if (messagesEndRef.current && chatMessagesRef.current) {
@@ -388,40 +490,22 @@ const TeamChat: React.FC<TeamChatProps> = ({ teamId, teamData, onUnreadCountChan
 
   const handleDelete = async (messageId: string) => {
     try {
-      await teamService.deleteTeamChat(messageId);
-      const chats = await teamService.getTeamChats(teamId);
+      if (isWebSocketConnected) {
+        deleteWebSocketMessage(messageId);
+        setMessages(prev => prev.filter(msg => msg.id !== messageId));
+      } else {
+        await teamService.deleteTeamChat(messageId);
+        const chats = await teamService.getTeamChats(teamId);
 
-      // Sort messages by sent_at to ensure chronological order
-      const sortedChats = [...chats].sort((a, b) => {
-        const dateA = new Date(a.sent_at).getTime();
-        const dateB = new Date(b.sent_at).getTime();
-        return dateA - dateB;
-      });
-
-        const transformedMessages: Message[] = sortedChats.map((chat: any) => {
-          const sentDate = new Date(chat.sent_at);
-          const isAdmin = chat.is_admin || chat.id_user === null || chat.id_user === 'admin';
-          return {
-            id: chat.id_team_chat,
-            sender: isAdmin ? "Admin" : (chat.id_user === currentUserId ? "You" : (chat.username || "Unknown")),
-            senderAvatar: isAdmin ? avatarService.getAvatarUrl("Admin") : avatarService.getAvatarUrl(chat.username, chat.avatar_url),
-            timestamp: sentDate.toLocaleTimeString("fr-FR", {
-              hour: "2-digit",
-              minute: "2-digit",
-              timeZone: "Europe/Paris",
-            }),
-            text: chat.message,
-            isFromMe: chat.id_user === currentUserId && !isAdmin,
-            isAdmin: isAdmin,
-            replyTo: chat.reply_to && chat.reply_message ? {
-              id: chat.reply_to,
-              text: chat.reply_message,
-              sender: (chat.reply_id_user === null || chat.reply_id_user === 'admin') ? "Admin" : (chat.reply_username || chat.reply_id_user || "Unknown")
-            } : undefined,
-          };
+        const sortedChats = [...chats].sort((a, b) => {
+          const dateA = new Date(a.sent_at).getTime();
+          const dateB = new Date(b.sent_at).getTime();
+          return dateA - dateB;
         });
 
-      setMessages(transformedMessages);
+        const transformedMessages: Message[] = sortedChats.map((chat: TeamChatResponse) => transformChatToMessage(chat, currentUserId, currentUsername));
+        setMessages(transformedMessages);
+      }
       setOpenedMenuId(null);
       setToast({ message: "Message supprimé", type: "success" });
     } catch (error) {
@@ -580,15 +664,58 @@ const TeamChat: React.FC<TeamChatProps> = ({ teamId, teamData, onUnreadCountChan
         <div className="sidebar-box">
           <h4>Team Members ({teamMembers.length})</h4>
           <div className="team-members-list">
-            {teamMembers.map((member, index) => (
-              <div key={index} className="team-member-item">
-                <img src={avatarService.getAvatarUrl(member.username, member.avatar)} alt={member.username} />
-                <div className="member-info">
-                  <span className="member-name">{member.username || member.name}</span>
+            {teamMembers.map((member, index) => {
+              const status = member.online_status || 'offline';
+              const getStatusColor = (status: string) => {
+                switch (status) {
+                  case "online":
+                    return "#4ADE80";
+                  case "in-game":
+                    return "#FACC15";
+                  case "offline":
+                    return "#888";
+                  default:
+                    return "#888";
+                }
+              };
+              const getStatusText = (status: string) => {
+                switch (status) {
+                  case "online":
+                    return "Online";
+                  case "in-game":
+                    return "In Game";
+                  case "offline":
+                    return "Offline";
+                  default:
+                    return "Offline";
+                }
+              };
+              return (
+                <div key={index} className="team-member-item">
+                  <div className="member-avatar-wrapper">
+                    <Avatar
+                      username={member.username}
+                      avatarUrl={member.avatar}
+                      size={32}
+                      className="avatar-image"
+                    />
+                    <div
+                      className="status-indicator"
+                      style={{ backgroundColor: getStatusColor(status) }}
+                    />
+                  </div>
+                  <div className="member-info">
+                    <span className="member-name">{member.username || member.name}</span>
+                  </div>
+                  <span 
+                    className={`member-status ${status}`}
+                    style={{ color: getStatusColor(status) }}
+                  >
+                    {getStatusText(status)}
+                  </span>
                 </div>
-                <span className="member-status online">online</span>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
 
@@ -679,7 +806,12 @@ const TeamChat: React.FC<TeamChatProps> = ({ teamId, teamData, onUnreadCountChan
             >
               {!message.isFromMe && (
                 <div className="message-avatar">
-                  <img src={message.senderAvatar} alt={message.sender} />
+                  <Avatar
+                    username={message.senderUsernameForAvatar || message.sender}
+                    avatarUrl={message.senderAvatar}
+                    size={36}
+                    className="avatar-image"
+                  />
                 </div>
               )}
               <div className="message-content">
@@ -784,7 +916,12 @@ const TeamChat: React.FC<TeamChatProps> = ({ teamId, teamData, onUnreadCountChan
               </div>
               {message.isFromMe && (
                 <div className="message-avatar">
-                  <img src={message.senderAvatar} alt={message.sender} />
+                  <Avatar
+                    username={message.senderUsernameForAvatar || message.sender}
+                    avatarUrl={message.senderAvatar}
+                    size={36}
+                    className="avatar-image"
+                  />
                 </div>
               )}
             </div>

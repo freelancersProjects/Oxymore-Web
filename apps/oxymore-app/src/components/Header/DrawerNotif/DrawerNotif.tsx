@@ -3,6 +3,7 @@ import { OXMDrawer, OXMLoader } from "@oxymore/ui";
 import './DrawerNotif.scss';
 import { Bell, CheckCircle, AlertTriangle, MessageCircle, Info, Trash2, ChevronDown, CheckCheck } from 'lucide-react';
 import { notificationService } from '../../../services/notificationService';
+import { useNotificationSocket } from '../../../hooks/useNotificationSocket';
 import type { NotificationWithReadStatus, NotificationType } from '../../../types/notification';
 
 interface DrawerNotifProps {
@@ -65,6 +66,21 @@ const DrawerNotif: React.FC<DrawerNotifProps> = ({ open, onClose, userId, onMark
     }
   }, [open]);
 
+  useNotificationSocket({
+    onNotification: (notification) => {
+      if (notification.id_user === userId || notification.id_user === null) {
+        const newNotification: NotificationWithReadStatus = {
+          ...notification,
+          is_read: false
+        };
+        setNotifications(prev => [newNotification, ...prev]);
+        if (onMarkAllRead) {
+          onMarkAllRead();
+        }
+      }
+    }
+  });
+
   const handleMarkAsRead = async (notificationId: string) => {
     if (!notificationId || !userId) {
       console.error('Missing notificationId or userId:', { notificationId, userId });
@@ -83,6 +99,9 @@ const DrawerNotif: React.FC<DrawerNotifProps> = ({ open, onClose, userId, onMark
             : n
         )
       );
+      if (onMarkAllRead) {
+        onMarkAllRead();
+      }
     } catch (error) {
       console.error('Error marking notification as read:', error);
     }
@@ -100,6 +119,9 @@ const DrawerNotif: React.FC<DrawerNotifProps> = ({ open, onClose, userId, onMark
     try {
       await notificationService.deleteForUser(userId, notificationId);
       setNotifications(prev => prev.filter(n => n.id_notification !== notificationId));
+      if (onMarkAllRead) {
+        onMarkAllRead();
+      }
     } catch (error) {
       console.error('Error deleting notification:', error);
     }
@@ -151,7 +173,7 @@ const DrawerNotif: React.FC<DrawerNotifProps> = ({ open, onClose, userId, onMark
     }
   };
 
-  const unreadCount = notifications.filter(n => !n.is_read && n.type === 'message' && n.title === 'Nouvelle réponse').length;
+  const unreadCount = notifications.filter(n => !n.is_read).length;
 
   return (
     <OXMDrawer open={open} onClose={onClose} side="right" width={420} className="drawer-notif">
@@ -172,7 +194,7 @@ const DrawerNotif: React.FC<DrawerNotifProps> = ({ open, onClose, userId, onMark
               title="Marquer toutes comme lues"
             >
               <CheckCheck size={14} />
-              <span>Tout lu</span>
+              <span>Tout lire</span>
             </button>
           )}
         </div>

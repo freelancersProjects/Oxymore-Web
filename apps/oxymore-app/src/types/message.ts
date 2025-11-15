@@ -2,6 +2,7 @@ export interface Message {
   id: string;
   sender: string;
   senderAvatar: string;
+  senderUsernameForAvatar?: string;
   timestamp: string;
   text: string;
   isFromMe: boolean;

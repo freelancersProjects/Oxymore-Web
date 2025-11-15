@@ -46,6 +46,10 @@ import gameRoutes from "./routes/game/game";
 import cloudinaryRoutes from "./routes/cloudinary/cloudinary";
 import reviewRoutes from "./routes/review/review";
 import emailRoutes from "./routes/email/email";
+import articleRoutes from "./routes/article/article";
+import articleCategoryRoutes from "./routes/article/articleCategory";
+import favoriteFriendRoutes from "./routes/user/favoriteFriend";
+import statsRoutes from "./routes/stats/stats";
 
 export const registerRoutes = (app: Express) => {
   // Routes publiques
@@ -95,4 +99,8 @@ export const registerRoutes = (app: Express) => {
   app.use("/api/cloudinary", cloudinaryRoutes);
   app.use("/api/reviews", reviewRoutes);
   app.use("/api/email", emailRoutes);
+  app.use("/api/articles", articleRoutes);
+  app.use("/api/article-categories", articleCategoryRoutes);
+  app.use("/api/favorite-friends", favoriteFriendRoutes);
+  app.use("/api/stats", statsRoutes);
 };

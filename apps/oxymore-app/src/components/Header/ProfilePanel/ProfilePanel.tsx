@@ -18,7 +18,10 @@ import {
 import { OXMModal } from "@oxymore/ui";
 import { useAuth } from "../../../context/AuthContext";
 import apiService from "../../../api/apiService";
-import { avatarService } from "../../../services/avatarService";
+import { friendService } from "../../../services/friendService";
+import { useFriendRequestSocket } from "../../../hooks/useFriendRequestSocket";
+import { usePresenceSocket } from "../../../hooks/usePresenceSocket";
+import AvatarComponent from '../../Avatar/Avatar';
 import type { FriendWithUser } from "../../../types/friend";
 import "./ProfilePanel.scss";
 
@@ -47,53 +50,18 @@ const USER_STATS = {
   inGameFriends: 3,
 };
 
-const AVATAR_COLORS = [
-  '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7',
-  '#DDA0DD', '#98D8C8', '#F7DC6F', '#BB8FCE', '#85C1E9',
-  '#F8C471', '#82E0AA', '#F1948A', '#85C1E9', '#D7BDE2'
-];
-
-const generateAvatarWithInitial = (username: string, size: number = 48) => {
-  const initial = username.charAt(0).toUpperCase();
-  const colorIndex = username.charCodeAt(0) % AVATAR_COLORS.length;
-  const backgroundColor = AVATAR_COLORS[colorIndex];
-
-  return (
-    <div
-      className="avatar-with-initial"
-      style={{
-        width: size,
-        height: size,
-        borderRadius: '50%',
-        backgroundColor,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        color: 'white',
-        fontSize: size * 0.4,
-        fontWeight: 'bold',
-        textTransform: 'uppercase'
-      }}
-    >
-      {initial}
-    </div>
-  );
-};
-
 const Avatar: React.FC<{
   src?: string;
   username: string;
   size?: number;
   className?: string;
 }> = ({ src, username, size = 48, className = "" }) => {
-  const avatarUrl = avatarService.getAvatarUrl(username, src);
-
   return (
-    <img
-      src={avatarUrl}
-      alt={username}
+    <AvatarComponent
+      username={username}
+      avatarUrl={src}
+      size={size}
       className={className}
-      style={{ width: size, height: size, borderRadius: '50%' }}
     />
   );
 };
@@ -117,11 +85,42 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed, onToggle, onNoti
     }
   }, [user]);
 
+  useFriendRequestSocket({
+    onFriendRequestAccepted: async (friendData) => {
+      if (user?.id_user) {
+        await loadFriends();
+      }
+    }
+  });
+
+  usePresenceSocket({
+    onUserOnline: (data) => {
+      setFriends(prevFriends =>
+        prevFriends.map(friend =>
+          friend.user_id === data.user_id
+            ? { ...friend, online_status: 'online' }
+            : friend
+        )
+      );
+    },
+    onUserOffline: (data) => {
+      setFriends(prevFriends =>
+        prevFriends.map(friend =>
+          friend.user_id === data.user_id
+            ? { ...friend, online_status: 'offline' }
+            : friend
+        )
+      );
+    }
+  });
+
   const loadFriends = async () => {
     try {
       setLoading(true);
-      const data = await apiService.get(`/friends/user/${user?.id_user}`);
-      setFriends(data);
+      if (user?.id_user) {
+        const data = await friendService.getAllFriends(user.id_user);
+        setFriends(data);
+      }
     } catch (error) {
       console.error("Error loading friends:", error);
     } finally {
@@ -208,7 +207,7 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed, onToggle, onNoti
     return (
       <div className="profile-panel collapsed" ref={panelRef}>
         <button className="profile-panel-toggle" onClick={onToggle}>
-          <ChevronRight size={16} />
+          <ChevronLeft size={16} />
         </button>
         <div className="profile-panel__collapsed">
           <div className="profile-panel__avatar-collapsed">
@@ -292,11 +291,11 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed, onToggle, onNoti
                   length: Math.max(
                     0,
                     5 -
-                      (1 + groupMembers.filter(
-                        (m) =>
-                          m.status === "accepted" &&
-                          m.id_user !== user?.id_user
-                      ).slice(0, 4).length)
+                    (1 + groupMembers.filter(
+                      (m) =>
+                        m.status === "accepted" &&
+                        m.id_user !== user?.id_user
+                    ).slice(0, 4).length)
                   ),
                 },
                 (_, index) => (
@@ -318,10 +317,8 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed, onToggle, onNoti
             <div className="online-friends-header">
               <div className="online-friends-title">Friends</div>
             </div>
-            <div className="online-friends-avatars">
-
-              <div className="online-friends-avatars">
-              {onlineFriends.slice(0, 3).map((friend) => (
+            <div className="friends-avatars-collapsed">
+              {onlineFriends.slice(0, 5).map((friend) => (
                 <div
                   key={friend.id_friend}
                   className="friend-avatar-collapsed"
@@ -330,20 +327,15 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed, onToggle, onNoti
                   <Avatar
                     src={friend.avatar_url}
                     username={friend.username}
-                    size={32}
+                    size={28}
                   />
-                  <div
-                    className={`status-indicator ${
-                      friend.online_status || "offline"
-                    }`}
-                  />
-                  <div className="friend-name-tooltip">{friend.username}</div>
                 </div>
               ))}
-              <div className="more-friends-indicator">
-                <span>+{Math.max(0, totalFriends - 3)}</span>
-              </div>
-            </div>
+              {onlineFriends.length > 5 && (
+                <div className="more-friends-indicator-collapsed">
+                  <span>+{onlineFriends.length - 5}</span>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -357,7 +349,8 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed, onToggle, onNoti
         className="profile-panel-toggle"
         onClick={onToggle}
       >
-        <ChevronLeft size={16} />
+        <ChevronRight size={16} />
+
       </button>
 
       {!collapsed && (
@@ -448,11 +441,11 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed, onToggle, onNoti
                     length: Math.max(
                       0,
                       5 -
-                        (1 + groupMembers.filter(
-                          (m) =>
-                            m.status === "accepted" &&
-                            m.id_user !== user?.id_user
-                        ).slice(0, 4).length)
+                      (1 + groupMembers.filter(
+                        (m) =>
+                          m.status === "accepted" &&
+                          m.id_user !== user?.id_user
+                      ).slice(0, 4).length)
                     ),
                   },
                   (_, index) => (
@@ -514,9 +507,8 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed, onToggle, onNoti
                         size={32}
                       />
                       <div
-                        className={`status-indicator ${
-                          friend.online_status || "offline"
-                        }`}
+                        className={`status-indicator ${friend.online_status || "offline"
+                          }`}
                       />
                     </div>
                     <div className="friend-info">
@@ -626,9 +618,8 @@ const ProfilePanel: React.FC<ProfilePanelProps> = ({ collapsed, onToggle, onNoti
                     size={32}
                   />
                   <div
-                    className={`status-indicator ${
-                      friend.online_status || "offline"
-                    }`}
+                    className={`status-indicator ${friend.online_status || "offline"
+                      }`}
                   />
                 </div>
                 <div className="friend-info">

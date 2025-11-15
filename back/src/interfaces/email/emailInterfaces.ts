@@ -20,12 +20,19 @@ export interface WelcomeEmailData {
   email: string;
 }
 
-export type EmailTemplateName = 'contact' | 'welcome' | 'contact-confirmation';
+export interface EmailVerificationData {
+  name: string;
+  email: string;
+  verificationLink: string;
+}
+
+export type EmailTemplateName = 'contact' | 'welcome' | 'contact-confirmation' | 'email-verification';
 
 export interface EmailTemplateMap {
   contact: ContactEmailData;
   welcome: WelcomeEmailData;
   'contact-confirmation': ContactEmailData;
+  'email-verification': EmailVerificationData;
 }
 
 export type EmailTemplateData<T extends EmailTemplateName = EmailTemplateName> = 

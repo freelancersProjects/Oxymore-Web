@@ -25,8 +25,8 @@ const Edit = () => {
   const [dragActive, setDragActive] = useState(false);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [uploadingImage, setUploadingImage] = useState(false);
-  const [uploadedImageUrl, setUploadedImageUrl] = useState<string | null>(null);
-  const [oldImagePublicId, setOldImagePublicId] = useState<string | null>(null);
+  const [, setUploadedImageUrl] = useState<string | null>(null);
+  const [, setOldImagePublicId] = useState<string | null>(null);
 
   const {
     register,
@@ -169,7 +169,7 @@ const Edit = () => {
       };
       setValue('start_date', formatDateTimeLocal(tournamentData.start_date));
       setValue('end_date', formatDateTimeLocal(tournamentData.end_date));
-      setValue('check_in_date', formatDateTimeLocal(tournamentData.check_in_date));
+      setValue('check_in_date', tournamentData.check_in_date ? formatDateTimeLocal(tournamentData.check_in_date) : '');
       setValue('cash_prize', tournamentData.cash_prize || 0);
       setValue('entry_fee', tournamentData.entry_fee || 0);
       setValue('max_participant', tournamentData.max_participant || 0);

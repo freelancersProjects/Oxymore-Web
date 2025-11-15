@@ -15,8 +15,6 @@
  *         status:
  *           type: string
  *           enum: [pending, accepted, rejected, blocked]
- *         is_favorite:
- *           type: boolean
  *         created_at:
  *           type: string
  *           format: date-time

@@ -1,5 +1,154 @@
 @import "../../styles/global";
 
+.delete-confirm-modal {
+  border-radius: rem-calc(16);
+  padding: rem-calc(24);
+  max-width: rem-calc(500);
+  width: 100%;
+  color: $color-white;
+  font-family: 'Outfit', sans-serif;
+
+  .modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: rem-calc(24);
+
+    .modal-header-content {
+      display: flex;
+      align-items: center;
+      gap: rem-calc(12);
+
+      .modal-icon-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+
+        &.delete {
+          background: transparent;
+          color: $color-white;
+        }
+      }
+
+      .modal-title {
+        font-size: rem-calc(20);
+        font-weight: 700;
+        color: $color-white;
+        margin: 0;
+        font-family: 'Orbitron', sans-serif;
+      }
+    }
+
+    .close-button {
+      width: rem-calc(40);
+      height: rem-calc(40);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: rem-calc(8);
+      background: rgba(255, 255, 255, 0.05);
+      color: rgba(255, 255, 255, 0.7);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      flex-shrink: 0;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(21, 147, 206, 0.5);
+        color: $color-white;
+      }
+
+      svg {
+        width: rem-calc(20);
+        height: rem-calc(20);
+      }
+    }
+  }
+
+  .modal-content {
+    margin-bottom: rem-calc(24);
+
+    .modal-message {
+      font-size: rem-calc(15);
+      color: rgba($color-white, 0.8);
+      margin: 0 0 rem-calc(20) 0;
+      line-height: 1.6;
+
+      strong {
+        color: $color-white;
+      }
+    }
+
+    .modal-warning {
+      font-size: rem-calc(13);
+      color: rgba(#ef4444, 0.9);
+      margin: rem-calc(12) 0 0 0;
+      padding: rem-calc(12);
+      background: rgba(#ef4444, 0.1);
+      border: 1px solid rgba(#ef4444, 0.2);
+      border-radius: rem-calc(8);
+      line-height: 1.5;
+    }
+  }
+
+  .modal-actions {
+    display: flex;
+    gap: rem-calc(12);
+    justify-content: flex-end;
+
+    .modal-btn {
+      padding: rem-calc(10) rem-calc(24);
+      border: none;
+      border-radius: rem-calc(8);
+      font-family: 'Outfit', sans-serif;
+      font-size: rem-calc(14);
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+
+      &.cancel {
+        background: rgba($color-white, 0.1);
+        color: rgba($color-white, 0.7);
+
+        &:hover {
+          background: rgba($color-white, 0.15);
+          color: $color-white;
+        }
+      }
+
+      &.confirm {
+        background: $color-blue;
+        color: $color-white;
+
+        &:hover {
+          background: darken($color-blue, 5%);
+          transform: translateY(rem-calc(-1));
+          box-shadow: 0 rem-calc(4) rem-calc(12) rgba(21, 147, 206, 0.3);
+        }
+
+        &.delete {
+          background: #ef4444;
+          color: $color-white;
+
+          &:hover {
+            background: darken(#ef4444, 5%);
+            transform: translateY(rem-calc(-1));
+            box-shadow: 0 rem-calc(4) rem-calc(12) rgba(239, 68, 68, 0.3);
+          }
+        }
+
+        &:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+          transform: none;
+        }
+      }
+    }
+  }
+}
+
 .friends-container {
   position: relative;
   padding: rem-calc(20) 0;
@@ -83,40 +232,50 @@
 }
 
 .friends-stats {
-  display: flex;
-  gap: rem-calc(16);
-  margin-bottom: rem-calc(32);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: rem-calc(20);
+  margin-bottom: rem-calc(40);
 
   .stat-card {
+    position: relative;
     flex: 1;
-    background: rgb(255 255 255 / 5%);
-    border: 1px solid rgb(255 255 255 / 10%);
-    border-radius: rem-calc(12);
-    padding: rem-calc(16);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba($color-blue, 0.2);
+    border-radius: rem-calc(20);
+    padding: rem-calc(24);
     text-align: center;
     transition: all 0.3s ease;
     backdrop-filter: blur(10px);
+    overflow: hidden;
+    cursor: pointer;
 
     &:hover {
-      background: rgb(255 255 255 / 8%);
-      border-color: rgba($color-purple, 0.3);
-      transform: translateY(-2px);
+      border-color: rgba($color-blue, 0.4);
+      background: rgba(255, 255, 255, 0.05);
     }
 
     .stat-number {
+      position: relative;
+      z-index: 2;
       font-family: Orbitron, sans-serif;
-      font-size: rem-calc(28);
+      font-size: rem-calc(42);
       font-weight: 700;
-      color: $color-purple;
-      margin-bottom: rem-calc(6);
+      color: $color-white;
+      margin-bottom: rem-calc(8);
+      transition: all 0.3s ease;
+      line-height: 1;
     }
 
     .stat-label {
-      font-family: Outfit, sans-serif;
+      position: relative;
+      z-index: 2;
+      font-family: Orbitron, sans-serif;
       font-size: rem-calc(14);
-      color: rgba($color-white, 0.7);
+      font-weight: 600;
+      color: rgba($color-white, 0.8);
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 2px;
     }
   }
 }
@@ -126,48 +285,73 @@
   grid-template-columns: repeat(auto-fill, minmax(rem-calc(280), 1fr));
   gap: rem-calc(20);
   margin-bottom: rem-calc(32);
+  position: relative;
+  z-index: 1;
 
   &.list-view {
     grid-template-columns: 1fr;
     gap: rem-calc(12);
+
+    .friend-card {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      padding: rem-calc(16) rem-calc(24);
+
+      .friend-header {
+        flex: 1;
+        margin-bottom: 0;
+        align-items: center;
+      }
+
+      .friend-details {
+        margin: 0 rem-calc(24);
+        padding: 0;
+        border: none;
+        flex-shrink: 0;
+      }
+
+      .friend-actions {
+        flex-shrink: 0;
+      }
+    }
   }
 
   &.card-view {
-    grid-template-columns: repeat(auto-fill, minmax(rem-calc(280), 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(rem-calc(320), 1fr));
     gap: rem-calc(20);
   }
 }
 
 .friend-card {
-  background: rgb(255 255 255 / 5%);
-  border: 1px solid rgb(255 255 255 / 10%);
-  border-radius: rem-calc(16);
-  padding: rem-calc(16);
+  position: relative;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba($color-blue, 0.15);
+  border-radius: rem-calc(20);
+  padding: rem-calc(24);
   transition: all 0.3s ease;
   backdrop-filter: blur(10px);
-  position: relative;
-  overflow: hidden;
+  overflow: visible;
+  z-index: 1;
+  animation: cardSlideIn 0.5s ease-out;
 
-  &::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, $color-purple, $color-blue);
-    opacity: 0;
-    transition: opacity 0.3s ease;
+  &:has(.friend-menu-dropdown) {
+    z-index: 99998;
   }
 
   &:hover {
-    background: rgb(255 255 255 / 8%);
-    border-color: rgba($color-purple, 0.3);
-    transform: translateY(-4px);
-    box-shadow: 0 rem-calc(20) rem-calc(40) rgb(0 0 0 / 30%);
+    border-color: rgba($color-blue, 0.3);
+    background: rgba(255, 255, 255, 0.05);
+  }
 
-    &::before {
+  @keyframes cardSlideIn {
+    from {
+      opacity: 0;
+      transform: translateY(rem-calc(20));
+    }
+    to {
       opacity: 1;
+      transform: translateY(0);
     }
   }
 
@@ -177,144 +361,303 @@
       margin-bottom: rem-calc(12);
       gap: rem-calc(12);
 
-    .friend-avatar {
+      .friend-header-actions {
+        display: flex;
+        align-items: center;
+        gap: rem-calc(8);
+        margin-left: auto;
+      }
+
+      .friend-menu-wrapper {
+        position: relative;
+        z-index: 10000;
+      }
+
+      .friend-menu-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: rem-calc(32);
+        height: rem-calc(32);
+        background: transparent;
+        border: 1px solid rgba($color-white, 0.1);
+        border-radius: rem-calc(8);
+        color: rgba($color-white, 0.6);
+        cursor: pointer;
+        transition: all 0.3s ease;
+
+        &:hover {
+          background: rgba($color-white, 0.05);
+          border-color: rgba($color-white, 0.2);
+          color: $color-white;
+        }
+      }
+
+      .friend-menu-dropdown {
+        position: absolute;
+        top: calc(100% + rem-calc(8));
+        right: 0;
+        min-width: rem-calc(220);
+        background: rgba($color-black, 0.9);
+        border: 1.5px solid rgba($color-blue, 0.13);
+        border-radius: rem-calc(18);
+        backdrop-filter: blur(rem-calc(14));
+        padding: rem-calc(8);
+        z-index: 99999;
+        box-shadow: 0 rem-calc(8) rem-calc(24) rgba(0, 0, 0, 0.4);
+        animation: dropdown-fade-in 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+
+        .friend-menu-item {
+          display: flex;
+          align-items: center;
+          gap: rem-calc(12);
+          width: 100%;
+          padding: rem-calc(12) rem-calc(16);
+          background: none;
+          border: none;
+          border-radius: rem-calc(12);
+          color: $color-white;
+          font-size: rem-calc(15);
+          font-weight: 500;
+          font-family: 'Outfit', sans-serif;
+          cursor: pointer;
+          transition: all 0.18s ease;
+          text-align: left;
+
+          &:hover {
+            background: rgba($color-blue, 0.18);
+            color: $color-blue;
+          }
+
+          &.delete {
+            color: $color-red-soft;
+
+            &:hover {
+              background: rgba($color-red, 0.18);
+              color: $color-red-soft;
+            }
+          }
+
+          svg {
+            flex-shrink: 0;
+          }
+        }
+      }
+
+      @keyframes dropdown-fade-in {
+        from {
+          opacity: 0;
+          transform: translateY(rem-calc(-8));
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .friend-avatar {
       position: relative;
-      width: rem-calc(48);
-      height: rem-calc(48);
-      background: linear-gradient(135deg, $color-purple, $color-blue);
+      width: rem-calc(64);
+      height: rem-calc(64);
+      background: linear-gradient(135deg, rgba($color-blue, 0.8), rgba($color-blue-indigo, 0.8));
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
+      transition: all 0.3s ease;
+      border: 2px solid rgba($color-blue, 0.3);
 
       .avatar-icon {
-        font-size: rem-calc(22) !important;
+        font-size: rem-calc(28) !important;
         color: $color-white !important;
-        filter: drop-shadow(0 2px 4px rgb(0 0 0 / 30%));
+        filter: drop-shadow(0 2px 8px rgb(0 0 0 / 40%));
+        z-index: 2;
+        position: relative;
       }
 
       .status-indicator {
         position: absolute;
-        bottom: rem-calc(2);
-        right: rem-calc(2);
-        width: rem-calc(16);
-        height: rem-calc(16);
+        bottom: rem-calc(0);
+        right: rem-calc(0);
+        width: rem-calc(18);
+        height: rem-calc(18);
         border-radius: 50%;
-        border: 2px solid $color-background;
-        box-shadow: 0 0 0 2px rgb(255 255 255 / 10%);
+        border: 3px solid $color-background;
+        box-shadow: 0 0 0 2px rgba($color-white, 0.1), 0 rem-calc(4) rem-calc(8) rgba(0, 0, 0, 0.3);
+        z-index: 3;
+        animation: pulseStatus 2s ease-in-out infinite;
+      }
+    }
+
+    @keyframes pulseStatus {
+      0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+      50% {
+        transform: scale(1.15);
+        opacity: 0.9;
       }
     }
 
     .friend-info {
       flex: 1;
       min-width: 0;
+      position: relative;
+      z-index: 2;
 
       .friend-name {
         font-family: Orbitron, sans-serif;
-        font-size: rem-calc(16);
-        font-weight: 600;
+        font-size: rem-calc(20);
+        font-weight: 700;
         color: $color-white;
-        margin: 0 0 rem-calc(3);
+        margin: 0;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        transition: all 0.3s ease;
+        max-width: 100%;
+        display: block;
       }
 
-      .friend-level {
+      .request-status {
         font-family: Outfit, sans-serif;
-        font-size: rem-calc(14);
+        font-size: rem-calc(12);
         color: rgba($color-white, 0.6);
         font-weight: 500;
+        margin-top: rem-calc(4);
+        text-transform: uppercase;
+        letter-spacing: 1px;
       }
     }
 
     .favorite-badge {
-      font-size: rem-calc(24) !important;
-      color: rgba($color-purple, 0.08) !important;
-      animation: pulse 2s infinite;
+      position: relative;
+      z-index: 2;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: rem-calc(8);
+      border-radius: rem-calc(8);
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      svg {
+        font-size: rem-calc(24) !important;
+        transition: all 0.3s ease;
+      }
+
+      &:hover {
+        background: rgba($color-blue, 0.1);
+        transform: scale(1.1);
+      }
+
+      &.active {
+        svg {
+          color: $color-blue !important;
+          fill: $color-blue !important;
+          filter: drop-shadow(0 0 rem-calc(8) rgba($color-blue, 0.6));
+        }
+      }
     }
   }
 
   .friend-details {
+    position: relative;
+    z-index: 2;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: rem-calc(12);
-
-    .league-badge {
-      background: rgb(255 255 255 / 5%);
-      border: 1px solid;
-      border-radius: rem-calc(8);
-      padding: rem-calc(6) rem-calc(12);
-
-      .league-name {
-        font-family: Orbitron, sans-serif;
-        font-size: rem-calc(12);
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-      }
-    }
+    margin-bottom: rem-calc(16);
+    padding: rem-calc(12) 0;
+    border-top: 1px solid rgba($color-white, 0.1);
+    border-bottom: 1px solid rgba($color-white, 0.1);
 
     .status-info {
-      text-align: right;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: rem-calc(4);
 
       .status-text {
-        font-family: Outfit, sans-serif;
-        font-size: rem-calc(14);
+        font-family: Orbitron, sans-serif;
+        font-size: rem-calc(13);
         font-weight: 600;
-        display: block;
-        margin-bottom: rem-calc(2);
+        display: inline-flex;
+        align-items: center;
+        gap: rem-calc(6);
+        padding: rem-calc(6) rem-calc(12);
+        border-radius: rem-calc(20);
+        background: rgba($color-blue, 0.1);
+        border: 1px solid rgba($color-blue, 0.2);
+        color: $color-white;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+
+        &::before {
+          content: '';
+          width: rem-calc(8);
+          height: rem-calc(8);
+          border-radius: 50%;
+          background: currentColor;
+          box-shadow: 0 0 rem-calc(8) currentColor;
+        }
       }
 
       .last-seen {
         font-family: Outfit, sans-serif;
-        font-size: rem-calc(12);
+        font-size: rem-calc(11);
         color: rgba($color-white, 0.5);
+        font-style: italic;
       }
     }
   }
 
   .friend-actions {
+    position: relative;
+    z-index: 2;
     display: flex;
     gap: rem-calc(12);
 
-    .action-btn {
+    button {
       flex: 1;
-      height: rem-calc(36);
-      background: rgb(255 255 255 / 5%);
-      border: 1px solid rgb(255 255 255 / 20%);
-      border-radius: rem-calc(8);
-      color: $color-white;
-      font-family: Outfit, sans-serif;
+      height: rem-calc(44);
+      background: rgba($color-blue, 0.1);
+      border: 1px solid rgba($color-blue, 0.3);
+      border-radius: rem-calc(12);
+      color: $color-blue;
+      font-family: Orbitron, sans-serif;
       font-size: rem-calc(13);
-      font-weight: 500;
+      font-weight: 600;
       cursor: pointer;
       transition: all 0.3s ease;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: rem-calc(6);
+      gap: rem-calc(8);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
 
       svg {
-        font-size: rem-calc(16) !important;
+        font-size: rem-calc(18) !important;
+        transition: transform 0.3s ease;
       }
 
       &:hover {
-        background: rgb(255 255 255 / 10%);
-        border-color: rgba($color-purple, 0.5);
+        background: rgba($color-blue, 0.2);
+        border-color: rgba($color-blue, 0.5);
+        color: $color-white;
+
+        svg {
+          transform: scale(1.1);
+        }
       }
 
-      &.invite-btn {
-        background: rgba($color-blue, 0.1);
-        border-color: rgba($color-blue, 0.3);
-        color: $color-blue;
-
-        &:hover {
-          background: rgba($color-blue, 0.2);
-          border-color: $color-blue;
-        }
+      &:active {
+        transform: translateY(0);
       }
     }
   }
@@ -355,6 +698,11 @@
         .friend-name {
           font-size: rem-calc(18);
           font-weight: 700;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          max-width: 100%;
+          display: block;
         }
 
         .friend-elo {
@@ -517,6 +865,7 @@
     justify-content: space-between;
     gap: rem-calc(16);
     margin-bottom: rem-calc(16);
+    flex: 1;
 
     .custom-tabs {
       display: flex;
@@ -575,21 +924,23 @@
 
         &:hover {
           background: rgb(255 255 255 / 8%);
+          border-color: rgb(255 255 255 / 30%);
           color: $color-white;
           transform: translateY(-2px);
         }
 
         &.active {
-          background: linear-gradient(135deg, $color-purple 0%, $color-blue 100%);
-          border-color: $color-purple;
+          background: rgb(255 255 255 / 10%);
+          border-color: rgb(255 255 255 / 30%);
           color: $color-white;
-          box-shadow: 0 rem-calc(4) rem-calc(12) rgba($color-purple, 0.3);
+          box-shadow: 0 rem-calc(4) rem-calc(12) rgba(0, 0, 0, 0.2);
           transform: translateY(-2px);
         }
 
         svg {
           font-size: rem-calc(20) !important;
           transition: transform 0.3s ease;
+          color: $color-white !important;
         }
 
         &:hover svg {
@@ -615,24 +966,12 @@
         position: relative;
         overflow: hidden;
 
-        &::before {
-          content: "";
-          position: absolute;
-          inset: 0;
-          background: linear-gradient(135deg, $color-purple 0%, $color-blue 100%);
-          opacity: 0;
-          transition: opacity 0.3s ease;
-        }
-
         &:hover {
+          background: rgba($color-purple, 0.15);
           border-color: $color-purple;
           color: $color-white;
           transform: translateY(-2px);
           box-shadow: 0 rem-calc(8) rem-calc(20) rgba($color-purple, 0.3);
-
-          &::before {
-            opacity: 0.1;
-          }
         }
 
         &.anim {
@@ -801,71 +1140,54 @@
   }
 }
 
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgb(0 0 0 / 80%);
-  backdrop-filter: blur(10px);
+.add-friend-modal-header {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 10000;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: rem-calc(24);
+  padding-bottom: rem-calc(20);
+  border-bottom: 1px solid rgb(255 255 255 / 10%);
 
-  .modal-content {
-    background: $color-gray-darkest;
+  .add-friend-modal-title {
+    font-family: Orbitron, sans-serif;
+    font-size: rem-calc(24);
+    font-weight: 700;
+    color: $color-white;
+    margin: 0 0 rem-calc(6);
+  }
+
+  .add-friend-modal-subtitle {
+    font-family: Outfit, sans-serif;
+    font-size: rem-calc(14);
+    color: rgba($color-white, 0.7);
+    margin: 0;
+    font-weight: 400;
+  }
+
+  .add-friend-modal-close {
+    background: rgb(255 255 255 / 5%);
     border: 1px solid rgb(255 255 255 / 10%);
-    border-radius: rem-calc(20);
-    max-width: rem-calc(500);
-    width: 90%;
-    max-height: 80vh;
-    overflow-y: auto;
-    backdrop-filter: blur(20px);
-    box-shadow: 0 rem-calc(20) rem-calc(40) rgb(0 0 0 / 50%);
+    color: rgba($color-white, 0.6);
+    font-size: rem-calc(20);
+    cursor: pointer;
+    padding: rem-calc(8);
+    border-radius: rem-calc(8);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: rem-calc(36);
+    height: rem-calc(36);
+    flex-shrink: 0;
 
-    .modal-header {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      padding: rem-calc(24) rem-calc(24) rem-calc(20);
-      border-bottom: 1px solid rgb(255 255 255 / 10%);
+    &:hover {
+      color: $color-white;
+      background: rgb(255 255 255 / 10%);
+      border-color: rgb(255 255 255 / 20%);
+    }
 
-      .modal-title-section {
-        flex: 1;
-
-        .modal-title {
-          font-size: rem-calc(24);
-          font-weight: 700;
-          color: $color-white;
-          margin: 0 0 rem-calc(4);
-          background: linear-gradient(135deg, $color-purple 0%, $color-blue 100%);
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-        }
-
-        .modal-subtitle {
-          font-family: Outfit, sans-serif;
-          font-size: rem-calc(14);
-          color: rgba($color-white, 0.7);
-          margin: 0;
-          font-weight: 400;
-        }
-      }
-
-      .modal-close {
-        background: none;
-        border: none;
-        color: rgba($color-white, 0.6);
-        font-size: rem-calc(24);
-        cursor: pointer;
-        padding: rem-calc(4);
-        border-radius: 50%;
-        transition: all 0.3s ease;
-
-        &:hover {
-          color: $color-white;
-          background: rgba($color-white, 0.1);
-        }
-      }
+    svg {
+      font-size: rem-calc(20) !important;
     }
   }
 }
@@ -885,12 +1207,11 @@
 }
 
 .add-friend-modal {
-  padding: rem-calc(20);
-  max-height: rem-calc(600);
+  max-height: rem-calc(500);
   overflow-y: auto;
 
   .search-section {
-    margin-bottom: rem-calc(30);
+    margin-bottom: rem-calc(24);
 
     .search-input-wrapper {
       position: relative;
